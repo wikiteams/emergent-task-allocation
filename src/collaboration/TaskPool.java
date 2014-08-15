@@ -19,13 +19,9 @@ import tasks.Homophyly;
 import tasks.HomophylyExpBased;
 import tasks.Preferential;
 
-public class TaskPool extends DefaultContext<Task> {
+public class TaskPool {
 
 	private static Map<String, Task> tasks = new HashMap<String, Task>();
-
-	public TaskPool() {
-		super("Tasks");
-	}
 
 	public static void clearTasks() {
 		tasks.clear();
