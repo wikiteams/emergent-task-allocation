@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<agent version="1" agentcomment="This is an agent." agentclassname="Agent" agentparentclassname="" agentinterfaces="" agentimports="">
+  <behaviorsteps/>
+  <tasksteps/>
+  <decisionsteps/>
+  <joinsteps/>
+  <agentproperties/>
+  <endsteps/>
+  <connections>
+    <transitions/>
+    <booleantransitions/>
+  </connections>
+</agent>
