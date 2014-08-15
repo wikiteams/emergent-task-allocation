@@ -1,0 +1,33 @@
+<?xml version="1.0"?><sweep runs="300">
+<parameter name="randomSeed" type="constant" constant_type="int" value="985924735" />
+<parameter name="skillChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="proportional" />
+<parameter name="allowMultiMembership" type="constant" constant_type="java.lang.Boolean" value="true" />
+<parameter name="deployedTasksLeave" type="constant" constant_type="java.lang.Boolean" value="true" />
+<parameter name="strategyDistribution" type="constant" constant_type="int" value="0" />
+<parameter name="taskChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="minmax" />
+<parameter name="agentCount" type="constant" constant_type="int" value="50" />
+<parameter name="numSteps" type="constant" constant_type="int" value="5000" />
+<parameter name="maxWorkRequired" type="constant" constant_type="int" value="20" />
+<parameter name="agentSkillsMaximumExperience" type="constant" constant_type="int" value="100" />
+<parameter name="numTasks" type="constant" constant_type="int" value="20" />
+<parameter name="agentSkillsPoolRandomize1" type="constant" constant_type="int" value="5" />
+<parameter name="percStartMembership" type="constant" constant_type="int" value="10" />
+<parameter name="fullyLearnedAgentsLeave" type="constant" constant_type="java.lang.Boolean" value="true" />
+<parameter name="gitHubClusterizedDistribution" type="constant" constant_type="java.lang.String" value="clusters" />
+<parameter name="agentSkillPoolDataset" type="constant" constant_type="java.lang.String" value="STATIC_PULL_REQUESTS" />
+<parameter name="fillAgentSkillsMethod" type="constant" constant_type="java.lang.String" value="TOP_ACTIVE" />
+<parameter name="taskSkillPoolDataset" type="constant" constant_type="java.lang.String" value="GITHUB_CLUSTERIZED" />
+<parameter name="staticFrequencyTableSc" type="constant" constant_type="int" value="10" />
+<parameter name="forceStop" type="constant" constant_type="java.lang.Boolean" value="false" />
+<parameter name="skillFactoryRandomMethod" type="constant" constant_type="java.lang.String" value="normal_distribution" />
+<parameter name="taskMinMaxChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="maxmin" />
+<parameter name="modelType" type="constant" constant_type="java.lang.String" value="Normal" />
+<parameter name="location" type="constant" constant_type="java.lang.String" value="Metric" />
+<parameter name="experienceDecay" type="constant" constant_type="java.lang.Boolean" value="true" />
+<parameter name="granularity" type="constant" constant_type="java.lang.Boolean" value="true" />
+<parameter name="granularityObstinacy" type="constant" constant_type="int" value="20" />
+<parameter name="granularityType" type="constant" constant_type="java.lang.String" value="DISTRIBUTED" />
+<parameter name="dataSetAll" type="constant" constant_type="java.lang.Boolean" value="true" />
+<parameter name="experienceCutPoint" type="constant" constant_type="java.lang.Boolean" value="false" />
+<parameter name="allwaysChooseTask" type="constant" constant_type="java.lang.Boolean" value="true" />
+</sweep>
