@@ -1,0 +1,1 @@
+Delphi in languages.yaml has been integrated to Pascal (as a lexer). Because of compability backwards in dataset, we add Delphi to languages definitions.

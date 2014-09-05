@@ -94,36 +94,40 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private boolean alreadyFlushed = false;
 
 	public CollaborationBuilder() {
-
 		try {
 			initializeLoggers();
 			RandomHelper.setSeed(SimulationParameters.randomSeed);
 			RandomHelper.init();
 			clearStaticHeap();
-
 			say("CollaborationBuilder constructor loaded");
+		} catch (IOException e) {
+			e.printStackTrace();
+			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
+		} catch (Exception exc) {
+			say(exc.toString());
+			exc.printStackTrace();
+			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS);
+		}
+	}
+
+	private void prepareEssentials() {
+		try {
 			// getting parameters of simulation
 			say(Constraints.LOADING_PARAMETERS);
-
 			SimulationParameters.init();
 			if (SimulationParameters.multipleAgentSets) {
 				universe = DescribeUniverseBulkLoad.init();
 			}
-
 			launchStatistics = new LaunchStatistics();
 			modelFactory = new ModelFactory(SimulationParameters.model_type);
 			say("Starting simulation with model: " + modelFactory.toString());
-
 			if (modelFactory.getFunctionality().isValidation())
 				initializeValidationLogger();
-
 			// TODO: implement mixed strategy distribution
 			strategyDistribution = new StrategyDistribution();
-
 			// initialize skill pools
 			skillFactory = new SkillFactory();
 			skillFactory.buildSkillsLibrary();
-
 			say("SkillFactory parsed all skills from CSV file");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -133,16 +137,16 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			exc.printStackTrace();
 			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS);
 		}
+	}
 
+	private void prepareFurthermore() {
 		try {
 			DataSetProvider dsp = new DataSetProvider(
 					SimulationParameters.dataSetAll);
-
 			AgentSkillsPool.instantiate(dsp.getAgentSkillDataset());
 			say("Instatiated AgentSkillsPool");
 			TaskSkillsPool.instantiate(dsp.getTaskSkillDataset());
 			say("Instatied TaskSkillsPool");
-
 			strategyDistribution
 					.setType(SimulationParameters.strategyDistribution);
 			strategyDistribution.setSkillChoice(modelFactory,
@@ -158,15 +162,19 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	}
 
 	@Override
-	public Context build(Context<Object> context) {
+	public Context<Object> build(Context<Object> context) {
 		context.setId("emergent-task-allocation");
+
+		prepareEssentials();
+		prepareFurthermore();
 
 		initializeTasks(context);
 		initializeAgents(context);
 
 		say("Task choice algorithm is "
 				+ SimulationParameters.taskChoiceAlgorithm);
-		sanity("Number of teams created " + context.getObjects(Task.class).size());
+		sanity("Number of teams created "
+				+ context.getObjects(Task.class).size());
 		sanity("Number of agents created "
 				+ context.getObjects(Agent.class).size());
 		sanity("Algorithm tested: " + SimulationParameters.taskChoiceAlgorithm);
@@ -212,7 +220,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		EndRunLogger.buildHeaders(buildFinalMessageHeader());
 	}
 
-	private void initializeAgents(Context context) {
+	private void initializeAgents(Context<Object> context) {
 		Model model = modelFactory.getFunctionality();
 		if (model.isNormal() && model.isValidation()) {
 			throw new UnsupportedOperationException();
@@ -268,7 +276,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("Adding validation task to pool..");
 			taskPool.addTask(task.getName(), task);
 			context.add(task);
-			//agentPool.add(task);
+			// agentPool.add(task);
 		}
 	}
 
@@ -282,7 +290,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("Initializing task..");
 			task.initialize(howMany);
 			context.add(task);
-			//agentPool.add(task);
+			// agentPool.add(task);
 		}
 
 		launchStatistics.taskCount = taskPool.getCount();
@@ -343,9 +351,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			context.add(agent);
 		}
 
-//		launchStatistics.agentCount = agentPool.size()
-//				- launchStatistics.taskCount;
-		
+		// launchStatistics.agentCount = agentPool.size()
+		// - launchStatistics.taskCount;
+
 		launchStatistics.agentCount = agentCnt;
 	}
 

@@ -1,0 +1,6 @@
+select repository_language, count(repository_language) as count_language
+from [githubarchive:github.timeline]
+where type='PushEvent'
+and repository_language != ''
+group by repository_language
+order by count_language desc
