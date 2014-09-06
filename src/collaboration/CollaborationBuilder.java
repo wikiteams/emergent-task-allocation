@@ -90,7 +90,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private List<Agent> listAgent;
 	private CentralPlanning centralPlanningHq;
 
-	private boolean shutdownInitiated = false;
 	private boolean alreadyFlushed = false;
 
 	public CollaborationBuilder() {
@@ -380,7 +379,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		if (taskPool.getCount() < 1) {
 			say("count of taskPool is < 1, finishing simulation");
 			finalMessage(buildFinalMessage());
-			shutdownInitiated = true;
 			RunEnvironment.getInstance().endRun();
 			cleanAfter();
 		}
@@ -442,7 +440,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		if (EnvironmentEquilibrium.getActivity() == false) {
 			say("EnvironmentEquilibrium.getActivity() returns false!");
 			finalMessage(buildFinalMessage());
-			shutdownInitiated = true;
 			RunEnvironment.getInstance().endRun();
 			cleanAfter();
 		}
