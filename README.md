@@ -44,3 +44,14 @@ Datasource is the [GitHub Archive](https://www.githubarchive.org), which was dow
         "public" : true
 }
 ```
+
+Next, this collection is sorted by the created_at field which is a datetime. It means that we make a GitHub life timeline. After we encounter a repository, we iterate through all of its PullRequest events to count number of changes per a language. This gives us below structure: D1: T1:R1{Java 50/250} ; T2:R1{Obj-C 20/2000} , D2: T1:R2{C 1/100}
+
+## Strategies
+
+### Central planner
+
+Changes since previous version modify little central planner, especially it's blocking mechanism
+
+### Preferential strategy
+
