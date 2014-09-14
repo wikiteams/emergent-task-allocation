@@ -1,9 +1,32 @@
 package test;
 
 import java.util.StringTokenizer;
-
 import repast.simphony.parameter.StringConverter;
 
+/**
+ * Recognizes a model type from String translation,
+ * The model can be a concatenation of one or more options
+ * and determines the behavior of the simulator
+ * 
+ * - Normal
+ * 
+ * Normal execution, result-oriented
+ * 
+ * - Validation
+ * 
+ * All assertions enabled, maximum logging and verbose messaging
+ * 
+ * - Multiplevalidation
+ * 
+ * at this time undefinied...
+ * 
+ * - Stress
+ * 
+ * it multiplies the "work left" and "experience left" by x10000
+ * 
+ * @author Oskar Jarczyk
+ * @version 2.0
+ */
 public class ModelConverter implements StringConverter<Model> {
 
 	/**

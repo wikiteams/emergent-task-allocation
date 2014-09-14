@@ -6,7 +6,7 @@
 		values="Normal Validation MultipleValidation Normal+Validation Stress" />
 	<parameter name="dataSource" displayName="Data Source"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		type="string" defaultValue="FileSoup" values="SocketListener FileSoup" />
+		type="string" defaultValue="FileSoup" values="SocketListener FileSoup Mockup" />
 
 	<parameter name="skillChoiceAlgorithm" displayName="skillChoiceAlgorithm"
 		type="java.lang.String" defaultValue="greedy" isReadOnly="false"

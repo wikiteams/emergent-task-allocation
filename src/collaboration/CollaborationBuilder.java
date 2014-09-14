@@ -118,7 +118,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				universe = DescribeUniverseBulkLoad.init();
 			}
 			launchStatistics = new LaunchStatistics();
-			modelFactory = new ModelFactory(SimulationParameters.model_type);
+			modelFactory = new ModelFactory(SimulationParameters.modelType);
 			say("Starting simulation with model: " + modelFactory.toString());
 			if (modelFactory.getFunctionality().isValidation())
 				initializeValidationLogger();
