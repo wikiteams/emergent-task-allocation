@@ -1,5 +1,7 @@
 package strategies;
 
+import java.util.List;
+
 import collaboration.Agent;
 import strategies.Strategy.SkillChoice;
 import strategies.Strategy.TaskChoice;
@@ -27,8 +29,8 @@ public class StrategyDistribution {
 	private String taskChoice;
 	private String taskMinMaxChoice;
 
-	public TaskChoice getTaskStrategy(Agent agent) {
-		if (type == 0) {
+	public TaskChoice getTaskStrategy() {
+		if (type == SINGULAR) {
 			if (taskChoice.equals(taskChoiceSet[0])) {
 				return Strategy.TaskChoice.HOMOPHYLY_CLASSIC;
 			} else if (taskChoice.equals(taskChoiceSet[1])) {
@@ -53,11 +55,46 @@ public class StrategyDistribution {
 				return Strategy.TaskChoice.CENTRAL_ASSIGNMENT;
 			}
 		}
+		else{
+			assert false;
+		}
+		return null;
+	}
+	
+	public TaskChoice getTaskStrategy(List<Agent> agents) {
+		if (type == MULTIPLE) {
+			if (taskChoice.equals(taskChoiceSet[0])) {
+				return Strategy.TaskChoice.HOMOPHYLY_CLASSIC;
+			} else if (taskChoice.equals(taskChoiceSet[1])) {
+				return Strategy.TaskChoice.HOMOPHYLY_EXP_BASED;
+			} else if (taskChoice.equals(taskChoiceSet[2])) {
+				return Strategy.TaskChoice.HETEROPHYLY_CLASSIC;
+			} else if (taskChoice.equals(taskChoiceSet[3])) {
+				return Strategy.TaskChoice.PREFERENTIAL;
+			} else if (taskChoice.equals(taskChoiceSet[4])) {
+				return Strategy.TaskChoice.HETEROPHYLY_EXP_BASED;
+			} else if (taskChoice.equals(taskChoiceSet[5])) {
+				return Strategy.TaskChoice.RANDOM;
+			} else if (taskChoice.equals(taskChoiceSet[6])) {
+				return Strategy.TaskChoice.SOCIAL_VECTOR;
+			} else if (taskChoice.equals(taskChoiceSet[7])) {
+				return Strategy.TaskChoice.MACHINE_LEARNED;
+			} else if (taskChoice.equals(taskChoiceSet[8])) {
+				return Strategy.TaskChoice.COMPARISION;
+			} else if (taskChoice.equals(taskChoiceSet[9])) {
+				return Strategy.TaskChoice.ARG_MIN_MAX;
+			} else if (taskChoice.equals(taskChoiceSet[10])) {
+				return Strategy.TaskChoice.CENTRAL_ASSIGNMENT;
+			}
+		}
+		else{
+			assert false;
+		}
 		return null;
 	}
 
-	public SkillChoice getSkillStrategy(Agent agent) {
-		if (type == 0) {
+	public SkillChoice getSkillStrategy() {
+		if (type == SINGULAR) {
 			if (skillChoice.equals(skillChoiceSet[0])) {
 				return Strategy.SkillChoice.PROPORTIONAL_TIME_DIVISION;
 			} else if (skillChoice.equals(skillChoiceSet[1])) {
@@ -67,6 +104,8 @@ public class StrategyDistribution {
 			} else if (skillChoice.equals(skillChoiceSet[3])) {
 				return Strategy.SkillChoice.RANDOM;
 			}
+		} else {
+			assert false;
 		}
 		return null;
 	}
@@ -117,8 +156,8 @@ public class StrategyDistribution {
 		this.type = type;
 	}
 
-	public TaskMinMaxChoice getTaskMaxMinStrategy(Agent agent) {
-		if (type == 0) {
+	public TaskMinMaxChoice getTaskMaxMinStrategy() {
+		if (type == SINGULAR) {
 			if (taskMinMaxChoice.equals("maxmax")) {
 				return Strategy.TaskMinMaxChoice.ARGMAX_ARGMAX;
 			} else if (taskMinMaxChoice.equals("maxmin")) {
@@ -128,6 +167,8 @@ public class StrategyDistribution {
 			} else if (taskMinMaxChoice.equals("minmin")) {
 				return Strategy.TaskMinMaxChoice.ARGMIN_ARGMIN;
 			}
+		} else {
+			assert false;
 		}
 		return null;
 	}

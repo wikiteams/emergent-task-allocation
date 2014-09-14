@@ -74,7 +74,7 @@ import constants.ModelFactory;
  * @category Agent-organized Social Simulations
  * @since 1.0
  * @author Oskar Jarczyk (since 1.0+), Blazej Gruszka (1.3+)
- * @see 1) github markdown 2) "On the effectiveness of emergent task allocation"
+ * @see 1) GitHub markdown 2) "On the effectiveness of emergent task allocation"
  */
 public class CollaborationBuilder implements ContextBuilder<Object> {
 
@@ -122,12 +122,13 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("Starting simulation with model: " + modelFactory.toString());
 			if (modelFactory.getFunctionality().isValidation())
 				initializeValidationLogger();
-			// TODO: implement mixed strategy distribution
+			
 			strategyDistribution = new StrategyDistribution();
 			// initialize skill pools
+			say("SkillFactory parsing skills from the CSV file...");
 			skillFactory = new SkillFactory();
 			skillFactory.buildSkillsLibrary();
-			say("SkillFactory parsed all skills from CSV file");
+			say("SkillFactory parsed all known programming languages.");
 		} catch (IOException e) {
 			e.printStackTrace();
 			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
@@ -146,6 +147,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("Instatiated AgentSkillsPool");
 			TaskSkillsPool.instantiate(dsp.getTaskSkillDataset());
 			say("Instatied TaskSkillsPool");
+			
 			strategyDistribution
 					.setType(SimulationParameters.strategyDistribution);
 			strategyDistribution.setSkillChoice(modelFactory,
@@ -240,9 +242,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		for (Agent agent : AgentTestUniverse.DATASET) {
 			say("Adding validation agent to pool..");
 			Strategy strategy = new Strategy(
-					strategyDistribution.getTaskStrategy(agent),
-					strategyDistribution.getTaskMaxMinStrategy(agent),
-					strategyDistribution.getSkillStrategy(agent));
+					strategyDistribution.getTaskStrategy(),
+					strategyDistribution.getTaskMaxMinStrategy(),
+					strategyDistribution.getSkillStrategy());
 
 			agent.setStrategy(strategy);
 			listAgent.add(agent);
@@ -327,9 +329,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			Agent agent = listAgent.get(i);
 
 			Strategy strategy = new Strategy(
-					strategyDistribution.getTaskStrategy(agent),
-					strategyDistribution.getTaskMaxMinStrategy(agent),
-					strategyDistribution.getSkillStrategy(agent));
+					strategyDistribution.getTaskStrategy(),
+					strategyDistribution.getTaskMaxMinStrategy(),
+					strategyDistribution.getSkillStrategy());
 
 			agent.setStrategy(strategy);
 			say(agent.toString());

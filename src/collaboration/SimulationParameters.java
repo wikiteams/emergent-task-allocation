@@ -21,7 +21,7 @@ public class SimulationParameters {
 	public static final boolean allowSkillDeath = false;
 
 	/**
-	 * Parameters - modelType and dataSource
+	 * Parameters - modelType (optional plan number) and dataSource
 	 * 
 	 * This sets the type of data and model we want to operate on so it can be
 	 * either a mock data or a real data from files/socket plus model type tells
@@ -30,8 +30,8 @@ public class SimulationParameters {
 	 */
 	public static Model modelType = null;
 	public static String dataSource = "";
+	public static int planNumber = 0;
 
-	public static String location = "";
 	public static int agentCount = 0;
 	public static int taskCount = 0;
 	public static int percStartMembership = 0;
@@ -80,8 +80,7 @@ public class SimulationParameters {
 		modelType = (Model) modelConverter.fromString((String) param
 				.getValue("modelType"));
 		dataSource = (String) param.getValue("dataSource");
-
-		location = (String) param.getValue("location");
+		planNumber = (Integer) param.getValue("planNumber");
 
 		agentCount = (Integer) param.getValue("agentCount");
 		taskCount = (Integer) param.getValue("numTasks");

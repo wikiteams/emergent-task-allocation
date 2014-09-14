@@ -24,6 +24,7 @@ import constants.RandomMethod;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
+ * @version 2.0
  */
 public class SkillFactory {
 
@@ -32,12 +33,12 @@ public class SkillFactory {
 	 * 
 	 * language1,type\r\n language2,type\r\n ... langauage{i},type
 	 * 
-	 * circa 200 entries
+	 * circa 305 entries
 	 */
 	private static String filename = SystemUtils.IS_OS_LINUX ? "data/all-languages.csv"
 			: "data\\all-languages.csv";
 	public static ArrayList<Skill> skills = new ArrayList<Skill>();
-	
+
 	public SkillFactory() {
 		say("SkillFactory object created");
 	}
@@ -68,29 +69,29 @@ public class SkillFactory {
 	public Skill getRandomSkill(RandomMethod method) {
 		double randomized;
 		switch (method) {
-			case POISSON_DISTRIBUTION:
-				Poisson poisson = new Poisson(0.0,
-						cern.jet.random.Poisson.makeDefaultGenerator());
-				randomized = poisson.nextDouble();
-				assert (randomized >= 0.) && (randomized <= 1.);
-				return skills.get((int) (randomized * skills.size()));
-			case RANDOM_GENERATOR:
-				int i = RandomHelper.nextIntFromTo(0,skills.size()-1);
-				return skills.get(i);
-			case NORMAL_DISTRIBUTION:
-				Normal normal = new Normal(0.0, 1.0,
-						cern.jet.random.Normal.makeDefaultGenerator());
-				randomized = normal.nextDouble();
-				assert (randomized >= 0.) && (randomized <= 1.);
-				return skills.get((int) (randomized * skills.size()));
-			case BREIT_WIGNER:
-				BreitWigner bw = new BreitWigner(1.0, 1.0, 1.0,
-						cern.jet.random.BreitWigner.makeDefaultGenerator());
-				randomized = bw.nextDouble();
-				assert (randomized >= 0.) && (randomized <= 1.);
-				return skills.get((int) (randomized * skills.size()));
-			default:
-				break;
+		case POISSON_DISTRIBUTION:
+			Poisson poisson = new Poisson(0.0,
+					cern.jet.random.Poisson.makeDefaultGenerator());
+			randomized = poisson.nextDouble();
+			assert (randomized >= 0.) && (randomized <= 1.);
+			return skills.get((int) (randomized * skills.size()));
+		case RANDOM_GENERATOR:
+			int i = RandomHelper.nextIntFromTo(0, skills.size() - 1);
+			return skills.get(i);
+		case NORMAL_DISTRIBUTION:
+			Normal normal = new Normal(0.0, 1.0,
+					cern.jet.random.Normal.makeDefaultGenerator());
+			randomized = normal.nextDouble();
+			assert (randomized >= 0.) && (randomized <= 1.);
+			return skills.get((int) (randomized * skills.size()));
+		case BREIT_WIGNER:
+			BreitWigner bw = new BreitWigner(1.0, 1.0, 1.0,
+					cern.jet.random.BreitWigner.makeDefaultGenerator());
+			randomized = bw.nextDouble();
+			assert (randomized >= 0.) && (randomized <= 1.);
+			return skills.get((int) (randomized * skills.size()));
+		default:
+			break;
 		}
 		return null;
 	}

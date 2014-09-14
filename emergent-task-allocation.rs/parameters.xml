@@ -7,6 +7,9 @@
 	<parameter name="dataSource" displayName="Data Source"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		type="string" defaultValue="FileSoup" values="SocketListener FileSoup Mockup" />
+	<parameter name="planNumber" displayName="Evolutionary Plan No" type="java.lang.Integer"
+		defaultValue="0" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 
 	<parameter name="skillChoiceAlgorithm" displayName="skillChoiceAlgorithm"
 		type="java.lang.String" defaultValue="greedy" isReadOnly="false"
@@ -35,9 +38,6 @@
 		defaultValue="5000" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 
-	<parameter name="location" displayName="Location" type="string"
-		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		defaultValue="Metric" values="Metric Anglossas" />
 	<parameter name="randomSeed" displayName="Default Random Seed"
 		type="int" defaultValue="__NULL__" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
