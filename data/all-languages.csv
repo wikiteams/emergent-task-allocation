@@ -1,26 +1,33 @@
 ABAP,programming
+AGS Script,programming
 ANTLR,programming
+APL,programming
 ASP,programming
+ATS,programming
 ActionScript,programming
 Ada,programming
 Agda,programming
+Alloy,programming  # 'modeling' would be more appropiate
 ApacheConf,markup
 Apex,programming
-AppleScript,programming
+interpreters,unknown/other
 Arc,programming
 Arduino,programming
+AsciiDoc,prose
+AspectJ,programming
 Assembly,programming
 Augeas,programming
 AutoHotkey,programming
 AutoIt,programming
-Awk,programming
+interpreters,unknown/other
 Batchfile,programming
 Befunge,unknown/other
 BlitzBasic,programming
-BlitzMax,unknown/other
+BlitzMax,programming
 Bluespec,programming
 Boo,programming
 Brainfuck,unknown/other
+Brightscript,programming
 Bro,programming
 C,programming
 C#,programming
@@ -32,40 +39,54 @@ CMake,unknown/other
 COBOL,programming
 CSS,unknown/other
 Ceylon,programming
+Chapel,programming
 ChucK,unknown/other
+Cirru,programming
 Clean,programming
 Clojure,programming
-CoffeeScript,programming
+interpreters,unknown/other
 ColdFusion,programming
-Common Lisp,programming
+ColdFusion CFC,programming
+interpreters,unknown/other
+Component Pascal,programming
 Coq,programming
 Cpp-ObjDump,data
+Creole,prose
+Crystal,programming
 Cucumber,unknown/other
-Cuda,unknown/other
+Cuda,programming
+Cycript,programming
 Cython,programming
 D,programming
 D-ObjDump,data
 DM,programming
-DOT,programming
+DOT,data
 Darcs Patch,unknown/other
 Dart,programming
-DCPU-16 ASM,programming
-Delphi,programming
 Diff,unknown/other
+Dogescript,programming
 Dylan,programming
+E,programming
 Ecere Projects,data
 ECL,programming
+Eagle,markup
 Eiffel,programming
 Elixir,programming
 Elm,programming
 Emacs Lisp,programming
+EmberScript,programming
 Erlang,programming
 F#,programming
+FLUX,programming
 FORTRAN,programming
 Factor,programming
 Fancy,programming
 Fantom,programming
 Forth,programming
+Frege,programming
+Game Maker Language,programming
+GAMS,programming
+GAP,programming
 GAS,programming
 GLSL,programming
 Genshi,unknown/other
@@ -73,10 +94,13 @@ Gentoo Ebuild,unknown/other
 Gentoo Eclass,unknown/other
 Gettext Catalog,unknown/other
 Glyph,programming
+Gnuplot,programming
 Go,programming
 Gosu,programming
+Grace,programming
+Grammatical Framework,programming
 Groff,unknown/other
-Groovy,programming
+interpreters,unknown/other
 Groovy Server Pages,unknown/other
 HTML,markup
 HTML+Django,markup
@@ -85,46 +109,66 @@ HTML+PHP,markup
 HTTP,data
 Haml,markup
 Handlebars,markup
+Harbour,programming
 Haskell,programming
 Haxe,programming
+Hy,programming
+IDL,programming
+IGOR Pro,programming
 INI,data
+Inno Setup,unknown/other
 Idris,programming
+Inform 7,programming
 Inno Setup,unknown/other
 IRC log,unknown/other
 Io,programming
 Ioke,programming
+Isabelle,programming
 J,programming
 JSON,data
+JSON5,data
+JSONLD,data
+JSONiq,programming
 Jade,markup
 Java,programming
 Java Server Pages,unknown/other
-JavaScript,programming
+interpreters,unknown/other
 Julia,programming
 KRL,programming
+Kit,markup
 Kotlin,programming
 LFE,programming
 LLVM,unknown/other
+interpreters,unknown/other
+LabVIEW,programming
 Lasso,programming
+Latte,markup
 Less,markup
 LilyPond,unknown/other
+Liquid,markup
 Literate Agda,programming
 Literate CoffeeScript,programming
 Literate Haskell,programming
 LiveScript,programming
 Logos,programming
 Logtalk,programming
-Lua,programming
+LookML,programming
+interpreters,unknown/other
 M,programming
-Makefile,unknown/other
+MTML,markup
+interpreters,unknown/other
 Mako,unknown/other
-Markdown,markup
+Markdown,prose
+Mask,markup
+Mathematica,programming
 Matlab,programming
-Max/MSP,programming
 Max,programming
+MediaWiki,prose
+Mercury,programming
+Mercury,programming
 Mirah,programming
-Modelica,programming
 Monkey,programming
-Moocode,unknown/other
+Moocode,programming
 MoonScript,programming
 Myghty,unknown/other
 NSIS,unknown/other
@@ -132,74 +176,105 @@ Nemerle,programming
 NetLogo,programming
 Nginx,markup
 Nimrod,programming
+Nit,programming
+Nix,programming
 Nu,programming
 NumPy,unknown/other
 OCaml,programming
 ObjDump,data
 Objective-C,programming
+Objective-C++,programming
 Objective-J,programming
 Omgrofl,programming
 Opa,programming
+Opal,programming
 OpenCL,programming
 OpenEdge ABL,programming
+OpenSCAD,programming
+Org,prose
+Ox,programming
 Oxygene,programming
-PHP,programming
+PAWN,programming
+interpreters,unknown/other
+Pan,programming
 Parrot,programming
 Parrot Internal Representation,programming
 Parrot Assembly,programming
 Pascal,programming
-Perl,programming
+interpreters,unknown/other
+Perl6,programming
+PigLatin,programming
 Pike,programming
+Pod,prose
 PogoScript,programming
+PostScript,markup
 PowerShell,programming
 Processing,programming
 Prolog,programming
+Propeller Spin,programming
 Protocol Buffer,markup
 Puppet,programming
 Pure Data,programming
-Python,programming
+PureScript,programming
+interpreters,unknown/other
 Python traceback,data
 QML,markup
-R,programming
+QMake,unknown/other
+interpreters,unknown/other
+RDoc,prose
 REALbasic,programming
 RHTML,markup
+RMarkdown,prose
 Racket,programming
 Ragel in Ruby Host,programming
 Raw token data,unknown/other
 Rebol,programming
+Red,programming
 Redcode,unknown/other
 RobotFramework,programming
 Rouge,programming
-Ruby,programming
+interpreters,unknown/other
 Rust,programming
+SAS,programming
 SCSS,markup
+SQF,programming
 SQL,data
+STON,data
 Sage,programming
 Sass,markup
 Scala,programming
 Scaml,markup
-Scheme,programming
+interpreters,unknown/other
 Scilab,programming
 Self,programming
-Shell,programming
+interpreters,unknown/other
+ShellSession,programming
+Shen,programming
 Slash,programming
+Slim,markup
 Smalltalk,programming
 Smarty,unknown/other
+SourcePawn,programming
 Squirrel,programming
 Standard ML,programming
+Stata,programming
+Stylus,markup
 SuperCollider,programming
+Swift,programming
+SystemVerilog,programming
 TOML,data
 TXL,programming
 Tcl,programming
 Tcsh,programming
 TeX,markup
 Tea,markup
-Textile,markup
+Textile,prose
 Turing,programming
 Twig,markup
 TypeScript,programming
 Unified Parallel C,programming
 UnrealScript,programming
+VCL,programming
 VHDL,programming
 Vala,programming
 Verilog,programming
@@ -212,13 +287,16 @@ XProc,programming
 XQuery,programming
 XS,unknown/other
 XSLT,programming
+Xojo,programming
 Xtend,programming
 YAML,data
+Zephir,programming
+Zimpl,programming
 eC,programming
 edn,data
 fish,programming
 mupad,unknown/other
 nesC,programming
 ooc,programming
-reStructuredText,markup
+reStructuredText,prose
 wisp,programming

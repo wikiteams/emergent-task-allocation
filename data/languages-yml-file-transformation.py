@@ -9,9 +9,9 @@ ltype = None
 
 def write_to_csv(outputter, c, type):
     if (ltype is None):
-        outputter.writerow([c,'unknown/other'])
+        outputter.writerow([c, 'unknown/other'])
     else:
-        outputter.writerow([c,ltype.strip()])
+        outputter.writerow([c, ltype.strip()])
 
 
 with open('all-languages.csv', 'wb') as csvfile:
@@ -27,8 +27,8 @@ with open('all-languages.csv', 'wb') as csvfile:
                 continue
             if (c.startswith('  type:')):
                 ltype = str(c.split(':')[1])
-            if (c.strip().endswith(':') is True) and (c.count('aliases') < 1) and (c.count('extensions') < 1) and (c.count('filenames') < 1):
-                #write_to_csv(outputter, [str(c.strip().replace(':', ''))])
+            if (c.strip().endswith(':') is True) and (c.count('aliases') < 1) \
+               and (c.count('extensions') < 1) and (c.count('filenames') < 1):
                 name = str(c.strip().replace(':', ''))
                 ltype = None
                 how_many = how_many + 1
