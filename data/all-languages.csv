@@ -7,10 +7,10 @@ ATS,programming
 ActionScript,programming
 Ada,programming
 Agda,programming
-Alloy,programming  # 'modeling' would be more appropiate
+Alloy,programming
 ApacheConf,markup
 Apex,programming
-interpreters,unknown/other
+AppleScript,programming
 Arc,programming
 Arduino,programming
 AsciiDoc,prose
@@ -19,7 +19,7 @@ Assembly,programming
 Augeas,programming
 AutoHotkey,programming
 AutoIt,programming
-interpreters,unknown/other
+Awk,programming
 Batchfile,programming
 Befunge,unknown/other
 BlitzBasic,programming
@@ -44,10 +44,10 @@ ChucK,unknown/other
 Cirru,programming
 Clean,programming
 Clojure,programming
-interpreters,unknown/other
+CoffeeScript,programming
 ColdFusion,programming
 ColdFusion CFC,programming
-interpreters,unknown/other
+Common Lisp,programming
 Component Pascal,programming
 Coq,programming
 Cpp-ObjDump,data
@@ -63,6 +63,7 @@ DM,programming
 DOT,data
 Darcs Patch,unknown/other
 Dart,programming
+DCPU-16 ASM,programming
 Delphi,programming
 Diff,unknown/other
 Dogescript,programming
@@ -101,7 +102,7 @@ Gosu,programming
 Grace,programming
 Grammatical Framework,programming
 Groff,unknown/other
-interpreters,unknown/other
+Groovy,programming
 Groovy Server Pages,unknown/other
 HTML,markup
 HTML+Django,markup
@@ -133,14 +134,13 @@ JSONiq,programming
 Jade,markup
 Java,programming
 Java Server Pages,unknown/other
-interpreters,unknown/other
+JavaScript,programming
 Julia,programming
 KRL,programming
 Kit,markup
 Kotlin,programming
 LFE,programming
 LLVM,unknown/other
-interpreters,unknown/other
 LabVIEW,programming
 Lasso,programming
 Latte,markup
@@ -154,20 +154,22 @@ LiveScript,programming
 Logos,programming
 Logtalk,programming
 LookML,programming
-interpreters,unknown/other
+Lua,programming
 M,programming
 MTML,markup
-interpreters,unknown/other
+Makefile,unknown/other
 Mako,unknown/other
 Markdown,prose
 Mask,markup
 Mathematica,programming
 Matlab,programming
 Max,programming
+Max/MSP,programming
 MediaWiki,prose
 Mercury,programming
 Mercury,programming
 Mirah,programming
+Modelica,programming
 Monkey,programming
 Moocode,programming
 MoonScript,programming
@@ -196,13 +198,13 @@ Org,prose
 Ox,programming
 Oxygene,programming
 PAWN,programming
-interpreters,unknown/other
+PHP,programming
 Pan,programming
 Parrot,programming
 Parrot Internal Representation,programming
 Parrot Assembly,programming
 Pascal,programming
-interpreters,unknown/other
+Perl,programming
 Perl6,programming
 PigLatin,programming
 Pike,programming
@@ -217,11 +219,11 @@ Protocol Buffer,markup
 Puppet,programming
 Pure Data,programming
 PureScript,programming
-interpreters,unknown/other
+Python,programming
 Python traceback,data
 QML,markup
 QMake,unknown/other
-interpreters,unknown/other
+R,programming
 RDoc,prose
 REALbasic,programming
 RHTML,markup
@@ -234,7 +236,7 @@ Red,programming
 Redcode,unknown/other
 RobotFramework,programming
 Rouge,programming
-interpreters,unknown/other
+Ruby,programming
 Rust,programming
 SAS,programming
 SCSS,markup
@@ -245,10 +247,10 @@ Sage,programming
 Sass,markup
 Scala,programming
 Scaml,markup
-interpreters,unknown/other
+Scheme,programming
 Scilab,programming
 Self,programming
-interpreters,unknown/other
+Shell,programming
 ShellSession,programming
 Shen,programming
 Slash,programming
