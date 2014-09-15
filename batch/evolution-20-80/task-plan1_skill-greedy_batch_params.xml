@@ -5,7 +5,7 @@
 	<parameter name="skillChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="greedy" />
 	<parameter name="allowMultiMembership" type="constant" constant_type="java.lang.Boolean" value="true" />
 	<parameter name="deployedTasksLeave" type="constant" constant_type="java.lang.Boolean" value="true" />
-	<parameter name="strategyDistribution" type="constant" constant_type="int" value="0" />
+	<parameter name="strategyDistribution" type="constant" constant_type="int" value="1" />
 	<parameter name="taskChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="heterophyly_experience" />
 	<parameter name="agentCount" type="constant" constant_type="int" value="50" />
 	<parameter name="numSteps" type="constant" constant_type="int" value="5000" />

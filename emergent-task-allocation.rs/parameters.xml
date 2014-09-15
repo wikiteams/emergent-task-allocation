@@ -31,7 +31,7 @@
 		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 
-	<parameter name="strategyDistribution" displayName="strategyDistribution"
+	<parameter name="strategyDistribution" displayName="Evolution enabled/disabled"
 		type="java.lang.Integer" defaultValue="0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="numSteps" displayName="numSteps" type="java.lang.Integer"
