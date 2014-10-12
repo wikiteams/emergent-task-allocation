@@ -63,6 +63,10 @@ Next, this collection is sorted by the created_at field which is a datetime. It 
 
 ### Strategies
 
+![Types of strategies](https://dl.dropboxusercontent.com/u/103068909/types-of-strategies.png "Types of strategies")
+
+There are basicly 3 types of strategies: central planner, emergent strategies, and a random choice. We want to answer a question whether central assignment strategy is better than emergent strategy, what is the best evolutionary stable combination of strategies for a GitHub environment, and finally verify it's effectivnes compared to random choice.
+
 #### Central planner
 
 Changes since previous version modify little central planner, especially it's blocking mechanism
