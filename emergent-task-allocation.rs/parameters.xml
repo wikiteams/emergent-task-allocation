@@ -6,7 +6,7 @@
 		values="Normal Validation MultipleValidation Normal+Validation Stress" />
 	<parameter name="dataSource" displayName="Data Source"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		type="string" defaultValue="FileSoup" values="SocketListener FileSoup Mockup" />
+		type="string" defaultValue="FileSoup" values="SocketListener FileSoup Mockup AgentTestUniverse" />
 	<parameter name="planNumber" displayName="Evolutionary Plan No" type="java.lang.Integer"
 		defaultValue="0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />

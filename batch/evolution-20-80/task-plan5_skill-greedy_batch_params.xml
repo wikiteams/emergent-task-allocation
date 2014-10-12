@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <sweep runs="100">
-	<parameter name="planNumber" type="constant" constant_type="int" value="3" />
+	<parameter name="planNumber" type="constant" constant_type="int" value="5" />
 	<parameter name="dataSource" type="constant" constant_type="java.lang.String" value="FileSoup" />
 	<parameter name="randomSeed" type="constant" constant_type="int" value="985924735" />
-	<parameter name="skillChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="proportional" />
+	<parameter name="skillChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="greedy" />
 	<parameter name="allowMultiMembership" type="constant" constant_type="java.lang.Boolean" value="true" />
 	<parameter name="deployedTasksLeave" type="constant" constant_type="java.lang.Boolean" value="true" />
 	<parameter name="strategyDistribution" type="constant" constant_type="int" value="1" />

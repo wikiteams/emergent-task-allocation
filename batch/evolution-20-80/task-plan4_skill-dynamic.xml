@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <sweep runs="100">
-	<parameter name="planNumber" type="constant" constant_type="int" value="3" />
+	<parameter name="planNumber" type="constant" constant_type="int" value="4" />
 	<parameter name="dataSource" type="constant" constant_type="java.lang.String" value="FileSoup" />
 	<parameter name="randomSeed" type="constant" constant_type="int" value="985924735" />
-	<parameter name="skillChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="proportional" />
+	<parameter name="skillChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="choice" />
 	<parameter name="allowMultiMembership" type="constant" constant_type="java.lang.Boolean" value="true" />
 	<parameter name="deployedTasksLeave" type="constant" constant_type="java.lang.Boolean" value="true" />
 	<parameter name="strategyDistribution" type="constant" constant_type="int" value="1" />
@@ -25,7 +25,7 @@
 	<parameter name="skillFactoryRandomMethod" type="constant" constant_type="java.lang.String" value="normal_distribution" />
 	<parameter name="modelType" type="constant" constant_type="java.lang.String" value="Normal" />
 	<parameter name="taskMinMaxChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="none" />
-	<parameter name="experienceDecay" type="constant" constant_type="java.lang.Boolean" value="true" />
+	<parameter name="experienceDecay" type="constant" constant_type="java.lang.Boolean" value="false" />
 	<parameter name="granularity" type="constant" constant_type="java.lang.Boolean" value="true" />
 	<parameter name="granularityObstinacy" type="constant" constant_type="int" value="20" />
 	<parameter name="granularityType" type="constant" constant_type="java.lang.String" value="DISTRIBUTED" />
