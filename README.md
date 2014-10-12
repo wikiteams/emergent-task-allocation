@@ -63,6 +63,12 @@ Next, this collection is sorted by the created_at field which is a datetime. It 
 
 ### Strategies
 
+![Types of strategies](https://dl.dropboxusercontent.com/u/103068909/types-of-strategies.png "Types of strategies")
+
+There are basically 3 types of strategies: central planner, emergent strategies, and a random choice. We want to answer a question whether central assignment strategy is better than emergent strategy, what is the best evolutionary stable combination of strategies for a GitHub environment, and finally verify it's effectiveness compared to random choice.
+
+In previous version of the simulation central planner was excluded from the evolutionary model. We introduce a hybrid model, where central planer can take part in the evolutionary SUS choice simply be reducing it's work to agents willing to use the central assignment method.
+
 #### Central planner
 
 Changes since previous version modify little central planner, especially it's blocking mechanism
