@@ -61,6 +61,10 @@ Next, this collection is sorted by the created_at field which is a datetime. It 
 
 #### Saving results to flat database
 
+### Simulator workflow
+
+![Modes of work](https://dl.dropboxusercontent.com/u/103068909/modele-symulator.png "Modes of work")
+
 ### Strategies
 
 ![Types of strategies](https://dl.dropboxusercontent.com/u/103068909/types-of-strategies.png "Types of strategies")
@@ -75,8 +79,12 @@ Changes since previous version modify little central planner, especially it's bl
 
 #### Preferential strategy
 
-First version of preferential strategy was implemented to analyze general advancment in a task and choose the most advanced (deterministic action because the most advanced tasked got most attention before). Current version of preferential strategy simply checks how many times got workers to work on them.
+First version of preferential strategy was implemented to analyse general advancement in a task and choose the most advanced (deterministic action because the most advanced tasked got most attention before). Current version of preferential strategy simply checks how many times got workers to work on them.
 
 #### Stochastic universal sampling
 
 SUS method
+
+### Validation model
+
+Validation model under construction...
