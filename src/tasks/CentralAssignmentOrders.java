@@ -3,6 +3,13 @@ package tasks;
 import collaboration.Task;
 import collaboration.TaskInternals;
 
+/**
+ * Class represents orders on which Task/Skill to work
+ * as planner by central assignment strategy (central planer)
+ * 
+ * @author Oskar Jarczyk
+ * @since 1.0
+ */
 public class CentralAssignmentOrders {
 	
 	private Task chosenTask;

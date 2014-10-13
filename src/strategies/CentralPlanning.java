@@ -25,16 +25,26 @@ import utils.LaunchStatistics;
  * 
  * @author Oskar Jarczyk
  * @since 1.3
- * @version 1.4.1
+ * @version 2.0
  */
 public class CentralPlanning {
+
+	private static CentralPlanning singletonInstance;
 
 	private List<Agent> bussy;
 	private static final double zero = 0;
 
-	private void say(String s) {
-		PjiitOutputter.say(s);
+	// SingletonExample prevents any other class from instantiating
+	private CentralPlanning() {
 	}
+	
+    // Providing Global point of access
+    public static CentralPlanning getSingletonInstance() {
+        if (null == singletonInstance) {
+            singletonInstance = new CentralPlanning();
+        }
+        return singletonInstance;
+    }
 
 	public void zeroAgentsOrders(List<Agent> listAgent) {
 		say("Zeroing central plan !");
@@ -85,14 +95,15 @@ public class CentralPlanning {
 
 			}
 			if (singleChosen != null)
-				sortedMap.put(singleChosen.getWorkLeft()
-					- ((++ensureDuplicatesFactor) / (10 * 6)), singleChosen);
+				sortedMap
+						.put(singleChosen.getWorkLeft()
+								- ((++ensureDuplicatesFactor) / (10 * 6)),
+								singleChosen);
 		}
 
 		// Iterate mainIterationCount times
 		// if there are less tasks than agent, iterate taskCount times
-		int mainIterationCount = sortedMap.size() < 
-				LaunchStatistics.singleton.agentCount ? sortedMap
+		int mainIterationCount = sortedMap.size() < LaunchStatistics.singleton.agentCount ? sortedMap
 				.size() : listAgent.size();
 
 		Object[] sortedArray = sortedMap.values().toArray();
@@ -121,7 +132,8 @@ public class CentralPlanning {
 						.getSkillName()) != null ? agent
 						.getAgentInternals(skill.getSkillName())
 						.getExperience().getDelta() : 0;
-				// zero w przypadku gdy agent nie ma w ogole doswiadczenia w tym tasku!
+				// zero w przypadku gdy agent nie ma w ogole doswiadczenia w tym
+				// tasku!
 				if (local_delta > max_delta) {
 					max_delta = local_delta;
 					chosenAgent = agent;
@@ -144,6 +156,10 @@ public class CentralPlanning {
 
 			bussy.add(chosenAgent);
 		}
+	}
+
+	private void say(String s) {
+		PjiitOutputter.say(s);
 	}
 
 }

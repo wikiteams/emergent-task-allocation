@@ -10,10 +10,11 @@ import java.util.List;
 import strategies.Strategy.TaskChoice;
 
 /**
- * Central-assignment strategy additional methods
+ * Central assignment strategy additional methods
  * 
  * @author Oskar Jarczyk
- * @version 1.4
+ * @since 1.4
+ * @version 2.0
  */
 public class CentralAssignment {
 

@@ -74,7 +74,7 @@ import constants.ModelFactory;
  * @category Agent-organized Social Simulations
  * @since 1.0
  * @author Oskar Jarczyk (since 1.0+), Blazej Gruszka (1.3+)
- * @see 1) GitHub markdown 2) "On the effectiveness of emergent task allocation"
+ * @see 1) GitHub markdown 2) "On The Effectiveness of Emergent Task Allocation"
  */
 public class CollaborationBuilder implements ContextBuilder<Object> {
 
@@ -98,7 +98,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			RandomHelper.setSeed(SimulationParameters.randomSeed);
 			RandomHelper.init();
 			clearStaticHeap();
-			say("CollaborationBuilder constructor loaded");
+			say("RandomHelper initialized and Static Heap cleared..");
 		} catch (IOException e) {
 			e.printStackTrace();
 			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
@@ -106,6 +106,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say(exc.toString());
 			exc.printStackTrace();
 			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS);
+		} finally {
+			say("CollaborationBuilder constructor finished execution");
 		}
 	}
 
@@ -122,7 +124,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("Starting simulation with model: " + modelFactory.toString());
 			if (modelFactory.getFunctionality().isValidation())
 				initializeValidationLogger();
-			
+
 			strategyDistribution = new StrategyDistribution();
 			// initialize skill pools
 			say("SkillFactory parsing skills from the CSV file...");
@@ -147,9 +149,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("Instatiated AgentSkillsPool");
 			TaskSkillsPool.instantiate(dsp.getTaskSkillDataset());
 			say("Instatied TaskSkillsPool");
-			
+
 			strategyDistribution
 					.setType(SimulationParameters.strategyDistribution);
+			assert ((strategyDistribution.getType() == StrategyDistribution.SINGULAR) || (strategyDistribution
+					.getType() == StrategyDistribution.MULTIPLE));
+
 			strategyDistribution.setSkillChoice(modelFactory,
 					SimulationParameters.skillChoiceAlgorithm);
 			strategyDistribution.setTaskChoice(modelFactory,
@@ -484,27 +489,29 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public void centralPlanning() {
 		say("CentralPlanning scheduled method launched, listAgent.size(): "
 				+ listAgent.size() + " taskPool.size(): " + taskPool.getCount());
-		// Zeroing agents orders
+		say("Zeroing agents orders");
 		centralPlanningHq.zeroAgentsOrders(listAgent);
 		centralPlanningHq.centralPlanningCalc(listAgent, taskPool);
 	}
 
 	/**
-	 * Here I need to schedule method manually because i don't know if central
-	 * planer is enabled for the simulation whether not.
+	 * Here I need to schedule method manually because. In first version of
+	 * simulator the Central assignment strategy was non-evolutionary but now in
+	 * hybrid model it can take work for a subset of Agents as well.
 	 */
 	public void buildCentralPlanner() {
-		say("buildCentralPlanner lunched !");
+		say("Method buildCentralPlanner lunched."
+				+ "Checking now if central planer is needed at all.");
 		if (strategyDistribution.getTaskChoice().equals("central")) {
-			centralPlanningHq = new CentralPlanning();
-
-			say("Central planner initiating.....");
+			say("Creating a central planner instance.");
+			centralPlanningHq = CentralPlanning.getSingletonInstance();
+			say("Central planner is initiating schedule.");
 			ISchedule schedule = RunEnvironment.getInstance()
 					.getCurrentSchedule();
 			ScheduleParameters params = ScheduleParameters.createRepeating(1,
 					1, ScheduleParameters.FIRST_PRIORITY);
 			schedule.schedule(params, this, "centralPlanning");
-			say("Central planner initiated and awaiting for call !");
+			say("Central planner initiated and awaiting for call.");
 		}
 	}
 

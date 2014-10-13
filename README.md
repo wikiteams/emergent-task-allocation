@@ -71,7 +71,7 @@ In previous version of the simulation central planner was excluded from the evol
 
 #### Central planner
 
-Changes since previous version modify little central planner, especially it's blocking mechanism
+Changes since previous version modify little central planner, especially it's blocking mechanism. Creating a perfect central planner which won't discriminate similar workers is a difficult problem from the category of task scheduling science. We propose a simple 2.0 version of an imho quite simple straightforward algorithm:
 
 #### Preferential strategy
 
