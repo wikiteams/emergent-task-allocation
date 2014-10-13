@@ -88,7 +88,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private TaskPool taskPool = new TaskPool();
 
 	private List<Agent> listAgent;
-	private CentralPlanning centralPlanningHq;
+	private CentralPlanning centralPlanner;
 
 	private boolean alreadyFlushed = false;
 
@@ -495,8 +495,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		say("CentralPlanning scheduled method launched, listAgent.size(): "
 				+ listAgent.size() + " taskPool.size(): " + taskPool.getCount());
 		say("Zeroing agents orders");
-		centralPlanningHq.zeroAgentsOrders(listAgent);
-		centralPlanningHq.centralPlanningCalc(listAgent, taskPool);
+		centralPlanner.zeroAgentsOrders(listAgent);
+		centralPlanner.centralPlanningCalc(listAgent, taskPool);
 	}
 
 	/**
@@ -509,7 +509,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ "Checking now if central planer is needed at all.");
 		if (strategyDistribution.getTaskChoice().equals("central")) {
 			say("Creating a central planner instance.");
-			centralPlanningHq = CentralPlanning.getSingletonInstance();
+			centralPlanner = CentralPlanning.getSingletonInstance();
 			say("Central planner is initiating schedule.");
 			ISchedule schedule = RunEnvironment.getInstance()
 					.getCurrentSchedule();
