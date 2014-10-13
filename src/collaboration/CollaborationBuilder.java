@@ -486,6 +486,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		EndRunLogger.finalMessage(s);
 	}
 
+	/**
+	 * This is the method scheduled (if at least 1 agent uses central planner)
+	 * to execute every tick to make for giving orders, hence zeroing the
+	 * orders first (clearing previous orders) and than making the math 
+	 */
 	public void centralPlanning() {
 		say("CentralPlanning scheduled method launched, listAgent.size(): "
 				+ listAgent.size() + " taskPool.size(): " + taskPool.getCount());

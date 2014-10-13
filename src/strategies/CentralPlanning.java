@@ -31,7 +31,9 @@ public class CentralPlanning {
 
 	private static CentralPlanning singletonInstance;
 
-	private List<Agent> bussy;
+	// private List<Agent> bussy;
+	// this is deprecated, in 2.0 version of the algorithm we don't use
+	// blocking anymore
 	private static final double zero = 0;
 
 	// SingletonExample prevents any other class from instantiating
@@ -47,12 +49,10 @@ public class CentralPlanning {
     }
 
 	public void zeroAgentsOrders(List<Agent> listAgent) {
-		say("Zeroing central plan !");
-
+		say("Zeroing central planer orders for " + listAgent.size() + "agents");
 		for (Agent agent : listAgent) {
 			agent.setCentralAssignmentOrders(null);
 		}
-
 		bussy = bussy == null ? new ArrayList<Agent>() : bussy;
 		bussy.clear();
 	}
