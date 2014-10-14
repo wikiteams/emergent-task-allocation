@@ -87,7 +87,9 @@ First version of preferential strategy was implemented to analyse general advanc
 
 #### Stochastic universal sampling
 
-SUS method
+After every 10 ticks of simulation every agent get a new task-choice strategy according to the implemented well-known
+genetic algorithm called Stochastic Universal Sampling (SUS) method. SUS is a fitness proportionate selection method which uses a single random value to sample all solutions by choosing them at evenly spaced intervals. This gives weaker members of the population (according to the fitness function) a chance to be chosen.
+Utility function considers lowest experience in a single skill plus 1/20 part of an average experience in all the skills.
 
 ### Validation model
 
