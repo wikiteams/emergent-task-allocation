@@ -81,6 +81,10 @@ Changes since previous version modify little central planner, especially it's bl
 
 First version of preferential strategy was implemented to analyse general advancement in a task and choose the most advanced (deterministic action because the most advanced tasked got most attention before). Current version of preferential strategy simply checks how many times got workers to work on them.
 
+### Evolutionary model
+
+![Evolution plans](https://dl.dropboxusercontent.com/u/103068909/evolution-plans-sus.png "Evolution plans")
+
 #### Stochastic universal sampling
 
 SUS method
