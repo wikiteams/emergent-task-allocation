@@ -65,6 +65,10 @@ Next, this collection is sorted by the created_at field which is a datetime. It 
 
 ![Modes of work](https://dl.dropboxusercontent.com/u/103068909/modele-symulator.png "Modes of work")
 
+### Simulation actors
+
+Naturally, in the first version of the simulator there was  constant number of agents and tasks, it was set in a scenario parameter file. The ratio of *agent count* to *task count* was defined *a priori* through analysing GitHub data (clusters of 11 most active languages and their top repos). Now we simplify this reasoning. Task are incoming as they emerged on GitHub timeline, but what’s most important, we can answer the question of *how many agents it take to close a task* in *particular amount of time*.
+
 ### Strategies
 
 ![Types of strategies](https://dl.dropboxusercontent.com/u/103068909/types-of-strategies.png "Types of strategies")
@@ -83,9 +87,15 @@ First version of preferential strategy was implemented to analyse general advanc
 
 ### Evolutionary model
 
+#### Standard configurations with Pareto principle
+
 ![Evolution plans](https://dl.dropboxusercontent.com/u/103068909/evolution-plans-sus.png "Evolution plans")
 
-#### Stochastic universal sampling
+#### Hybrid model
+
+![Additional evolution plans](https://dl.dropboxusercontent.com/u/103068909/evolution-plans-sus-h.png "Additional evolution plans")
+
+#### Stochastic universal sampling (SUS)
 
 After every 10 ticks of simulation every agent get a new task-choice strategy according to the implemented well-known
 genetic algorithm called Stochastic Universal Sampling (SUS) method. SUS is a fitness proportionate selection method which uses a single random value to sample all solutions by choosing them at evenly spaced intervals. This gives weaker members of the population (according to the fitness function) a chance to be chosen.
