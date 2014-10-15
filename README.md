@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/wikiteams/emergent-task-allocation.png?label=ready&title=Ready)](https://waffle.io/wikiteams/emergent-task-allocation)
 emergent-task-allocation
 ========================
 
