@@ -9,6 +9,8 @@ Virtual teams of programmers are a popular form of collaboration both in Open So
 
 ### Data
 
+![Possible data sources](https://dl.dropboxusercontent.com/u/103068909/data-sources.png "Possible data sources")
+
 #### Data source
 
 Datasource is the [GitHub Archive](https://www.githubarchive.org), which was downloaded locally to disk and than added to a [MongoDB](http://www.mongodb.org) database. Data is dated from February 2011 to April 2014. 
