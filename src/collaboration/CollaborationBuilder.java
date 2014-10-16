@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import logger.EndRunLogger;
 import logger.PjiitLogger;
@@ -21,7 +22,6 @@ import logger.ValidationOutputter;
 import org.apache.log4j.LogManager;
 
 import repast.simphony.context.Context;
-import repast.simphony.context.DefaultContext;
 import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.environment.RunState;
@@ -42,7 +42,6 @@ import test.TaskTestUniverse;
 import utils.DescribeUniverseBulkLoad;
 import utils.LaunchStatistics;
 import utils.NamesGenerator;
-import EDU.oswego.cs.dl.util.concurrent.CopyOnWriteArrayList;
 import argonauts.PersistAdvancement;
 import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
@@ -70,7 +69,7 @@ import constants.ModelFactory;
  * 
  * Project uses ini4j library which is licensed under Apache License.
  * 
- * @version 2.0 "Trenzalore"
+ * @version 2.0.1 "Mondas"
  * @category Agent-organized Social Simulations
  * @since 1.0
  * @author Oskar Jarczyk (since 1.0+), Blazej Gruszka (1.3+)
