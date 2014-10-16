@@ -24,7 +24,7 @@ public class Strategy {
 	public enum TaskChoice {
 		/**
 		 * Homofilia - milosc do tego samego - szukamy takiego taska maksymalnie 
-		 * podobnego nad ktorym ju¿ pracowalismy. Jezeli jeszcze nie pracowalismy
+		 * podobnego nad ktorym juz pracowalismy. Jezeli jeszcze nie pracowalismy
 		 * nad zadnym to szukamy pierwszego mozliwie odpowiadajacego naszej
 		 * macierzy umiejetnosci. Wtedy budowanie doswiadczenia bedzie w miare
 		 * odpowiadalo elementom w naszej macierzy. I agent caly czas stara sie
@@ -59,7 +59,7 @@ public class Strategy {
 		 * sprawdza gdzie pracuje agent B, i pracuje nad tym samym. Jezeli podobny do niego
 		 * uzytkownik jeszcze nad niczym nie pracowal, to sprawdza co on potrafi
 		 * najbardziej (to tez nasz skill - agenta A) i pracuje nad takim taskiem
-		 * co który owego skilla wymaga
+		 * co ktory owego skilla wymaga
 		 */
 		COMPARISION,
 		/**
@@ -72,7 +72,7 @@ public class Strategy {
 		 */
 		ARG_MIN_MAX,
 		/**
-		 * Celem jest wybór najbardziej zaawansowanego taska
+		 * Celem jest wybor najbardziej zaawansowanego taska
 		 * liczymy to w ten sposob - avg(sigma(W/G)) czyli 
 		 * srednia arytmetyczna zaawansowania wszystkich skilli
 		 */
@@ -112,7 +112,7 @@ public class Strategy {
 		 */
 	    PROPORTIONAL_TIME_DIVISION,
 	    /**
-	     * Pracuj dla wybranego Sn. Je¿eli postepy puste w kazdym ze skilli w tasku
+	     * Pracuj dla wybranego Sn. Jezeli postepy puste w kazdym ze skilli w tasku
 	     * to wybierz losowy. W przeciwnym razie pracuj tylko nad tym taskiem, ktory
 	     * jest najbardziej zaczety (najmniej mu do zamkniecia)
 	     */
