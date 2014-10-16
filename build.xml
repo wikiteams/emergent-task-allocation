@@ -36,7 +36,7 @@
     </target>
     
     <target name="clean-build" depends="clean,jar"/>
-
+    <target name="rebuild-all" depends="clean,compile,jar"/>
     <target name="main" depends="clean,run"/>
 
 </project>
