@@ -1,4 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/wikiteams/emergent-task-allocation.png?label=ready&title=Ready)](https://waffle.io/wikiteams/emergent-task-allocation)
+[![Build Status](https://drone.io/github.com/wikiteams/emergent-task-allocation/status.png)](https://drone.io/github.com/wikiteams/emergent-task-allocation/latest)[![Stories in Ready](https://badge.waffle.io/wikiteams/emergent-task-allocation.png?label=ready&title=Ready)](https://waffle.io/wikiteams/emergent-task-allocation)
 emergent-task-allocation
 ========================
 
