@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
-	<parameter name="modelType" displayName="Model Type"
+	<parameter name="modelType" displayName="Model type"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		type="string" defaultValue="Normal"
 		values="Normal Validation MultipleValidation Normal+Validation Stress" />
-	<parameter name="dataSource" displayName="Data Source"
+	<parameter name="dataSource" displayName="Data source"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		type="string" defaultValue="FileSoup" values="SocketListener FileSoup Mockup AgentTestUniverse" />
-	<parameter name="planNumber" displayName="Evolutionary Plan No" type="java.lang.Integer"
+	<parameter name="planNumber" displayName="Evolutionary plan no." type="java.lang.Integer"
 		defaultValue="0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 
