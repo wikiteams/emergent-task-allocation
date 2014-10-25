@@ -1,12 +1,13 @@
-[![Build Status](https://drone.io/github.com/wikiteams/emergent-task-allocation/status.png)](https://drone.io/github.com/wikiteams/emergent-task-allocation/latest)[![Stories in Ready](https://badge.waffle.io/wikiteams/emergent-task-allocation.png?label=ready&title=Ready)](https://waffle.io/wikiteams/emergent-task-allocation)
 emergent-task-allocation
 ========================
+
+[![Build Status](https://drone.io/github.com/wikiteams/emergent-task-allocation/status.png)](https://drone.io/github.com/wikiteams/emergent-task-allocation/latest) [![Stories in Ready](https://badge.waffle.io/wikiteams/emergent-task-allocation.png?label=ready&title=Ready)](https://waffle.io/wikiteams/emergent-task-allocation)
 
 Simulator of team emergence in collaborative environment - version 2.0
 
 ### Introduction
 
-Virtual teams of programmers are a popular form of collaboration both in Open Source, and commercial software projects. In OSS (Open Source Software) projects, programmers make their own decision which project to join, and, therefore, the process of task allocation among the project members is emergent. In this simulation, we attempt to simulate such a process based on available data from GitHub.
+Virtual teams of programmers are a popular form of collaboration both in Open Source, and commercial software projects. In OSS (Open Source Software) projects, programmers make their own decision which project to join, and, therefore, the process of task allocation among the project members is emergent. In this simulation, we attempt to simulate such a process based on available data from GitHub. In Repast Simphony we simulate work done by programmers on tasks as they appeared through GitHub timeline.
 
 ### Data
 
