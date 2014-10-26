@@ -70,9 +70,15 @@ In our university repositories we have a document database holding circa 172 mil
 
 #### Querying MongoDB
 
-Because structure of a JSON with type PullRequestEvent changes during GH lifetime, we filter solid most often occuring structure of documents, which will always have following parameters: *repository.url*, *repository.language*, and *number of commits*. This dataset is later saved to a seperate MongoDB collection to make for easier extraction.
+Because structure of a JSON with type PullRequestEvent changes during GH lifetime, we filter solid most often occuring structure of documents, which will always have following parameters: *repository.url*, *repository.language*, *lines deleted*, *lines added*, *no of files changed*, *no of comments* and *number of commits*. This dataset is later saved to a seperate MongoDB collection to make for easier extraction.
 
 ![DB QL commands](https://dl.dropboxusercontent.com/u/103068909/komendy_dbql.png "DB QL commands")
+
+It is possible to retrieve sample data with below command
+
+```sql
+db.pullrequests.find().limit(5).pretty()
+```
 
 #### Saving results to flat database
 
