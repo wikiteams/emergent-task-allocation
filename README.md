@@ -20,7 +20,17 @@ Datasource is the [GitHub Archive](https://www.githubarchive.org), which was dow
 
 #### Subsetting data for simulation
 
-In the search of a best type of data (applicable to analysing activity in GitHub repositories) we considered PushEvents and PullRequestEvents. There is no commit event in GitHub but PushEvent consists of multiple commits. A good entity should persists bellow attributes: **task** (repo) id, **programming language**, and **work units**. We choose PullRequestEvents because they match most the mentioned requirements and furthermore, they follow a typical GitHub workflow, where a pull request must be created to integrated changes from other users. Sample PullRequestEvent looks like below:
+In the search of a best type of data (applicable to analysing activity in GitHub repositories) we considered PushEvents and PullRequestEvents. There is no commit event in GitHub but PushEvent consists of multiple commits. A good entity should persists bellow attributes: **task** (repo) id, **programming language**, and **work units**. 
+
+#### Perils of mining GitHub
+
+From the "The Promises and Perils of Mining GitHub" (Kalliamvakou et.al., 2014) we read that "Only a fraction of projects use pull requests. And of those that use them, their use is very skewed. (Peril VI)". "Of the 2.6 million projects that represent actual collaborative projects (at least 2 committers) only 268,853 (10%) used the pull request model at least once to incorporate commits; the remaining 2.4 M projects would have used GitHub in a shared repository model exclusively (with no incoming pull requests) where all developers are granted commit access." Thats why we present 2 types of collaborative setttings for the dataset creation.
+
+#### Commit rights
+
+#### Fork-Pull model
+
+We choose PullRequestEvents because they match most the mentioned requirements and furthermore, they follow a typical GitHub workflow, where a pull request must be created to integrated changes from other users. Sample PullRequestEvent looks like below:
 
 ```JSON
 {
