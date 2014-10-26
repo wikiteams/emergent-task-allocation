@@ -3,11 +3,12 @@ emergent-task-allocation
 
 [![Build Status](https://drone.io/github.com/wikiteams/emergent-task-allocation/status.png)](https://drone.io/github.com/wikiteams/emergent-task-allocation/latest) [![Stories in Ready](https://badge.waffle.io/wikiteams/emergent-task-allocation.png?label=ready&title=Ready)](https://waffle.io/wikiteams/emergent-task-allocation)
 
-Simulator of team emergence in collaborative environment - version 2.0
+**Simulator of team emergence in collaborative environment - _version 2.0_**
 
 ### Introduction
 
-Virtual teams of programmers are a popular form of collaboration both in Open Source, and commercial software projects. In OSS (Open Source Software) projects, programmers make their own decision which project to join, and, therefore, the process of task allocation among the project members is emergent. In this simulation, we attempt to simulate such a process based on available data from GitHub. In Repast Simphony we simulate work done by programmers on tasks as they appeared through GitHub timeline.
+This project is an improvment of a simulation described in paper "On the Effectiveness of Emergent Task Allocation of
+Virtual Programmer Teams" (Jarczyk et.al., 2014), it's results are intended to be presented in a journal on social informatics / computing. Virtual teams of programmers are a popular form of collaboration both in Open Source, and commercial software projects. In OSS (Open Source Software) projects, programmers make their own decision which project to join, and, therefore, the process of task allocation among the project members is emergent. In this simulation, we attempt to simulate such a process based on available data from GitHub. In Repast Simphony we simulate work done by programmers on tasks as they appeared through GitHub timeline.
 
 ### Data
 
@@ -61,7 +62,17 @@ In the search of a best type of data (applicable to analysing activity in GitHub
 
 Next, this collection is sorted by the created_at field which is a datetime. It means that we make a GitHub life timeline. After we encounter a repository, we iterate through all of its PullRequest events to count number of changes per a language. This gives us below structure: D1: T1:R1{Java 50/250} ; T2:R1{Obj-C 20/2000} , D2: T1:R2{C 1/100}
 
+#### MongoDB database
+
+In our university repositories we have a document database holding circa 172 milion events which occured on GitHub during previous years.
+
+![Database of GH events](https://dl.dropboxusercontent.com/u/103068909/github_events_db.png "Database of GH events")
+
 #### Querying MongoDB
+
+Because structure of a JSON with type PullRequestEvent changes during GH lifetime, we filter solid most often occuring structure of documents, which will always have following parameters: *repository.url*, *repository.language*, and *number of commits*. This dataset is later saved to a seperate MongoDB collection to make for easier extraction.
+
+![DB QL commands](https://dl.dropboxusercontent.com/u/103068909/komendy_dbql.png "DB QL commands")
 
 #### Saving results to flat database
 
