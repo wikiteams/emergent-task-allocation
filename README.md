@@ -7,10 +7,12 @@ emergent-task-allocation
 
 ### Introduction
 
-This project is an improvment of a simulation described in paper "On the Effectiveness of Emergent Task Allocation of
-Virtual Programmer Teams" (Jarczyk et.al., 2014), it's results are intended to be presented in a journal on social informatics / computing. Virtual teams of programmers are a popular form of collaboration both in Open Source, and commercial software projects. In OSS (Open Source Software) projects, programmers make their own decision which project to join, and, therefore, the process of task allocation among the project members is emergent. In this simulation, we attempt to simulate such a process based on available data from GitHub. In Repast Simphony we simulate work done by programmers on tasks as they appeared through GitHub timeline.
+This project is an improvment of a simulation described in paper _"On the Effectiveness of Emergent Task Allocation of
+Virtual Programmer Teams"_ (Jarczyk et.al., 2014), it's results are intended to be presented in a journal on social informatics and computing. Virtual teams of programmers are a popular form of collaboration both in Open Source, and commercial software projects. In OSS (_Open-source software_) projects, programmers make their own decision which project to join, and, therefore, the process of task allocation among the project members is emergent. In this simulation, we attempt to simulate such a process based on available data from GitHub. In Repast Simphony we simulate work done by programmers on tasks as they appeared through GitHub timeline.
 
 ### Data
+
+There are 4 possible inputs for the simulator. The way of input is defined in parameter set once. First is an open network socket which accepts tasks presented as JSON objects. Second, there is a possibility of reading data (formated as JSON) from files located in /data directory. Optionally, we can choose to query and get raw data from sqlite database. Third possibility is using dataset as described in previous version of the simulator. There is also possibility of using small test data - for debugging purposes only.
 
 ![Possible data sources](https://dl.dropboxusercontent.com/u/103068909/data-sources.png "Possible data sources")
 
