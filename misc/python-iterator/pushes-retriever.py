@@ -8,7 +8,7 @@ from blist import sortedset
 sqlconn = sqlite3.connect('socbase.db')
 
 sqlconn.execute("drop table if exists workers")
-sqlconn.execute("create table %s (%s text, %s text, %s text, %s number, %s number)" % ("workers", "time", "taskid", "language", "workdone", "workleft"))
+sqlconn.execute("create table %s (%s text, %s text, %s text, %s number, %s number)" % ("workers", "time", "taskid", "language", "workdone", "workrequired"))
 
 client = MongoClient('127.0.0.1')
 database = client.wikiteams
@@ -21,31 +21,38 @@ tasks = dict()
 
 class Task:
 
-    repourl = None
-    language = None
-    workDone = None
-    workLeft = None
+    # repourl = None
+    # the language bias is highly skewed which means that
+    # language identifaction bearly changes during repo lifetime
+    # yet, make it a list to persist many languages at once
+    # socdata = dict()  # persisting (workdone, workleft)
+    #workDone = None
+    #workLeft = None
 
     def __init__(self, repourl, language, workDone):
         self.repourl = repourl
-        self.language = language
-        self.workDone = workDone
-        self.workLeft = workDone
+        self.socdata = dict()
+        self.socdata[language] = {"workdone": workDone, "workleft": workDone+1}
+        #self.workDone = workDone
+        #self.workLeft = workDone
 
     def setRepoUrl(self, repourl):
         self.repourl = repourl
 
-    def setLanguage(self, language):
-        self.language = language
+    def getSocData(self):
+        return self.socdata
 
-    def setWorkDone(self, workDone):
-        self.workDone = workDone
+    def setWorkDone(self, language, workDone):
+        self.socdata[language]["workdone"] = workDone
 
-    def setWorkLeft(self, workLeft):
-        self.workLeft = workLeft
+    def setWorkLeft(self, language, workLeft):
+        self.socdata[language]["workleft"] = workLeft
 
-    def incWorkLeft(self, workLeft):
-        self.workLeft += workLeft
+    def incWorkLeft(self, language, workLeft):
+        if language in self.socdata:
+            self.socdata[language]["workleft"] += workLeft
+        else:
+            self.socdata[language] = {"workdone": workLeft, "workleft": workLeft+1}
 
 
 for push in collection.find():
@@ -74,27 +81,27 @@ for push in collection.find():
 
     # print push
 
-    if unixtime in tasks:
+    if unixtime in tasks:  # tasks to dict gdzie klucze to posix
         coordinates = tasks[unixtime]  # datetime coordinates for the TARDIS :)
         # juz jest taka data
         # sprawdz czy juz znamy to repo
         if repourl in coordinates:
             # jest juz informacja o tym repo
             task = coordinates[repourl]
-            task.incWorkLeft(workunit)
-            coordinates[repourl] = task
-            tasks[unixtime] = coordinates
+            task.incWorkLeft(language, workunit)
+            #coordinates[repourl] = task
+            #tasks[unixtime] = coordinates
         else:
             # te repo wystapilo pierwszy raz
             coordinates[repourl] = Task(repourl, language, workunit)
-            tasks[unixtime] = coordinates
+            #tasks[unixtime] = coordinates
     else:
         tasks[unixtime] = dict()
         # pierwszy raz taka data
         # wiec i te repo tez jest pierwszy raz
         coordinates = tasks[unixtime]
         coordinates[repourl] = Task(repourl, language, workunit)
-        tasks[unixtime] = coordinates
+        #tasks[unixtime] = coordinates
 
     # sys.exit()
 
@@ -103,6 +110,8 @@ for push in collection.find():
 
 print 'Done.'
 
+# print datesids
+
 # posortuj ja metoda pythonowa .sort() albo sorted()
 # sortedates = datesids.sort()
 # nie trzeba, datesids jest samosortowalny
@@ -110,8 +119,12 @@ print 'Done.'
 # now dump to sqlite3
 # and also dump to flat files
 for dateid in datesids:
-    for taskid in tasks[dateid].iterkeys():
-        task = tasks[dateid][taskid]
-        sqlconn.execute('INSERT INTO workers VALUES (?,?,?,?,?)', (dateid, taskid, task.language, task.workDone, task.workLeft))
+    #print 'in for dateid in datesids:' + str(dateid)
+    for repourl in tasks[dateid].iterkeys():
+        #print 'in for repourl in tasks[dateid].iterkeys():' + repourl
+        task = tasks[dateid][repourl]
+        for lang in task.getSocData().iterkeys():
+            #print 'in for lang in task.getSocData().iterkeys():' + lang
+            sqlconn.execute('INSERT INTO workers VALUES (?,?,?,?,?)', (dateid, repourl, lang, task.getSocData()[lang]["workdone"], task.getSocData()[lang]["workleft"]))
 
 sqlconn.commit()
