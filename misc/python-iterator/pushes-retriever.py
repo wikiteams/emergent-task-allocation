@@ -7,6 +7,7 @@ from blist import sortedset
 
 sqlconn = sqlite3.connect('socbase.db')
 
+sqlconn.execute("drop table if exists workers")
 sqlconn.execute("create table %s (%s text, %s text, %s text, %s number, %s number)" % ("workers", "time", "taskid", "language", "workdone", "workleft"))
 
 client = MongoClient('127.0.0.1')
