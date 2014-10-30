@@ -66,6 +66,8 @@ for push in collection.find():
         print ''
         print counter
         print ''
+        #if counter is not 0:
+        #    break
 
     # sortowalna kolekcja
     datesids.add(unixtime)
@@ -108,6 +110,8 @@ print 'Done.'
 # now dump to sqlite3
 # and also dump to flat files
 for dateid in datesids:
-    for taskid in tasks[dateid].keys:
+    for taskid in tasks[dateid].iterkeys():
         task = tasks[dateid][taskid]
         sqlconn.execute('INSERT INTO workers VALUES (?,?,?,?,?)', (dateid, taskid, task.language, task.workDone, task.workLeft))
+
+sqlconn.commit()

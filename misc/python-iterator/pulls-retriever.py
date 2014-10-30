@@ -48,15 +48,15 @@ class Task:
         self.workLeft += workLeft
 
 
-for push in collection.find():
+for pull in collection.find():
     sys.stdout.write('.')
     counter += 1
 
-    pushcreated = push['created_at']
-    repocreated = push['repository']['created_at']
-    repourl = push['repository']['url']
-    language = push['repository']['language']
-    workunit = push['payload']['size']
+    pushcreated = pull['created_at']
+    repocreated = pull['repository']['created_at']
+    repourl = pull['repository']['url']
+    language = pull['repository']['language']
+    workunit = pull['payload']['size']
 
     repocreated = dateutil.parser.parse(repocreated)
     # reprezentuj repo.created_at jako liczba unixowa (POSIX)
@@ -66,11 +66,13 @@ for push in collection.find():
         print ''
         print counter
         print ''
+        #if counter is not 0:
+        #    break
 
     # sortowalna kolekcja
     datesids.add(unixtime)
 
-    # print push
+    # print pull
 
     if unixtime in tasks:
         coordinates = tasks[unixtime]  # datetime coordinates for the TARDIS :)
@@ -108,6 +110,8 @@ print 'Done.'
 # now dump to sqlite3
 # and also dump to flat files
 for dateid in datesids:
-    for taskid in tasks[dateid].keys:
+    for taskid in tasks[dateid].iterkeys():
         task = tasks[dateid][taskid]
-        sqlconn.execute('INSERT INTO workers VALUES (?,?,?,?,?)', (dateid, taskid, task.language, task.workDone, task.workLeft))
+        sqlconn.execute('INSERT INTO forkers VALUES (?,?,?,?,?)', (dateid, taskid, task.language, task.workDone, task.workLeft))
+
+sqlconn.commit()
