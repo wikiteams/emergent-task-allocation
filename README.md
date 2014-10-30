@@ -26,9 +26,55 @@ In the search of a best type of data (applicable to analysing activity in GitHub
 
 #### Perils of mining GitHub
 
-From the "The Promises and Perils of Mining GitHub" (Kalliamvakou et.al., 2014) we read that "Only a fraction of projects use pull requests. And of those that use them, their use is very skewed. (Peril VI)". "Of the 2.6 million projects that represent actual collaborative projects (at least 2 committers) only 268,853 (10%) used the pull request model at least once to incorporate commits; the remaining 2.4 M projects would have used GitHub in a shared repository model exclusively (with no incoming pull requests) where all developers are granted commit access." Thats why we present 2 types of collaborative setttings for the dataset creation.
+From the _"The Promises and Perils of Mining GitHub"_ (Kalliamvakou et.al., 2014) we read that "Only a fraction of projects use pull requests. And of those that use them, their use is very skewed. (Peril VI)". "Of the 2.6 million projects that represent actual collaborative projects (at least 2 committers) only 268,853 (10%) used the pull request model at least once to incorporate commits; the remaining 2.4 M projects would have used GitHub in a shared repository model exclusively (with no incoming pull requests) where all developers are granted commit access." Thats why we present 2 types of collaborative setttings for the dataset creation.
 
 #### Commit rights
+
+Because most of the repos use the pushes model with pinpoint defined rights, we us the PushEvents to create a set on workload in particular languages. Fields which are in our interest are: *created_at*, *repository.created_at*, *repository.url*, *repository.language*, *payload.size*. Sample PushEvent looks like below:
+
+```JSON
+{
+  "_id" : ObjectId("535f1dab768a890c68beff74"),
+  "actor_attributes" : {
+    "login" : "egemenulucay",
+    "type" : "User",
+    "name" : "Egemen Uluçay",
+    "gravatar_id" : "46df3b7e452f4b6d7cc7ad42c58ce13a"
+  },
+  "repository" : {
+    "fork" : false,
+    "watchers" : 1,
+    "description" : "",
+    "language" : "ASP",
+    "has_downloads" : true,
+    "url" : "https://github.com/jon0638/Teklif",
+    "master_branch" : "master",
+    "created_at" : "2014-03-31T23:55:12-07:00",
+    "private" : false,
+    "pushed_at" : "2014-04-01T00:04:46-07:00",
+    "open_issues" : 0,
+    "has_wiki" : true,
+    "owner" : "jon0638",
+    "has_issues" : true,
+    "forks" : 0,
+    "size" : 0,
+    "stargazers" : 1,
+    "id" : 18320468,
+    "name" : "Teklif"
+  },
+  "url" : "https://github.com/jon0638/Teklif/compare/d6092452af...350391142e",
+  "created_at" : new Date("1-4-2014 09:04:46"),
+  "actor" : "egemenulucay",
+  "public" : true,
+  "type" : "PushEvent",
+  "payload" : {
+    "shas" : [["350391142e28983dd180d79ece0314d2bd9eb9aa", "egemen.ulucay@windowslive.com", "update", "Egemen Uluçay", true]],
+    "head" : "350391142e28983dd180d79ece0314d2bd9eb9aa",
+    "ref" : "refs/heads/master",
+    "size" : 1
+  }
+}
+```
 
 #### Fork-Pull model
 
@@ -74,6 +120,10 @@ We choose PullRequestEvents because they match most the mentioned requirements a
 
 Next, this collection is sorted by the created_at field which is a datetime. It means that we make a GitHub life timeline. After we encounter a repository, we iterate through all of its PullRequest events to count number of changes per a language. This gives us below structure: D1: T1:R1{Java 50/250} ; T2:R1{Obj-C 20/2000} , D2: T1:R2{C 1/100}
 
+#### Merged dataset
+
+Probably a merged data on pulls and pushes will be just fine to analyze team emergence.
+
 #### MongoDB database
 
 In our university repositories we have a document database holding circa 172 milion events which occured on GitHub during previous years.
@@ -93,6 +143,8 @@ db.pullrequests.find().limit(5).pretty()
 ```
 
 #### Saving results to flat database
+
+We are using data aggregators in **Python** with a help of mongodb package to aggregate data and created dataset which will be later consumed by simulator. You can check the code which is located in the _/misc_ folder
 
 ### Simulator workflow
 
