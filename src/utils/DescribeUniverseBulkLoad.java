@@ -16,7 +16,7 @@ public class DescribeUniverseBulkLoad {
 	
 	private static String fileName =  SystemUtils.IS_OS_LINUX ? 
 			"data/agentsTaskCombination.ini"
-			: "misc\\agentsTaskCombination.ini";
+			: "data\\agentsTaskCombination.ini";
 	
 	public static String[] init() throws InvalidFileFormatException, IOException{
 		combinations = new LinkedList<String[]>();
