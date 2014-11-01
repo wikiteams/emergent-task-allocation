@@ -76,6 +76,8 @@ import constants.ModelFactory;
  * @see 1) GitHub markdown 2) "On The Effectiveness of Emergent Task Allocation"
  */
 public class CollaborationBuilder implements ContextBuilder<Object> {
+	
+	private Context<Object> currentContext;
 
 	private StrategyDistribution strategyDistribution;
 	private ModelFactory modelFactory;
@@ -85,7 +87,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private String[] universe = null;
 
 	private TaskPool taskPool = new TaskPool();
-
 	private List<Agent> listAgent;
 	private CentralPlanning centralPlanner;
 
@@ -169,6 +170,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	@Override
 	public Context<Object> build(Context<Object> context) {
 		context.setId("emergent-task-allocation");
+		currentContext = context;
 
 		prepareEssentials();
 		prepareFurthermore();
@@ -655,7 +657,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	}
 
 	private Context<Object> getCurrentContext() {
-		return ContextUtils.getContext(this);
+		return currentContext;
 	}
 
 	/**
