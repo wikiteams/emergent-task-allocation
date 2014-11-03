@@ -188,20 +188,30 @@ Optionally, simulator can add central planner to the evolutionary game. At the m
 
 #### Stochastic universal sampling (SUS)
 
-In previous version of the simulator, after every 10 ticks of simulation every agent get a new task-choice strategy according to the implemented well-known genetic algorithm called Stochastic Universal Sampling (SUS) method. SUS is a fitness proportionate selection method which uses a single random value to sample all solutions by choosing them at evenly spaced intervals. This gives weaker members of the population (according to the fitness function) a chance to be chosen. Utility function considers lowest experience in a single skill plus 1/20 part of an average experience in all the skills. In the new version, we use a fully implemented collaboration controller with generations and iterations counters.
+In previous version of the simulator, after every 10 ticks of simulation every agent get a new task-choice strategy according to the implemented well-known genetic algorithm called _Stochastic Universal Sampling_ (SUS) method. SUS is a fitness proportionate selection method which uses a single random value to sample all solutions by choosing them at evenly spaced intervals. This gives weaker members of the population (according to the fitness function) a chance to be chosen. Utility function considers lowest experience in a single skill plus _1/20_ part of an average experience in all the skills. In the new version, we use a fully implemented collaboration controller with generations and iterations counters. Evolution process happens at the end of a generation, and than state of objects is reset.
+
+### Fitness function
+
+?
+
+### Resetting
+
+?
 
 ### Time units
 
 * Tick - our basic measurement of time, a single time unit in the simulation, 1 bit of time
 * Iteration - sequent tick in the generation, resets after generation ends
-* Generation - during a generation all tasks must be closed
-* Run (instance) - in case of many seperate paralle runs at once - generating more results to remove bias
+* Generation - 
+* Run (instance) - in case of many seperate parallel runs at once - generating more results to remove bias
 
 ### Workflow in the evolution
 
+![Analyzing strategies efficiency](https://dl.dropboxusercontent.com/u/103068909/workflow-of-analysing-strategies.jpg "Workflow of str.an.")
+
 ### Analyzing performance of strategies
 
-![Analyzing strategies efficiency](https://dl.dropboxusercontent.com/u/103068909/workflow-of-analysing-strategies.jpg "Workflow of str.an.")
+Performance of strategy is measured by number of ticks required to close all the tasks.
 
 ### Validation model
 
