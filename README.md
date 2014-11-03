@@ -172,19 +172,32 @@ First version of preferential strategy was implemented to analyse general advanc
 
 ### Evolutionary model
 
+The evolutionary game is supposed to answer question - is there a stable set of strategies for w typical github repository, and whether is it better than using a central planer to control team work or not.
+
 #### Standard configurations with Pareto principle
+
+The Pareto principle (also known as the 80–20 rule, the law of the vital few, and the principle of factor sparsity) states that, for many events, roughly 80% of the effects come from 20% of the causes. Yet, we add an evolutionary plan where there are three strategies taking part in the evolutionary game - homophily, heterophily and preferential.
 
 ![Evolution plans](https://dl.dropboxusercontent.com/u/103068909/evolution-plans-sus.png "Evolution plans")
 
-#### Hybrid model
+#### Hybrid model (optional)
+
+Optionally, simulator can add central planner to the evolutionary game. At the moment, mixing emergent strategies with central assignemtn strategies is not part of our research.
 
 ![Additional evolution plans](https://dl.dropboxusercontent.com/u/103068909/evolution-plans-sus-h.png "Additional evolution plans")
 
 #### Stochastic universal sampling (SUS)
 
-After every 10 ticks of simulation every agent get a new task-choice strategy according to the implemented well-known
-genetic algorithm called Stochastic Universal Sampling (SUS) method. SUS is a fitness proportionate selection method which uses a single random value to sample all solutions by choosing them at evenly spaced intervals. This gives weaker members of the population (according to the fitness function) a chance to be chosen.
-Utility function considers lowest experience in a single skill plus 1/20 part of an average experience in all the skills.
+In previous version of the simulator, after every 10 ticks of simulation every agent get a new task-choice strategy according to the implemented well-known genetic algorithm called Stochastic Universal Sampling (SUS) method. SUS is a fitness proportionate selection method which uses a single random value to sample all solutions by choosing them at evenly spaced intervals. This gives weaker members of the population (according to the fitness function) a chance to be chosen. Utility function considers lowest experience in a single skill plus 1/20 part of an average experience in all the skills. In the new version, we use a fully implemented collaboration controller with generations and iterations counters.
+
+### Time units
+
+* Tick - our basic measurement of time, a single time unit in the simulation, 1 bit of time
+* Iteration - sequent tick in the generation, resets after generation ends
+* Generation - during a generation all tasks must be closed
+* Run (instance) - in case of many seperate paralle runs at once - generating more results to remove bias
+
+### Workflow in the evolution
 
 ### Analyzing performance of strategies
 
