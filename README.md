@@ -192,17 +192,21 @@ In previous version of the simulator, after every 10 ticks of simulation every a
 
 ### Fitness function
 
-?
+![Fitness function](https://dl.dropboxusercontent.com/u/103068909/eval-function.png "Fitness function")
 
 ### Resetting
 
-?
+At the end of a generation, experience of agents is reset to the initial one.
+
+### Mutation
+
+Agent's experience have a chance of mutating (e.g. due to their external proffesional training they had outside GitHub portal). Agent can decide to abondon a particular skill or can improve himself in it, thus the mutation works by: deleting a skill or adding more experience after a generation.
 
 ### Time units
 
 * Tick - our basic measurement of time, a single time unit in the simulation, 1 bit of time
 * Iteration - sequent tick in the generation, resets after generation ends
-* Generation - 
+* Generation - can end after constant time e.g. GN = 20 or after an event of 1 Task depletion
 * Run (instance) - in case of many seperate parallel runs at once - generating more results to remove bias
 
 ### Workflow in the evolution
