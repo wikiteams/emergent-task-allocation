@@ -194,6 +194,8 @@ In previous version of the simulator, after every 10 ticks of simulation every a
 
 ![Fitness function](https://dl.dropboxusercontent.com/u/103068909/eval-function.png "Fitness function")
 
+Utility function considers lowest experience in a single skill plus _1/20_ part of an average experience in all the skills. It makes for avoid bais in a situation when have some skill in which he is very weak but couple of more skills in he is very advanced.
+
 ### Resetting
 
 At the end of a generation, experience of agents is reset to the initial one.
@@ -206,8 +208,12 @@ Agent's experience have a chance of mutating (e.g. due to their external proffes
 
 * Tick - our basic measurement of time, a single time unit in the simulation, 1 bit of time
 * Iteration - sequent tick in the generation, resets after generation ends
-* Generation - can end after constant time e.g. GN = 20 or after an event of 1 Task depletion
+* Generation - ends after _gnt_ - a particular constant period of time
 * Run (instance) - in case of many seperate parallel runs at once - generating more results to remove bias
+
+### Generation time
+
+A generation time _gnt_ is a time of workload done typically in 24h hours on GitHub. We find _gnt_ to be exactly..
 
 ### Workflow in the evolution
 
