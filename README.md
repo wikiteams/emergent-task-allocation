@@ -1,3 +1,4 @@
+
 emergent-task-allocation
 ========================
 
@@ -18,17 +19,23 @@ There are 4 possible inputs for the simulator. The way of input is defined in pa
 
 #### Data source
 
-Datasource is the [GitHub Archive](https://www.githubarchive.org), which was downloaded locally to disk and than added to a [MongoDB](http://www.mongodb.org) database. Data is dated from February 2011 to April 2014. 
+##### Data source - how Agents are created
 
-#### Subsetting data for simulation
+We use the brainjar list to get a set of most active GitHub users. Further, using logins of those users, we use the OSRC portal to get statistics of language use for a particular uset.
 
-In the search of a best type of data (applicable to analysing activity in GitHub repositories) we considered PushEvents and PullRequestEvents. There is no commit event in GitHub but PushEvent consists of multiple commits. A good entity should persists bellow attributes: **task** (repo) id, **programming language**, and **work units**. 
+##### Data source - how Tasks are created
 
-#### Perils of mining GitHub
+Datasource is the [GitHub Archive](https://www.githubarchive.org), which was downloaded locally to disk and than added to a [MongoDB](http://www.mongodb.org) database. Data is dated from February 2011 to April 2014.
+
+##### Subsetting data for simulation
+
+In the search of a best type of data (applicable to analysing activity in GitHub repositories) we considered PushEvents and PullRequestEvents. There is no commit event in GitHub but PushEvent consists of multiple commits. A good entity should persists bellow attributes: **task** (repo) id, **programming language**, and **work units**.
+
+##### Perils of mining GitHub
 
 From the _"The Promises and Perils of Mining GitHub"_ (Kalliamvakou et.al., 2014) we read that "Only a fraction of projects use pull requests. And of those that use them, their use is very skewed. (Peril VI)". "Of the 2.6 million projects that represent actual collaborative projects (at least 2 committers) only 268,853 (10%) used the pull request model at least once to incorporate commits; the remaining 2.4 M projects would have used GitHub in a shared repository model exclusively (with no incoming pull requests) where all developers are granted commit access." Thats why we present 2 types of collaborative setttings for the dataset creation.
 
-#### Commit rights
+##### Commit rights model
 
 Because most of the repos use the pushes model with pinpoint defined rights, we us the PushEvents to create a set on workload in particular languages. Fields which are in our interest are: *created_at*, *repository.created_at*, *repository.url*, *repository.language*, *payload.size*. Sample PushEvent looks like below:
 
@@ -76,7 +83,7 @@ Because most of the repos use the pushes model with pinpoint defined rights, we 
 }
 ```
 
-#### Fork-Pull model
+##### Fork-Pull model
 
 We choose PullRequestEvents because they match most the mentioned requirements and furthermore, they follow a typical GitHub workflow, where a pull request must be created to integrated changes from other users. Sample PullRequestEvent looks like below:
 
@@ -120,17 +127,19 @@ We choose PullRequestEvents because they match most the mentioned requirements a
 
 Next, this collection is sorted by the created_at field which is a datetime. It means that we make a GitHub life timeline. After we encounter a repository, we iterate through all of its PullRequest events to count number of changes per a language. This gives us below structure: D1: T1:R1{Java 50/250} ; T2:R1{Obj-C 20/2000} , D2: T1:R2{C 1/100}
 
-#### Merged dataset
+##### Merged dataset (hybrid model)
 
 Probably a merged data on pulls and pushes will be just fine to analyze team emergence.
 
-#### MongoDB database
+#### Technical aspects of dataset
+
+##### MongoDB database
 
 In our university repositories we have a document database holding circa 172 milion events which occured on GitHub during previous years.
 
 ![Database of GH events](https://dl.dropboxusercontent.com/u/103068909/github_events_db.png "Database of GH events")
 
-#### Querying MongoDB
+##### Querying MongoDB
 
 Because structure of a JSON with type PullRequestEvent changes during GH lifetime, we filter solid most often occuring structure of documents, which will always have following parameters: *repository.url*, *repository.language*, *lines deleted*, *lines added*, *no of files changed*, *no of comments* and *number of commits*. This dataset is later saved to a seperate MongoDB collection to make for easier extraction.
 
@@ -142,7 +151,7 @@ It is possible to retrieve sample data with below command
 db.pullrequests.find().limit(5).pretty()
 ```
 
-#### Saving results to flat database
+##### Saving results to flat database
 
 We are using data aggregators in **Python** with a help of mongodb package to aggregate data and created dataset which will be later consumed by simulator. You can check the code which is located in the _/misc_ folder
 
@@ -192,18 +201,28 @@ In previous version of the simulator, after every 10 ticks of simulation every a
 
 ### Fitness function
 
-?
+![Fitness function](https://dl.dropboxusercontent.com/u/103068909/eval-function.png "Fitness function")
+
+Utility function considers lowest experience in a single skill plus _1/20_ part of an average experience in all the skills. It makes for avoid bais in a situation when have some skill in which he is very weak but couple of more skills in he is very advanced.
 
 ### Resetting
 
-?
+At the end of a generation, experience of agents is reset to the initial one.
+
+### Mutation
+
+Agent's experience have a chance of mutating (e.g. due to their external proffesional training they had outside GitHub portal). Agent can decide to abondon a particular skill or can improve himself in it, thus the mutation works by: deleting a skill or adding more experience after a generation.
 
 ### Time units
 
 * Tick - our basic measurement of time, a single time unit in the simulation, 1 bit of time
 * Iteration - sequent tick in the generation, resets after generation ends
-* Generation - 
+* Generation - ends after _gnt_ - a particular constant period of time
 * Run (instance) - in case of many seperate parallel runs at once - generating more results to remove bias
+
+### Generation time
+
+A generation time _gnt_ is a time of workload done typically in 24h hours on GitHub. We find _gnt_ to be exactly..
 
 ### Workflow in the evolution
 
