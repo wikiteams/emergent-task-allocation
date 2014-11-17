@@ -22,7 +22,7 @@ import argonauts.PersistRewiring;
 
 @AgentAnnot(displayName = "Agent")
 public class Agent {
-	
+
 	/**
 	 * 
 	 * This value is used to automatically generate agent identifiers.
@@ -36,7 +36,7 @@ public class Agent {
 	public static int totalAgents = 0;
 	private static double time = 0;
 
-	private Map<String, AgentInternals> skills = new HashMap<String, AgentInternals>();
+	private AgentSkills agentSkills;
 	private Strategy strategy;
 
 	private final int id = ++totalAgents;;
@@ -51,6 +51,7 @@ public class Agent {
 	}
 
 	public Agent(String firstName, String lastName, String nick) {
+		this.agentSkills = new AgentSkills();
 		say("Agent constructor called");
 		// this.id = ++totalAgents;
 		AgentSkillsPool.fillWithSkills(this);
@@ -60,7 +61,7 @@ public class Agent {
 	}
 
 	public void addSkill(String key, AgentInternals agentInternals) {
-		skills.put(key, agentInternals);
+		getCurrentSkills().put(key, agentInternals);
 	}
 
 	/**
@@ -72,8 +73,8 @@ public class Agent {
 	 *            - name of the Skill to remove
 	 */
 	public void removeSkill(String key, boolean skipAssertion) {
-		assert skipAssertion ? true : skills.containsKey(key);
-		skills.remove(key);
+		assert skipAssertion ? true : getCurrentSkills().containsKey(key);
+		getCurrentSkills().remove(key);
 	}
 
 	public void removeSkill(Skill key, boolean skipAssertion) {
@@ -81,22 +82,22 @@ public class Agent {
 	}
 
 	public Collection<AgentInternals> getAgentInternals() {
-		return skills.values();
+		return getCurrentSkills().values();
 	}
 
 	public AgentInternals getAgentInternals(String key) {
-		return skills.get(key);
+		return getCurrentSkills().get(key);
 	}
 
 	public AgentInternals getAgentInternalsOrCreate(String key) {
 		AgentInternals result = null;
-		if (skills.get(key) == null) {
+		if (getCurrentSkills().get(key) == null) {
 			result = (new AgentInternals(skillFactory.getSkill(key),
 					new Experience(true)));
-			skills.put(key, result);
-			result = skills.get(key);
+			getCurrentSkills().put(key, result);
+			result = getCurrentSkills().get(key);
 		} else {
-			result = skills.get(key);
+			result = getCurrentSkills().get(key);
 		}
 		return result;
 	}
@@ -334,13 +335,26 @@ public class Agent {
 	}
 
 	public double describeExperience(Skill skill) {
-		if (skills.get(skill.getName()) == null) {
+		if (getCurrentSkills().get(skill.getName()) == null) {
 			AgentInternals result = (new AgentInternals(
 					skillFactory.getSkill(skill.getName()),
 					new Experience(true)));
-			skills.put(skill.getName(), result);
+			getCurrentSkills().put(skill.getName(), result);
 		}
-		return skills.get(skill.getName()).getExperience().getDelta();
+		return getCurrentSkills().get(skill.getName()).getExperience()
+				.getDelta();
+	}
+
+	private Map<String, AgentInternals> getCurrentSkills() {
+		return agentSkills.getSkills();
+	}
+
+	public AgentSkills getAgentSkills() {
+		return agentSkills;
+	}
+
+	public void setAgentSkills(AgentSkills agentSkills) {
+		this.agentSkills = agentSkills;
 	}
 
 	@ProbeID()
