@@ -2,6 +2,7 @@ package collaboration;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class AgentSkills {
 
@@ -27,6 +28,19 @@ public class AgentSkills {
 
 	public void setSkills(Map<String, AgentInternals> skills) {
 		this.skills = skills;
+	}
+
+	public void reset() {
+		skills = deepCopy(startSkills);
+	}
+
+	private Map<String, AgentInternals> deepCopy(
+			Map<String, AgentInternals> skills) {
+		Map<String, AgentInternals> result = new HashMap<String, AgentInternals>();
+		for (Entry<String, AgentInternals> entry : skills.entrySet()) {
+
+		}
+		return result;
 	}
 
 }

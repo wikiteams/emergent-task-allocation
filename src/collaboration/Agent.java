@@ -110,11 +110,9 @@ public class Agent {
 		}
 		return skillCollection;
 	}
-
-	public void setId(int id) {
-		throw new UnsupportedOperationException();
-		// its a final field, so please dont touch it :)
-		// this.id = id;
+	
+	public void resetMe(){
+		getAgentSkills().reset();
 	}
 
 	public int getId() {

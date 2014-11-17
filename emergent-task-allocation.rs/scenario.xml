@@ -3,4 +3,8 @@
 	<repast.simphony.dataLoader.engine.ClassNameDataLoaderAction
 		context="emergent-task-allocation"
 		file="repast.simphony.dataLoader.engine.ClassNameDataLoaderAction_0.xml" />
+	<repast.simphony.action.file_sink context="emergent-task-allocation" file="repast.simphony.action.file_sink_tasks.xml" />
+	<repast.simphony.action.data_set context="emergent-task-allocation" file="repast.simphony.action.data_set_tasks.xml" />
+	<repast.simphony.action.file_sink context="emergent-task-allocation" file="repast.simphony.action.file_sink_agents.xml" />
+	<repast.simphony.action.data_set context="emergent-task-allocation" file="repast.simphony.action.data_set_agents.xml" />
 </Scenario>
