@@ -181,11 +181,11 @@ First version of preferential strategy was implemented to analyse general advanc
 
 ### Evolutionary model
 
-The evolutionary game is supposed to answer question - is there a stable set of strategies for w typical github repository, and whether is it better than using a central planer to control team work or not.
+The evolutionary game is supposed to answer question - is there a stable set of strategies for a typical GitHub repository, and whether is it better than using a central planer to control team work or not.
 
 #### Standard configurations with Pareto principle
 
-The Pareto principle (also known as the 80–20 rule, the law of the vital few, and the principle of factor sparsity) states that, for many events, roughly 80% of the effects come from 20% of the causes. Yet, we add an evolutionary plan where there are three strategies taking part in the evolutionary game - homophily, heterophily and preferential.
+The Pareto principle (also known as the 80–20 rule, the law of the vital few, and the principle of factor sparsity) states that, for many events, roughly 80% of the effects come from 20% of the causes. We add an evolutionary plan where there are three strategies taking part in the evolutionary game - homophily, heterophily and preferential, which means that even a minor strategy has a chance of creating a vast major of work.
 
 ![Evolution plans](https://dl.dropboxusercontent.com/u/103068909/evolution-plans-sus.png "Evolution plans")
 
@@ -203,7 +203,7 @@ In previous version of the simulator, after every 10 ticks of simulation every a
 
 ![Fitness function](https://dl.dropboxusercontent.com/u/103068909/eval-function.png "Fitness function")
 
-Utility function considers lowest experience in a single skill plus _1/20_ part of an average experience in all the skills. It makes for avoid bais in a situation when have some skill in which he is very weak but couple of more skills in he is very advanced.
+Utility function considers lowest experience in a single skill plus _1/20_ part of an average experience in all the skills. It makes for avoid bais in a situation when have some skill in which he is very weak but couple of more skills in which he/she is very advanced.
 
 ### Resetting
 
@@ -220,9 +220,11 @@ Agent's experience have a chance of mutating (e.g. due to their external proffes
 * Generation - ends after _gnt_ - a particular constant period of time
 * Run (instance) - in case of many seperate parallel runs at once - generating more results to remove bias
 
-### Generation time
+### Generation time / number of iterations
 
 A generation time _gnt_ is a time of workload done typically in 24h hours on GitHub. We find _gnt_ to be exactly..
+
+#### In search of the iteration count number
 
 ### Workflow in the evolution
 
