@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
+	<!-- Evolutionary parameters -->
+	
 	<parameter name="modelType" displayName="Model type"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		type="string" defaultValue="Normal"
 		values="Normal Validation MultipleValidation Normal+Validation Stress" />
-	<parameter name="dataSource" displayName="Data source"
+	<parameter name="dataSource" displayName="Data source (db or fileset etc.)"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		type="string" defaultValue="FileSoup" values="SocketListener FileSoup Mockup AgentTestUniverse" />
-	<parameter name="planNumber" displayName="Evolutionary plan no." type="java.lang.Integer"
-		defaultValue="0" isReadOnly="false"
+		type="string" defaultValue="FileSoup"
+		values="SocketListener FileSoup Mockup AgentTestUniverse" />
+	<parameter name="planNumber" displayName="Evolutionary plan no."
+		type="java.lang.Integer" defaultValue="0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="numTasks" displayName="Number of tasks"
+		type="java.lang.Integer" defaultValue="20" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="iterationCount" displayName="Number of iterations"
+		type="java.lang.Integer" defaultValue="20" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="equilibriumDetectionSensitivity" displayName="equilibriumDetectionSensitivity" type="double"
+		defaultValue="50" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
+	<parameter name="strategyDistribution" displayName="Evolution enabled/disabled"
+		type="java.lang.Integer" defaultValue="0" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+		
+	<!-- Non-evolutionary parameters -->
 
+	<parameter name="taskChoiceAlgorithm" displayName="taskChoiceAlgorithm"
+		type="java.lang.String" defaultValue="random" isReadOnly="false"
+		values="homophyly heterophyly homophyly_experience heterophyly_experience preferential random minmax central comparision social_vector"
+		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 	<parameter name="skillChoiceAlgorithm" displayName="skillChoiceAlgorithm"
 		type="java.lang.String" defaultValue="greedy" isReadOnly="false"
 		values="proportional greedy choice random"
@@ -24,24 +45,38 @@
 	<parameter name="agentCount" displayName="agentCount" type="java.lang.Integer"
 		defaultValue="50" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="numTasks" displayName="numTasks" type="java.lang.Integer"
-		defaultValue="20" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+
+	<!-- Behavioral parameters -->
+	
 	<parameter name="experienceDecay" displayName="experienceDecay"
 		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
+	<parameter name="fullyLearnedAgentsLeave" displayName="fullyLearnedAgentsLeave"
+		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 
-	<parameter name="strategyDistribution" displayName="Evolution enabled/disabled"
-		type="java.lang.Integer" defaultValue="0" isReadOnly="false"
+	<!-- Granularity of work -->
+	
+	<parameter name="granularity" displayName="granularity" type="java.lang.Boolean"
+		defaultValue="false" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
+	<parameter name="granularityObstinacy" displayName="granularityObstinacy"
+		type="java.lang.Integer" defaultValue="75" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="numSteps" displayName="numSteps" type="java.lang.Integer"
-		defaultValue="5000" isReadOnly="false"
+	<parameter name="granularityType" displayName="granularityType"
+		type="java.lang.String" defaultValue="DISTRIBUTION" isReadOnly="false"
+		values="TASKONLY TASKANDSKILL DISTRIBUTION"
+		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
+		
+	<!-- Deprecated -->
+	<!-- TODO: remove them completely -->
+	
+	<parameter name="gitHubClusterizedDistribution" displayName="gitHubClusterizedDistribution"
+		type="java.lang.String" defaultValue="distribute" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
+	<parameter name="percStartMembership" displayName="percStartMembership"
+		type="java.lang.Integer" defaultValue="10" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-
-	<parameter name="randomSeed" displayName="Default Random Seed"
-		type="int" defaultValue="__NULL__" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-
 	<parameter name="agentSkillPoolDataset" displayName="agentSkillPoolDataset"
 		type="java.lang.String" defaultValue="STATIC_PULL_REQUESTS"
 		isReadOnly="false"
@@ -59,21 +94,11 @@
 	<parameter name="allowMultiMembership" displayName="allowMultiMembership"
 		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
-	<parameter name="taskChoiceAlgorithm" displayName="taskChoiceAlgorithm"
-		type="java.lang.String" defaultValue="random" isReadOnly="false"
-		values="homophyly heterophyly homophyly_experience heterophyly_experience preferential random minmax central comparision social_vector"
-		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
-
 	<parameter name="taskMinMaxChoiceAlgorithm" displayName="taskMinMaxChoiceAlgorithm"
 		type="java.lang.String" defaultValue="maxmax" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
-
 	<parameter name="skillFactoryRandomMethod" displayName="skillFactoryRandomMethod"
 		type="java.lang.String" defaultValue="normal_distribution" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
-
-	<parameter name="gitHubClusterizedDistribution" displayName="gitHubClusterizedDistribution"
-		type="java.lang.String" defaultValue="distribute" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 	<parameter name="maxWorkRequired" displayName="maxWorkRequired"
 		type="java.lang.Integer" defaultValue="20" isReadOnly="false"
@@ -84,27 +109,21 @@
 	<parameter name="agentSkillsPoolRandomize1" displayName="agentSkillsPoolRandomizeNoOfTasks"
 		type="java.lang.Integer" defaultValue="5" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="percStartMembership" displayName="percStartMembership"
-		type="java.lang.Integer" defaultValue="10" isReadOnly="false"
+		
+	<!-- Other/technical -->
+	
+	<parameter name="randomSeed" displayName="Default Random Seed"
+		type="int" defaultValue="__NULL__" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="fullyLearnedAgentsLeave" displayName="fullyLearnedAgentsLeave"
-		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
+	
+	<!-- "Force stop" don't use it unles you know what you are doing -->
 
 	<parameter name="forceStop" displayName="forceStop" type="java.lang.Boolean"
 		defaultValue="false" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
-
-	<parameter name="granularity" displayName="granularity" type="java.lang.Boolean"
-		defaultValue="false" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
-	<parameter name="granularityObstinacy" displayName="granularityObstinacy"
-		type="java.lang.Integer" defaultValue="75" isReadOnly="false"
+	<parameter name="numSteps" displayName="numSteps" type="java.lang.Integer"
+		defaultValue="5000" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="granularityType" displayName="granularityType"
-		type="java.lang.String" defaultValue="DISTRIBUTION" isReadOnly="false"
-		values="TASKONLY TASKANDSKILL DISTRIBUTION"
-		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 </parameters>
 
 
