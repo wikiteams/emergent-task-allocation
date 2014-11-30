@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/gexf4j-0.4.5-BETA-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/random-data-generator-0.01.jar"/>
 	<classpathentry kind="lib" path="lib/ini4j-0.5.2-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/joda-time-2.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
