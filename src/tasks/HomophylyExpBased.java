@@ -3,8 +3,8 @@ package tasks;
 import collaboration.Agent;
 import collaboration.Skill;
 import collaboration.Task;
-import collaboration.TaskPool;
-import collaboration.TaskPoolHandy;
+import collaboration.Tasks;
+import collaboration.TasksUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,18 +18,18 @@ import argonauts.PersistJobDone;
 import constants.Constraints;
 
 public class HomophylyExpBased {
-	
+
 	private Map<String, Task> tasks;
-	private TaskPoolHandy tools;
-	
-	public HomophylyExpBased(Map<String, Task> tasks){
+	private TasksUtils tasksUtils;
+
+	public HomophylyExpBased(Map<String, Task> tasks) {
 		this.tasks = tasks;
-		this.tools = new TaskPoolHandy();
+		this.tasksUtils = new TasksUtils();
 	}
-	
-	public Task concludeMath(Agent agent){
+
+	public Task concludeMath(Agent agent) {
 		Task chosen = null;
-		
+
 		assert agent != null;
 		Collection<Skill> skillsByExperienceHmphly = null;
 		say("Starting chooseTask consideration inside homophyly for "
@@ -40,8 +40,7 @@ public class HomophylyExpBased {
 					.getNick());
 			assert desc.size() > 0;
 			say("Agent " + agent.getNick()
-					+ " already have experience in count of: "
-					+ desc.size());
+					+ " already have experience in count of: " + desc.size());
 			int highest = 0;
 			Task mostOften = null;
 
@@ -59,8 +58,8 @@ public class HomophylyExpBased {
 
 			assert mostOften != null;
 
-			skillsByExperienceHmphly = tools.intersectWithAgentSkills(agent,
-					mostOften.getSkills());
+			skillsByExperienceHmphly = tasksUtils.intersectWithAgentSkills(
+					agent, mostOften.getSkills());
 		} else {
 			// he wasn't working on anything, take skill matrix
 			skillsByExperienceHmphly = agent.getSkills();
@@ -74,8 +73,8 @@ public class HomophylyExpBased {
 		assert skillsByExperienceHmphly.size() > 0;
 
 		// create list of tasks per a skill
-		HashMap<Skill, ArrayList<Task>> tasksPerSkillsHmphly = 
-				TaskPool.getTasksPerSkills(skillsByExperienceHmphly);
+		HashMap<Skill, ArrayList<Task>> tasksPerSkillsHmphly = Tasks
+				.getTasksPerSkills(skillsByExperienceHmphly);
 		// there are no tasks left with such experience ?
 		// there is nothing to do
 		if (tasksPerSkillsHmphly.size() < 1) {
@@ -87,20 +86,18 @@ public class HomophylyExpBased {
 		HashMap<Task, Integer> intersectionHomophyly = null;
 
 		if (tasksPerSkillsHmphly != null)
-			intersectionHomophyly = TaskPoolHandy.
-				searchForIntersection(tasksPerSkillsHmphly);
+			intersectionHomophyly = TasksUtils
+					.searchForIntersection(tasksPerSkillsHmphly);
 		// search for intersections of n-size
 
-		if (intersectionHomophyly == null
-				|| intersectionHomophyly.size() == 0) {
+		if (intersectionHomophyly == null || intersectionHomophyly.size() == 0) {
 			say(Constraints.DIDNT_FOUND_TASK);
 			return chosen;
 		}
 
 		Collection<Integer> collectionIntersection = intersectionHomophyly
 				.values();
-		Integer maximumFromIntersect = Collections
-				.max(collectionIntersection);
+		Integer maximumFromIntersect = Collections.max(collectionIntersection);
 
 		ArrayList<Task> tasksWithMaxHomophyly = new ArrayList<Task>();
 		for (Task commonTask : intersectionHomophyly.keySet()) {
@@ -109,13 +106,14 @@ public class HomophylyExpBased {
 			}
 		}
 		// take biggest intersection set possible
-		chosen = tasksWithMaxHomophyly.get((int) ((new Random()
-				.nextDouble()) * tasksWithMaxHomophyly.size()));
+		chosen = tasksWithMaxHomophyly
+				.get((int) ((new Random().nextDouble()) * tasksWithMaxHomophyly
+						.size()));
 		// random
-		
+
 		return chosen;
 	}
-	
+
 	private static void say(String s) {
 		PjiitOutputter.say(s);
 	}

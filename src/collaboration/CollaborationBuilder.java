@@ -69,10 +69,10 @@ import constants.ModelFactory;
  * 
  * Project uses ini4j library which is licensed under Apache License.
  * 
- * @version 2.0.1 "Mondas"
+ * @version 2.0.2 Evo
  * @category Agent-organized Social Simulations
  * @since 1.0
- * @author Oskar Jarczyk (since 1.0+), Blazej Gruszka (1.3+)
+ * @author Oskar Jarczyk, Bla\zej Gruszka et.al.
  * @see 1) GitHub markdown 2) "On The Effectiveness of Emergent Task Allocation"
  */
 public class CollaborationBuilder implements ContextBuilder<Object> {
@@ -86,8 +86,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private Schedule schedule = new Schedule();
 	private String[] universe = null;
 
-	private TaskPool taskPool = new TaskPool();
-	private List<Agent> listAgent;
+	public static Context<Task> tasks;
+	public static Context<Agent> agents;
 	private CentralPlanning centralPlanner;
 
 	private boolean alreadyFlushed = false;
@@ -98,7 +98,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			RandomHelper.setSeed(SimulationParameters.randomSeed);
 			RandomHelper.init();
 			clearStaticHeap();
-			say("RandomHelper initialized and Static Heap cleared..");
+			say("RandomHelper initialized and static heap cleared..");
 		} catch (IOException e) {
 			e.printStackTrace();
 			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
@@ -174,16 +174,27 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 		prepareEssentials();
 		prepareFurthermore();
-
-		initializeTasks(context);
-		initializeAgents(context);
+		
+		tasks = new Tasks(modelFactory,
+				launchStatistics, 
+				universe[1]);
+		context.addSubContext(tasks);
+		agents = new Agents(modelFactory, 
+				strategyDistribution, 
+				launchStatistics, 
+				universe[0]);
+		context.addSubContext(agents);
+		context.add(new GameController());
 
 		say("Task choice algorithm is "
 				+ SimulationParameters.taskChoiceAlgorithm);
 		sanity("Number of teams created "
-				+ context.getObjects(Task.class).size());
+				+ getTasks().size());
+		// czy to na pewno zwraca prawidlowo ilosc mimo
+		// ze te obiekty siedza w sub-context?
 		sanity("Number of agents created "
-				+ context.getObjects(Agent.class).size());
+				+ getAgents().size());
+		// to samo tutaj
 		sanity("Algorithm tested: " + SimulationParameters.taskChoiceAlgorithm);
 
 		try {
@@ -205,19 +216,32 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		decideAboutGranularity();
 		decideAboutCutPoint();
 
-		PersistAdvancement.calculateAll(taskPool);
-		// TODO: later add req that if at least 1 agent uses Preferential...
+		// polimorfizm, Context<Task> mozna traktowac jako klase Tasks
+		PersistAdvancement.calculateAll((Tasks) tasks);
+		// TODO: later add requirement 
+		// that if at least 1 agent uses Preferential...
 
 		List<ISchedulableAction> actions = schedule.schedule(this);
 		say(actions.toString());
 
 		return context;
 	}
+	
+	private IndexedIterable<Object> getTasks(){
+		Context<Object> context = getCurrentContext();
+		return context.getObjects(Task.class);
+	}
+	
+	private IndexedIterable<Object> getAgents(){
+		Context<Object> context = getCurrentContext();
+		return context.getObjects(Agent.class);
+	}
 
 	private void initializeLoggers() throws IOException {
 		// System.setErr(new PrintStream(new
 		// FileOutputStream("error_console.log")));
-		// actually this little bastard is not working, find out why ?
+		// actually this little commented code
+		// is not working, find out why ?
 
 		PjiitLogger.init();
 		say(Constraints.LOGGER_INITIALIZED);
@@ -225,82 +249,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		sanity(Constraints.LOGGER_INITIALIZED);
 		EndRunLogger.init();
 		EndRunLogger.buildHeaders(buildFinalMessageHeader());
-	}
-
-	private void initializeAgents(Context<Object> context) {
-		Model model = modelFactory.getFunctionality();
-		if (model.isNormal() && model.isValidation()) {
-			throw new UnsupportedOperationException();
-		} else if (model.isNormal()) {
-			addAgents(context);
-		} else if (model.isSingleValidation()) {
-			listAgent = new ArrayList<Agent>();
-			AgentTestUniverse.init();
-			initializeValidationAgents(context);
-		} else if (model.isValidation()) {
-			listAgent = new ArrayList<Agent>();
-			AgentTestUniverse.init();
-			initializeValidationAgents(context);
-		}
-	}
-
-	private void initializeValidationAgents(Context<Object> context) {
-		for (Agent agent : AgentTestUniverse.DATASET) {
-			say("Adding validation agent to pool..");
-			Strategy strategy = new Strategy(
-					strategyDistribution.getTaskStrategy(),
-					strategyDistribution.getTaskMaxMinStrategy(),
-					strategyDistribution.getSkillStrategy());
-
-			agent.setStrategy(strategy);
-			listAgent.add(agent);
-			say(agent.toString() + " added to pool.");
-			// Required adding agent to context
-			// this.add(agent);
-			context.add(agent);
-		}
-	}
-
-	protected void initializeTasks(Context<Object> context) {
-		Model model = modelFactory.getFunctionality();
-		if (model.isNormal() && model.isValidation()) {
-			throw new UnsupportedOperationException();
-		} else if (model.isNormal()) {
-			initializeTasksNormally(context);
-		} else if (model.isSingleValidation()) {
-			TaskTestUniverse.init();
-			initalizeValidationTasks(context);
-		} else if (model.isValidation()) {
-			TaskTestUniverse.init();
-			initalizeValidationTasks(context);
-		} else {
-			assert false; // should never happen
-		}
-	}
-
-	private void initalizeValidationTasks(Context<Object> context) {
-		for (Task task : TaskTestUniverse.DATASET) {
-			say("Adding validation task to pool..");
-			taskPool.addTask(task.getName(), task);
-			context.add(task);
-			// agentPool.add(task);
-		}
-	}
-
-	private void initializeTasksNormally(Context<Object> context) {
-		Integer howMany = SimulationParameters.multipleAgentSets ? Integer
-				.parseInt(universe[1]) : SimulationParameters.taskCount;
-		for (int i = 0; i < howMany; i++) {
-			Task task = new Task();
-			say("Creating task..");
-			taskPool.addTask(task.getName(), task);
-			say("Initializing task..");
-			task.initialize(howMany);
-			context.add(task);
-			// agentPool.add(task);
-		}
-
-		launchStatistics.taskCount = taskPool.getCount();
 	}
 
 	private void initializeValidationLogger() {
@@ -312,10 +260,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private void outputAgentSkillMatrix() throws IOException {
 		CSVWriter writer = new CSVWriter(new FileWriter("input_a1.csv"), ',',
 				CSVWriter.NO_QUOTE_CHARACTER);
-		for (Agent agent : listAgent) {
-			for (AgentInternals __agentInternal : agent.getAgentInternals()) {
+		for (Object agent : getAgents()) {
+			for (AgentInternals __agentInternal : ((Agent) agent).getAgentInternals()) {
 				ArrayList<String> entries = new ArrayList<String>();
-				entries.add(agent.getNick());
+				entries.add(((Agent) agent).getNick());
 				entries.add(__agentInternal.getExperience().getValue() + "");
 				entries.add(__agentInternal.getSkill().getName());
 				String[] stockArr = new String[entries.size()];
@@ -326,44 +274,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		writer.close();
 	}
 
-	private void addAgents(Context<Object> context) {
-		Integer agentCnt = SimulationParameters.multipleAgentSets ? Integer
-				.parseInt(universe[0]) : SimulationParameters.agentCount;
-
-		listAgent = NamesGenerator.getnames(agentCnt);
-		for (int i = 0; i < agentCnt; i++) {
-			Agent agent = listAgent.get(i);
-
-			Strategy strategy = new Strategy(
-					strategyDistribution.getTaskStrategy(),
-					strategyDistribution.getTaskMaxMinStrategy(),
-					strategyDistribution.getSkillStrategy());
-
-			agent.setStrategy(strategy);
-			say(agent.toString());
-			say("in add aggent i: " + i);
-			// Required adding agent to context
-			// this.add(agent);
-
-			for (AgentInternals ai : agent.getAgentInternals()) {
-				assert ai.getExperience().getValue() > 0;
-				say("For a=" + agent.toString() + " delta is "
-						+ ai.getExperience().getDelta());
-				say("For a=" + agent.toString() + " value is "
-						+ ai.getExperience().getValue());
-				say("For a=" + agent.toString() + " top is "
-						+ ai.getExperience().getTop());
-			}
-
-			context.add(agent);
-		}
-
-		// launchStatistics.agentCount = agentPool.size()
-		// - launchStatistics.taskCount;
-
-		launchStatistics.agentCount = agentCnt;
-	}
-
 	public void clearStaticHeap() {
 		say("Clearing static data from previous simulation");
 		PersistJobDone.clear();
@@ -372,7 +282,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		TaskSkillsPool.clear();
 		SkillFactory.skills.clear();
 		NamesGenerator.clear();
-		TaskPool.clearTasks();
+		Tasks.clearTasks();
 		AgentSkillsPool.clear();
 		Agent.totalAgents = 0;
 		TaskSkillsPool.static_frequency_counter = 0;
@@ -384,7 +294,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public void finishSimulation() {
 		say("finishSimulation() check launched");
 		EnvironmentEquilibrium.setActivity(false);
-		if (taskPool.getCount() < 1) {
+		if (((Tasks) tasks).getCount() < 1) {
 			say("count of taskPool is < 1, finishing simulation");
 			finalMessage(buildFinalMessage());
 			RunEnvironment.getInstance().endRun();
@@ -494,10 +404,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 */
 	public void centralPlanning() {
 		say("CentralPlanning scheduled method launched, listAgent.size(): "
-				+ listAgent.size() + " taskPool.size(): " + taskPool.getCount());
+				+ getAgents().size() + " taskPool.size(): " + ((Tasks) tasks).getCount());
 		say("Zeroing agents orders");
-		centralPlanner.zeroAgentsOrders(listAgent);
-		centralPlanner.centralPlanningCalc(listAgent, taskPool);
+		centralPlanner.zeroAgentsOrders(getAgents());
+		centralPlanner.centralPlanningCalc(getAgents(), (Tasks) tasks);
 	}
 
 	/**

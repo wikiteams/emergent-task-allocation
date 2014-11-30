@@ -3,8 +3,8 @@ package tasks;
 import collaboration.Agent;
 import collaboration.Skill;
 import collaboration.Task;
-import collaboration.TaskPool;
-import collaboration.TaskPoolHandy;
+import collaboration.Tasks;
+import collaboration.TasksUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,11 +19,11 @@ import argonauts.PersistJobDone;
 public class HeterophylyExpBased {
 	
 	private Map<String, Task> tasks;
-	private TaskPoolHandy tools;
+	private TasksUtils tools;
 	
 	public HeterophylyExpBased(Map<String, Task> tasks){
 		this.tasks = tasks;
-		this.tools = new TaskPoolHandy();
+		this.tools = new TasksUtils();
 	}
 	
 	public Task concludeMath(Agent agent){
@@ -67,16 +67,16 @@ public class HeterophylyExpBased {
 		assert c.size() > 0;
 
 		// create list of tasks per a skill
-		HashMap<Skill, ArrayList<Task>> h = TaskPool.getTasksWithoutSkills(c);
+		HashMap<Skill, ArrayList<Task>> h = Tasks.getTasksWithoutSkills(c);
 		// there are no tasks left with such conditions ?
 		// try again but now with agent skills
 		if (h.size() < 1) {
-			h = TaskPool.getTasksWithoutSkills(agent.getSkills());
+			h = Tasks.getTasksWithoutSkills(agent.getSkills());
 		}
 		// there are no tasks left with such conditions ?
 		// try again but now with homophyly acceptance
 		if (h.size() < 1) {
-			h = TaskPool.getTasksPerSkills(agent.getSkills());
+			h = Tasks.getTasksPerSkills(agent.getSkills());
 		}
 
 		HashMap<Task, Integer> inters = null;

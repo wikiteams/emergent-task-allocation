@@ -3,7 +3,7 @@ package argonauts;
 import collaboration.Skill;
 import collaboration.Task;
 import collaboration.TaskInternals;
-import collaboration.TaskPool;
+import collaboration.Tasks;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import repast.simphony.context.Context;
 import logger.PjiitOutputter;
 
 public class PersistAdvancement {
@@ -75,7 +76,7 @@ public class PersistAdvancement {
 	 * Usually launched once before start of a run
 	 * @param taskPool
 	 */
-	public static void calculateAll(TaskPool taskPool){
+	public static void calculateAll(Tasks taskPool){
 		Collection<Task> t = taskPool.getTasks();
 		for(Task task : t){
 			reportTask(task);

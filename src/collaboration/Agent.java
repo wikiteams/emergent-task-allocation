@@ -167,7 +167,7 @@ public class Agent {
 									this.strategy.skillChoice);
 					if (!workDone) {
 						// chose new task for granulated choice !
-						Task taskToWork = TaskPool.chooseTask(this,
+						Task taskToWork = Tasks.chooseTask(this,
 								this.strategy.taskChoice);
 						executeJob(taskToWork);
 						if (taskToWork != null) {
@@ -190,7 +190,7 @@ public class Agent {
 					say("Step(" + time + ") of Agent " + this.id
 							+ " choosing new task for granulated choice");
 					// chose new task for granulated choice !
-					Task taskToWork = TaskPool.chooseTask(this,
+					Task taskToWork = Tasks.chooseTask(this,
 							this.strategy.taskChoice);
 					executeJob(taskToWork);
 					if (taskToWork != null) {
@@ -216,7 +216,7 @@ public class Agent {
 						+ " first run, chose new task and assign granulated choice");
 				// first run
 				// chose new task and assign granulated choice !
-				Task taskToWork = TaskPool.chooseTask(this,
+				Task taskToWork = Tasks.chooseTask(this,
 						this.strategy.taskChoice);
 				executeJob(taskToWork);
 				if (taskToWork != null) {
@@ -240,7 +240,7 @@ public class Agent {
 		} else { // block without granularity
 			// Agent Aj uses Aj {strategy for choosing tasks}
 			// and chooses a task to work on
-			Task taskToWork = TaskPool.chooseTask(this,
+			Task taskToWork = Tasks.chooseTask(this,
 					this.strategy.taskChoice);
 			// TO DO: make a good assertion to prevent nulls !!
 			executeJob(taskToWork);
@@ -267,8 +267,8 @@ public class Agent {
 		} else {
 
 			if (SimulationParameters.allwaysChooseTask
-					&& TaskPool.stillNonEmptyTasks()) {
-				Task randomTaskToWork = TaskPool.chooseTask(this,
+					&& Tasks.stillNonEmptyTasks()) {
+				Task randomTaskToWork = Tasks.chooseTask(this,
 						Strategy.TaskChoice.RANDOM);
 				assert randomTaskToWork.getTaskInternals().size() > 0;
 				say("Agent " + this.id + " will work on task "

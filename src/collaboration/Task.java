@@ -239,7 +239,7 @@ public class Task {
 		experience.increment(1);
 
 		if (SimulationParameters.deployedTasksLeave)
-			TaskPool.considerEnding(this);
+			Tasks.considerEnding(this);
 		skillsImprovedList.add(taskInternal.getSkill());
 
 		PersistJobDone.addContribution(agent, this, skillsImprovedList);
@@ -406,7 +406,7 @@ public class Task {
 		}
 
 		if (SimulationParameters.deployedTasksLeave)
-			TaskPool.considerEnding(this);
+			Tasks.considerEnding(this);
 
 		if (skillsImprovedList.size() > 0) {
 			PersistJobDone.addContribution(agent, this, skillsImprovedList);

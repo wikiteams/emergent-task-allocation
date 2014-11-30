@@ -3,7 +3,7 @@ package strategies;
 import collaboration.Agent;
 import collaboration.Task;
 import collaboration.TaskInternals;
-import collaboration.TaskPool;
+import collaboration.Tasks;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,14 +12,17 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.collections.IteratorUtils;
+
 import logger.PjiitOutputter;
 import repast.simphony.random.RandomHelper;
+import repast.simphony.util.collections.IndexedIterable;
 import tasks.CentralAssignment;
 import tasks.CentralAssignmentOrders;
 import utils.LaunchStatistics;
 
 /**
- * Algorithm of central work planning, heuristic is based on en entity called a
+ * Algorithm of central work planning, heuristic is based on an entity called a
  * Central Planner which sorts tasks descending by those least finished, and
  * finds an agent most experienced in those tasks.
  * 
@@ -31,7 +34,7 @@ public class CentralPlanning {
 
 	private static CentralPlanning singletonInstance;
 
-	// private List<Agent> bussy;
+	private List<Agent> bussy;
 	// this is deprecated, in 2.0 version of the algorithm we don't use
 	// blocking anymore
 	private static final double zero = 0;
@@ -48,18 +51,19 @@ public class CentralPlanning {
         return singletonInstance;
     }
 
-	public void zeroAgentsOrders(List<Agent> listAgent) {
+	public void zeroAgentsOrders(IndexedIterable<Object> listAgent) {
 		say("Zeroing central planer orders for " + listAgent.size() + "agents");
-		for (Agent agent : listAgent) {
-			agent.setCentralAssignmentOrders(null);
+		for (Object agent : listAgent) {
+			((Agent) agent).setCentralAssignmentOrders(null);
 		}
 		bussy = bussy == null ? new ArrayList<Agent>() : bussy;
 		bussy.clear();
 	}
 
-	public void centralPlanningCalc(List<Agent> listAgent, TaskPool taskPool) {
+	public void centralPlanningCalc(Iterable<Object> agents, Tasks taskPool) {
 		say("Central planning working !");
 
+		List<Agent> listAgent = IteratorUtils.toList(agents.iterator());
 		Collections.shuffle(listAgent);
 
 		List<Task> shuffledTasksFirstInit = new ArrayList<Task>(
