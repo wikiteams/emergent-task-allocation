@@ -107,4 +107,9 @@ public class Agents extends DefaultContext<Agent> {
 		PjiitOutputter.say(s);
 	}
 
+	public static void stochasticSampling(ArrayList<Agent> agents) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
