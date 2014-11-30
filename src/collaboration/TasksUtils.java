@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-public class TaskPoolHandy {
+public class TasksUtils {
 	
 	public static Collection<Skill> intersectWithAgentSkills(Agent agent,
 			Collection<Skill> skills) {

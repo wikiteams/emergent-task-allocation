@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import constants.ModelFactory;
 import logger.PjiitOutputter;
+import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
 import repast.simphony.random.RandomHelper;
 import strategies.Strategy;
@@ -18,11 +20,70 @@ import tasks.HeterophylyExpBased;
 import tasks.Homophyly;
 import tasks.HomophylyExpBased;
 import tasks.Preferential;
+import test.Model;
+import test.TaskTestUniverse;
+import utils.LaunchStatistics;
 
-public class TaskPool {
-
+public class Tasks extends DefaultContext<Task> {
+	
+	private ModelFactory modelFactory;
+	private LaunchStatistics launchStatistics;
+	private String universeDescription;
 	private static Map<String, Task> tasks = new HashMap<String, Task>();
+	
+	public Tasks(ModelFactory modelFactory, 
+			LaunchStatistics launchStatistics, 
+			String universeDescription){
+		super("Tasks");
+		
+		this.modelFactory = modelFactory;
+		this.launchStatistics = launchStatistics;
+		this.universeDescription = universeDescription;
+		initializeTasks(this);
+	}
+	
+	protected void initializeTasks(Context<Task> context) {
+		Model model = modelFactory.getFunctionality();
+		if (model.isNormal() && model.isValidation()) {
+			throw new UnsupportedOperationException();
+		} else if (model.isNormal()) {
+			initializeTasksNormally(context);
+		} else if (model.isSingleValidation()) {
+			TaskTestUniverse.init();
+			initalizeValidationTasks(context);
+		} else if (model.isValidation()) {
+			TaskTestUniverse.init();
+			initalizeValidationTasks(context);
+		} else {
+			assert false; // should never happen
+		}
+	}
 
+	private void initalizeValidationTasks(Context<Task> context) {
+		for (Task task : TaskTestUniverse.DATASET) {
+			say("Adding validation task to pool..");
+			addTask(task.getName(), task);
+			context.add(task);
+			// agentPool.add(task);
+		}
+	}
+
+	private void initializeTasksNormally(Context<Task> context) {
+		Integer howMany = SimulationParameters.multipleAgentSets ? Integer
+				.parseInt(universeDescription) : SimulationParameters.taskCount;
+		for (int i = 0; i < howMany; i++) {
+			Task task = new Task();
+			say("Creating task..");
+			addTask(task.getName(), task);
+			say("Initializing task..");
+			task.initialize(howMany);
+			context.add(task);
+			// agentPool.add(task);
+		}
+
+		launchStatistics.taskCount = getCount();
+	}
+	
 	public static void clearTasks() {
 		tasks.clear();
 	}
