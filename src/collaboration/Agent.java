@@ -304,6 +304,14 @@ public class Agent {
 	public Strategy getStrategy() {
 		return strategy;
 	}
+	
+	public Strategy.SkillChoice getSkillStrategy() {
+		return strategy.skillChoice;
+	}
+	
+	public Strategy.TaskChoice getTaskStrategy() {
+		return strategy.taskChoice;
+	}
 
 	public void setStrategy(Strategy strategy) {
 		this.strategy = strategy;
