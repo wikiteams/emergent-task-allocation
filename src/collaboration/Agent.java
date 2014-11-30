@@ -8,10 +8,12 @@ import java.util.Map;
 
 import logger.PjiitOutputter;
 import repast.simphony.annotate.AgentAnnot;
+import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.ui.probe.ProbeID;
+import repast.simphony.util.ContextUtils;
 import strategies.Strategy;
 import strategies.Strategy.SkillChoice;
 import tasks.CentralAssignmentOrders;
@@ -31,8 +33,9 @@ public class Agent {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	private static final SkillFactory skillFactory = new SkillFactory();
+	private static GameController gameController;
 	public static int totalAgents = 0;
 	private static double time = 0;
 
@@ -58,6 +61,14 @@ public class Agent {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.nick = nick + this.id;
+	}
+	
+	public GameController initGameController() {
+		Context<Object> context = ContextUtils.getContext(this);
+		Context<Object> parentContext = ContextUtils.getParentContext(context);
+		gameController = (GameController) parentContext.getObjects(
+				GameController.class).get(0);
+		return gameController;
 	}
 
 	public void addSkill(String key, AgentInternals agentInternals) {
@@ -299,6 +310,18 @@ public class Agent {
 	public void setNick(String nick) {
 		say("Agent's login set to: " + nick);
 		this.nick = nick;
+	}
+	
+	public GameController getGameController() {
+		return gameController == null ? initGameController() : gameController;
+	}
+	
+	public int getIteration() {
+		return getGameController().getCurrentIteration() + 1;
+	}
+
+	public int getGeneration() {
+		return getGameController().getCurrentGeneration() + 1;
 	}
 
 	public Strategy getStrategy() {
