@@ -77,10 +77,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * 
 	 * The number 9,223,372,036,854,775,807 is an integer equal to 2^63 - 1.
 	 * Although of the form 2^n - 1, it is not a Mersenne prime. It has a
-	 * factorization of 72 · 73 · 127 · 337 · 92737 · 649657, which is equal to
-	 * fi_1(2) · fi_3(2) · fi_7(2) · fi_9(2) · fi_21(2) · fi_63(2). Equivalent
+	 * factorization of 72 ; 73 ; 127 ; 337 ; 92737 ; 649657, which is equal to
+	 * fi_1(2) ; fi_3(2) ; fi_7(2) ; fi_9(2) ; fi_21(2) ; fi_63(2). Equivalent
 	 * to the hexadecimal value 7FFF,FFFF,FFFF,FFFF16, is the maximum value for
-	 * a 64-bit signed integer in computing
+	 * a 64-bit signed integer in computing.
 	 * 
 	 * @field serialVersionUID
 	 */
