@@ -358,9 +358,10 @@ public class Task {
 			 */
 			for (TaskInternals searchTaskInternal : new CopyOnWriteArrayList<TaskInternals>(
 					intersection)) {
-				if (agent.describeExperience(searchTaskInternal.getSkill()) > highest) {
-					highest = agent.describeExperience(searchTaskInternal
-							.getSkill());
+				if (agent.describeExperience(searchTaskInternal.getSkill(),
+						true, true) > highest) {
+					highest = agent.describeExperience(
+							searchTaskInternal.getSkill(), true, true);
 					singleTaskInternal = searchTaskInternal;
 				}
 			}

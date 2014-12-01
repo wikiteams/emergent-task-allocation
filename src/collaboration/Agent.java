@@ -23,6 +23,7 @@ import argonauts.PersistRewiring;
 
 /***
  * Simulation agent - a GitHub programmer
+ * 
  * @author Oskar
  * @version 2.0.3
  */
@@ -30,8 +31,9 @@ import argonauts.PersistRewiring;
 public class Agent {
 
 	/**
-	 * This value is used to automatically generate agent identifiers.
-	 * 42 - Answer to life the universe and everything, even GitHub
+	 * This value is used to automatically generate agent identifiers. 42 -
+	 * Answer to life the universe and everything, even GitHub
+	 * 
 	 * @field serialVersionUID
 	 */
 	public static final long serialVersionUID = 42L;
@@ -159,7 +161,8 @@ public class Agent {
 
 			if (granulated != null) {
 				// randomize decision
-				double leavingCurrentChance = RandomHelper.nextDoubleFromTo(0,100);
+				double leavingCurrentChance = RandomHelper.nextDoubleFromTo(0,
+						100);
 				if (leavingCurrentChance <= (double) (SimulationParameters.granularityObstinacy)) {
 					say("Step(" + time + ") of Agent " + this.id
 							+ " continuuing granularity");
@@ -237,9 +240,9 @@ public class Agent {
 					}
 				}
 			}
-			/******************************************************************
+			/*****************************
 			 * Granularity ends here
-			 ******************************************************************/
+			 *****************************/
 		} else { // block without granularity
 			// Agent Aj uses Aj {strategy for choosing tasks}
 			// and chooses a task to work on
@@ -359,12 +362,33 @@ public class Agent {
 		return deltaE.entrySet().toString();
 	}
 
-	public double describeExperience(Skill skill) {
+	/***
+	 * Returns the experience of Agent in a particular programming Skill
+	 * 
+	 * @param skill
+	 * @param unknownSkillIsZero
+	 *            - if true, returns 0.0 instead of null, when Skill not found
+	 *            in Agent's set of skills
+	 * @param forceCreate
+	 *            - if Agent don't possess this skill, but argument is set as
+	 *            true, he will now have it, use with caution and reason
+	 * @return Double - agent's experience in given skill
+	 */
+	public Double describeExperience(Skill skill, Boolean unknownSkillIsZero,
+			Boolean forceCreate) {
 		if (getCurrentSkills().get(skill.getName()) == null) {
-			AgentInternals result = (new AgentInternals(
-					skillFactory.getSkill(skill.getName()),
-					new Experience(true)));
-			getCurrentSkills().put(skill.getName(), result);
+			if (forceCreate) {
+				AgentInternals result = (new AgentInternals(
+						skillFactory.getSkill(skill.getName()), new Experience(
+								true)));
+				getCurrentSkills().put(skill.getName(), result);
+			} else {
+				if (unknownSkillIsZero) {
+					return 0d;
+				} else {
+					return null;
+				}
+			}
 		}
 		return getCurrentSkills().get(skill.getName()).getExperience()
 				.getDelta();
