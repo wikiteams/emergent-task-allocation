@@ -9,7 +9,6 @@ import java.util.Map;
 import logger.PjiitOutputter;
 import repast.simphony.annotate.AgentAnnot;
 import repast.simphony.context.Context;
-import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.ui.probe.ProbeID;
@@ -26,18 +25,15 @@ import argonauts.PersistRewiring;
 public class Agent {
 
 	/**
-	 * 
 	 * This value is used to automatically generate agent identifiers.
-	 * 
+	 * 42 - Answer to life the universe and everything, even GitHub
 	 * @field serialVersionUID
-	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	
+	public static final long serialVersionUID = 42L;
+
 	private static final SkillFactory skillFactory = new SkillFactory();
 	private static GameController gameController;
 	public static int totalAgents = 0;
-	private static double time = 0;
 
 	private AgentSkills agentSkills;
 	private Strategy strategy;
@@ -56,15 +52,14 @@ public class Agent {
 	public Agent(String firstName, String lastName, String nick) {
 		this.agentSkills = new AgentSkills();
 		say("Agent constructor called");
-		// this.id = ++totalAgents;
 		AgentSkillsPool.fillWithSkills(this);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.nick = nick + this.id;
 	}
-	
+
 	public GameController initGameController() {
-		Context<Object> context = ContextUtils.getContext(this);
+		Context<Agent> context = ContextUtils.getContext(this);
 		Context<Object> parentContext = ContextUtils.getParentContext(context);
 		gameController = (GameController) parentContext.getObjects(
 				GameController.class).get(0);
@@ -121,8 +116,8 @@ public class Agent {
 		}
 		return skillCollection;
 	}
-	
-	public void resetMe(){
+
+	public void resetMe() {
 		getAgentSkills().reset();
 	}
 
@@ -148,31 +143,23 @@ public class Agent {
 
 	@ScheduledMethod(start = 1, interval = 1, priority = 100)
 	public void step() {
+		double time = getGameController().getCurrentTick();
 
 		say("Step(" + time + ") of Agent " + this.id
 				+ " scheduled method launched.");
 
-		/**************************************************
-		 * Gets current tick, for logging purpose only
-		 **************************************************/
-		time = RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
-
-		/********************************************************************
-		 * Granularity starts here
-		 ********************************************************************/
 		if (SimulationParameters.granularity) {
 			GranulatedChoice granulated = PersistRewiring
 					.getGranulatedChoice(this);
 
 			if (granulated != null) {
 				// randomize decision
-				double __d = RandomHelper.nextDoubleFromTo(0d, 100d);
-				if (__d <= (double) (SimulationParameters.granularityObstinacy)) {
+				double leavingCurrentChance = RandomHelper.nextDoubleFromTo(0,100);
+				if (leavingCurrentChance <= (double) (SimulationParameters.granularityObstinacy)) {
 					say("Step(" + time + ") of Agent " + this.id
 							+ " continuuing granularity");
 					// continue work on the same skill
 					// but check if the is any work left in this particular task
-					// !
 					Boolean workDone = granulated.getTaskChosen()
 							.workOnTaskFromContinuum(this, granulated,
 									this.strategy.skillChoice);
@@ -251,8 +238,7 @@ public class Agent {
 		} else { // block without granularity
 			// Agent Aj uses Aj {strategy for choosing tasks}
 			// and chooses a task to work on
-			Task taskToWork = Tasks.chooseTask(this,
-					this.strategy.taskChoice);
+			Task taskToWork = Tasks.chooseTask(this, this.strategy.taskChoice);
 			// TO DO: make a good assertion to prevent nulls !!
 			executeJob(taskToWork);
 		}
@@ -297,7 +283,8 @@ public class Agent {
 			} else {
 				say("Agent " + this.id + " didn't work on anything");
 				sanity("Agent " + this.id
-						+ " don't have a task to work on in step " + time);
+						+ " don't have a task to work on in step "
+						+ getGameController().getCurrentTick());
 			}
 		}
 
@@ -311,11 +298,15 @@ public class Agent {
 		say("Agent's login set to: " + nick);
 		this.nick = nick;
 	}
-	
+
+	public String getName() {
+		return this.toString() + " (" + this.firstName + " " + this.lastName;
+	}
+
 	public GameController getGameController() {
 		return gameController == null ? initGameController() : gameController;
 	}
-	
+
 	public int getIteration() {
 		return getGameController().getCurrentIteration() + 1;
 	}
@@ -327,11 +318,11 @@ public class Agent {
 	public Strategy getStrategy() {
 		return strategy;
 	}
-	
+
 	public Strategy.SkillChoice getSkillStrategy() {
 		return strategy.skillChoice;
 	}
-	
+
 	public Strategy.TaskChoice getTaskStrategy() {
 		return strategy.taskChoice;
 	}

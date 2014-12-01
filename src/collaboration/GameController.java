@@ -75,10 +75,6 @@ public class GameController {
 		}
 	}
 
-	private void resetAllTasks() {
-		throw new UnsupportedOperationException("Tasks aren't meant to react");
-	}
-
 	/**
 	 * Resets states in all Agents
 	 */
@@ -127,6 +123,10 @@ public class GameController {
 
 	public int getCurrentIteration() {
 		return currentIteration;
+	}
+	
+	public double getCurrentTick(){
+		return RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 	}
 
 	public boolean isWarmedUp() {
