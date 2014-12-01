@@ -31,14 +31,9 @@ import repast.simphony.engine.schedule.Schedule;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
-import repast.simphony.util.ContextUtils;
 import repast.simphony.util.collections.IndexedIterable;
 import strategies.CentralPlanning;
-import strategies.Strategy;
 import strategies.StrategyDistribution;
-import test.AgentTestUniverse;
-import test.Model;
-import test.TaskTestUniverse;
 import utils.DescribeUniverseBulkLoad;
 import utils.LaunchStatistics;
 import utils.NamesGenerator;
@@ -69,14 +64,30 @@ import constants.ModelFactory;
  * 
  * Project uses ini4j library which is licensed under Apache License.
  * 
- * @version 2.0.2 Evo
- * @category Agent-organized Social Simulations
+ * @version 2.0.3 Work Evolve
+ * @category Agent-organised Social Simulations
  * @since 1.0
  * @author Oskar Jarczyk, Bla\zej Gruszka et.al.
  * @see 1) GitHub markdown 2) "On The Effectiveness of Emergent Task Allocation"
  */
 public class CollaborationBuilder implements ContextBuilder<Object> {
-	
+
+	/**
+	 * This value is used to automatically generate agent identifiers.
+	 * 
+	 * The number 9,223,372,036,854,775,807 is an integer equal to 2^63 - 1.
+	 * Although of the form 2^n - 1, it is not a Mersenne prime. It has a
+	 * factorization of 72 · 73 · 127 · 337 · 92737 · 649657, which is equal to
+	 * fi_1(2) · fi_3(2) · fi_7(2) · fi_9(2) · fi_21(2) · fi_63(2). Equivalent
+	 * to the hexadecimal value 7FFF,FFFF,FFFF,FFFF16, is the maximum value for
+	 * a 64-bit signed integer in computing
+	 * 
+	 * @field serialVersionUID
+	 */
+	public static final long serialVersionUID = 9223372036854775807L;
+	public static Context<Task> tasks;
+	public static Context<Agent> agents;
+
 	private Context<Object> currentContext;
 
 	private StrategyDistribution strategyDistribution;
@@ -86,8 +97,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private Schedule schedule = new Schedule();
 	private String[] universe = null;
 
-	public static Context<Task> tasks;
-	public static Context<Agent> agents;
 	private CentralPlanning centralPlanner;
 
 	private boolean alreadyFlushed = false;
@@ -174,26 +183,20 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 		prepareEssentials();
 		prepareFurthermore();
-		
-		tasks = new Tasks(modelFactory,
-				launchStatistics, 
-				universe[1]);
+
+		tasks = new Tasks(modelFactory, launchStatistics, universe[1]);
 		context.addSubContext(tasks);
-		agents = new Agents(modelFactory, 
-				strategyDistribution, 
-				launchStatistics, 
-				universe[0]);
+		agents = new Agents(modelFactory, strategyDistribution,
+				launchStatistics, universe[0]);
 		context.addSubContext(agents);
 		context.add(new GameController());
 
 		say("Task choice algorithm is "
 				+ SimulationParameters.taskChoiceAlgorithm);
-		sanity("Number of teams created "
-				+ getTasks().size());
+		sanity("Number of teams created " + getTasks().size());
 		// czy to na pewno zwraca prawidlowo ilosc mimo
 		// ze te obiekty siedza w sub-context?
-		sanity("Number of agents created "
-				+ getAgents().size());
+		sanity("Number of agents created " + getAgents().size());
 		// to samo tutaj
 		sanity("Algorithm tested: " + SimulationParameters.taskChoiceAlgorithm);
 
@@ -218,7 +221,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 		// polimorfizm, Context<Task> mozna traktowac jako klase Tasks
 		PersistAdvancement.calculateAll((Tasks) tasks);
-		// TODO: later add requirement 
+		// TODO: later add requirement
 		// that if at least 1 agent uses Preferential...
 
 		List<ISchedulableAction> actions = schedule.schedule(this);
@@ -226,13 +229,13 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 		return context;
 	}
-	
-	private IndexedIterable<Object> getTasks(){
+
+	private IndexedIterable<Object> getTasks() {
 		Context<Object> context = getCurrentContext();
 		return context.getObjects(Task.class);
 	}
-	
-	private IndexedIterable<Object> getAgents(){
+
+	private IndexedIterable<Object> getAgents() {
 		Context<Object> context = getCurrentContext();
 		return context.getObjects(Agent.class);
 	}
@@ -261,7 +264,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		CSVWriter writer = new CSVWriter(new FileWriter("input_a1.csv"), ',',
 				CSVWriter.NO_QUOTE_CHARACTER);
 		for (Object agent : getAgents()) {
-			for (AgentInternals __agentInternal : ((Agent) agent).getAgentInternals()) {
+			for (AgentInternals __agentInternal : ((Agent) agent)
+					.getAgentInternals()) {
 				ArrayList<String> entries = new ArrayList<String>();
 				entries.add(((Agent) agent).getNick());
 				entries.add(__agentInternal.getExperience().getValue() + "");
@@ -399,12 +403,13 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	/**
 	 * This is the method scheduled (if at least 1 agent uses central planner)
-	 * to execute every tick to make for giving orders, hence zeroing the
-	 * orders first (clearing previous orders) and than making the math 
+	 * to execute every tick to make for giving orders, hence zeroing the orders
+	 * first (clearing previous orders) and than making the math
 	 */
 	public void centralPlanning() {
 		say("CentralPlanning scheduled method launched, listAgent.size(): "
-				+ getAgents().size() + " taskPool.size(): " + ((Tasks) tasks).getCount());
+				+ getAgents().size() + " taskPool.size(): "
+				+ ((Tasks) tasks).getCount());
 		say("Zeroing agents orders");
 		centralPlanner.zeroAgentsOrders(getAgents());
 		centralPlanner.centralPlanningCalc(getAgents(), (Tasks) tasks);

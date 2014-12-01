@@ -14,23 +14,23 @@ import strategies.Strategy.TaskChoice;
  * 
  * @author Oskar Jarczyk
  * @since 1.4
- * @version 2.0
+ * @version 2.0.3
  */
 public class CentralAssignment {
 
 	/**
 	 * Returns list of agents which don't have any orders assigned
-	 * @param agents Input list of agents
-	 * @param bussy Input list of busy agents
-	 * @return list of agents which are available for work
+	 * @param Collection<Agent> agents - input list of agents
+	 * @param Collection<Agent> busy - input list of busy agents
+	 * @return List<Agent> - list of agents which are available for work
 	 */
 	public static List<Agent> choseAgents(Collection<Agent> agents, 
-			Collection<Agent> bussy) {
+			Collection<Agent> busy) {
 		List<Agent> list = new ArrayList<Agent>();
 		for (Agent agent : agents) {
 			if (agent.getStrategy().taskChoice
 					.equals(TaskChoice.CENTRAL_ASSIGNMENT)) {
-				if (!bussy.contains(agent)){
+				if (!busy.contains(agent)){
 					CentralAssignmentOrders cao = agent
 							.getCentralAssignmentOrders();
 					if (cao == null)
@@ -42,16 +42,15 @@ public class CentralAssignment {
 	}
 
 	/**
-	 * Return orders from a central planer, or a null when no orders exists
-	 * @param agent
-	 * @return Central assignment planer chosen task
+	 * Return orders from a central planner, or a null when no orders exists
+	 * @param Agent agent
+	 * @return Central assignment planner chosen task
 	 */
 	public Task concludeMath(Agent agent) {
 		Task chosen = null;
-		
 		CentralAssignmentOrders cao = agent.getCentralAssignmentOrders();
-		chosen = cao == null ? null : cao.getChosenTask();
-
+		if (cao != null)
+			chosen = cao.getChosenTask();
 		return chosen;
 	}
 

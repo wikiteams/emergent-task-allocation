@@ -7,13 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import constants.ModelFactory;
 import logger.PjiitOutputter;
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
 import repast.simphony.random.RandomHelper;
 import strategies.Strategy;
-import tasks.ArgMinMax;
 import tasks.CentralAssignment;
 import tasks.Heterophyly;
 import tasks.HeterophylyExpBased;
@@ -23,7 +21,13 @@ import tasks.Preferential;
 import test.Model;
 import test.TaskTestUniverse;
 import utils.LaunchStatistics;
+import constants.ModelFactory;
 
+/***
+ * Programming Task - a producer in the simulation
+ * @author Oskar
+ * @version 2.0.3
+ */
 public class Tasks extends DefaultContext<Task> {
 	
 	private ModelFactory modelFactory;
@@ -159,9 +163,6 @@ public class Tasks extends DefaultContext<Task> {
 			Heterophyly heterophyly = new Heterophyly(tasks);
 			chosen = heterophyly.concludeMath(agent);
 			break;
-		case SOCIAL_VECTOR:
-			// TODO: check if you added "category" attribute to Skills
-			break;
 		case PREFERENTIAL:
 			Preferential preferential = new Preferential();
 			chosen = preferential.concludeMath(agent);
@@ -187,11 +188,6 @@ public class Tasks extends DefaultContext<Task> {
 					say("Didn't found task with such skills which agent have!");
 				}
 			} else {
-//				chosen = tasks.get(RandomHelper
-//						.nextIntFromTo(0,
-//								tasks.size() - 1));
-//				assert chosen.getTaskInternals().size() > 0;
-//				assert !chosen.isClosed();
 				List<Task> internalRandomList;
 				Collection<Task> coll = tasks.values();
 				if (coll instanceof List)
@@ -208,19 +204,9 @@ public class Tasks extends DefaultContext<Task> {
 				}
 			}
 			break;
-		case COMPARISION:
-			;
-			break;
 		case CENTRAL_ASSIGNMENT:
 			CentralAssignment centralAssignment = new CentralAssignment();
 			chosen = centralAssignment.concludeMath(agent);
-			break;
-		case MACHINE_LEARNED:
-			;
-			break;
-		case ARG_MIN_MAX:
-			ArgMinMax argMinMax = new ArgMinMax(tasks);
-			chosen = argMinMax.concludeMath(agent);
 			break;
 		default:
 			assert false; // there is no default method, so please never happen

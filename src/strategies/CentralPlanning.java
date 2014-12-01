@@ -1,10 +1,5 @@
 package strategies;
 
-import collaboration.Agent;
-import collaboration.Task;
-import collaboration.TaskInternals;
-import collaboration.Tasks;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,14 +7,19 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import logger.PjiitOutputter;
+
 import org.apache.commons.collections.IteratorUtils;
 
-import logger.PjiitOutputter;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.util.collections.IndexedIterable;
 import tasks.CentralAssignment;
 import tasks.CentralAssignmentOrders;
 import utils.LaunchStatistics;
+import collaboration.Agent;
+import collaboration.Task;
+import collaboration.TaskInternals;
+import collaboration.Tasks;
 
 /**
  * Algorithm of central work planning, heuristic is based on an entity called a
@@ -28,13 +28,13 @@ import utils.LaunchStatistics;
  * 
  * @author Oskar Jarczyk
  * @since 1.3
- * @version 2.0
+ * @version 2.0.3
  */
 public class CentralPlanning {
 
 	private static CentralPlanning singletonInstance;
 
-	private List<Agent> bussy;
+	private List<Agent> busy;
 	// this is deprecated, in 2.0 version of the algorithm we don't use
 	// blocking anymore
 	private static final double zero = 0;
@@ -42,22 +42,23 @@ public class CentralPlanning {
 	// SingletonExample prevents any other class from instantiating
 	private CentralPlanning() {
 	}
-	
-    // Providing Global point of access
-    public static CentralPlanning getSingletonInstance() {
-        if (null == singletonInstance) {
-            singletonInstance = new CentralPlanning();
-        }
-        return singletonInstance;
-    }
+
+	// Providing Global point of access
+	public static CentralPlanning getSingletonInstance() {
+		if (null == singletonInstance) {
+			singletonInstance = new CentralPlanning();
+		}
+		return singletonInstance;
+	}
 
 	public void zeroAgentsOrders(IndexedIterable<Object> listAgent) {
 		say("Zeroing central planer orders for " + listAgent.size() + "agents");
 		for (Object agent : listAgent) {
 			((Agent) agent).setCentralAssignmentOrders(null);
 		}
-		bussy = bussy == null ? new ArrayList<Agent>() : bussy;
-		bussy.clear();
+		if (busy == null)
+			busy = new ArrayList<Agent>();
+		busy.clear();
 	}
 
 	public void centralPlanningCalc(Iterable<Object> agents, Tasks taskPool) {
@@ -124,7 +125,7 @@ public class CentralPlanning {
 
 			// Choose Agent m, which have highest delta() in Skill j
 			List<Agent> listOfAgentsNotBussy = CentralAssignment.choseAgents(
-					listAgent, bussy);
+					listAgent, busy);
 
 			assert listOfAgentsNotBussy != null;
 			assert listOfAgentsNotBussy.size() > 0;
@@ -158,7 +159,7 @@ public class CentralPlanning {
 			chosenAgent.setCentralAssignmentOrders(new CentralAssignmentOrders(
 					chosen, skill));
 
-			bussy.add(chosenAgent);
+			busy.add(chosenAgent);
 		}
 	}
 

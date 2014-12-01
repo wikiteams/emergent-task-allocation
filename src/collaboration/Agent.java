@@ -21,6 +21,11 @@ import argonauts.GranulatedChoice;
 import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
 
+/***
+ * Simulation agent - a GitHub programmer
+ * @author Oskar
+ * @version 2.0.3
+ */
 @AgentAnnot(displayName = "Agent")
 public class Agent {
 
