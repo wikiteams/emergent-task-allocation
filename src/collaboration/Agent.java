@@ -38,7 +38,7 @@ public class Agent {
 	private AgentSkills agentSkills;
 	private Strategy strategy;
 
-	private final int id = ++totalAgents;;
+	private final int id = ++totalAgents;
 	private String firstName;
 	private String lastName;
 	private String nick;
