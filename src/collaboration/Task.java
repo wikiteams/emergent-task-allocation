@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import logger.PjiitOutputter;
-import repast.simphony.engine.watcher.Watch;
-import repast.simphony.engine.watcher.WatcherTriggerSchedule;
+import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
+import repast.simphony.util.ContextUtils;
 import strategies.Aggregate;
 import strategies.CentralAssignmentTask;
 import strategies.GreedyAssignmentTask;
@@ -29,39 +29,55 @@ import constants.Constraints;
  * and work done. Literally, a representation of a simulation Task object.
  * 
  * @since 1.0
- * @version 1.4
+ * @version 2.0
  * @author Oskar Jarczyk
  */
 public class Task {
 
-	String __barebones = "MockSkill: Java ";
-	int __bare_work_done = 66;
-	int __bare_work_left = 100;
+	/**
+	 * This value is used to automatically generate agent identifiers. 75 is the
+	 * fourth ordered Bell number, and counts the number of weak orderings on a
+	 * set of four items.
+	 * 
+	 * As the sum of the first five pentagonal numbers, 75 is a pentagonal
+	 * pyramidal number. It is also an enneagonal number.
+	 * 
+	 * It is also a Keith number, because it recurs in a Fibonacci-like sequence
+	 * started from its base 10 digits: 7, 5, 12, 17, 29, 46, 75... But there is
+	 * no integer that added up to its own digits adds up to 75, hence 75 is a
+	 * self number.
+	 * 
+	 * Excluding the infinite sets, there are 75 uniform polyhedra (or 76 if
+	 * edges are allowed to coincide).
+	 * 
+	 * @field serialVersionUID
+	 */
+	public static final long serialVersionUID = 75L;
 
 	private static int idIncrementalCounter = 0;
-
+	private static GameController gameController;
 	public static double START_ARG_MIN = 1.002;
 	public static double START_ARG_MAX = -0.002;
 
 	private String name;
-	private int id;
+	private final int id = ++idIncrementalCounter;
 
 	private Map<String, TaskInternals> skills = new HashMap<String, TaskInternals>();
 
 	// private double persistTaskAdvance = 0;
 	private Map<Skill, Double> persistAdvance = new HashMap<Skill, Double>();
 
-	@Watch(watcheeClassName = "collaboration.Task", watcheeFieldNames = "__bare_work_done", query = "colocated", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
-	public void run() {
-		System.out.println("Task with skills running procedure");
-		System.out.println(__barebones + __bare_work_done + "/"
-				+ __bare_work_left);
-	}
-
 	public Task() {
-		this.id = ++idIncrementalCounter;
 		this.name = "Task_" + this.id;
 		say("Task object " + this + " created");
+	}
+
+	public GameController initGameController() {
+		Context<Task> context = ContextUtils.getContext(this);
+		Context<Object> parentContext = ContextUtils.getParentContext(context);
+		gameController = (GameController) parentContext.getObjects(
+				GameController.class).get(0);
+		return gameController;
 	}
 
 	public void addSkill(String key, TaskInternals taskInternals) {
@@ -98,11 +114,7 @@ public class Task {
 		return skills.size();
 	}
 
-	public synchronized void setId(int id) {
-		this.id = id;
-	}
-
-	public synchronized int getId() {
+	public int getId() {
 		return this.id;
 	}
 
@@ -468,12 +480,16 @@ public class Task {
 		PjiitOutputter.sanity(s);
 	}
 
-	// public double getPersistTaskAdvance() {
-	// return persistTaskAdvance;
-	// }
-	//
-	// public void setPersistTaskAdvance(double persistTaskAdvance) {
-	// this.persistTaskAdvance = persistTaskAdvance;
-	// }
+	public GameController getGameController() {
+		return gameController == null ? initGameController() : gameController;
+	}
+
+	public int getIteration() {
+		return getGameController().getCurrentIteration() + 1;
+	}
+
+	public int getGeneration() {
+		return getGameController().getCurrentGeneration() + 1;
+	}
 
 }
