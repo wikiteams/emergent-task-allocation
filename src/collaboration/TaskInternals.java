@@ -11,6 +11,21 @@ import java.text.DecimalFormat;
  */
 public class TaskInternals {
 
+	/**
+	 * This value is used to automatically generate agent identifiers.
+	 * 
+	 * The gravitational constant, approximately 6.673*10^-11 N*(m/kg)^2 and
+	 * denoted by letter G, is an empirical physical constant involved in the
+	 * calculation(s) of gravitational force between two bodies. It usually
+	 * appears in Sir Isaac Newton's law of universal gravitation, and in Albert
+	 * Einstein's general theory of relativity. It is also known as the
+	 * universal gravitational constant, Newton's constant, and colloquially as
+	 * Big G.
+	 * 
+	 * @field serialVersionUID
+	 */
+	public static final long serialVersionUID = 66731011L;
+
 	private Skill skill;
 	private WorkUnit workRequired;
 	private WorkUnit workDone;

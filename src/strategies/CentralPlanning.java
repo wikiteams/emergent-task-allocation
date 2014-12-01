@@ -1,22 +1,15 @@
 package strategies;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import logger.PjiitOutputter;
-
-import org.apache.commons.collections.IteratorUtils;
-
-import repast.simphony.random.RandomHelper;
 import repast.simphony.util.collections.IndexedIterable;
-import tasks.CentralAssignment;
 import tasks.CentralAssignmentOrders;
-import utils.LaunchStatistics;
+import utils.ObjectsHelper;
 import collaboration.Agent;
+import collaboration.Skill;
 import collaboration.Task;
 import collaboration.TaskInternals;
 import collaboration.Tasks;
@@ -26,24 +19,30 @@ import collaboration.Tasks;
  * Central Planner which sorts tasks descending by those least finished, and
  * finds an agent most experienced in those tasks.
  * 
- * @author Oskar Jarczyk
+ * @author Oskar Jarczyk, prof. Adam Wierzbicki
  * @since 1.3
  * @version 2.0.3
  */
 public class CentralPlanning {
 
+	/**
+	 * This value is used to automatically generate agent identifiers.
+	 * 
+	 * In nuclear physics, a magic number is a number of nucleons (either
+	 * protons or neutrons) such that they are arranged into complete shells
+	 * within the atomic nucleus. The seven most widely recognised magic numbers
+	 * as of 2007 are 2, 8, 20, 28, 50, 82, and 126 (sequence A018226 in OEIS).
+	 * 
+	 * @field serialVersionUID
+	 */
+	public static final long serialVersionUID = 2820285082126L;
+
 	private static CentralPlanning singletonInstance;
 
-	private List<Agent> busy;
-	// this is deprecated, in 2.0 version of the algorithm we don't use
-	// blocking anymore
-	private static final double zero = 0;
-
-	// SingletonExample prevents any other class from instantiating
 	private CentralPlanning() {
+		say("getSingletonInstance() prevents any other class from instantiating");
 	}
 
-	// Providing Global point of access
 	public static CentralPlanning getSingletonInstance() {
 		if (null == singletonInstance) {
 			singletonInstance = new CentralPlanning();
@@ -54,117 +53,75 @@ public class CentralPlanning {
 	public void zeroAgentsOrders(IndexedIterable<Object> listAgent) {
 		say("Zeroing central planer orders for " + listAgent.size() + "agents");
 		for (Object agent : listAgent) {
+			say("Zeroing orders for " + ((Agent) agent).getName());
 			((Agent) agent).setCentralAssignmentOrders(null);
 		}
-		if (busy == null)
-			busy = new ArrayList<Agent>();
-		busy.clear();
 	}
 
+	/***
+	 * A proper central planner is a problem in a category of work(load) balance
+	 * known e.g. from designing planet rovers etc. where decisions must be made
+	 * in a short period of time to e.g. minimise power use etc. We present here
+	 * a sample central planner algorithm which seems to do the job as assessed
+	 * through the rule of thumb.
+	 * 
+	 * @TODO: compare time with previous version of central assignment
+	 *        algorithm, as described in our previous paper
+	 * 
+	 * @param Iterable
+	 *            <Object> agents - a pool of agents
+	 * @param Tasks
+	 *            taskPool - a pool of tasks
+	 */
 	public void centralPlanningCalc(Iterable<Object> agents, Tasks taskPool) {
 		say("Central planning working !");
 
-		List<Agent> listAgent = IteratorUtils.toList(agents.iterator());
-		Collections.shuffle(listAgent);
+		Map<Agent, Double> measurements = new HashMap<Agent, Double>();
+		Map<Agent, TaskInternals> results = new HashMap<Agent, TaskInternals>();
 
-		List<Task> shuffledTasksFirstInit = new ArrayList<Task>(
-				taskPool.getTasks());
-		Collections.shuffle(shuffledTasksFirstInit);
-
-		SortedMap<Double, TaskInternals> sortedMap = new TreeMap<Double, TaskInternals>(
-				new Comparator<Double>() {
-					public int compare(Double o1, Double o2) {
-						return -o1.compareTo(o2);
-					}
-				});
-
-		int ensureDuplicatesFactor = 0;
-		// Find Task {i} and Skill {j}, with highest work left
-		for (Task singleTaskFromPool : shuffledTasksFirstInit) {
-			TaskInternals singleChosen = null;
-			double wl = 0;
-			for (TaskInternals singleSkill : singleTaskFromPool
-					.getTaskInternals().values()) {
-				// if (checkIfApplicable(singleTaskFromPool, singleSkill)) {
-				// double gMinusW = singleSkill.getWorkLeft();
-				// ile pozostalo pracy
-				if (!singleSkill.isWorkDone()) {
-					// chosen = singleTaskFromPool;
-					// skill = singleSkill;
-					double gMinusW = singleSkill.getWorkLeft();
-					if (gMinusW > wl) {
-						wl = gMinusW;
-						singleChosen = singleSkill;
+		for (Task task : taskPool.getTasks()) {
+			for (Object agent : agents) {
+				Double highestValue = null;
+				Skill highestSkill = null;
+				for (TaskInternals taskInternal : task.getTaskInternals()
+						.values()) {
+					Skill skill = taskInternal.getSkill();
+					Double workLeft = taskInternal.getWorkLeft();
+					Double measure = workLeft
+							* ((Agent) agent).describeExperience(skill, true,
+									false);
+					if (ObjectsHelper.is2ndHigher(highestValue, measure)) {
+						highestValue = measure;
+						highestSkill = skill;
 					}
 				}
-
+				if (ObjectsHelper.isHigherThanMapEntries(measurements, agent,
+						highestValue)) {
+					results.put((Agent) agent,
+							task.getTaskInternals(highestSkill));
+					measurements.put((Agent) agent, highestValue);
+				}
 			}
-			if (singleChosen != null)
-				sortedMap
-						.put(singleChosen.getWorkLeft()
-								- ((++ensureDuplicatesFactor) / (10 * 6)),
-								singleChosen);
 		}
 
-		// Iterate mainIterationCount times
-		// if there are less tasks than agent, iterate taskCount times
-		int mainIterationCount = sortedMap.size() < LaunchStatistics.singleton.agentCount ? sortedMap
-				.size() : listAgent.size();
+		// keep it simple - every agent need to work
 
-		Object[] sortedArray = sortedMap.values().toArray();
-
-		for (int i = 0; i < mainIterationCount; i++) {
-
-			TaskInternals skill = (TaskInternals) sortedArray[i];
-			Task chosen = skill.getOwner();
-
-			assert chosen != null;
-			assert skill != null;
-
-			Agent chosenAgent = null;
-
-			// Choose Agent m, which have highest delta() in Skill j
-			List<Agent> listOfAgentsNotBussy = CentralAssignment.choseAgents(
-					listAgent, busy);
-
-			assert listOfAgentsNotBussy != null;
-			assert listOfAgentsNotBussy.size() > 0;
-			// stad te asserty bo w koncu planner iteruje po ilosci agentow,
-			// wiec pracujemy nad choc jednym wolnym!
-			double max_delta = zero;
-			for (Agent agent : listOfAgentsNotBussy) {
-				double local_delta = agent.getAgentInternals(skill
-						.getSkillName()) != null ? agent
-						.getAgentInternals(skill.getSkillName())
-						.getExperience().getDelta() : 0;
-				// zero w przypadku gdy agent nie ma w ogole doswiadczenia w tym
-				// tasku!
-				if (local_delta > max_delta) {
-					max_delta = local_delta;
-					chosenAgent = agent;
-				}
-			}
-
-			if (chosenAgent == null) {
-				// nie ma zadnego agenta o takich skillach, wybierz losowo !
-				Collections.shuffle(listOfAgentsNotBussy);
-				chosenAgent = listOfAgentsNotBussy.get(RandomHelper
-						.nextIntFromTo(0, listOfAgentsNotBussy.size() - 1));
-			}
-
-			assert chosenAgent != null;
-			assert chosen != null;
-			assert skill != null;
-
-			chosenAgent.setCentralAssignmentOrders(new CentralAssignmentOrders(
-					chosen, skill));
-
-			busy.add(chosenAgent);
+		for (Entry<Agent, TaskInternals> entry : results.entrySet()) {
+			Agent agent = entry.getKey();
+			TaskInternals t = entry.getValue();
+			Task task = t.getOwner();
+			agent.setCentralAssignmentOrders(new CentralAssignmentOrders(task,
+					t));
 		}
 	}
 
 	private void say(String s) {
 		PjiitOutputter.say(s);
+	}
+
+	@Override
+	public String toString() {
+		return "CentralPlanner intelligence, signature: " + serialVersionUID;
 	}
 
 }

@@ -29,15 +29,16 @@ import constants.Constraints;
  * and work done. Literally, a representation of a simulation Task object.
  * 
  * @since 1.0
- * @version 2.0
+ * @version 2.0.3
  * @author Oskar Jarczyk
  */
 public class Task {
 
 	/**
-	 * This value is used to automatically generate agent identifiers. 75 is the
-	 * fourth ordered Bell number, and counts the number of weak orderings on a
-	 * set of four items.
+	 * This value is used to automatically generate agent identifiers.
+	 * 
+	 * 75 is the fourth ordered Bell number, and counts the number of weak
+	 * orderings on a set of four items.
 	 * 
 	 * As the sum of the first five pentagonal numbers, 75 is a pentagonal
 	 * pyramidal number. It is also an enneagonal number.
@@ -64,7 +65,6 @@ public class Task {
 
 	private Map<String, TaskInternals> skills = new HashMap<String, TaskInternals>();
 
-	// private double persistTaskAdvance = 0;
 	private Map<Skill, Double> persistAdvance = new HashMap<Skill, Double>();
 
 	public Task() {
@@ -88,8 +88,12 @@ public class Task {
 		skills.remove(key);
 	}
 
-	public TaskInternals getTaskInternals(String key) {
-		return skills.get(key);
+	public TaskInternals getTaskInternals(String skillName) {
+		return skills.get(skillName);
+	}
+
+	public TaskInternals getTaskInternals(Skill skill) {
+		return skills.get(skill.getName());
 	}
 
 	public TaskInternals getRandomTaskInternals() {
