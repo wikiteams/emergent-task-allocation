@@ -1,10 +1,8 @@
 package collaboration;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import logger.PjiitOutputter;
 
@@ -18,6 +16,7 @@ import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.util.ContextUtils;
 import utils.AgentEvolve;
+import constants.Constraints;
 
 public class GameController {
 
@@ -30,10 +29,10 @@ public class GameController {
 
 	public GameController() {
 		Parameters params = RunEnvironment.getInstance().getParameters();
-		iterationNumber = (Integer) params.getValue("iteration_number");
+		iterationNumber = (Integer) params.getValue("iterationCount");
 		// variable iterationNumber states how many ticks long
 		// is a single generation, we use mostly value of 200
-		generationNumber = (Integer) params.getValue("generation_number");
+		generationNumber = Constraints.generationNumber;
 		// how many generations we want to simulate
 		// mostly it is 10 generations in our batch files
 		say("generationNumber: " + generationNumber);

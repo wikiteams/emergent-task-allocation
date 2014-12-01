@@ -38,4 +38,6 @@ public abstract class Constraints {
 	public static final String ROOKIE = 
 			"Choose random task left! Agents are in a desire of job even if they rookie!";
 
+	public static final int generationNumber = 200;
+
 }
