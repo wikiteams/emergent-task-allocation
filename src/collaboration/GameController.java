@@ -13,7 +13,6 @@ import org.joda.time.Seconds;
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
-import repast.simphony.parameter.Parameters;
 import repast.simphony.util.ContextUtils;
 import utils.AgentEvolve;
 import constants.Constraints;
@@ -28,8 +27,7 @@ public class GameController {
 	private DateTime previous = new DateTime();
 
 	public GameController() {
-		Parameters params = RunEnvironment.getInstance().getParameters();
-		iterationNumber = (Integer) params.getValue("iterationCount");
+		iterationNumber = SimulationParameters.iterationCount;
 		// variable iterationNumber states how many ticks long
 		// is a single generation, we use mostly value of 200
 		generationNumber = Constraints.generationNumber;

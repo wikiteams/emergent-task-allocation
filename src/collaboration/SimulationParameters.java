@@ -31,6 +31,7 @@ public class SimulationParameters {
 	public static Model modelType = null;
 	public static String dataSource = "";
 	public static int planNumber = 0;
+	public static int iterationCount = 0;
 
 	public static int agentCount = 0;
 	public static int taskCount = 0;
@@ -81,7 +82,8 @@ public class SimulationParameters {
 				.getValue("modelType"));
 		dataSource = (String) param.getValue("dataSource");
 		planNumber = (Integer) param.getValue("planNumber");
-
+		iterationCount = (Integer) param.getValue("iterationCount");
+		
 		agentCount = (Integer) param.getValue("agentCount");
 		taskCount = (Integer) param.getValue("numTasks");
 		percStartMembership = (Integer) param.getValue("percStartMembership");
