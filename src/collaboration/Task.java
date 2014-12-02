@@ -28,9 +28,9 @@ import constants.Constraints;
  * Task is a collection of a three-element set of skill, number of work units,
  * and work done. Literally, a representation of a simulation Task object.
  * 
- * @since 1.0
- * @version 2.0.3
  * @author Oskar Jarczyk
+ * @since 1.0
+ * @version 2.0.4
  */
 public class Task {
 
@@ -64,7 +64,6 @@ public class Task {
 	private final int id = ++idIncrementalCounter;
 
 	private Map<String, TaskInternals> skills = new HashMap<String, TaskInternals>();
-
 	private Map<Skill, Double> persistAdvance = new HashMap<Skill, Double>();
 
 	public Task() {
@@ -116,6 +115,17 @@ public class Task {
 
 	public int countTaskInternals() {
 		return skills.size();
+	}
+
+	public int countUnfinishedTaskInternals() {
+		int result = 0;
+		for (TaskInternals taskInternals : skills.values()) {
+			if (taskInternals.getWorkDone().d < taskInternals.getWorkRequired().d) {
+				result++;
+				break;
+			}
+		}
+		return result;
 	}
 
 	public int getId() {

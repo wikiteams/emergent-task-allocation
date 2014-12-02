@@ -9,6 +9,10 @@
 		<string>Iteration</string>
 		<string>Id</string>
 		<string>Name</string>
+		<string>HasUnfinishedSkills</string>
+		<string>SkillsCount</string>
+		<string>UnfinishedSkillsCount</string>
+		<string>GeneralAdvance</string>
 	</sourceIds>
 	<fileName>tasks_progress.csv</fileName>
 	<addTimeStamp>true</addTimeStamp>

@@ -48,6 +48,40 @@
 				<methodName>getName</methodName>
 			</repast.simphony.data2.engine.MethodDataSourceDefinition>
 		</entry>
+		<entry>
+			<string>HasUnfinishedSkills</string>
+			<repast.simphony.data2.engine.MethodDataSourceDefinition>
+				<id>HasUnfinishedTasks</id>
+				<className>collaboration.Task</className>
+				<methodName>isClosed</methodName>
+			</repast.simphony.data2.engine.MethodDataSourceDefinition>
+		</entry>
+		<entry>
+		<string>SkillsCount</string>
+			<repast.simphony.data2.engine.MethodDataSourceDefinition>
+				<id>SkillsCount</id>
+				<className>collaboration.Task</className>
+				<methodName>countTaskInternals</methodName>
+			</repast.simphony.data2.engine.MethodDataSourceDefinition>
+		</entry>
+		<entry>
+		<string>UnfinishedSkillsCount</string>
+			<repast.simphony.data2.engine.MethodDataSourceDefinition>
+				<id>UnfinishedSkillsCount</id>
+				<className>collaboration.Task</className>
+				<methodName>countUnfinishedTaskInternals</methodName>
+				<
+			</repast.simphony.data2.engine.MethodDataSourceDefinition>
+		</entry>
+		<entry>
+		<string>GeneralAdvance</string>
+			<repast.simphony.data2.engine.MethodDataSourceDefinition>
+				<id>GeneralAdvance</id>
+				<className>collaboration.Task</className>
+				<methodName>getGeneralAdvance</methodName>
+				<
+			</repast.simphony.data2.engine.MethodDataSourceDefinition>
+		</entry>
 	</methodDataSources>
 	<countSources class="linked-hash-map" />
 	<customNADataSources class="linked-hash-map" />
