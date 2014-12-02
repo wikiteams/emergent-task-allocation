@@ -1,4 +1,4 @@
-<?xml version="1.0"?><sweep runs="20">
+<?xml version="1.0"?><sweep runs="5">
 	<parameter name="planNumber" type="constant" constant_type="int" value="0" />
 	<parameter name="iterationCount" type="constant" constant_type="int" value="5000" />
 	<parameter name="dataSource" type="constant" constant_type="java.lang.String" value="AgentTestUniverse" />
