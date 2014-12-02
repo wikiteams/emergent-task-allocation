@@ -11,8 +11,6 @@
 	<!-- skill choice strategy -->
 	<parameter name="skillChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="choice" />
 	
-	<parameter name="randomSeed" type="constant" constant_type="int" value="985924735" />
-	
 	<parameter name="allowMultiMembership" type="constant" constant_type="java.lang.Boolean" value="true" />
 	<parameter name="deployedTasksLeave" type="constant" constant_type="java.lang.Boolean" value="true" />
 	<parameter name="strategyDistribution" type="constant" constant_type="int" value="0" />
