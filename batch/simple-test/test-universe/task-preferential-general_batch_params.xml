@@ -4,6 +4,7 @@
 	
 	<!-- Evolutionairy plan (1-7), 0 means disabled -->
 	<parameter name="planNumber" type="constant" constant_type="int" value="0" />
+	<parameter name="iterationCount" type="constant" constant_type="int" value="5000" />
 	
 	<!-- task choice strategy -->
 	<parameter name="taskChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="preferential" />
