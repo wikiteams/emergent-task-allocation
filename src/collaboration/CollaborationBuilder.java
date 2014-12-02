@@ -46,7 +46,7 @@ import constants.ModelFactory;
 
 /**
  * COIN network emergence simulator, a Repast Simphony 2.2 multi-agent social
- * simulation for modeling task allocation techniques and behavior of
+ * simulation for modelling task allocation techniques and behaviour of
  * collaborators in websites like GitHub and Wikipedia. Works on both Windows
  * and Linux environments.
  * 
