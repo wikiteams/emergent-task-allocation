@@ -72,6 +72,22 @@
 				<methodName>getSkillStrategy</methodName>
 			</repast.simphony.data2.engine.MethodDataSourceDefinition>
 		</entry>
+		<entry>
+			<string>WasWorkingOnAnything</string>
+			<repast.simphony.data2.engine.MethodDataSourceDefinition>
+				<id>WasWorkingOnAnything</id>
+				<className>collaboration.Agent</className>
+				<methodName>wasWorkingOnAnything</methodName>
+			</repast.simphony.data2.engine.MethodDataSourceDefinition>
+		</entry>
+		<entry>
+			<string>Experience</string>
+			<repast.simphony.data2.engine.MethodDataSourceDefinition>
+				<id>Experience</id>
+				<className>collaboration.Agent</className>
+				<methodName>describeExperience</methodName>
+			</repast.simphony.data2.engine.MethodDataSourceDefinition>
+		</entry>
 	</methodDataSources>
 	<countSources class="linked-hash-map" />
 	<customNADataSources class="linked-hash-map" />

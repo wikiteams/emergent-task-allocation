@@ -12,6 +12,8 @@
 		<string>Strategy</string>
 		<string>TaskStrategy</string>
 		<string>SkillStrategy</string>
+		<string>WasWorkingOnAnything</string>
+		<string>Experience</string>
 	</sourceIds>
 	<fileName>agents_state.csv</fileName>
 	<addTimeStamp>true</addTimeStamp>

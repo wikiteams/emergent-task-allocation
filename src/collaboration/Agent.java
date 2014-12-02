@@ -24,8 +24,8 @@ import argonauts.PersistRewiring;
 /***
  * Simulation agent - a GitHub programmer
  * 
- * @author Oskar
- * @version 2.0.3
+ * @author Oskar Jarczyk
+ * @version 2.0.4
  */
 @AgentAnnot(displayName = "Agent")
 public class Agent {
