@@ -123,6 +123,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	private void prepareEssentials() {
 		try {
+			loadSet = LoadSet.EMPTY;
 			// getting parameters of simulation
 			say(Constraints.LOADING_PARAMETERS);
 			SimulationParameters.init();

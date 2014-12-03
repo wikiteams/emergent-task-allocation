@@ -21,7 +21,7 @@ import collaboration.Tasks;
  * 
  * @author Oskar Jarczyk, prof. Adam Wierzbicki
  * @since 1.3
- * @version 2.0.3
+ * @version 2.0.4
  */
 public class CentralPlanning {
 
@@ -79,39 +79,42 @@ public class CentralPlanning {
 		Map<Agent, Double> measurements = new HashMap<Agent, Double>();
 		Map<Agent, TaskInternals> results = new HashMap<Agent, TaskInternals>();
 
-		for (Task task : taskPool.getTasks()) {
-			for (Object agent : agents) {
-				Double highestValue = null;
-				Skill highestSkill = null;
-				for (TaskInternals taskInternal : task.getTaskInternals()
-						.values()) {
-					Skill skill = taskInternal.getSkill();
-					Double workLeft = taskInternal.getWorkLeft();
-					Double measure = workLeft
-							* ((Agent) agent).describeExperience(skill, true,
-									false);
-					if (ObjectsHelper.is2ndHigher(highestValue, measure)) {
-						highestValue = measure;
-						highestSkill = skill;
+		if (Tasks.stillNonEmptyTasks()) {
+
+			for (Task task : taskPool.getUnfinishedTasks()) {
+				for (Object agent : agents) {
+					Double highestValue = null;
+					Skill highestSkill = null;
+					for (TaskInternals taskInternal : task.getTaskInternals()
+							.values()) {
+						Skill skill = taskInternal.getSkill();
+						Double workLeft = taskInternal.getWorkLeft();
+						Double measure = workLeft
+								* ((Agent) agent).describeExperience(skill,
+										true, false);
+						if (ObjectsHelper.is2ndHigher(highestValue, measure)) {
+							highestValue = measure;
+							highestSkill = skill;
+						}
+					}
+					if (ObjectsHelper.isHigherThanMapEntries(measurements,
+							agent, highestValue)) {
+						results.put((Agent) agent,
+								task.getTaskInternals(highestSkill));
+						measurements.put((Agent) agent, highestValue);
 					}
 				}
-				if (ObjectsHelper.isHigherThanMapEntries(measurements, agent,
-						highestValue)) {
-					results.put((Agent) agent,
-							task.getTaskInternals(highestSkill));
-					measurements.put((Agent) agent, highestValue);
-				}
 			}
-		}
 
-		// keep it simple - every agent need to work
+			// keep it simple - every agent need to work
 
-		for (Entry<Agent, TaskInternals> entry : results.entrySet()) {
-			Agent agent = entry.getKey();
-			TaskInternals t = entry.getValue();
-			Task task = t.getOwner();
-			agent.setCentralAssignmentOrders(new CentralAssignmentOrders(task,
-					t));
+			for (Entry<Agent, TaskInternals> entry : results.entrySet()) {
+				Agent agent = entry.getKey();
+				TaskInternals taskInternal = entry.getValue();
+				Task task = taskInternal.getOwner();
+				agent.setCentralAssignmentOrders(new CentralAssignmentOrders(
+						task, taskInternal));
+			}
 		}
 	}
 

@@ -6,7 +6,7 @@ package strategies;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 1.2
+ * @version 2.0
  *
  */
 public class Strategy {

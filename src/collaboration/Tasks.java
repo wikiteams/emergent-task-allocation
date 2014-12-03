@@ -46,7 +46,7 @@ public class Tasks extends DefaultContext<Task> {
 		initializeTasks(this);
 	}
 
-	protected void initializeTasks(Context<Task> context) {
+	private void initializeTasks(Context<Task> context) {
 		Model model = modelFactory.getFunctionality();
 		if (model.isNormal() && model.isValidation()) {
 			throw new UnsupportedOperationException();
@@ -68,7 +68,6 @@ public class Tasks extends DefaultContext<Task> {
 			say("Adding validation task to pool..");
 			addTask(task.getName(), task);
 			context.add(task);
-			// agentPool.add(task);
 		}
 	}
 
@@ -102,6 +101,15 @@ public class Tasks extends DefaultContext<Task> {
 
 	public Collection<Task> getTasks() {
 		return tasks.values();
+	}
+	
+	public Collection<Task> getUnfinishedTasks() {
+		List<Task> result = new ArrayList<Task>();
+		for (Task task : tasks.values()) {
+			if (!task.isClosed())
+				result.add(task);
+		}
+		return result;
 	}
 
 	public static boolean stillNonEmptyTasks() {
