@@ -16,7 +16,7 @@ import test.ModelConverter;
  */
 public class SimulationParameters {
 
-	public static final boolean multipleAgentSets = true;
+	public static boolean multipleAgentSets = true;
 	public static final String tasksDataset = "ALL_REPOSITORIES";
 	public static final boolean allowSkillDeath = false;
 
@@ -74,6 +74,8 @@ public class SimulationParameters {
 		Parameters param = RunEnvironment.getInstance().getParameters();
 
 		ModelConverter modelConverter = new ModelConverter();
+		
+		multipleAgentSets = (Boolean) param.getValue("multipleAgentSets");
 
 		modelType = (Model) modelConverter.fromString((String) param
 				.getValue("modelType"));

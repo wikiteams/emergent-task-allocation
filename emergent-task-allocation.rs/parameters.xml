@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
+	<!-- General -->
+	
+	<parameter name="multipleAgentSets" displayName="Choose randomly from set of (no of agents/tasks)?"
+		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
+	
 	<!-- Evolutionary parameters -->
 	
 	<parameter name="modelType" displayName="Model type"
@@ -115,7 +121,7 @@
 	<parameter name="agentSkillsPoolRandomize1" displayName="agentSkillsPoolRandomizeNoOfTasks"
 		type="java.lang.Integer" defaultValue="5" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-		
+
 	<!-- Other/technical -->
 	
 	<parameter name="randomSeed" displayName="Default Random Seed"
