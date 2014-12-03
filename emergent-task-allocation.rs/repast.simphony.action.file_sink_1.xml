@@ -1,0 +1,20 @@
+<repast.simphony.data2.engine.FileSinkDescriptor>
+  <name>Agents state output</name>
+  <dataSet>agents_state_separate</dataSet>
+  <delimiter>;</delimiter>
+  <format>TABULAR</format>
+  <sourceIds class="linked-hash-set">
+    <string>tick</string>
+    <string>Generation</string>
+    <string>Iteration</string>
+    <string>Name</string>
+    <string>Id</string>
+    <string>Strategy</string>
+    <string>TaskStrategy</string>
+    <string>SkillStrategy</string>
+    <string>WasWorkingOnAnything</string>
+    <string>Experience</string>
+  </sourceIds>
+  <fileName>agents_state.csv</fileName>
+  <addTimeStamp>true</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>

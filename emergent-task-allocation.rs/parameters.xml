@@ -47,12 +47,18 @@
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 
 	<!-- Behavioral parameters -->
-	
+
+	<parameter name="experienceCutPoint" displayName="experienceCutPoint"
+		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="experienceDecay" displayName="experienceDecay"
 		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="fullyLearnedAgentsLeave" displayName="fullyLearnedAgentsLeave"
 		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
+	<parameter name="allwaysChooseTask" displayName="Agent will always choose a Task?"
+		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 
 	<!-- Granularity of work -->

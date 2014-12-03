@@ -1,0 +1,19 @@
+<repast.simphony.data2.engine.FileSinkDescriptor>
+  <name>Tasks_output</name>
+  <dataSet>Tasks_separate</dataSet>
+  <delimiter>;</delimiter>
+  <format>TABULAR</format>
+  <sourceIds class="linked-hash-set">
+    <string>tick</string>
+    <string>Generation</string>
+    <string>Iteration</string>
+    <string>Id</string>
+    <string>Name</string>
+    <string>HasUnfinishedSkills</string>
+    <string>SkillsCount</string>
+    <string>UnfinishedSkillsCount</string>
+    <string>GeneralAdvance</string>
+  </sourceIds>
+  <fileName>tasks_progress.csv</fileName>
+  <addTimeStamp>true</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>
