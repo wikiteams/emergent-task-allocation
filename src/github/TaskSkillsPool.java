@@ -98,7 +98,7 @@ public abstract class TaskSkillsPool {
 			instantiate(DataSet.TOPREPOS_AND_TOPUSERS);
 		else if (method.toUpperCase().equals("PUSHES_BY_LANGUAGES"))
 			instantiate(DataSet.PUSHES_BY_LANGUAGES);
-		else if (method.toUpperCase().equals("TOP_REPOSITORIES"))
+		else if (method.toUpperCase().equals("ALL_REPOSITORIES"))
 			instantiate(DataSet.TOP_REPOSITORIES);
 		else if (method.toUpperCase().equals("200_LANGUAGES"))
 			instantiate(DataSet._200_LANGUAGES);

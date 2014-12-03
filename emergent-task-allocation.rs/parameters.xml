@@ -121,13 +121,16 @@
 	<parameter name="randomSeed" displayName="Default Random Seed"
 		type="int" defaultValue="__NULL__" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+<!-- 	<parameter name="dataSetAll" displayName="experienceCutPoint"
+		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" /> -->
 	
 	<!-- "Force stop" don't use it unless you know what you are doing -->
 
-	<parameter name="forceStop" displayName="forceStop" type="java.lang.Boolean"
+	<parameter name="forceStop" displayName="Force stop?" type="java.lang.Boolean"
 		defaultValue="false" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
-	<parameter name="numSteps" displayName="numSteps" type="java.lang.Integer"
+	<parameter name="numSteps" displayName="Force stop number of steps" type="java.lang.Integer"
 		defaultValue="5000" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 </parameters>

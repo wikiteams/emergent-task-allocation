@@ -17,7 +17,7 @@ import test.ModelConverter;
 public class SimulationParameters {
 
 	public static final boolean multipleAgentSets = true;
-
+	public static final String tasksDataset = "ALL_REPOSITORIES";
 	public static final boolean allowSkillDeath = false;
 
 	/**
@@ -68,9 +68,6 @@ public class SimulationParameters {
 	public static boolean forceStop = false;
 
 	public static int maxWorkRequired = 0;
-
-	public static boolean dataSetAll = false;
-	public static boolean onlyOneBasicDataset = true;
 	public static double probableWorkDone = 8;
 
 	public static void init() {
@@ -131,6 +128,6 @@ public class SimulationParameters {
 				.getValue("fullyLearnedAgentsLeave");
 		forceStop = (Boolean) param.getValue("forceStop");
 
-		dataSetAll = (Boolean) param.getValue("dataSetAll");
+		//dataSetAll = (Boolean) param.getValue("dataSetAll");
 	}
 }

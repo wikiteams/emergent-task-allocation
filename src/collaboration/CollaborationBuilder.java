@@ -1,6 +1,5 @@
 package collaboration;
 
-import github.DataSetProvider;
 import github.TaskSkillFrequency;
 import github.TaskSkillsPool;
 
@@ -152,11 +151,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	private void prepareFurthermore() {
 		try {
-			DataSetProvider dsp = new DataSetProvider(
-					SimulationParameters.dataSetAll);
-			AgentSkillsPool.instantiate(dsp.getAgentSkillDataset());
+			AgentSkillsPool.instantiate(SimulationParameters.agentSkillPoolDataset);
 			say("Instatiated AgentSkillsPool");
-			TaskSkillsPool.instantiate(dsp.getTaskSkillDataset());
+			TaskSkillsPool.instantiate(SimulationParameters.tasksDataset);
 			say("Instatied TaskSkillsPool");
 
 			strategyDistribution

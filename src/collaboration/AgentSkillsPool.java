@@ -1,73 +1,54 @@
 package collaboration;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Random;
+
+import logger.PjiitOutputter;
 
 import org.apache.commons.lang3.SystemUtils;
 
 import repast.simphony.random.RandomHelper;
-import logger.PjiitOutputter;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
 public abstract class AgentSkillsPool {
 
-	private static String filenameMostOftenStarred = SystemUtils.IS_OS_LINUX ? "data/users_top_stars.csv"
-			: "data\\users_top_stars.csv";
-
-	/***
-	 * Input format of a .CSV file:
-	 * 
-	 * username, skill1, skill2, skill3
-	 * 
-	 * i.e. 'fabpot', 'PHP', 'Shell', 'JavaScript'
-	 */
-	private static String filename = SystemUtils.IS_OS_LINUX ? "data/top-users-final.csv"
+	/*****************************************
+	 * Input format of a .CSV file: 
+	 * username, skill1, skill2, skill3 
+	 * e.g.:
+	 * 'fabpot', 'PHP', 'Shell', 'JavaScript'
+	 *****************************************/
+	private static String filename = 
+			SystemUtils.IS_OS_LINUX ? "data/top-users-final.csv"
 			: "data\\top-users-final.csv";
-	private static String filename_ext = SystemUtils.IS_OS_LINUX ? "data/users-and-their-pull-requests.csv"
+	private static String filename_ext = 
+			SystemUtils.IS_OS_LINUX ? "data/users-and-their-pull-requests.csv"
 			: "data\\users-and-their-pull-requests.csv";
 
 	private enum DataSet {
-		AT_LEAST_1_COMMIT, MOST_OFTEN_STARRED, TOPREPOS_AND_THEIRUSERS, TOPUSERS_AND_THEIRREPOS, TOPREPOS_AND_TOPUSERS, PUSHES_BY_LANGUAGES, SEVERANCE_FROM_MIDDLE, MOST_COMMON_TECHNOLOGY, ALL_LANGUAGES, TOP_USERS, _200_LANGUAGES;
+		TOP_USERS, BRAIN_JAR;
 	}
 
 	private enum Method {
-		TOP_ACTIVE, RANDOM_FROM_GENERAL_POOL, RANDOM;
+		TOP_ACTIVE, RANDOM_FROM_GENERAL_POOL;
 	}
 
-	/***
-	 * <String:user, {<skill, intensivity>}>
-	 */
-	private static LinkedHashMap<String, HashMap<Skill, Double>> skillSet = new LinkedHashMap<String, HashMap<Skill, Double>>();
+	private static LinkedHashMap<String, HashMap<Skill, Double>> skillSet = 
+			new LinkedHashMap<String, HashMap<Skill, Double>>();
 	private static SkillFactory skillFactory = new SkillFactory();
 
 	public static void instantiate(String method) {
-		if (method.toUpperCase().equals("MOST_OFTEN_STARRED"))
-			instantiate(DataSet.MOST_OFTEN_STARRED);
-		else if (method.toUpperCase().equals("AT_LEAST_1_COMMIT"))
-			instantiate(DataSet.AT_LEAST_1_COMMIT);
-		else if (method.toUpperCase().equals("TOPUSERS_AND_THEIRREPOS"))
-			instantiate(DataSet.TOPUSERS_AND_THEIRREPOS);
-		else if (method.toUpperCase().equals("TOPREPOS_AND_THEIRUSERS"))
-			instantiate(DataSet.TOPREPOS_AND_THEIRUSERS);
-		else if (method.toUpperCase().equals("TOPREPOS_AND_TOPUSERS"))
-			instantiate(DataSet.TOPREPOS_AND_TOPUSERS);
-		else if (method.toUpperCase().equals("PUSHES_BY_LANGUAGES"))
-			instantiate(DataSet.PUSHES_BY_LANGUAGES);
-		else if (method.toUpperCase().equals("TOP_USERS"))
+		if (method.toUpperCase().equals("TOP_USERS")
+				|| method.toUpperCase().equals("STATIC_PULL_REQUESTS"))
 			instantiate(DataSet.TOP_USERS);
-		else if (method.toUpperCase().equals("200_LANGUAGES"))
-			instantiate(DataSet._200_LANGUAGES);
+		if (method.toUpperCase().equals("BRAIN_JAR"))
+			instantiate(DataSet.BRAIN_JAR);
 	}
 
 	public static void clear() {
@@ -75,36 +56,12 @@ public abstract class AgentSkillsPool {
 	}
 
 	public static void instantiate(DataSet method) {
-		if (method == DataSet.MOST_OFTEN_STARRED) {
-			try {
-				parseCsvMostOftenStarred();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else if (method == DataSet.TOP_USERS) {
+		if (method == DataSet.TOP_USERS) {
 			try {
 				parseCsvTopUsers(true);
 				parseCsvUsersByPushes();
-				AgentSkillsFrequency.tasksCheckSum = checksum(skillSet);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else if (method == DataSet.PUSHES_BY_LANGUAGES) {
-			try {
-				parseCsvTopUsers(true);
-				parseCsvUsersByPushes();
-				AgentSkillsFrequency.tasksCheckSum = checksum(skillSet);
+				AgentSkillsFrequency.tasksCheckSum = AgentSkillsUtils
+						.checksum(skillSet);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -116,27 +73,7 @@ public abstract class AgentSkillsPool {
 				e.printStackTrace();
 			}
 		}
-		say("initialized TaskSkillsPool");
-	}
-
-	private static void parseCsvMostOftenStarred() throws IOException,
-			FileNotFoundException {
-		CSVReader reader = new CSVReader(new FileReader(
-				filenameMostOftenStarred), ',', '\'');
-		String[] nextLine;
-		while ((nextLine = reader.readNext()) != null) {
-			// if (nickOnly) {
-			// skillSet.put(nextLine[0], new HashMap<Skill, Double>());
-			// } else {
-			// HashMap<Skill, Double> l = new HashMap<Skill, Double>();
-			// for (int i = 1; i < nextLine.length; i++) {
-			// l.put(skillFactory.getSkill(nextLine[i]), null);
-			// say("Parsed from CSV: " + nextLine[i]);
-			// }
-			// skillSet.put(nextLine[0], l);
-			// }
-		}
-		reader.close();
+		say("Initialized Agent Skills Matrix");
 	}
 
 	/*
@@ -203,24 +140,9 @@ public abstract class AgentSkillsPool {
 		skillSet.put(user, h);
 	}
 
-	public static HashMap<Skill, Double> choseRandom() {
-		Random generator = new Random();
-		int i = generator.nextInt(skillSet.size());
-		return getByIndex(skillSet, i);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static HashMap<Skill, Double> getByIndex(
-			LinkedHashMap<String, HashMap<Skill, Double>> hMap, int index) {
-		return (HashMap<Skill, Double>) hMap.values().toArray()[index];
-	}
-
 	public static void fillWithSkills(Agent agent) {
 		if (SimulationParameters.fillAgentSkillsMethod.toUpperCase().equals(
-				"RANDOM"))
-			fillWithSkills(agent, Method.RANDOM);
-		else if (SimulationParameters.fillAgentSkillsMethod.toUpperCase()
-				.equals("RANDOM_FROM_GENERAL_POOL"))
+				"RANDOM_FROM_GENERAL_POOL"))
 			fillWithSkills(agent, Method.RANDOM_FROM_GENERAL_POOL);
 		else if (SimulationParameters.fillAgentSkillsMethod.toUpperCase()
 				.equals("TOP_ACTIVE"))
@@ -228,16 +150,14 @@ public abstract class AgentSkillsPool {
 	}
 
 	public static void fillWithSkills(Agent agent, Method method) {
-		if (method == Method.RANDOM) {
-			throw new UnsupportedOperationException();
-		} else if (method == Method.TOP_ACTIVE) {
+		if (method == Method.TOP_ACTIVE) {
 
 			// here we fill agent skills with experience
-			// analyzed by their pushed, no random character here
+			// analysed by their pushed, no random character here
 			// all taken from users-and-their-pull-requests.csv
 
-			HashMap<Skill, Double> iterationSkills = getByIndex(skillSet,
-					agent.getId());
+			HashMap<Skill, Double> iterationSkills = AgentSkillsUtils
+					.getByIndex(skillSet, agent.getId());
 			for (Skill iterationSkill : iterationSkills.keySet()) {
 				AgentInternals builtAgentInternals = new AgentInternals(
 						iterationSkill, new Experience(
@@ -245,23 +165,21 @@ public abstract class AgentSkillsPool {
 				agent.addSkill(iterationSkill.getName(), builtAgentInternals);
 			}
 		} else if (method == Method.RANDOM_FROM_GENERAL_POOL) {
-			// randomize HOW MANY SKILLS
-			// Random generator = new Random();
+			// randomise how many skills
 			int how_many = RandomHelper.nextIntFromTo(0,
 					SimulationParameters.agentSkillsPoolRandomize1 - 1);
-			ArrayList<Skill> __skills = new ArrayList<Skill>();
+			ArrayList<Skill> skillsForConsider = new ArrayList<Skill>();
 			for (int i = 0; i < how_many; i++) {
 				Skill s1 = null;
 				while (true) {
 					s1 = skillFactory.getRandomSkill();
-					if (__skills.contains(s1)) {
+					if (skillsForConsider.contains(s1)) {
 						continue;
 					} else {
-						__skills.add(s1);
+						skillsForConsider.add(s1);
 						break;
 					}
 				}
-				// Random generator_exp = new Random();
 				int topExperience = SimulationParameters.agentSkillsMaximumExperience;
 				int experienceRandomized = RandomHelper.nextIntFromTo(0,
 						topExperience - 1);
@@ -273,32 +191,7 @@ public abstract class AgentSkillsPool {
 						new Experience(experienceRandomized, topExperience));
 				agent.addSkill(s1.getName(), builtAgentInternals);
 			}
-
 		}
-		// ArrayList skill = getByIndex(skillSet, COUNTABLE);
-		// Experience experience = new Experience();
-		// AgentInternals agentInternals = new AgentInternals(skill,
-		// experience);
-		// agent.addSkill(key, agentInternals);
-		// say("Agent " + agent + " filled with skills");
-	}
-
-	private static BigInteger checksum(Object obj) throws IOException,
-			NoSuchAlgorithmException {
-
-		if (obj == null) {
-			return BigInteger.ZERO;
-		}
-
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.writeObject(obj);
-		oos.close();
-
-		MessageDigest m = MessageDigest.getInstance("MD5");
-		m.update(baos.toByteArray());
-
-		return new BigInteger(1, m.digest());
 	}
 
 	private static void say(String s) {

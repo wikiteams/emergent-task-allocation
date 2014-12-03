@@ -25,27 +25,27 @@ import constants.ModelFactory;
 
 /***
  * Programming Task - a producer in the simulation
- * @author Oskar
- * @version 2.0.3
+ * 
+ * @author Oskar Jarczyk
+ * @version 2.0.4
  */
 public class Tasks extends DefaultContext<Task> {
-	
+
 	private ModelFactory modelFactory;
 	private LaunchStatistics launchStatistics;
 	private String universeDescription;
 	private static Map<String, Task> tasks = new HashMap<String, Task>();
-	
-	public Tasks(ModelFactory modelFactory, 
-			LaunchStatistics launchStatistics, 
-			String universeDescription){
+
+	public Tasks(ModelFactory modelFactory, LaunchStatistics launchStatistics,
+			String universeDescription) {
 		super("Tasks");
-		
+
 		this.modelFactory = modelFactory;
 		this.launchStatistics = launchStatistics;
 		this.universeDescription = universeDescription;
 		initializeTasks(this);
 	}
-	
+
 	protected void initializeTasks(Context<Task> context) {
 		Model model = modelFactory.getFunctionality();
 		if (model.isNormal() && model.isValidation()) {
@@ -77,17 +77,16 @@ public class Tasks extends DefaultContext<Task> {
 				.parseInt(universeDescription) : SimulationParameters.taskCount;
 		for (int i = 0; i < howMany; i++) {
 			Task task = new Task();
-			say("Creating task..");
+			say("Creating Task " + task.getId());
 			addTask(task.getName(), task);
-			say("Initializing task..");
+			say("Initializing Task " + task.getId() + " " + task.getName());
 			task.initialize(howMany);
 			context.add(task);
-			// agentPool.add(task);
 		}
 
 		launchStatistics.taskCount = getCount();
 	}
-	
+
 	public static void clearTasks() {
 		tasks.clear();
 	}
@@ -104,12 +103,12 @@ public class Tasks extends DefaultContext<Task> {
 	public Collection<Task> getTasks() {
 		return tasks.values();
 	}
-	
-	public static boolean stillNonEmptyTasks(){
+
+	public static boolean stillNonEmptyTasks() {
 		boolean result = false;
 		if (tasks.size() < 1)
 			return result;
-		for(Task task : tasks.values()){
+		for (Task task : tasks.values()) {
 			if (!task.isClosed())
 				result = true;
 		}
@@ -117,21 +116,31 @@ public class Tasks extends DefaultContext<Task> {
 	}
 
 	/**
-	 * Count tasks in the pool
+	 * Count all Tasks in the pool
 	 * 
-	 * @return Task pool size, in other words, count of the task in the
-	 *         simulation universe (positive int)
+	 * @return int - task pool size, in other words, count of the tasks in the
+	 *         simulation universe
 	 */
 	public int getCount() {
 		return getCount(false);
 	}
-	
+
+	/**
+	 * Count unfinished Tasks in the pool
+	 * 
+	 * @return int - task pool size, in other words, count of the tasks in the
+	 *         simulation universe
+	 */
+	public int getUnfinishedCount() {
+		return getCount(true);
+	}
+
 	public int getCount(boolean notFinished) {
 		if (!notFinished)
 			return tasks.size();
 		else {
 			int counter = 0;
-			for(Task task : tasks.values()){
+			for (Task task : tasks.values()) {
 				if (!task.isClosed())
 					counter++;
 			}
@@ -183,8 +192,7 @@ public class Tasks extends DefaultContext<Task> {
 					chosen = tasksWithMatchingSkills.get(RandomHelper
 							.nextIntFromTo(0,
 									tasksWithMatchingSkills.size() - 1));
-				}
-				else {
+				} else {
 					say("Didn't found task with such skills which agent have!");
 				}
 			} else {
@@ -218,8 +226,8 @@ public class Tasks extends DefaultContext<Task> {
 					+ chosen.getId() + " by " + strategy + " to work on.");
 		} else {
 			sanity("Agent " + agent.toString() + " uses strategy "
-					+ agent.getStrategy()
-					+ " by " + strategy + " but didnt found any task to work on.");
+					+ agent.getStrategy() + " by " + strategy
+					+ " but didnt found any task to work on.");
 			if (SimulationParameters.allwaysChooseTask) {
 				sanity("Choosing any task left because of param allwaysChooseTask");
 				List<Task> internalRandomList;
@@ -238,7 +246,7 @@ public class Tasks extends DefaultContext<Task> {
 				}
 			}
 		}
-		//assert chosen != null;
+		// assert chosen != null;
 		return chosen;
 	}
 
