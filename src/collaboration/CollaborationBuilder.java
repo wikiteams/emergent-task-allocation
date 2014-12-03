@@ -33,6 +33,7 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.util.collections.IndexedIterable;
 import strategies.CentralPlanning;
 import strategies.StrategyDistribution;
+import test.Model;
 import utils.DescribeUniverseBulkLoad;
 import utils.LaunchStatistics;
 import utils.NamesGenerator;
@@ -41,6 +42,7 @@ import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
 import au.com.bytecode.opencsv.CSVWriter;
 import constants.Constraints;
+import constants.LoadSet;
 import constants.ModelFactory;
 
 /**
@@ -94,7 +96,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private SkillFactory skillFactory;
 	private LaunchStatistics launchStatistics;
 	private Schedule schedule = new Schedule();
-	private String[] universe = null;
+	private LoadSet loadSet;
 
 	private CentralPlanning centralPlanner;
 
@@ -124,17 +126,20 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			// getting parameters of simulation
 			say(Constraints.LOADING_PARAMETERS);
 			SimulationParameters.init();
-			if (SimulationParameters.multipleAgentSets) {
-				universe = DescribeUniverseBulkLoad.init();
-			}
+
 			launchStatistics = new LaunchStatistics();
 			modelFactory = new ModelFactory(SimulationParameters.modelType);
+			Model model = modelFactory.getFunctionality();
+			
 			say("Starting simulation with model: " + modelFactory.toString());
-			if (modelFactory.getFunctionality().isValidation())
+			if (model.isValidation())
 				initializeValidationLogger();
+			if (SimulationParameters.multipleAgentSets && model.isNormal()) {
+				loadSet = DescribeUniverseBulkLoad.init();
+			}
 
 			strategyDistribution = new StrategyDistribution();
-			// initialize skill pools
+			// initialise skill pools
 			say("SkillFactory parsing skills from the CSV file...");
 			skillFactory = new SkillFactory();
 			skillFactory.buildSkillsLibrary();
@@ -181,10 +186,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		prepareEssentials();
 		prepareFurthermore();
 
-		tasks = new Tasks(modelFactory, launchStatistics, universe[1]);
+		tasks = new Tasks(modelFactory, launchStatistics, loadSet.TASK_COUNT);
 		context.addSubContext(tasks);
 		agents = new Agents(modelFactory, strategyDistribution,
-				launchStatistics, universe[0]);
+				launchStatistics, loadSet.AGENT_COUNT);
 		context.addSubContext(agents);
 		context.add(new GameController());
 

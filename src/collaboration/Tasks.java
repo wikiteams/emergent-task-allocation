@@ -33,16 +33,16 @@ public class Tasks extends DefaultContext<Task> {
 
 	private ModelFactory modelFactory;
 	private LaunchStatistics launchStatistics;
-	private String universeDescription;
+	private Integer allowedLoad;
 	private static Map<String, Task> tasks = new HashMap<String, Task>();
 
 	public Tasks(ModelFactory modelFactory, LaunchStatistics launchStatistics,
-			String universeDescription) {
+			Integer allowedLoad) {
 		super("Tasks");
 
 		this.modelFactory = modelFactory;
 		this.launchStatistics = launchStatistics;
-		this.universeDescription = universeDescription;
+		this.allowedLoad = allowedLoad;
 		initializeTasks(this);
 	}
 
@@ -73,8 +73,8 @@ public class Tasks extends DefaultContext<Task> {
 	}
 
 	private void initializeTasksNormally(Context<Task> context) {
-		Integer howMany = SimulationParameters.multipleAgentSets ? Integer
-				.parseInt(universeDescription) : SimulationParameters.taskCount;
+		Integer howMany = SimulationParameters.multipleAgentSets ? allowedLoad
+				: SimulationParameters.taskCount;
 		for (int i = 0; i < howMany; i++) {
 			Task task = new Task();
 			say("Creating Task " + task.getId());
