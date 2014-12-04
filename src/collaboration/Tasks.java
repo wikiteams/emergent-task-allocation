@@ -14,9 +14,7 @@ import repast.simphony.random.RandomHelper;
 import strategies.Strategy;
 import tasks.CentralAssignment;
 import tasks.Heterophyly;
-import tasks.HeterophylyExpBased;
 import tasks.Homophyly;
-import tasks.HomophylyExpBased;
 import tasks.Preferential;
 import test.Model;
 import test.TaskTestUniverse;
@@ -27,9 +25,20 @@ import constants.ModelFactory;
  * Programming Task - a producer in the simulation
  * 
  * @author Oskar Jarczyk
- * @version 2.0.4
+ * @version 2.0.6
  */
 public class Tasks extends DefaultContext<Task> {
+
+	/**
+	 * This value is used to automatically generate agent identifiers.
+	 * 
+	 * If you want to see 1 million digits of Pi, then visit index2.html at the
+	 * root of domain http://
+	 * 3.141592653589793238462643383279502884197169399375105820974944592.com/
+	 * 
+	 * @field serialVersionUID
+	 */
+	public static final long serialVersionUID = 31415926535897L;
 
 	private ModelFactory modelFactory;
 	private LaunchStatistics launchStatistics;
@@ -102,7 +111,7 @@ public class Tasks extends DefaultContext<Task> {
 	public Collection<Task> getTasks() {
 		return tasks.values();
 	}
-	
+
 	public Collection<Task> getUnfinishedTasks() {
 		List<Task> result = new ArrayList<Task>();
 		for (Task task : tasks.values()) {
@@ -162,21 +171,11 @@ public class Tasks extends DefaultContext<Task> {
 		assert strategy != null;
 
 		switch (strategy) {
-		case HOMOPHYLY_EXP_BASED:
-			HomophylyExpBased homophylyExpBased = new HomophylyExpBased(tasks);
-			chosen = homophylyExpBased.concludeMath(agent);
-			break;
-		case HETEROPHYLY_EXP_BASED:
-			// it will be basically negation of homophyly
-			HeterophylyExpBased heterophylyExpBased = new HeterophylyExpBased(
-					tasks);
-			chosen = heterophylyExpBased.concludeMath(agent);
-			break;
-		case HOMOPHYLY_CLASSIC:
+		case HOMOPHYLY:
 			Homophyly homophyly = new Homophyly(tasks);
 			chosen = homophyly.concludeMath(agent);
 			break;
-		case HETEROPHYLY_CLASSIC:
+		case HETEROPHYLY:
 			Heterophyly heterophyly = new Heterophyly(tasks);
 			chosen = heterophyly.concludeMath(agent);
 			break;

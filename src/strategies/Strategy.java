@@ -1,134 +1,106 @@
 package strategies;
 
 /***
+ * Types of Strategies used in the simulation
  * 
  * Strategy for Agent {strategy for choosing tasks}
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0
- *
+ * @version 2.0.6
+ * 
  */
 public class Strategy {
-	
+
+	/**
+	 * This value is used to automatically generate agent identifiers.
+	 * 
+	 * The 8086 ("eighty-eighty-six", also called iAPX 86) is a 16-bit
+	 * microprocessor chip designed by Intel between early 1976 and mid-1978,
+	 * when it was released. The Intel 8088, released in 1979, was a slightly
+	 * modified chip with an external 8-bit data bus (allowing the use of
+	 * cheaper and fewer supporting ICs), and is notable as the processor used
+	 * in the original IBM PC design, including the widespread version called
+	 * IBM PC XT.
+	 * 
+	 * @field serialVersionUID
+	 */
+	public static final long serialVersionUID = 8086L;
+
 	public TaskChoice taskChoice;
-	public TaskMinMaxChoice taskMinMaxChoice;
 	public SkillChoice skillChoice;
-	
-	public Strategy(TaskChoice taskChoice, TaskMinMaxChoice taskMinMaxChoice, SkillChoice skillChoice){
+
+	public Strategy(TaskChoice taskChoice, SkillChoice skillChoice) {
 		this.taskChoice = taskChoice;
-		this.taskMinMaxChoice = taskMinMaxChoice;
 		this.skillChoice = skillChoice;
 	}
-	
+
 	public enum TaskChoice {
 		/**
-		 * Homofilia - milosc do tego samego - szukamy takiego taska maksymalnie 
-		 * podobnego nad ktorym juz pracowalismy. Jezeli jeszcze nie pracowalismy
-		 * nad zadnym to szukamy pierwszego mozliwie odpowiadajacego naszej
-		 * macierzy umiejetnosci. Wtedy budowanie doswiadczenia bedzie w miare
-		 * odpowiadalo elementom w naszej macierzy. I agent caly czas stara sie
-		 * szukac podobnych taskow.
-		 */
-		HOMOPHYLY_EXP_BASED,
-		/**
-		 * Tutaj przeciwienstwo tego co wyzej, agent stara sie znalezc zupelnie
-		 * inne taski niz te nad ktorym dotychczas pracowal. Jest to strategia
-		 * tworzaca doswiadczenie. Jezeli agent nie pracowal jeszcze nad zadnym taskiem,
-		 * to szuka takiego taska ktory zupelnie nie odpowiada macierzy jego
-		 * umiejetnosci.
-		 */
-		HETEROPHYLY_EXP_BASED,
-		/**
-		 * Social vector - znajdowanie mozliwie najblizszego wektora umiejetnosci.
-		 * Umiejetnosci niesie ze soba dodatkowe informacje - kategoria umiejetnosci
-		 * - np. programowanie niskopoziomowe, frontend, itp. Wiec mimo ze nie posiadamy
-		 * takich umiejetnosci jakie maja taski w puli, to szukamy najblizej pasujacego
-		 * wektora i bierzemy ten task
-		 */
-		SOCIAL_VECTOR,
-		/**
-		 * Losowanie taska z puli dostepnych - tylko pod warunkiem ze ma choc jeden skill
-		 * nad ktorym jest mozliwe pracowanie. Generalnie stosujemy Random, ale mozna 
-		 * rowniez uruchomic jakis rozklad normalny.
+		 * *Random choice* - for evaluating results of other strategies. Agents
+		 * are choosing completely randomly a task from the pool of unfinished
+		 * tasks in simulation.
 		 */
 		RANDOM,
 		/**
-		 * Ta strategia polega na porownywaniu siebie do innych uzytownikow, agent A
-		 * stara sie nasladowac innego mozliwie podobnego do siebie uzytkownika (agent B)
-		 * sprawdza gdzie pracuje agent B, i pracuje nad tym samym. Jezeli podobny do niego
-		 * uzytkownik jeszcze nad niczym nie pracowal, to sprawdza co on potrafi
-		 * najbardziej (to tez nasz skill - agenta A) i pracuje nad takim taskiem
-		 * co ktory owego skilla wymaga
-		 */
-		COMPARISION,
-		/**
-		 * TO DO: uzupelnic opis
-		 */
-		MACHINE_LEARNED,
-		/**
-		 * Algorytm segreguje pierw skilly wewnatz kazdego taska (max lub min) pod wzglede zaawansowania,
-		 * nastepnie algorytm segreguje taski wg wartosci max inside skill (lub min inside skill)
-		 */
-		ARG_MIN_MAX,
-		/**
-		 * Celem jest wybor najbardziej zaawansowanego taska
-		 * liczymy to w ten sposob - avg(sigma(W/G)) czyli 
-		 * srednia arytmetyczna zaawansowania wszystkich skilli
+		 * *Preferential strategy* searches for the most advanced task in the
+		 * simulation. It is calculated by average of work done within all
+		 * skills inside a task. Such values is used to sort all tasks by their
+		 * general advancement decreasing. General advancement for a task is
+		 * calculated by an average, where a single value is an advancement in a
+		 * skill in percentage. Preferential strategy works by letting agent
+		 * choose a most advanced task that has at least one skill, which is
+		 * also the agent’s skill. Agent’s experience in this skill plays here
+		 * no role.
 		 */
 		PREFERENTIAL,
 		/**
-		 * 
+		 * *Homophily* is an algorithm for assigning tasks which are best
+		 * adjusted to an agent, while choice of most different task from the
+		 * agent’s skills is called *heterophily*. In other words, both of them
+		 * use an algorithm for assigning tasks which are most (mis)matched to
+		 * an agent
 		 */
-		HOMOPHYLY_CLASSIC,
+		HOMOPHYLY, HETEROPHYLY,
 		/**
-		 * In this strategy we take first task top from the sort result of intersection. 
-		 * For agent $A_{i}$, let's consider his skills $\{S_{1}^{A_{i}},...,S_{i}^{A_{i}}\}$. 
-		 * Algorithm iterates through all available tasks and searches for intersection. 
-		 * It means, that if there is such task $T_{i}$ having skills $\{S_{1}^{T_{i}},...,S_{i}^{T_{i}}\}$ 
-		 * which satisfies $\exists\{S_{j}^{A}\}\cap\{S_{j}^{T}\}$ and $\{S_{j}^{A}\}\cap\{S_{j}^{T}\}$ 
-		 * is \textsl{not null}, than take this task into consideration and calculate sum of progress. 
-		 * If there are no tasks which have a common skill with agent's skills, than agent chooses a random task.
-		 */
-		HETEROPHYLY_CLASSIC,
-		/**
-		 * In this strategy we take first task bottom from the sort result of intersection.
+		 * *Central strategy* - We also call it a ’strategy of central
+		 * assignment’, or a ’central planner’ or ’central task allocation’
+		 * strategy. Algorithm performs a multiple sorting operation.
+		 * Simplifying the idea, it works by choosing a task with the least
+		 * advanced skill inside and assign it to an agent which have highest
+		 * experience in it. Before launching an iteration of the simulation,
+		 * every agent has a task assigned to him or her (unless the number of
+		 * tasks is smaller than the number of agents, then we can simply say
+		 * that every task have an agent assigned to it).
 		 */
 		CENTRAL_ASSIGNMENT
 	}
-	
-	public enum TaskMinMaxChoice {
-		ARGMAX_ARGMAX,
-		ARGMIN_ARGMAX,
-		ARGMAX_ARGMIN,
-		ARGMIN_ARGMIN
-	}
-	
+
 	public enum SkillChoice {
 		/**
-		 * Dla kazdego Sn pracuj rowno po czesci 1/n
-		 * jezeli parametr allowRookie wlaczony, to omijaj intersekcje
-		 * i pracuj nad wszystkim w danym tasku
+		 * Dla kazdego Sn pracuj rowno po czesci 1/n jezeli parametr allowRookie
+		 * wlaczony, to omijaj intersekcje i pracuj nad wszystkim w danym tasku
 		 */
-	    PROPORTIONAL_TIME_DIVISION,
-	    /**
-	     * Pracuj dla wybranego Sn. Jezeli postepy puste w kazdym ze skilli w tasku
-	     * to wybierz losowy. W przeciwnym razie pracuj tylko nad tym taskiem, ktory
-	     * jest najbardziej zaczety (najmniej mu do zamkniecia)
-	     */
-	    GREEDY_ASSIGNMENT_BY_TASK,
-	    /**
-	     * Pracuj wylacznie nad tym skillem, w ktory agent ma najwiecej doswiadczenia
-	     */
-	    CHOICE_OF_AGENT,
-	    /**
-	     * Pracuj zawsze nad losowo wybranym skillem
-	     */
-	    RANDOM
+		PROPORTIONAL_TIME_DIVISION,
+		/**
+		 * Pracuj dla wybranego Sn. Jezeli postepy puste w kazdym ze skilli w
+		 * tasku to wybierz losowy. W przeciwnym razie pracuj tylko nad tym
+		 * taskiem, ktory jest najbardziej zaczety (najmniej mu do zamkniecia)
+		 */
+		GREEDY_ASSIGNMENT,
+		/**
+		 * Pracuj wylacznie nad tym skillem, w ktory agent ma najwiecej
+		 * doswiadczenia
+		 */
+		CHOICE_OF_AGENT,
+		/**
+		 * Pracuj zawsze nad losowo wybranym skillem
+		 */
+		RANDOM
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return this.taskChoice.name() + "," + this.skillChoice.name();
 	}
 

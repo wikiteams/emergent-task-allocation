@@ -30,7 +30,7 @@ import constants.Constraints;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.4
+ * @version 2.0.6
  */
 public class Task {
 
@@ -322,7 +322,7 @@ public class Task {
 						.getSkill());
 			}
 			break;
-		case GREEDY_ASSIGNMENT_BY_TASK:
+		case GREEDY_ASSIGNMENT:
 			say(Constraints.INSIDE_GREEDY_ASSIGNMENT_BY_TASK);
 			CopyOnWriteArrayList<TaskInternals> copyIntersection = new CopyOnWriteArrayList<TaskInternals>(
 					intersection);

@@ -31,8 +31,9 @@ import argonauts.PersistRewiring;
 public class Agent {
 
 	/**
-	 * This value is used to automatically generate agent identifiers. 42 -
-	 * Answer to life the universe and everything, even GitHub
+	 * This value is used to automatically generate agent identifiers. 
+	 * 
+	 * 42 - Answer to life the universe and everything, even GitHub
 	 * 
 	 * @field serialVersionUID
 	 */

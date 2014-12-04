@@ -19,7 +19,7 @@ import constants.ModelFactory;
  * structure. Context holds all simulation Agents.
  * 
  * @author Oskar Jarczyk
- * @version 2.0.4
+ * @version 2.0.6
  */
 public class Agents extends DefaultContext<Agent> {
 
@@ -61,7 +61,7 @@ public class Agents extends DefaultContext<Agent> {
 
 			Strategy strategy = new Strategy(
 					strategyDistribution.getTaskStrategy(),
-					strategyDistribution.getTaskMaxMinStrategy(),
+					//strategyDistribution.getTaskMaxMinStrategy(),
 					strategyDistribution.getSkillStrategy());
 
 			agent.setStrategy(strategy);
@@ -105,7 +105,7 @@ public class Agents extends DefaultContext<Agent> {
 			say("Adding validation agent to pool..");
 			Strategy strategy = new Strategy(
 					strategyDistribution.getTaskStrategy(),
-					strategyDistribution.getTaskMaxMinStrategy(),
+					//strategyDistribution.getTaskMaxMinStrategy(),
 					strategyDistribution.getSkillStrategy());
 
 			agent.setStrategy(strategy);

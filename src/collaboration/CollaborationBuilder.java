@@ -65,7 +65,7 @@ import constants.ModelFactory;
  * 
  * Project uses ini4j library which is licensed under Apache License.
  * 
- * @version 2.0.3 Work Evolve
+ * @version 2.0.6 Work Evolve
  * @category Agent-organised Social Simulations
  * @since 1.0
  * @author Oskar Jarczyk, Bla\zej Gruszka et.al.
@@ -131,7 +131,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			launchStatistics = new LaunchStatistics();
 			modelFactory = new ModelFactory(SimulationParameters.modelType);
 			Model model = modelFactory.getFunctionality();
-			
+
 			say("Starting simulation with model: " + modelFactory.toString());
 			if (model.isValidation())
 				initializeValidationLogger();
@@ -157,7 +157,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	private void prepareFurthermore() {
 		try {
-			AgentSkillsPool.instantiate(SimulationParameters.agentSkillPoolDataset);
+			AgentSkillsPool
+					.instantiate(SimulationParameters.agentSkillPoolDataset);
 			say("Instatiated AgentSkillsPool");
 			TaskSkillsPool.instantiate(SimulationParameters.tasksDataset);
 			say("Instatied TaskSkillsPool");
@@ -171,8 +172,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 					SimulationParameters.skillChoiceAlgorithm);
 			strategyDistribution.setTaskChoice(modelFactory,
 					SimulationParameters.taskChoiceAlgorithm);
-			strategyDistribution.setTaskMinMaxChoice(modelFactory,
-					SimulationParameters.taskMinMaxChoiceAlgorithm);
 		} catch (Exception exc) {
 			exc.printStackTrace();
 			say(Constraints.UNKNOWN_EXCEPTION);
@@ -328,7 +327,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ SimulationParameters.agentSkillPoolDataset + ","
 				+ SimulationParameters.taskSkillPoolDataset + ","
 				+ strategyDistribution.getSkillChoice() + ","
-				+ strategyDistribution.getTaskMinMaxChoice() + ","
+				//+ strategyDistribution.getTaskMinMaxChoice() + ","
 				+ TaskSkillFrequency.tasksCheckSum + ","
 				+ AgentSkillsFrequency.tasksCheckSum;
 	}
@@ -662,6 +661,15 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		} else {
 			launchStatistics.experienceCutPoint = false;
 		}
+	}
+
+	public Boolean isEvolutionary() {
+		boolean result = true;
+		if ((SimulationParameters.planNumber == 0)
+				|| (strategyDistribution.isSingle())) {
+			result = false;
+		}
+		return result;
 	}
 
 }

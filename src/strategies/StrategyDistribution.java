@@ -1,93 +1,54 @@
 package strategies;
 
-import java.util.List;
-
-import collaboration.Agent;
+import repast.simphony.random.RandomHelper;
 import strategies.Strategy.SkillChoice;
 import strategies.Strategy.TaskChoice;
-import strategies.Strategy.TaskMinMaxChoice;
 import constants.ModelFactory;
-import repast.simphony.random.RandomHelper;
 
+/***
+ * Tells whether evolutionary model is enabled and/or what kind of strategy
+ * distribution there is currently set.
+ * 
+ * @author Oskar Jarczyk
+ * @version 2.0.6
+ */
 public class StrategyDistribution {
 
 	public static final int SINGULAR = 0;
 	public static final int MULTIPLE = 1;
 
-	private String[] taskChoiceSet = { "homophyly", "homophyly_experience",
-			"heterophyly", "preferential", "heterophyly_experience", "random",
-			"social_vector", "machine_learned", "comparision", "minmax",
-			"central" };
+	private String[] taskChoiceSet = { "homophyly", "heterophyly",
+			"preferential", "random", "central" };
 	private String[] skillChoiceSet = { "proportional", "greedy", "choice",
 			"random" };
-	private String[] taskMinMaxChoiceSet = { "maxmax", "maxmin", "minmax",
-			"minmin" };
 
 	private int type;
 
 	private String skillChoice;
 	private String taskChoice;
-	private String taskMinMaxChoice;
+
+	public Boolean isSingle() {
+		return this.type == SINGULAR;
+	}
+
+	public Boolean isMultiple() {
+		return this.type == MULTIPLE;
+	}
 
 	public TaskChoice getTaskStrategy() {
 		if (type == SINGULAR) {
 			if (taskChoice.equals(taskChoiceSet[0])) {
-				return Strategy.TaskChoice.HOMOPHYLY_CLASSIC;
+				return Strategy.TaskChoice.HOMOPHYLY;
 			} else if (taskChoice.equals(taskChoiceSet[1])) {
-				return Strategy.TaskChoice.HOMOPHYLY_EXP_BASED;
+				return Strategy.TaskChoice.HETEROPHYLY;
 			} else if (taskChoice.equals(taskChoiceSet[2])) {
-				return Strategy.TaskChoice.HETEROPHYLY_CLASSIC;
-			} else if (taskChoice.equals(taskChoiceSet[3])) {
 				return Strategy.TaskChoice.PREFERENTIAL;
-			} else if (taskChoice.equals(taskChoiceSet[4])) {
-				return Strategy.TaskChoice.HETEROPHYLY_EXP_BASED;
-			} else if (taskChoice.equals(taskChoiceSet[5])) {
+			} else if (taskChoice.equals(taskChoiceSet[3])) {
 				return Strategy.TaskChoice.RANDOM;
-			} else if (taskChoice.equals(taskChoiceSet[6])) {
-				return Strategy.TaskChoice.SOCIAL_VECTOR;
-			} else if (taskChoice.equals(taskChoiceSet[7])) {
-				return Strategy.TaskChoice.MACHINE_LEARNED;
-			} else if (taskChoice.equals(taskChoiceSet[8])) {
-				return Strategy.TaskChoice.COMPARISION;
-			} else if (taskChoice.equals(taskChoiceSet[9])) {
-				return Strategy.TaskChoice.ARG_MIN_MAX;
-			} else if (taskChoice.equals(taskChoiceSet[10])) {
+			} else if (taskChoice.equals(taskChoiceSet[4])) {
 				return Strategy.TaskChoice.CENTRAL_ASSIGNMENT;
 			}
-		}
-		else{
-			assert false;
-		}
-		return null;
-	}
-	
-	public TaskChoice getTaskStrategy(List<Agent> agents) {
-		if (type == MULTIPLE) {
-			if (taskChoice.equals(taskChoiceSet[0])) {
-				return Strategy.TaskChoice.HOMOPHYLY_CLASSIC;
-			} else if (taskChoice.equals(taskChoiceSet[1])) {
-				return Strategy.TaskChoice.HOMOPHYLY_EXP_BASED;
-			} else if (taskChoice.equals(taskChoiceSet[2])) {
-				return Strategy.TaskChoice.HETEROPHYLY_CLASSIC;
-			} else if (taskChoice.equals(taskChoiceSet[3])) {
-				return Strategy.TaskChoice.PREFERENTIAL;
-			} else if (taskChoice.equals(taskChoiceSet[4])) {
-				return Strategy.TaskChoice.HETEROPHYLY_EXP_BASED;
-			} else if (taskChoice.equals(taskChoiceSet[5])) {
-				return Strategy.TaskChoice.RANDOM;
-			} else if (taskChoice.equals(taskChoiceSet[6])) {
-				return Strategy.TaskChoice.SOCIAL_VECTOR;
-			} else if (taskChoice.equals(taskChoiceSet[7])) {
-				return Strategy.TaskChoice.MACHINE_LEARNED;
-			} else if (taskChoice.equals(taskChoiceSet[8])) {
-				return Strategy.TaskChoice.COMPARISION;
-			} else if (taskChoice.equals(taskChoiceSet[9])) {
-				return Strategy.TaskChoice.ARG_MIN_MAX;
-			} else if (taskChoice.equals(taskChoiceSet[10])) {
-				return Strategy.TaskChoice.CENTRAL_ASSIGNMENT;
-			}
-		}
-		else{
+		} else {
 			assert false;
 		}
 		return null;
@@ -98,7 +59,7 @@ public class StrategyDistribution {
 			if (skillChoice.equals(skillChoiceSet[0])) {
 				return Strategy.SkillChoice.PROPORTIONAL_TIME_DIVISION;
 			} else if (skillChoice.equals(skillChoiceSet[1])) {
-				return Strategy.SkillChoice.GREEDY_ASSIGNMENT_BY_TASK;
+				return Strategy.SkillChoice.GREEDY_ASSIGNMENT;
 			} else if (skillChoice.equals(skillChoiceSet[2])) {
 				return Strategy.SkillChoice.CHOICE_OF_AGENT;
 			} else if (skillChoice.equals(skillChoiceSet[3])) {
@@ -154,42 +115,6 @@ public class StrategyDistribution {
 
 	public void setType(int type) {
 		this.type = type;
-	}
-
-	public TaskMinMaxChoice getTaskMaxMinStrategy() {
-		if (type == SINGULAR) {
-			if (taskMinMaxChoice.equals("maxmax")) {
-				return Strategy.TaskMinMaxChoice.ARGMAX_ARGMAX;
-			} else if (taskMinMaxChoice.equals("maxmin")) {
-				return Strategy.TaskMinMaxChoice.ARGMAX_ARGMIN;
-			} else if (taskMinMaxChoice.equals("minmax")) {
-				return Strategy.TaskMinMaxChoice.ARGMIN_ARGMAX;
-			} else if (taskMinMaxChoice.equals("minmin")) {
-				return Strategy.TaskMinMaxChoice.ARGMIN_ARGMIN;
-			}
-		} else {
-			assert false;
-		}
-		return null;
-	}
-
-	public String getTaskMinMaxChoice() {
-		return taskMinMaxChoice;
-	}
-
-	public void setTaskMinMaxChoice(String taskMinMaxChoice) {
-		this.taskMinMaxChoice = taskMinMaxChoice;
-	}
-	
-	public void setTaskMinMaxChoice(ModelFactory modelFactory, String taskMinMaxChoice) {
-		if (modelFactory.getFunctionality().isMultipleValidation()) {
-			int intRandomized = RandomHelper.nextIntFromTo(0,
-					taskMinMaxChoiceSet.length - 1);
-			assert (intRandomized >= 0)
-					&& (intRandomized <= taskChoiceSet.length - 1);
-			this.taskMinMaxChoice = taskMinMaxChoiceSet[intRandomized];
-		} else
-			this.taskMinMaxChoice = taskMinMaxChoice;
 	}
 
 }
