@@ -50,21 +50,21 @@ public class Strategy {
 		 * calculated by an average, where a single value is an advancement in a
 		 * skill in percentage. Preferential strategy works by letting agent
 		 * choose a most advanced task that has at least one skill, which is
-		 * also the agent’s skill. Agent’s experience in this skill plays here
+		 * also the agent's skill. Agent's experience in this skill plays here
 		 * no role.
 		 */
 		PREFERENTIAL,
 		/**
 		 * *Homophily* is an algorithm for assigning tasks which are best
 		 * adjusted to an agent, while choice of most different task from the
-		 * agent’s skills is called *heterophily*. In other words, both of them
+		 * agent's skills is called *heterophily*. In other words, both of them
 		 * use an algorithm for assigning tasks which are most (mis)matched to
 		 * an agent
 		 */
 		HOMOPHYLY, HETEROPHYLY,
 		/**
-		 * *Central strategy* - We also call it a ’strategy of central
-		 * assignment’, or a ’central planner’ or ’central task allocation’
+		 * *Central strategy* - We also call it a 'strategy of central
+		 * assignment', or a 'central planner' or 'central task allocation'
 		 * strategy. Algorithm performs a multiple sorting operation.
 		 * Simplifying the idea, it works by choosing a task with the least
 		 * advanced skill inside and assign it to an agent which have highest
@@ -78,23 +78,29 @@ public class Strategy {
 
 	public enum SkillChoice {
 		/**
-		 * Dla kazdego Sn pracuj rowno po czesci 1/n jezeli parametr allowRookie
-		 * wlaczony, to omijaj intersekcje i pracuj nad wszystkim w danym tasku
+		 * Proportional module allows to work equally on multiple skills by
+		 * diving time into particles, which makes for incrementing work done
+		 * and experience by fractions of 1.
 		 */
 		PROPORTIONAL_TIME_DIVISION,
 		/**
-		 * Pracuj dla wybranego Sn. Jezeli postepy puste w kazdym ze skilli w
-		 * tasku to wybierz losowy. W przeciwnym razie pracuj tylko nad tym
-		 * taskiem, ktory jest najbardziej zaczety (najmniej mu do zamkniecia)
+		 * Most advanced method: this module selects a single most done skill
+		 * inside a task. If there is no such skill (i.e. all skills have 'work
+		 * done' at zero point), then it select randomly a single skill.
 		 */
 		GREEDY_ASSIGNMENT,
 		/**
-		 * Pracuj wylacznie nad tym skillem, w ktory agent ma najwiecej
-		 * doswiadczenia
+		 * Greatest experience method: method selects only one skill in which an
+		 * agent is most experienced. If the agent is equally well-experienced
+		 * in more than one skill, then selects randomly one skill from this.
+		 * set.
 		 */
 		CHOICE_OF_AGENT,
 		/**
-		 * Pracuj zawsze nad losowo wybranym skillem
+		 * Random method: this module selects one single random skill to work
+		 * on. Firstly, the strategy evaluates the intersection of agents skills
+		 * and tasks required skills. If this intersection is empty, the
+		 * strategy continues to choose between any random skill left.
 		 */
 		RANDOM
 	}
