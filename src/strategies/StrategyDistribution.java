@@ -81,11 +81,15 @@ public class StrategyDistribution {
 
 	public void setSkillChoice(ModelFactory modelFactory, String skillChoice) {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
+			
+			// this is only important if you launch a "multiple validation" model
+			
 			int intRandomized = RandomHelper.nextIntFromTo(0,
 					skillChoiceSet.length - 1);
 			assert (intRandomized >= 0)
 					&& (intRandomized <= skillChoiceSet.length - 1);
 			this.skillChoice = skillChoiceSet[intRandomized];
+			
 		} else
 			this.skillChoice = skillChoice;
 	}
@@ -100,11 +104,15 @@ public class StrategyDistribution {
 
 	public void setTaskChoice(ModelFactory modelFactory, String taskChoice) {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
+			
+			// this is only important if you launch a "multiple validation" model
+			
 			int intRandomized = RandomHelper.nextIntFromTo(0,
 					taskChoiceSet.length - 1);
 			assert (intRandomized >= 0)
 					&& (intRandomized <= taskChoiceSet.length - 1);
 			this.taskChoice = taskChoiceSet[intRandomized];
+			
 		} else
 			this.taskChoice = taskChoice;
 	}

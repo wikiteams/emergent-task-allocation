@@ -35,7 +35,7 @@ public class GameController {
 	 * bob with a 67 meter long wire from the dome of the Pantheon, Paris. The
 	 * plane of the pendulum's swing rotated clockwise 11' per hour, making a
 	 * full circle in 32.7 hours. The original bob used in 1851 at the Pantheon
-	 * was moved in 1855 to the Conservatoire des Arts et Métiers in Paris. A
+	 * was moved in 1855 to the Conservatoire des Arts et Metiers in Paris. A
 	 * second temporary installation was made for the 50th anniversary in 1902.
 	 * 
 	 * @field serialVersionUID
