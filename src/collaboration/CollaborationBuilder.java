@@ -191,7 +191,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		agents = new Agents(modelFactory, strategyDistribution,
 				launchStatistics, loadSet.AGENT_COUNT);
 		context.addSubContext(agents);
-		context.add(new GameController());
+
+		context.add(new GameController(strategyDistribution));
 
 		say("Task choice algorithm is "
 				+ SimulationParameters.taskChoiceAlgorithm);
@@ -327,7 +328,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ SimulationParameters.agentSkillPoolDataset + ","
 				+ SimulationParameters.taskSkillPoolDataset + ","
 				+ strategyDistribution.getSkillChoice() + ","
-				//+ strategyDistribution.getTaskMinMaxChoice() + ","
+				// + strategyDistribution.getTaskMinMaxChoice() + ","
 				+ TaskSkillFrequency.tasksCheckSum + ","
 				+ AgentSkillsFrequency.tasksCheckSum;
 	}
@@ -661,15 +662,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		} else {
 			launchStatistics.experienceCutPoint = false;
 		}
-	}
-
-	public Boolean isEvolutionary() {
-		boolean result = true;
-		if ((SimulationParameters.planNumber == 0)
-				|| (strategyDistribution.isSingle())) {
-			result = false;
-		}
-		return result;
 	}
 
 }

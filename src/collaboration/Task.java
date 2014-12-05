@@ -14,7 +14,6 @@ import logger.PjiitOutputter;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.util.ContextUtils;
-import strategies.Aggregate;
 import strategies.CentralAssignmentTask;
 import strategies.GreedyAssignmentTask;
 import strategies.ProportionalTimeDivision;
@@ -148,34 +147,6 @@ public class Task {
 				argmax = skill.getProgress();
 		}
 		return argmax;
-	}
-
-	/**
-	 * Less CPU ticks to get both of them
-	 * 
-	 * @return Aggregate - argmax and argmin for all taskinternals {argmax,
-	 *         argmin}
-	 */
-	public Aggregate argmaxmin() {
-		Aggregate arg = new Aggregate(START_ARG_MAX, START_ARG_MIN);
-		for (TaskInternals skill : skills.values()) {
-			double p = skill.getProgress();
-			if (p < arg.argmin)
-				arg.argmin = skill.getProgress();
-			if (p > arg.argmax)
-				arg.argmax = skill.getProgress();
-		}
-		return arg;
-	}
-
-	public double argmin() {
-		double argmin = START_ARG_MIN;
-		for (TaskInternals skill : skills.values()) {
-			double p = skill.getProgress();
-			if (p < argmin)
-				argmin = skill.getProgress();
-		}
-		return argmin;
 	}
 
 	public double getSimplifiedAdvance(Skill skill) {

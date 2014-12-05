@@ -25,13 +25,14 @@ import argonauts.PersistRewiring;
  * Simulation agent - a GitHub programmer
  * 
  * @author Oskar Jarczyk
- * @version 2.0.4
+ * @since 1.0
+ * @version 2.0.6
  */
 @AgentAnnot(displayName = "Agent")
 public class Agent {
 
 	/**
-	 * This value is used to automatically generate agent identifiers. 
+	 * This value is used to automatically generate agent identifiers.
 	 * 
 	 * 42 - Answer to life the universe and everything, even GitHub
 	 * 
@@ -151,9 +152,7 @@ public class Agent {
 
 	@ScheduledMethod(start = 1, interval = 1, priority = 100)
 	public void step() {
-		double time = getGameController().getCurrentTick();
-
-		say("Step(" + time + ") of Agent " + this.id
+		say("Step(" + getTick() + ") of Agent " + this.id
 				+ " scheduled method launched.");
 
 		if (SimulationParameters.granularity) {
@@ -165,7 +164,7 @@ public class Agent {
 				double leavingCurrentChance = RandomHelper.nextDoubleFromTo(0,
 						100);
 				if (leavingCurrentChance <= (double) (SimulationParameters.granularityObstinacy)) {
-					say("Step(" + time + ") of Agent " + this.id
+					say("Step(" + getTick() + ") of Agent " + this.id
 							+ " continuuing granularity");
 					// continue work on the same skill
 					// but check if the is any work left in this particular task
@@ -194,7 +193,7 @@ public class Agent {
 					}
 					// EnvironmentEquilibrium.setActivity(true);
 				} else {
-					say("Step(" + time + ") of Agent " + this.id
+					say("Step(" + getTick() + ") of Agent " + this.id
 							+ " choosing new task for granulated choice");
 					// chose new task for granulated choice !
 					Task taskToWork = Tasks.chooseTask(this,
@@ -217,7 +216,7 @@ public class Agent {
 				}
 			} else {
 				say("Step("
-						+ time
+						+ getTick()
 						+ ") of Agent "
 						+ this.id
 						+ " first run, chose new task and assign granulated choice");
@@ -293,7 +292,7 @@ public class Agent {
 				say("Agent " + this.id + " didn't work on anything");
 				sanity("Agent " + this.id
 						+ " don't have a task to work on in step "
-						+ getGameController().getCurrentTick());
+						+ getTick());
 			}
 		}
 
@@ -322,6 +321,10 @@ public class Agent {
 
 	public int getGeneration() {
 		return getGameController().getCurrentGeneration() + 1;
+	}
+
+	private double getTick() {
+		return getGameController().getCurrentTick();
 	}
 
 	public Strategy getStrategy() {
