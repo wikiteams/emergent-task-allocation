@@ -26,6 +26,22 @@ import constants.Constraints;
  */
 public class GameController {
 
+	/**
+	 * This value is used to automatically generate agent identifiers.
+	 * 
+	 * The first public exhibition of a Foucault pendulum took place in February
+	 * 1851 in the Meridian of the Paris Observatory. A few weeks later Foucault
+	 * made his most famous pendulum when he suspended a 28 kg brass-coated lead
+	 * bob with a 67 meter long wire from the dome of the Pantheon, Paris. The
+	 * plane of the pendulum's swing rotated clockwise 11' per hour, making a
+	 * full circle in 32.7 hours. The original bob used in 1851 at the Pantheon
+	 * was moved in 1855 to the Conservatoire des Arts et Métiers in Paris. A
+	 * second temporary installation was made for the 50th anniversary in 1902.
+	 * 
+	 * @field serialVersionUID
+	 */
+	public static final long serialVersionUID = 1851L;
+
 	private StrategyDistribution strategyDistribution;
 
 	private int generationNumber;
@@ -169,6 +185,20 @@ public class GameController {
 		return result;
 	}
 
+	/***
+	 * There are three possibilities.
+	 * 
+	 * In first, simulation is run with plan number 0 and/or no distribution of
+	 * strategies (single distribution). Than no evolution occurs.
+	 * 
+	 * In second, simulation starts with an evolutionary model.
+	 * 
+	 * Third options is that evolutionary model finished after finding an
+	 * equilibrium, and simulation continues it's run with a central assignment
+	 * planner
+	 * 
+	 * @return
+	 */
 	public Boolean isEvolutionary() {
 		boolean result = true;
 		if ((SimulationParameters.planNumber == 0)
