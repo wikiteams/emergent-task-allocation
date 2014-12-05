@@ -37,7 +37,6 @@ import test.Model;
 import utils.DescribeUniverseBulkLoad;
 import utils.LaunchStatistics;
 import utils.NamesGenerator;
-import argonauts.PersistAdvancement;
 import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -222,11 +221,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		decideAboutGranularity();
 		decideAboutCutPoint();
 
-		// polimorfizm, Context<Task> mozna traktowac jako klase Tasks
-		PersistAdvancement.calculateAll((Tasks) tasks);
-		// TODO: later add requirement
-		// that if at least 1 agent uses Preferential...
-
 		List<ISchedulableAction> actions = schedule.schedule(this);
 		say(actions.toString());
 
@@ -284,7 +278,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public void clearStaticHeap() {
 		say("Clearing static data from previous simulation");
 		PersistJobDone.clear();
-		PersistAdvancement.clear();
 		PersistRewiring.clear();
 		TaskSkillsPool.clear();
 		SkillFactory.skills.clear();

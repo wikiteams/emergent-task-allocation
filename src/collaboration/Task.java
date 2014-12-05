@@ -56,8 +56,7 @@ public class Task {
 
 	private static int idIncrementalCounter = 0;
 	private static GameController gameController;
-	public static double START_ARG_MIN = 1.002;
-	public static double START_ARG_MAX = -0.002;
+	private Long numberOfVisits;
 
 	private String name;
 	private final int id = ++idIncrementalCounter;
@@ -67,6 +66,7 @@ public class Task {
 
 	public Task() {
 		this.name = "Task_" + this.id;
+		this.numberOfVisits = 0L;
 		say("Task object " + this + " created");
 	}
 
@@ -137,16 +137,6 @@ public class Task {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public double argmax() {
-		double argmax = START_ARG_MAX;
-		for (TaskInternals skill : skills.values()) {
-			double p = skill.getProgress();
-			if (p > argmax)
-				argmax = skill.getProgress();
-		}
-		return argmax;
 	}
 
 	public double getSimplifiedAdvance(Skill skill) {
@@ -476,6 +466,14 @@ public class Task {
 
 	public int getGeneration() {
 		return getGameController().getCurrentGeneration() + 1;
+	}
+
+	public Long getNumberOfVisits() {
+		return numberOfVisits;
+	}
+
+	public void setNumberOfVisits(Long numberOfVisits) {
+		this.numberOfVisits = numberOfVisits;
 	}
 
 }

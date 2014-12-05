@@ -65,10 +65,7 @@ public class PersistJobDone {
 		}
 		valueS.put(iteration, skills);
 		skillImproved.put(agentNick, valueS);
-		
-		if (agent.getStrategy().taskChoice.equals(TaskChoice.PREFERENTIAL)){
-			PersistAdvancement.reportTaskInternal(task, skills);
-		}
+
 	}
 	
 	public static Map<Integer, Task> getContributions(String agentNick) {

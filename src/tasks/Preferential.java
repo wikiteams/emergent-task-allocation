@@ -1,30 +1,47 @@
 package tasks;
 
+import java.util.Collection;
+import java.util.Set;
+
 import collaboration.Agent;
 import collaboration.Skill;
 import collaboration.Task;
+import collaboration.Tasks;
 
-import java.util.Collection;
-import java.util.Map;
-
-import argonauts.PersistAdvancement;
-
+/***
+ * New Preferential Strategy
+ * 
+ * Firstly - in case of a newly existing network with no connection between
+ * edges - we tell pioneer agents to choose tasks with matching skills and
+ * highest 'work done' there.
+ * 
+ * In general, for agent to be able to take a node, there must be a match of
+ * skills.
+ * 
+ * In case of of no at least once visited nodes which match his skills, take any
+ * task with matching skill but sort by general advancement.
+ * 
+ * @author Oskar Jarczyk
+ * @version 2.0.6
+ */
 public class Preferential {
-	
-	private static final double emptyResultSignal = -0.9;
 
-	public Task concludeMath(Agent agent){
-		Collection<Skill> allAgentSkillsPref = agent.getSkills();
+	public Task concludeMath(Agent agent) {
+		Collection<Skill> allAgentSkills = agent.getSkills();
 		Task chosen = null;
-		double adv = -1;
-		for (Skill singleSkill : allAgentSkillsPref) {
-			Object[] r = PersistAdvancement.getMostAdvanced(singleSkill);
-			if (((Double) r[0]) < emptyResultSignal)
-				continue;
-			if (((Double) r[0]) > adv){
-				chosen = (Task) r[1];
+		
+		// get all tasks with agent skills
+		
+		Set<Task> tasks = Tasks.getTasksHavingSkills(allAgentSkills);
+		
+		for (Task task : tasks){
+			if (task.getNumberOfVisits() > 0){
+				
+			} else {
+				
 			}
 		}
+		
 		return chosen;
 	}
 
