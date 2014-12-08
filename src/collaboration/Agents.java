@@ -1,5 +1,7 @@
 package collaboration;
 
+import github.DataSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,10 +11,8 @@ import repast.simphony.context.DefaultContext;
 import strategies.Strategy;
 import strategies.StrategyDistribution;
 import test.AgentTestUniverse;
-import test.Model;
 import utils.LaunchStatistics;
 import utils.NamesGenerator;
-import constants.ModelFactory;
 
 /***
  * Agents context, hence the contex.xml where Repast Simphony holds the context
@@ -33,17 +33,17 @@ public class Agents extends DefaultContext<Agent> {
 	public static final long serialVersionUID = 2081015L;
 
 	private List<Agent> listAgents;
-	private ModelFactory modelFactory;
+	private DataSet dataSet;
 	private StrategyDistribution strategyDistribution;
 	private LaunchStatistics launchStatistics;
 	private Integer allowedLoad;
 
-	public Agents(ModelFactory modelFactory,
+	public Agents(DataSet dataSet,
 			StrategyDistribution strategyDistribution,
 			LaunchStatistics launchStatistics, Integer allowedLoad) {
 		super("Agents");
 
-		this.modelFactory = modelFactory;
+		this.dataSet = dataSet;
 		this.strategyDistribution = strategyDistribution;
 		this.launchStatistics = launchStatistics;
 		this.allowedLoad = allowedLoad;
@@ -84,19 +84,14 @@ public class Agents extends DefaultContext<Agent> {
 	}
 
 	private void initializeAgents(Context<Agent> context) {
-		Model model = modelFactory.getFunctionality();
-		if (model.isNormal() && model.isValidation()) {
-			throw new UnsupportedOperationException();
-		} else if (model.isNormal()) {
+		if (dataSet.isMockup()) {
 			addAgents(context);
-		} else if (model.isSingleValidation()) {
+		} else if (dataSet.isTest()) {
 			listAgents = new ArrayList<Agent>();
 			AgentTestUniverse.init();
 			initializeValidationAgents(context);
-		} else if (model.isValidation()) {
-			listAgents = new ArrayList<Agent>();
-			AgentTestUniverse.init();
-			initializeValidationAgents(context);
+		} else {
+			assert false;
 		}
 	}
 

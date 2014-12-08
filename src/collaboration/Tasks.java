@@ -1,5 +1,6 @@
 package collaboration;
 
+import github.DataSet;
 import intelligence.TasksDiviner;
 
 import java.util.ArrayList;
@@ -14,10 +15,8 @@ import logger.PjiitOutputter;
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
 import strategies.Strategy;
-import test.Model;
 import test.TaskTestUniverse;
 import utils.LaunchStatistics;
-import constants.ModelFactory;
 
 /***
  * Programming Task - a producer in the simulation
@@ -127,7 +126,7 @@ public class Tasks extends DefaultContext<Task> {
 		return result;
 	}
 
-	private ModelFactory modelFactory;
+	private DataSet dataSet;
 
 	private LaunchStatistics launchStatistics;
 
@@ -143,11 +142,11 @@ public class Tasks extends DefaultContext<Task> {
 		PjiitOutputter.say(s);
 	}
 
-	public Tasks(ModelFactory modelFactory, LaunchStatistics launchStatistics,
+	public Tasks(DataSet dataSet, LaunchStatistics launchStatistics,
 			Integer allowedLoad) {
 		super("Tasks");
 
-		this.modelFactory = modelFactory;
+		this.dataSet = dataSet;
 		this.launchStatistics = launchStatistics;
 		this.allowedLoad = allowedLoad;
 		initializeTasks(this);
@@ -209,15 +208,9 @@ public class Tasks extends DefaultContext<Task> {
 	}
 	
 	private void initializeTasks(Context<Task> context) {
-		Model model = modelFactory.getFunctionality();
-		if (model.isNormal() && model.isValidation()) {
-			throw new UnsupportedOperationException();
-		} else if (model.isNormal()) {
+		if(dataSet.isMockup()){
 			initializeTasksNormally(context);
-		} else if (model.isSingleValidation()) {
-			TaskTestUniverse.init();
-			initalizeValidationTasks(context);
-		} else if (model.isValidation()) {
+		} else if (dataSet.isTest()){
 			TaskTestUniverse.init();
 			initalizeValidationTasks(context);
 		} else {

@@ -1,5 +1,6 @@
 package collaboration;
 
+import github.DataSet;
 import github.TaskSkillFrequency;
 import github.TaskSkillsPool;
 
@@ -97,7 +98,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private SkillFactory skillFactory;
 	private LaunchStatistics launchStatistics;
 	private Schedule schedule = new Schedule();
+
 	private LoadSet loadSet;
+	private DataSet dataSet;
 
 	private CentralPlanning centralPlanner;
 
@@ -122,12 +125,13 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
-	private void prepareEssentials() {
+	private void prepareDataControllers() {
 		try {
 			loadSet = LoadSet.EMPTY;
 			// getting parameters of a simulation from current scenario
 			say(Constraints.LOADING_PARAMETERS);
 			SimulationParameters.init();
+			dataSet = new DataSet(SimulationParameters.dataSource);
 
 			launchStatistics = new LaunchStatistics();
 			modelFactory = new ModelFactory(SimulationParameters.modelType);
@@ -136,7 +140,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("Starting simulation with model: " + modelFactory.toString());
 			if (model.isValidation())
 				initializeValidationLogger();
-			if (SimulationParameters.multipleAgentSets && model.isNormal()) {
+			if (SimulationParameters.multipleAgentSets) {
 				// here we decide if we want different
 				// sets of agent count / task count
 				// i don't need this for evolution at this time,
@@ -149,6 +153,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			}
 
 			strategyDistribution = new StrategyDistribution();
+
 			// initialise skill pools
 			say("SkillFactory parsing skills from the chosen dataset");
 			skillFactory = new SkillFactory();
@@ -164,13 +169,15 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
-	private void prepareFurthermore() {
+	private void prepareWorkLoaders() {
 		try {
-			AgentSkillsPool
-					.instantiate(SimulationParameters.agentSkillPoolDataset);
-			say("Instatiated AgentSkillsPool");
-			TaskSkillsPool.instantiate(SimulationParameters.tasksDataset);
-			say("Instatied TaskSkillsPool");
+			if (dataSet.isMockup()) {
+				AgentSkillsPool
+						.instantiate(SimulationParameters.agentSkillPoolDataset);
+				say("Instatiated AgentSkillsPool");
+				TaskSkillsPool.instantiate(SimulationParameters.tasksDataset);
+				say("Instatied TaskSkillsPool");
+			}
 
 			strategyDistribution
 					.setType(SimulationParameters.strategyDistribution);
@@ -196,12 +203,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				"TasksAndWorkers", context, false);
 		CollaborationNetwork.collaborationNetwork = builder.buildNetwork();
 
-		prepareEssentials();
-		prepareFurthermore();
+		prepareDataControllers();
+		prepareWorkLoaders();
 
-		tasks = new Tasks(modelFactory, launchStatistics, loadSet.TASK_COUNT);
+		tasks = new Tasks(dataSet, launchStatistics, loadSet.TASK_COUNT);
 		context.addSubContext(tasks);
-		agents = new Agents(modelFactory, strategyDistribution,
+		agents = new Agents(dataSet, strategyDistribution,
 				launchStatistics, loadSet.AGENT_COUNT);
 		context.addSubContext(agents);
 
