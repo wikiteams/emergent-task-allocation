@@ -13,7 +13,7 @@ import cern.jet.random.ChiSquare;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 1.4
+ * @version 2.0.6
  * 
  */
 public class Experience {
@@ -75,16 +75,25 @@ public class Experience {
 		return getDelta(ApproximationMethod.SIGMOID);
 	}
 
+	/***
+	 * Decays experience by going back on sigmoig function
+	 * Hence that despite the fact that only double this.value
+	 * is modified, it does changes the result of sigmoid(this.value)
+	 * that's why it is possible that we do decrease the experience
+	 * by going back on sigmoig function
+	 * 
+	 * Experience is always used together with sigmoid(this.value)
+	 * 
+	 * @return double - a new value of experience
+	 */
 	public double decay() {
-		// boolean dries = false;
 		if (((this.value) / this.top) <= stupidityLevel) {
 			// don't decay
-			return 0;
+			return -1;
 		}
 		double howMuch = this.top * decayLevel;
 		if (((this.value - howMuch) / this.top) <= stupidityLevel) { 
 			// never make less than 3%
-			// dries = true;
 			this.value = stupidityLevel * this.top;
 		} else {
 			this.value = this.value - howMuch;

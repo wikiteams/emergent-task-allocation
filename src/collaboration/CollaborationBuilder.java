@@ -502,7 +502,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 							}
 						} else {
 							double value = ai.decayExperience();
-							if (value == 0) {
+							if (value == -1) {
 								say("Experience of agent "
 										+ (agent.getNick())
 										+ " wasn't decreased because it's already low");
