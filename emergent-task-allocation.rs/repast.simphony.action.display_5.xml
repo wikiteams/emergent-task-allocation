@@ -1,5 +1,5 @@
 <repast.simphony.visualization.engine.CartesianDisplayDescriptor>
-  <name>TeamMembershipProjection</name>
+  <name>TasksAndWorkers</name>
   <type>2D</type>
   <styles>
     <entry>
@@ -14,23 +14,23 @@
   <editedStyles>
     <entry>
       <string>collaboration.Agent</string>
-      <string>collaboration.Agent.style_0.xml</string>
+      <string>collaboration.Agent.style_1.xml</string>
     </entry>
     <entry>
       <string>collaboration.Task</string>
-      <string>collaboration.Task.style_0.xml</string>
+      <string>collaboration.Task.style_1.xml</string>
     </entry>
   </editedStyles>
   <netStyles>
     <entry>
       <string>TasksAndWorkers</string>
-      <string>repast.simphony.visualization.editedStyle.EditedEdgeStyle2D</string>
+      <string>repast.simphony.visualizationOGL2D.DefaultEdgeStyleOGL2D</string>
     </entry>
   </netStyles>
   <editedNetStyles>
     <entry>
       <string>TasksAndWorkers</string>
-      <string>TasksAndWorkers.style_0.xml</string>
+      <null/>
     </entry>
   </editedNetStyles>
   <frequency>ON_NEW</frequency>
@@ -41,7 +41,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1691321728</hashCode>
+    <hashCode>-1353485030</hashCode>
   </schedParams>
   <layoutClassName>repast.simphony.visualization.visualization2D.Random2DLayout</layoutClassName>
   <layoutProjection>TasksAndWorkers</layoutProjection>
@@ -76,7 +76,7 @@
   <backgroundColor>
     <red>0</red>
     <green>0</green>
-    <blue>153</blue>
+    <blue>204</blue>
     <alpha>255</alpha>
   </backgroundColor>
   <valueLayers/>

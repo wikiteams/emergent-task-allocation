@@ -5,6 +5,6 @@
 <repast.simphony.action.data_set context="emergent-task-allocation" file="repast.simphony.action.data_set_2.xml" />
 <repast.simphony.action.data_set context="emergent-task-allocation" file="repast.simphony.action.data_set_3.xml" />
 <repast.simphony.dataLoader.engine.ClassNameDataLoaderAction context="emergent-task-allocation" file="repast.simphony.dataLoader.engine.ClassNameDataLoaderAction_4.xml" />
-<repast.simphony.action.histogram_chart context="emergent-task-allocation" file="repast.simphony.action.histogram_chart_5.xml" />
-<repast.simphony.action.display context="Tasks" file="repast.simphony.action.display_6.xml" />
+<repast.simphony.action.display context="emergent-task-allocation" file="repast.simphony.action.display_5.xml" />
+<repast.simphony.action.histogram_chart context="emergent-task-allocation" file="repast.simphony.action.histogram_chart_6.xml" />
 </Scenario>

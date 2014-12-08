@@ -1,8 +1,11 @@
 <context id="emergent-task-allocation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://repast.org/scenario/context">
+	
+	<projection id="TasksAndWorkers" type="network"></projection>
+	
 	<context id="Tasks">
-		<projection id="TasksAndWorkers" type="network"></projection>
 	</context>
 	<context id="Agents">
 	</context>
+
 </context>

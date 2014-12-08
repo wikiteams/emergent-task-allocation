@@ -3,7 +3,8 @@
 	<!-- General -->
 	
 	<parameter name="multipleAgentSets" displayName="Choose randomly from set of (no of agents/tasks)?"
-		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
+		type="java.lang.Boolean" defaultValue="false" 
+		values="false true" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	
 	<!-- Evolutionary parameters -->
@@ -18,6 +19,7 @@
 		values="SocketListener FileSoup Mockup AgentTestUniverse" />
 	<parameter name="planNumber" displayName="Evolutionary plan no."
 		type="java.lang.Integer" defaultValue="0" isReadOnly="false"
+		values="0 1 2 3 4 5 6 7"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="numTasks" displayName="Number of tasks"
 		type="java.lang.Integer" defaultValue="20" isReadOnly="false"
@@ -30,13 +32,14 @@
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="strategyDistribution" displayName="Evolution enabled/disabled"
 		type="java.lang.Integer" defaultValue="0" isReadOnly="false"
+		values="0 1"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 		
 	<!-- Non-evolutionary parameters -->
 
 	<parameter name="taskChoiceAlgorithm" displayName="taskChoiceAlgorithm"
 		type="java.lang.String" defaultValue="random" isReadOnly="false"
-		values="homophyly heterophyly homophyly_experience heterophyly_experience preferential random minmax central comparision social_vector"
+		values="homophyly heterophyly preferential random central"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 	<parameter name="skillChoiceAlgorithm" displayName="skillChoiceAlgorithm"
 		type="java.lang.String" defaultValue="greedy" isReadOnly="false"
@@ -58,7 +61,7 @@
 		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="experienceDecay" displayName="experienceDecay"
-		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
+		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="fullyLearnedAgentsLeave" displayName="fullyLearnedAgentsLeave"
 		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
