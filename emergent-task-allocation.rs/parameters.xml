@@ -57,11 +57,17 @@
 
 	<!-- Behavioral parameters -->
 
-	<parameter name="experienceCutPoint" displayName="experienceCutPoint"
+	<parameter name="experienceCutPoint" displayName="Will agents never reach a maximum of experience ?"
 		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
+		values="false true"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
-	<parameter name="experienceDecay" displayName="experienceDecay"
+	<parameter name="experienceDecay" displayName="Agents forget they skills if inactive ?"
 		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
+		values="false true"
+		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
+	<parameter name="allowSkillDeath" displayName="Allow skill death in exp decay ?"
+		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
+		values="false true"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="fullyLearnedAgentsLeave" displayName="fullyLearnedAgentsLeave"
 		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
