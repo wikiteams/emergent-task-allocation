@@ -6,8 +6,8 @@ import logger.PjiitOutputter;
 import cern.jet.random.ChiSquare;
 
 /**
- * Class describing the learning process of a human for simulation purpose. 
- * Uses sigmoid approximation or alternatively ChiSquare CDF.
+ * Class describing the learning process of a human for simulation purpose. Uses
+ * sigmoid approximation or alternatively ChiSquare CDF.
  * 
  * Allows for simulating experience decay, and cut-point E.
  * 
@@ -28,9 +28,10 @@ public class Experience {
 	private static final double decayLevel = 0.0005; // 0,05%
 	private static final double stupidityLevel = 0.03; // 3%
 
-	private static final double cutPoint = 1 - calculateCutPoint(6.0);
+	private static final double sigmaBorderValue = 1 - calculateCutPoint(6.0);
 
 	protected final static ExperienceSanityCheck esc = new ExperienceSanityCheck();
+	public static final double epsilon = 0.00000000001;
 
 	private enum ApproximationMethod {
 		SIGMOID, CHI_SQUARE
@@ -76,11 +77,10 @@ public class Experience {
 	}
 
 	/***
-	 * Decays experience by going back on sigmoig function
-	 * Hence that despite the fact that only double this.value
-	 * is modified, it does changes the result of sigmoid(this.value)
-	 * that's why it is possible that we do decrease the experience
-	 * by going back on sigmoig function
+	 * Decays experience by going back on sigmoig function Hence that despite
+	 * the fact that only double this.value is modified, it does changes the
+	 * result of sigmoid(this.value) that's why it is possible that we do
+	 * decrease the experience by going back on sigmoig function
 	 * 
 	 * Experience is always used together with sigmoid(this.value)
 	 * 
@@ -92,7 +92,7 @@ public class Experience {
 			return -1;
 		}
 		double howMuch = this.top * decayLevel;
-		if (((this.value - howMuch) / this.top) <= stupidityLevel) { 
+		if (((this.value - howMuch) / this.top) <= stupidityLevel) {
 			// never make less than 3%
 			this.value = stupidityLevel * this.top;
 		} else {
@@ -128,7 +128,7 @@ public class Experience {
 	public double getValue() {
 		return value;
 	}
-	
+
 	public double getTop() {
 		return top;
 	}
@@ -139,8 +139,8 @@ public class Experience {
 
 	public void increment(double how_much) {
 		this.value += how_much;
-		DecimalFormat df = new DecimalFormat("#.######");
-		sanity("Experience incremented by: " + df.format(how_much));
+		sanity("Experience incremented by: "
+				+ new DecimalFormat("#.######").format(how_much));
 	}
 
 	private void say(String s) {
@@ -161,34 +161,38 @@ public class Experience {
 	 */
 	class SigmoidCurve {
 
-		private double limes = 6;
+		private final double limes = 6;
 
 		SigmoidCurve() {
 			say("Object SigmoidCurve created, ref: " + this);
 		}
 
+		// stackoverflow.com/questions/3599579/
+		// for-any-finite-floating-point-value-is-it-guaranteed-that-x-x-0
 		protected double getDelta(double k) {
 			double result = 0;
 			if (!SimulationParameters.experienceCutPoint) {
 				double base = 0;
-				if (k == 1.){
+				if (k == 1) {
 					result = 1;
-				} else
-				if ((k < 0.5) && (k >= 0.)) {
+				} else if ((k < 0.5) && (k >= 0)) {
 					base = (-limes) + (k * (2 * limes));
 					result = 1d / (1d + Math.pow(Math.E, -base));
-					result = result - (Experience.cutPoint * (Math.abs(1-(2*k))));
-					if (result < 0.) result = 0.; // because of possible precision issues
-				} else if ((k < 1.001) && (k > 0.5)) {
+					result = result
+							- (Experience.sigmaBorderValue * (Math.abs(1 - (2 * k))));
+					if (result < 0)
+						result = 0;
+				} else if ((k < (1 + epsilon)) && (k > 0.5)) {
 					base = (-limes) + (k * (2 * limes));
 					result = 1d / (1d + Math.pow(Math.E, -base));
-					result = result + (Experience.cutPoint * (Math.abs(1-(2*k))));
-					if (result > 1.) result = 1.; // possible precision issues
-				} else if (k == 0.5){
+					result = result
+							+ (Experience.sigmaBorderValue * (Math.abs(1 - (2 * k))));
+					if (result > 1)
+						result = 1;
+				} else if (k == 0.5) {
 					base = (-limes) + (k * (2 * limes));
 					result = 1d / (1d + Math.pow(Math.E, -base));
-				}
-				else {
+				} else {
 					assert false;
 					// if not, smth would be wrong
 				}
@@ -196,10 +200,10 @@ public class Experience {
 				throw new UnsupportedOperationException();
 				// TODO: finish implementation
 			}
-			
-			assert result >= 0.;
-			assert result <= 1.;
-			
+
+			assert result >= 0.0;
+			assert result <= 1.0;
+
 			return result;
 		}
 	}
