@@ -16,9 +16,9 @@ import test.ModelConverter;
  */
 public class SimulationParameters {
 
-	public static boolean multipleAgentSets = true;
 	public static final String tasksDataset = "ALL_REPOSITORIES";
-	public static final boolean allowSkillDeath = false;
+	public static boolean multipleAgentSets = true;
+	public static boolean allowSkillDeath = false;
 
 	/**
 	 * Parameters - modelType (optional plan number) and dataSource
@@ -120,6 +120,7 @@ public class SimulationParameters {
 		maxWorkRequired = (Integer) param.getValue("maxWorkRequired");
 
 		experienceDecay = (Boolean) param.getValue("experienceDecay");
+		allowSkillDeath = (Boolean) param.getValue("allowSkillDeath");
 		experienceCutPoint = (Boolean) param.getValue("experienceCutPoint");
 		granularity = (Boolean) param.getValue("granularity");
 		granularityObstinacy = (Integer) param.getValue("granularityObstinacy");

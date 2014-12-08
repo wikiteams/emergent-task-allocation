@@ -72,8 +72,8 @@ public class PersistJobDone {
 		return jobDone.get(agentNick);
 	}
 	
-	public static Map<Integer, List<Skill>> getSkillsWorkedOn(String agentNick){
-		return skillImproved.get(agentNick);
+	public static Map<Integer, List<Skill>> getSkillsWorkedOn(Agent agent){
+		return skillImproved.get(agent.getNick());
 	}
 
 	public static Map<String, Map<Integer, Task>> getJobDone() {

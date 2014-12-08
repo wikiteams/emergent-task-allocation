@@ -81,16 +81,15 @@ public class StrategyDistribution {
 
 	public void setSkillChoice(ModelFactory modelFactory, String skillChoice) {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
-			
 			// this is only important if you launch a "multiple validation" model
-			
 			int intRandomized = RandomHelper.nextIntFromTo(0,
 					skillChoiceSet.length - 1);
 			assert (intRandomized >= 0)
 					&& (intRandomized <= skillChoiceSet.length - 1);
 			this.skillChoice = skillChoiceSet[intRandomized];
-			
 		} else
+			// otherwise assign to every agent the same strategy
+			// and make sure this is set from this later
 			this.skillChoice = skillChoice;
 	}
 

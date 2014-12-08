@@ -21,6 +21,7 @@ import constants.RandomMethod;
  * Here are all skills known to GitHub read and hold in ArrayList for more info,
  * please visit:
  * https://github.com/github/linguist/blob/master/lib/linguist/languages.yml
+ * In other words, this class loads all know programming languages.
  * 
  * @author Oskar Jarczyk
  * @since 1.0

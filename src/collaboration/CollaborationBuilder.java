@@ -101,6 +101,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	private LoadSet loadSet;
 	private DataSet dataSet;
+	private GameController gameController;
 
 	private CentralPlanning centralPlanner;
 
@@ -208,11 +209,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 		tasks = new Tasks(dataSet, launchStatistics, loadSet.TASK_COUNT);
 		context.addSubContext(tasks);
-		agents = new Agents(dataSet, strategyDistribution,
-				launchStatistics, loadSet.AGENT_COUNT);
+		agents = new Agents(dataSet, strategyDistribution, launchStatistics,
+				loadSet.AGENT_COUNT);
 		context.addSubContext(agents);
 
-		context.add(new GameController(strategyDistribution));
+		gameController = new GameController(strategyDistribution);
+		context.add(gameController);
 
 		say("Task choice algorithm is "
 				+ SimulationParameters.taskChoiceAlgorithm);
@@ -461,61 +463,52 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	}
 
 	/***
-	 * Implemented skill - forgetting, which can be enabled through parameters
-	 * 
-	 * TODO: seriously, rewrite it little
+	 * Implemented skill - forgetting, which can be enabled through parameters a
+	 * scheduled method if set in the scenario parameters when needed, lunched
+	 * AgentInternalls.decayExperience()
 	 */
 	public synchronized void experienceReassess() {
-		Context<Object> context = getCurrentContext();
 		try {
-			IndexedIterable<Object> agentObjects = context
+			IndexedIterable<Agent> agentObjects = agents
 					.getObjects(Agent.class);
-			for (Object agent : agentObjects) {
-				String type = agent.getClass().getName();
-				if (type.equals("collaboration.Agent")) {
-					say("Checking if I may have to decrease exp of "
-							+ (((Agent) agent).getNick()));
-					// use persist job done
-					Map<Integer, List<Skill>> c = PersistJobDone
-							.getSkillsWorkedOn(((Agent) agent).getNick());
-					if ((c == null) || (c.size() < 1)) { // agent didn't work on
-															// anything yet !
-						continue; // move on to next agent in pool
-					}
-					List<Skill> __s = c.get(Integer
-							.valueOf((int) RunEnvironment.getInstance()
-									.getCurrentSchedule().getTickCount()));
-					List<Skill> s = __s == null ? new ArrayList<Skill>() : __s;
+			for (Agent agent : agentObjects) {
 
-					Collection<AgentInternals> aic = ((Agent) agent)
-							.getAgentInternals();
-					CopyOnWriteArrayList aicconcurrent = new CopyOnWriteArrayList(
-							aic);
-					for (Object ai : aicconcurrent) {
-						if (s.contains(((AgentInternals) ai).getSkill())) {
-							// was working on this, don't decay
-						} else {
-							// decay this experience by beta < 1
-							if (SimulationParameters.allowSkillDeath) {
-								boolean result = ((AgentInternals) ai)
-										.decayExperienceWithDeath();
-								if (result) {
-									((Agent) agent).removeSkill(
-											((AgentInternals) ai).getSkill(),
-											false);
-								}
-							} else {
-								double value = ((AgentInternals) ai)
-										.decayExperience();
-								if (value == 0) {
-									say("Experience of agent "
-											+ (((Agent) agent).getNick())
-											+ " wasn't decreased because it's already low");
-								} else
-									say("Experience of agent "
-											+ (((Agent) agent).getNick())
-											+ " decreased and is now " + value);
+				say("Checking if I may have to decrease exp of " + agent);
+
+				// Use PersistJobDone to check work history
+				Map<Integer, List<Skill>> c = PersistJobDone
+						.getSkillsWorkedOn(agent);
+				if ((c == null) || (c.size() < 1)) { // agent didn't work on
+														// anything yet !
+					continue; // move on to next agent in pool
+				}
+				List<Skill> persistedJob = c.get(Integer
+						.parseInt(gameController.getCurrentTick().toString()));
+				List<Skill> inTickJobDone = persistedJob == null ? new ArrayList<Skill>()
+						: persistedJob;
+
+				Collection<AgentInternals> aic = (agent).getAgentInternals();
+				CopyOnWriteArrayList<AgentInternals> aicconcurrent = new CopyOnWriteArrayList<AgentInternals>(
+						aic);
+				for (AgentInternals ai : aicconcurrent) {
+					if (inTickJobDone.contains(ai.getSkill())) {
+						// was working on a task, don't decay this skill
+					} else {
+						// decay this experience by beta < 1
+						if (SimulationParameters.allowSkillDeath) {
+							boolean result = ai.decayExperienceWithDeath();
+							if (result) {
+								(agent).removeSkill(ai.getSkill(), false);
 							}
+						} else {
+							double value = ai.decayExperience();
+							if (value == 0) {
+								say("Experience of agent "
+										+ (agent.getNick())
+										+ " wasn't decreased because it's already low");
+							} else
+								say("Experience of agent " + (agent.getNick())
+										+ " decreased and is now " + value);
 						}
 					}
 				}
