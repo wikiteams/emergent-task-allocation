@@ -17,10 +17,12 @@ import logger.PjiitOutputter;
 import logger.SanityLogger;
 import logger.ValidationLogger;
 import logger.ValidationOutputter;
+import networking.CollaborationNetwork;
 
 import org.apache.log4j.LogManager;
 
 import repast.simphony.context.Context;
+import repast.simphony.context.space.graph.NetworkBuilder;
 import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.environment.RunState;
@@ -123,7 +125,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private void prepareEssentials() {
 		try {
 			loadSet = LoadSet.EMPTY;
-			// getting parameters of simulation
+			// getting parameters of a simulation from current scenario
 			say(Constraints.LOADING_PARAMETERS);
 			SimulationParameters.init();
 
@@ -135,12 +137,20 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			if (model.isValidation())
 				initializeValidationLogger();
 			if (SimulationParameters.multipleAgentSets && model.isNormal()) {
+				// here we decide if we want different
+				// sets of agent count / task count
+				// i don't need this for evolution at this time,
+				// neither for single computing,
+				// thus lets make sure we don't enable this
 				loadSet = DescribeUniverseBulkLoad.init();
+			} else {
+				loadSet.AGENT_COUNT = SimulationParameters.agentCount;
+				loadSet.TASK_COUNT = SimulationParameters.taskCount;
 			}
 
 			strategyDistribution = new StrategyDistribution();
 			// initialise skill pools
-			say("SkillFactory parsing skills from the CSV file...");
+			say("SkillFactory parsing skills from the chosen dataset");
 			skillFactory = new SkillFactory();
 			skillFactory.buildSkillsLibrary();
 			say("SkillFactory parsed all known programming languages.");
@@ -181,6 +191,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public Context<Object> build(Context<Object> context) {
 		context.setId("emergent-task-allocation");
 		currentContext = context;
+
+		NetworkBuilder<Object> builder = new NetworkBuilder<Object>(
+				"TasksAndWorkers", context, false);
+		CollaborationNetwork.collaborationNetwork = builder.buildNetwork();
 
 		prepareEssentials();
 		prepareFurthermore();
@@ -254,7 +268,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private void initializeValidationLogger() {
 		ValidationLogger.init();
 		say(Constraints.VALIDATION_LOGGER_INITIALIZED);
-		validation("---------------------------------------------------------");
+		validation(Constraints.SEPERATOR);
 	}
 
 	private void outputAgentSkillMatrix() throws IOException {
@@ -363,6 +377,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
+	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
+	public void clearCollaborationNetwork() {
+		CollaborationNetwork.clear();
+	}
+
 	private void cleanAfter() {
 		if (!alreadyFlushed) {
 			LogManager.shutdown();
@@ -406,7 +425,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		say("CentralPlanning scheduled method launched, listAgent.size(): "
 				+ getAgents().size() + " taskPool.size(): "
 				+ ((Tasks) tasks).getCount());
-		say("Zeroing agents orders");
+		say("Zeroing agents' orders");
 		centralPlanner.zeroAgentsOrders(getAgents());
 		centralPlanner.centralPlanningCalc(getAgents(), (Tasks) tasks);
 	}
@@ -432,6 +451,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
+	/***
+	 * Implemented skill - forgetting, which can be enabled through parameters
+	 * 
+	 * TODO: seriously, rewrite it little
+	 */
 	public synchronized void experienceReassess() {
 		Context<Object> context = getCurrentContext();
 		try {
@@ -505,7 +529,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		if (SimulationParameters.experienceDecay) {
 			int reassess = RandomHelper.nextIntFromTo(0, 1);
 			// I want in results both expDecay off and on!
-			// thats why randomize to use both
+			// thats why randomise to use both
 			if (reassess == 0) {
 				SimulationParameters.experienceDecay = false;
 				launchStatistics.expDecay = false;

@@ -9,6 +9,7 @@ import java.util.Map;
 import logger.PjiitOutputter;
 import repast.simphony.annotate.AgentAnnot;
 import repast.simphony.context.Context;
+import repast.simphony.context.space.graph.NodeCreator;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.ui.probe.ProbeID;
@@ -29,7 +30,7 @@ import argonauts.PersistRewiring;
  * @version 2.0.6
  */
 @AgentAnnot(displayName = "Agent")
-public class Agent {
+public class Agent implements NodeCreator<Agent>{
 
 	/**
 	 * This value is used to automatically generate agent identifiers.
@@ -253,7 +254,7 @@ public class Agent {
 	}
 
 	private void executeJob(Task taskToWork) {
-		// Agent Aj works on Ti
+		// This agent will work on task Task taskToWork
 		if ((taskToWork != null) && (taskToWork.getTaskInternals().size() > 0)) {
 
 			assert taskToWork.getTaskInternals().size() > 0;
@@ -423,6 +424,9 @@ public class Agent {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (!(obj instanceof Agent)) {
+			return false;
+		}
 		if ((this.id == ((Agent) obj).id)
 				&& (this.nick.toLowerCase().equals((((Agent) obj).nick
 						.toLowerCase()))))
@@ -441,6 +445,11 @@ public class Agent {
 
 	private void sanity(String s) {
 		PjiitOutputter.sanity(s);
+	}
+
+	@Override
+	public Agent createNode(String label) {
+		return createNode("Agent-" + getNick());
 	}
 }
 
