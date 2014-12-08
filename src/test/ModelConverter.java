@@ -10,19 +10,19 @@ import repast.simphony.parameter.StringConverter;
  * 
  * - Normal
  * 
- * Normal execution, result-oriented
+ * Normal execution, result-oriented;
  * 
  * - Validation
  * 
- * All assertions enabled, maximum logging and verbose messaging
+ * All assertions enabled, maximum logging and verbose messaging;
  * 
- * - Multiplevalidation
+ * - Multiple validation
  * 
- * at this time undefined...
+ * It assigns different strategies at once;
  * 
  * - Stress
  * 
- * it multiplies the "work left" and "experience left" by x10000
+ * It multiplies the "work left" and "experience left" by x10000;
  * 
  * @author Oskar Jarczyk
  * @version 2.0
@@ -53,17 +53,17 @@ public class ModelConverter implements StringConverter<Model> {
 		Model model = new Model(strRep);
 		StringTokenizer st = new StringTokenizer(strRep, "+");
 		while (st.hasMoreElements()) {
-			Object element = st.nextElement();
-			if (((String) element).toLowerCase().equals("normal")) {
+			String element = (String) st.nextElement();
+			if ((element).toLowerCase().equals("normal")) {
 				model.setNormal(true);
 			}
-			if (((String) element).toLowerCase().equals("validation")) {
+			if ((element).toLowerCase().equals("validation")) {
 				model.setValidation(true);
 			}
-			if (((String) element).toLowerCase().equals("multiplevalidation")) {
+			if ((element).toLowerCase().equals("multiplevalidation")) {
 				model.setMultipleValidation(true);
 			}
-			if (((String) element).toLowerCase().equals("stress")) {
+			if ((element).toLowerCase().equals("stress")) {
 				model.setStress(true);
 			}
 		}
