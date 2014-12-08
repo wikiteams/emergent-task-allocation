@@ -238,6 +238,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		List<ISchedulableAction> actions = schedule.schedule(this);
 		say(actions.toString());
 
+		context.add(this); // it will make sure ScheduledMethods are run
+
 		return context;
 	}
 
@@ -316,6 +318,22 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
+	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.LAST_PRIORITY)
+	public void checkForActivity() {
+		say("checkForActivity() check launched");
+		if (EnvironmentEquilibrium.getActivity() == false) {
+			say("EnvironmentEquilibrium.getActivity() returns false!");
+			finalMessage(buildFinalMessage());
+			RunEnvironment.getInstance().endRun();
+			cleanAfter();
+		}
+	}
+
+	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
+	public void clearCollaborationNetwork() {
+		CollaborationNetwork.clear();
+	}
+
 	private String buildFinalMessage() {
 		return RunState.getInstance().getRunInfo().getBatchNumber()
 				+ ","
@@ -364,22 +382,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ "agentSkillPoolDataset" + "," + "taskSkillPoolDataset" + ","
 				+ "Skill choice strategy" + "," + "Task MinMax choice" + ","
 				+ "Task dataset checksum" + "," + "Agent dataset checksum";
-	}
-
-	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.LAST_PRIORITY)
-	public void checkForActivity() {
-		say("checkForActivity() check launched");
-		if (EnvironmentEquilibrium.getActivity() == false) {
-			say("EnvironmentEquilibrium.getActivity() returns false!");
-			finalMessage(buildFinalMessage());
-			RunEnvironment.getInstance().endRun();
-			cleanAfter();
-		}
-	}
-
-	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
-	public void clearCollaborationNetwork() {
-		CollaborationNetwork.clear();
 	}
 
 	private void cleanAfter() {
@@ -548,14 +550,20 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
+	/***
+	 * Scheduled methods which checks for fully learned agents - only when fll
+	 * set as true in scenario parameters
+	 * 
+	 * @since 1.3
+	 */
 	public synchronized void agentsWithdrawns() {
 		Context<Object> context = getCurrentContext();
 		try {
 			IndexedIterable<Object> agentObjects = context
 					.getObjects(Agent.class);
-			CopyOnWriteArrayList acconcurrent = new CopyOnWriteArrayList();
+			CopyOnWriteArrayList<Agent> acconcurrent = new CopyOnWriteArrayList<Agent>();
 			for (Object object : agentObjects) {
-				acconcurrent.add(object);
+				acconcurrent.add((Agent) object);
 			}
 			for (Object agent : acconcurrent) {
 				if (agent.getClass().getName().equals("collaboration.Agent")) {
@@ -604,7 +612,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		if (SimulationParameters.fullyLearnedAgentsLeave) {
 			int reassess = RandomHelper.nextIntFromTo(0, 1);
 			// I want in results both expDecay off and on!
-			// thats why randomize to use both
+			// thats why randomise to use both
 			if (reassess == 0) {
 				SimulationParameters.fullyLearnedAgentsLeave = false;
 				launchStatistics.fullyLearnedAgentsLeave = false;

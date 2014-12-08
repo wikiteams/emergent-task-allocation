@@ -1,9 +1,25 @@
 package test;
 
+/***
+ * Possible values:
+ * 
+ * Normal - self-explanatory, for conducting the experiment :) 
+ * 
+ * Validation - all assertions enabled, maximum logging and verbose messaging
+ * 
+ * Multiple validation - 
+ * 
+ * Stress - Creates hilariously high values in test tasks 
+ * and test agents, it multiplies the "work left" and
+ * "experience left" by x10000
+ * 
+ * @author Oskar Jarczyk
+ * @since 2.0
+ */
 public class Model {
 
 	private String name;
-	
+
 	private boolean normal;
 	private boolean validation;
 	private boolean multipleValidation;
@@ -43,7 +59,7 @@ public class Model {
 	public boolean isMultipleValidation() {
 		return multipleValidation;
 	}
-	
+
 	public boolean isSingleValidation() {
 		return validation;
 	}

@@ -207,15 +207,7 @@ public class Tasks extends DefaultContext<Task> {
 		}
 		return result;
 	}
-
-	private void initalizeValidationTasks(Context<Task> context) {
-		for (Task task : TaskTestUniverse.DATASET) {
-			say("Adding validation task to pool..");
-			addTask(task.getName(), task);
-			context.add(task);
-		}
-	}
-
+	
 	private void initializeTasks(Context<Task> context) {
 		Model model = modelFactory.getFunctionality();
 		if (model.isNormal() && model.isValidation()) {
@@ -232,7 +224,7 @@ public class Tasks extends DefaultContext<Task> {
 			assert false; // should never happen
 		}
 	}
-
+	
 	private void initializeTasksNormally(Context<Task> context) {
 		Integer howMany = SimulationParameters.multipleAgentSets ? allowedLoad
 				: SimulationParameters.taskCount;
@@ -244,8 +236,16 @@ public class Tasks extends DefaultContext<Task> {
 			task.initialize(howMany);
 			context.add(task);
 		}
-
 		launchStatistics.taskCount = getCount();
 	}
 
+	private void initalizeValidationTasks(Context<Task> context) {
+		for (Task task : TaskTestUniverse.DATASET) {
+			say("Adding validation task to pool..");
+			addTask(task.getName(), task);
+			context.add(task);
+		}
+		launchStatistics.taskCount = getCount();
+	}
+	
 }

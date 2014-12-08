@@ -107,13 +107,13 @@ public class Agents extends DefaultContext<Agent> {
 					strategyDistribution.getTaskStrategy(),
 					//strategyDistribution.getTaskMaxMinStrategy(),
 					strategyDistribution.getSkillStrategy());
-
 			agent.setStrategy(strategy);
 			listAgents.add(agent);
 			say(agent.toString() + " added to pool.");
 
 			// Required adding agent to context
 			context.add(agent);
+			launchStatistics.agentCount++;
 		}
 	}
 
@@ -123,7 +123,6 @@ public class Agents extends DefaultContext<Agent> {
 
 	public static void stochasticSampling(ArrayList<Agent> agents) {
 		// TODO Auto-generated method stub
-
 	}
 
 }

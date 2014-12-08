@@ -4,9 +4,9 @@ import java.util.StringTokenizer;
 import repast.simphony.parameter.StringConverter;
 
 /**
- * Recognizes a model type from String translation,
+ * Recognises a model type from String translation,
  * The model can be a concatenation of one or more options
- * and determines the behavior of the simulator
+ * and determines the behaviour of the simulator
  * 
  * - Normal
  * 
@@ -18,7 +18,7 @@ import repast.simphony.parameter.StringConverter;
  * 
  * - Multiplevalidation
  * 
- * at this time undefinied...
+ * at this time undefined...
  * 
  * - Stress
  * 

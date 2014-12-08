@@ -30,7 +30,7 @@ import argonauts.PersistRewiring;
  * @version 2.0.6
  */
 @AgentAnnot(displayName = "Agent")
-public class Agent implements NodeCreator<Agent>{
+public class Agent implements NodeCreator<Agent> {
 
 	/**
 	 * This value is used to automatically generate agent identifiers.
@@ -266,10 +266,11 @@ public class Agent implements NodeCreator<Agent>{
 									this.getCentralAssignmentOrders()
 											.getChosenSkillName()) != null)) {
 				taskToWork.workOnTaskCentrallyControlled(this);
-			} else
+				EnvironmentEquilibrium.setActivity(true);
+			} else {
 				taskToWork.workOnTask(this, this.strategy.skillChoice);
-			EnvironmentEquilibrium.setActivity(true);
-
+				EnvironmentEquilibrium.setActivity(true);
+			}
 		} else {
 
 			if (SimulationParameters.allwaysChooseTask
@@ -292,8 +293,7 @@ public class Agent implements NodeCreator<Agent>{
 			} else {
 				say("Agent " + this.id + " didn't work on anything");
 				sanity("Agent " + this.id
-						+ " don't have a task to work on in step "
-						+ getTick());
+						+ " don't have a task to work on in step " + getTick());
 			}
 		}
 

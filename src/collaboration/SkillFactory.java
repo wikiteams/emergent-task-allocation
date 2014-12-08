@@ -24,7 +24,7 @@ import constants.RandomMethod;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0
+ * @version 2.0.6
  */
 public class SkillFactory {
 

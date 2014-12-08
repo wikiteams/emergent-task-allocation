@@ -68,6 +68,7 @@
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="allwaysChooseTask" displayName="Agent will always choose a Task?"
 		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
+		values="true false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 
 	<!-- Granularity of work -->

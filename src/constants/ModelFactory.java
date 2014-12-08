@@ -8,7 +8,7 @@ import test.Model;
  * 
  * @author Oskar Jarczyk
  * @since 1.3
- * 
+ * @version 2.0.6
  */
 public class ModelFactory {
 

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import networking.CollaborationNetwork;
 import logger.PjiitOutputter;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
@@ -238,6 +239,8 @@ public class Task {
 	}
 
 	public Boolean workOnTask(Agent agent, Strategy.SkillChoice strategy) {
+		CollaborationNetwork.addEdge(agent, this);
+		
 		Collection<TaskInternals> intersection;
 		List<Skill> skillsImprovedList = new ArrayList<Skill>();
 
@@ -398,6 +401,7 @@ public class Task {
 
 		if (skillsImprovedList.size() > 0) {
 			PersistJobDone.addContribution(agent, this, skillsImprovedList);
+			increaseNumberOfVisits();
 			return true;
 		} else {
 			return false;
@@ -474,6 +478,13 @@ public class Task {
 
 	public void setNumberOfVisits(Long numberOfVisits) {
 		this.numberOfVisits = numberOfVisits;
+	}
+
+	public void increaseNumberOfVisits() {
+		if (numberOfVisits + 1 == Long.MAX_VALUE)
+			throw new UnsupportedOperationException(
+					Constraints.MAX_VALUE_REACHED);
+		this.numberOfVisits++;
 	}
 
 }
