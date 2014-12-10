@@ -60,9 +60,15 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public Agent(String firstName, String lastName, String nick) {
+		this(firstName, lastName, nick, true);
+	}
+
+	public Agent(String firstName, String lastName, String nick,
+			Boolean fillWithSkills) {
 		this.agentSkills = new AgentSkills();
 		say("Agent constructor called");
-		AgentSkillsPool.fillWithSkills(this);
+		if (fillWithSkills)
+			AgentSkillsPool.fillWithSkills(this);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.nick = nick + this.id;
