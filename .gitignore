@@ -17,3 +17,4 @@ velocity.log
 debug.log
 /simulation_logs.txt
 /batch.log
+/input_*.csv
