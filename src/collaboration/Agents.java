@@ -122,7 +122,7 @@ public class Agents extends DefaultContext<Agent> {
 	 * Evolution with Stochasting Universal Sampling
 	 * 
 	 * @author Paulina Adamska
-	 * @since 2.0
+	 * @since 2.0, partially 1.3
 	 * @version 2.0.6
 	 * @param agents
 	 *            - list of agents to take part in evolution

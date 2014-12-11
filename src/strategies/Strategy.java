@@ -110,4 +110,13 @@ public class Strategy {
 		return this.taskChoice.name() + "," + this.skillChoice.name();
 	}
 
+	public Strategy copy() {
+		return new Strategy(this.taskChoice, this.skillChoice);
+	}
+
+	public void copyStrategy(Strategy copyFrom) {
+		this.taskChoice = copyFrom.taskChoice;
+		this.skillChoice = copyFrom.skillChoice;
+	}
+
 }
