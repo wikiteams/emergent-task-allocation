@@ -29,6 +29,10 @@ public class AgentSkills {
 	public void setSkills(Map<String, AgentInternals> skills) {
 		this.skills = skills;
 	}
+	
+	public void removeSkill(String key){
+		this.skills.remove(key);
+	}
 
 	public void reset() {
 		skills = deepCopy(startSkills);

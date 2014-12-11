@@ -142,6 +142,14 @@ public class Experience {
 		sanity("Experience incremented by: "
 				+ new DecimalFormat("#.######").format(how_much));
 	}
+	
+	public void incrementAbsolutly(double how_much) {
+		assert how_much >= 0.0;
+		assert how_much <= 1.0;
+		this.value += this.top * how_much;
+		sanity("Experience incremented by: "
+				+ new DecimalFormat("#.######").format(how_much));
+	}
 
 	private void say(String s) {
 		PjiitOutputter.say(s);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import logger.PjiitOutputter;
 import repast.simphony.annotate.AgentAnnot;
@@ -18,6 +19,7 @@ import strategies.Strategy;
 import strategies.Strategy.SkillChoice;
 import strategies.Strategy.TaskChoice;
 import tasks.CentralAssignmentOrders;
+import utils.ObjectsHelper;
 import argonauts.GranularityType;
 import argonauts.GranulatedChoice;
 import argonauts.PersistJobDone;
@@ -81,6 +83,37 @@ public class Agent implements NodeCreator<Agent> {
 		gameController = (GameController) parentContext.getObjects(
 				GameController.class).get(0);
 		return gameController;
+	}
+
+	public Double getUtility() {
+		Double result = null;
+		double average = 0;
+		int count = 0;
+		for (AgentInternals currentSkill : getAgentInternals()) {
+			double delta = currentSkill.getExperience().getDelta();
+			if (ObjectsHelper.is2ndLower(result, delta)) {
+				result = delta;
+			}
+			count++;
+			average += delta;
+		}
+		average = average / count;
+		return result + (0.05 * average);
+	}
+
+	public void mutate() {
+		// 1% chances for deleting (abandoning) skill
+		if (RandomHelper.nextDoubleFromTo(0, 1) <= 0.01) {
+			Object[] allSkills = agentSkills.getSkills().keySet().toArray();
+			agentSkills.removeSkill((String) allSkills[RandomHelper
+					.nextIntFromTo(0, allSkills.length - 1)]);
+		}
+		for (AgentInternals a : agentSkills.getSkills().values()) {
+			// 2% chances for self-improvement in a skill, Bernoulli trial
+			if (RandomHelper.nextDoubleFromTo(0, 1) <= 0.02) {
+				a.getExperience().incrementAbsolutly(0.05);
+			}
+		}
 	}
 
 	public void addSkill(String key, AgentInternals agentInternals) {

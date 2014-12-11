@@ -1,13 +1,16 @@
 package collaboration;
 
 import github.DataSet;
+import intelligence.AgentComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import logger.PjiitOutputter;
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
+import repast.simphony.random.RandomHelper;
 import strategies.Strategy;
 import strategies.StrategyDistribution;
 import test.AgentTestUniverse;
@@ -38,8 +41,7 @@ public class Agents extends DefaultContext<Agent> {
 	private LaunchStatistics launchStatistics;
 	private Integer allowedLoad;
 
-	public Agents(DataSet dataSet,
-			StrategyDistribution strategyDistribution,
+	public Agents(DataSet dataSet, StrategyDistribution strategyDistribution,
 			LaunchStatistics launchStatistics, Integer allowedLoad) {
 		super("Agents");
 
@@ -61,7 +63,7 @@ public class Agents extends DefaultContext<Agent> {
 
 			Strategy strategy = new Strategy(
 					strategyDistribution.getTaskStrategy(),
-					//strategyDistribution.getTaskMaxMinStrategy(),
+					// strategyDistribution.getTaskMaxMinStrategy(),
 					strategyDistribution.getSkillStrategy());
 
 			agent.setStrategy(strategy);
@@ -100,7 +102,7 @@ public class Agents extends DefaultContext<Agent> {
 			say("Adding validation agent to pool..");
 			Strategy strategy = new Strategy(
 					strategyDistribution.getTaskStrategy(),
-					//strategyDistribution.getTaskMaxMinStrategy(),
+					// strategyDistribution.getTaskMaxMinStrategy(),
 					strategyDistribution.getSkillStrategy());
 			agent.setStrategy(strategy);
 			listAgents.add(agent);
@@ -116,8 +118,48 @@ public class Agents extends DefaultContext<Agent> {
 		PjiitOutputter.say(s);
 	}
 
-	public static void stochasticSampling(ArrayList<Agent> agents) {
-		// TODO Auto-generated method stub
+	/***
+	 * Evolution with Stochasting Universal Sampling
+	 * 
+	 * @author Paulina Adamska
+	 * @since 2.0
+	 * @version 2.0.6
+	 * @param agents
+	 *            - list of agents to take part in evolution
+	 */
+	public static void stochasticSampling(ArrayList<Agent> population) {
+		if (population.size() == 0)
+			return;
+		Collections.sort(population, new AgentComparator());
+		double min = population.get(population.size() - 1).getUtility();
+		double scaling = min < 0 ? ((-1) * min) : 0;
+		double maxRange = 0;
+		ArrayList<Double> ranges = new ArrayList<Double>();
+		ArrayList<Strategy> strategiesBackup = new ArrayList<Strategy>();
+
+		for (Agent p : population) {
+			maxRange += (p.getUtility() + scaling);
+			ranges.add(maxRange);
+			strategiesBackup.add(p.getStrategy().copy());
+		}
+		
+		double step = maxRange / population.size();
+		double start = RandomHelper.nextDoubleFromTo(0, 1) * step;
+		for (int i = 0; i < population.size(); i++) {
+			int selectedPlayer = population.size() - 1;
+			for (int j = 0; j < ranges.size(); j++) {
+				double pointer = start + i * step;
+				if (pointer < ranges.get(j)) {
+					selectedPlayer = j;
+					break;
+				}
+			}
+			Agent nextAgent = population.get(i);
+			nextAgent.getStrategy().copyStrategy(
+					strategiesBackup.get(selectedPlayer));
+
+			nextAgent.mutate();
+		}
 	}
 
 }
