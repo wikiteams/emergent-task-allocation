@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor>
-  <name>agents_state_separate</name>
+  <name>Agents_state_nonaggr</name>
   <type>NON_AGGREGATE</type>
   <sourceType>collaboration.Agent</sourceType>
   <inclTick>true</inclTick>

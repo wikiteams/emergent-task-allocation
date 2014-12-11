@@ -1,6 +1,6 @@
 <repast.simphony.data2.engine.FileSinkDescriptor>
   <name>Tasks_output</name>
-  <dataSet>Tasks_separate</dataSet>
+  <dataSet>Tasks_state_nonaggr</dataSet>
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">

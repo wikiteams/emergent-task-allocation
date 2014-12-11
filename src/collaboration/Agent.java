@@ -16,6 +16,7 @@ import repast.simphony.ui.probe.ProbeID;
 import repast.simphony.util.ContextUtils;
 import strategies.Strategy;
 import strategies.Strategy.SkillChoice;
+import strategies.Strategy.TaskChoice;
 import tasks.CentralAssignmentOrders;
 import argonauts.GranularityType;
 import argonauts.GranulatedChoice;
@@ -417,6 +418,18 @@ public class Agent implements NodeCreator<Agent> {
 		this.agentSkills = agentSkills;
 	}
 
+	public int usesHomophyly() {
+		return this.strategy.taskChoice.equals(TaskChoice.HOMOPHYLY) ? 1 : 0;
+	}
+
+	public int usesHeterohyly() {
+		return this.strategy.taskChoice.equals(TaskChoice.HETEROPHYLY) ? 1 : 0;
+	}
+
+	public int usesPreferential() {
+		return this.strategy.taskChoice.equals(TaskChoice.PREFERENTIAL) ? 1 : 0;
+	}
+
 	@ProbeID()
 	@Override
 	public String toString() {
@@ -441,6 +454,11 @@ public class Agent implements NodeCreator<Agent> {
 			return false;
 	}
 
+	@Override
+	public Agent createNode(String label) {
+		return createNode("Agent-" + getNick());
+	}
+
 	public boolean wasWorkingOnAnything() {
 		return PersistJobDone.getJobDone().containsKey(this.getNick());
 	}
@@ -451,11 +469,6 @@ public class Agent implements NodeCreator<Agent> {
 
 	private void sanity(String s) {
 		PjiitOutputter.sanity(s);
-	}
-
-	@Override
-	public Agent createNode(String label) {
-		return createNode("Agent-" + getNick());
 	}
 }
 

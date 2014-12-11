@@ -1,6 +1,6 @@
 <repast.simphony.data2.engine.FileSinkDescriptor>
   <name>Agents state output</name>
-  <dataSet>agents_state_separate</dataSet>
+  <dataSet>Agents_state_nonaggr</dataSet>
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">

@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor>
-  <name>Tasks_separate</name>
+  <name>Tasks_state_nonaggr</name>
   <type>NON_AGGREGATE</type>
   <sourceType>collaboration.Task</sourceType>
   <inclTick>true</inclTick>
