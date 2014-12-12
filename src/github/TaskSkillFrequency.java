@@ -10,6 +10,7 @@ import java.util.Map;
  * @since 1.4.1
  *
  */
+@Deprecated
 public abstract class TaskSkillFrequency {
 
     public static final Map<String, Double> frequency;

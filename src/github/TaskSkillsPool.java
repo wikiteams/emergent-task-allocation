@@ -45,6 +45,7 @@ import cern.jet.random.Poisson;
  * @author Oskar Jarczyk
  * 
  */
+@Deprecated
 public abstract class TaskSkillsPool {
 
 	private static String filenameFrequencySkills = SystemUtils.IS_OS_LINUX ? "data/skills-probability.csv"
