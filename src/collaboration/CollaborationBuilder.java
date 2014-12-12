@@ -19,6 +19,7 @@ import logger.SanityLogger;
 import logger.ValidationLogger;
 import logger.ValidationOutputter;
 import networking.CollaborationNetwork;
+import networking.DynamicGexfGraph;
 
 import org.apache.log4j.LogManager;
 
@@ -203,6 +204,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		NetworkBuilder<Object> builder = new NetworkBuilder<Object>(
 				"TasksAndWorkers", context, false);
 		CollaborationNetwork.collaborationNetwork = builder.buildNetwork();
+		CollaborationNetwork.gephiEngine = new DynamicGexfGraph().init();
 
 		prepareDataControllers();
 		prepareWorkLoaders();
@@ -263,11 +265,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	}
 
 	private void initializeLoggers() throws IOException {
-		// System.setErr(new PrintStream(new
-		// FileOutputStream("error_console.log")));
-		// actually this little commented code
-		// is not working, find out why ?
-
 		PjiitLogger.init();
 		say(Constraints.LOGGER_INITIALIZED);
 		SanityLogger.init();

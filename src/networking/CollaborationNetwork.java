@@ -16,6 +16,7 @@ import collaboration.Task;
 public class CollaborationNetwork {
 	
 	public static Network<Object> collaborationNetwork;
+	public static DynamicGexfGraph gephiEngine;
 	
 	public static void clear(){
 		collaborationNetwork.removeEdges();
@@ -24,6 +25,11 @@ public class CollaborationNetwork {
 	public static void addEdge(Agent agent, Task task){
 		RepastEdge<Object> edge = new RepastEdge<Object>(agent, task, false);
 		collaborationNetwork.addEdge(edge);
+		persistEdge(agent, task);
+	}
+	
+	public static void persistEdge(Agent agent, Task task){
+		gephiEngine.addEdge(agent, task);
 	}
 
 }
