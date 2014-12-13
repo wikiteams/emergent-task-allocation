@@ -49,9 +49,15 @@ public class GameController {
 	private int currentGeneration;
 	private int currentIteration;
 
+	// TODO: make sure to implement a 2nd part of Collaboration Game, which is
+	// checking efficiency of a static strategy set and a central planner
+
+	private boolean secondStage;
+
 	private DateTime previous = new DateTime();
 
 	public GameController(StrategyDistribution strategyDistribution) {
+		secondStage = false;
 		iterationNumber = SimulationParameters.iterationCount;
 		// variable iterationNumber states how many ticks long
 		// is a single generation, we use mostly value of 200
@@ -75,30 +81,23 @@ public class GameController {
 
 	@ScheduledMethod(start = 1.0, interval = 1.0, priority = -2000)
 	public void firstStep() {
+		// 1-generation scenarios don't need evolution
 		if (isEvolutionary()) {
-			if (isFirstGeneration()) {
-				// warming up, hold on with evolution,
-				// 1-generation scenarios don't need evolution
-				if (currentIteration == (iterationNumber - 1)) {
-					say("counterIteration: " + currentIteration);
-					say("Execute first generation end protocols");
-					// resetAllTasks();
-					// reset experience state in Agents
-					resetAllAgents();
-				}
-			} else {
-				if (currentIteration == (iterationNumber - 1)) {
-					say("counterIteration: " + currentIteration);
-					say("Execute generation end protocols");
-					// start evolution of Agents
-					AgentEvolve.evolve(this);
-					// resetAllTasks();
-					// reset experience state in Agents
-					resetAllAgents();
-				}
+			// hence there is no distinction between 
+			// first generation and any other generations
+			// which you can find e.g. in hyip game or credibility game
+			if (currentIteration == (iterationNumber - 1)) {
+				say("counterIteration: " + currentIteration);
+				say("Execute generation end protocols");
+				// start evolution of Agents
+				AgentEvolve.evolve(this);
+				// resetAllTasks();
+				// reset experience state in Agents
+				resetAllAgents();
 			}
 		} else {
 			// do nothing
+			// TODO: maybe unschedule method manually?
 		}
 	}
 
@@ -126,19 +125,19 @@ public class GameController {
 			// check whether this is the last generation/iteration
 			if (currentIteration == (iterationNumber - 2)) {
 				if (currentGeneration == (generationNumber - 1)) {
-					say("Ending instance run");
+					say("[Ending instance run]");
 					RunEnvironment.getInstance().endRun();
 				}
 			}
 
 			if (currentIteration == (iterationNumber - 1)) {
-				say("This is the last iteration in this gen");
+				say("[This is the last iteration in this generation]");
 				currentIteration = 0;
-				say("Ending current generation");
-				System.out.println(currentGeneration);
+				System.out.println("Current generation is: " + currentGeneration);
+				say("[Ending current generation]");
 				currentGeneration++;
 			} else {
-				say("Incrementing current iteration number to: "
+				say("Incrementing current iterationNumber to: "
 						+ (currentIteration + 1));
 				currentIteration++;
 			}
@@ -166,6 +165,14 @@ public class GameController {
 
 	public boolean isWarmedUp() {
 		return currentIteration >= (iterationNumber * 0.05);
+	}
+
+	public boolean isSecondStage() {
+		return secondStage;
+	}
+
+	public void setSecondStage(boolean secondStage) {
+		this.secondStage = secondStage;
 	}
 
 	/**
@@ -207,7 +214,7 @@ public class GameController {
 		}
 		return result;
 	}
-	
+
 	private static void say(String s) {
 		PjiitOutputter.say(s);
 	}
