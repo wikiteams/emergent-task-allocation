@@ -5,3 +5,11 @@ apache
 multi
 beanutils
 mersenne
+nucleons
+neutrons
+colloquially
+schwarzschild
+sigmoig
+paris
+foucault
+pantheon

@@ -218,6 +218,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			 * and specially created for evolutionary model
 			 * 
 			 */
+			say("[Sqlite engine] and resultset initialized, may take some time..");
 			MyDatabaseConnector.init();
 		} else if (dataSet.isContinuus()) {
 			// TODO: implement rest

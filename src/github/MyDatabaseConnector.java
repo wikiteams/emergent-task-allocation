@@ -9,19 +9,20 @@ import java.sql.Statement;
 import org.apache.commons.lang3.SystemUtils;
 
 public class MyDatabaseConnector {
-	
+
 	private static Connection connection = null;
-	private static ResultSet rs = null;
+	private static ResultSet resultSet = null;
+	private static String filename = "workload.db";
+	private static String filepath = SystemUtils.IS_OS_LINUX ? "data/"
+			: "data\\";
 
 	public static Boolean init() {
 		boolean success = true;
-		String filename = "test.db";
 		try {
 			Class.forName("org.sqlite.JDBC");
-			String connectionString = SystemUtils.IS_OS_LINUX ? "jdbc:sqlite:" + filename
-					: "jdbc:sqlite:" + filename;
+			String connectionString = "jdbc:sqlite:" + filepath + filename;
 			connection = DriverManager.getConnection(connectionString);
-			createResultSet();
+			resultSet = createResultSet();
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			return false;
@@ -29,13 +30,14 @@ public class MyDatabaseConnector {
 		System.out.println("Opened database successfully");
 		return success;
 	}
-	
-	private static Boolean createResultSet() throws SQLException{
-		Boolean result = true;
+
+	private static ResultSet createResultSet() throws SQLException {
 		Statement statement = connection.createStatement();
-	    statement.setQueryTimeout(360);  // set timeout to 360 sec.
-	    rs = statement.executeQuery("select * from person");
-	    return result;
+		statement.setQueryTimeout(360); // set timeout to 360 sec.
+		return statement
+				.executeQuery("select time, taskid, language, sum(workdone), "
+						+ "sum(workrequired) from workload group by "
+						+ "taskid, language order by time asc");
 	}
 
 }
