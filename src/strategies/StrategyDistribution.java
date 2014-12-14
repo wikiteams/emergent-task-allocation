@@ -1,6 +1,5 @@
 package strategies;
 
-import github.DataSet;
 import repast.simphony.random.RandomHelper;
 import strategies.Strategy.SkillChoice;
 import strategies.Strategy.TaskChoice;

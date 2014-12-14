@@ -4,13 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import org.apache.commons.digester.annotations.rules.ObjectCreate;
 import org.apache.commons.lang3.SystemUtils;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 
-import constants.LoadSet;
 import repast.simphony.random.RandomHelper;
+import constants.LoadSet;
 
 /**
  * Defines the sets of number of agents / number of tasks to be used in a
@@ -25,7 +24,8 @@ public class DescribeUniverseBulkLoad {
 
 	private static LinkedList<String[]> combinations;
 
-	private static String fileName = SystemUtils.IS_OS_LINUX ? "data/agentsTaskCombination.ini"
+	private static String fileName = SystemUtils.IS_OS_LINUX ? 
+			"data/agentsTaskCombination.ini"
 			: "data\\agentsTaskCombination.ini";
 
 	public static LoadSet init() throws InvalidFileFormatException, IOException {
