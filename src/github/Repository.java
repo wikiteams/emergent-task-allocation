@@ -3,11 +3,12 @@ package github;
 public class Repository{
 	
 	private String name;
-	
-	public static final String NO_CLUSTER = "none";
+	private String cluster;
+	private String created_at;
 
 	public Repository(String name, String cluster) {
 		this.name = name;
+		this.cluster = cluster;
 	}
 	
 	public Repository(String name) {
@@ -22,6 +23,22 @@ public class Repository{
 		this.name = name;
 	}
 	
+	public String getCluster() {
+		return cluster;
+	}
+
+	public void setCluster(String cluster) {
+		this.cluster = cluster;
+	}
+
+	public String getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
+	}
+
 	@Override
 	public String toString() {
 		return getName();

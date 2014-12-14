@@ -1,12 +1,5 @@
 package github;
 
-import collaboration.SimulationParameters;
-import collaboration.Skill;
-import collaboration.SkillFactory;
-import collaboration.Task;
-import collaboration.TaskInternals;
-import collaboration.WorkUnit;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -35,6 +28,12 @@ import au.com.bytecode.opencsv.CSVParser;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 import cern.jet.random.Poisson;
+import collaboration.SimulationParameters;
+import collaboration.Skill;
+import collaboration.SkillFactory;
+import collaboration.Task;
+import collaboration.TaskInternals;
+import collaboration.WorkUnit;
 
 /**
  * A factory for creating of real skill data for COIN TASKS data taken mostly
@@ -48,16 +47,20 @@ import cern.jet.random.Poisson;
 @Deprecated
 public abstract class TaskSkillsPool {
 
-	private static String filenameFrequencySkills = SystemUtils.IS_OS_LINUX ? "data/skills-probability.csv"
+	private static String filenameFrequencySkills = 
+			SystemUtils.IS_OS_LINUX ? "data/skills-probability.csv"
 			: "data\\skills-probability.csv";
-	private static String filenameGoogleSkills = SystemUtils.IS_OS_LINUX ? "data/tasks-skills.csv"
+	private static String filenameGoogleSkills = 
+			SystemUtils.IS_OS_LINUX ? "data/tasks-skills.csv"
 			: "data\\tasks-skills.csv";
-	private static String filenameGithubClusters = SystemUtils.IS_OS_LINUX ? "data/github_clusters.csv"
+	private static String filenameGithubClusters = 
+			SystemUtils.IS_OS_LINUX ? "data/github_clusters.csv"
 			: "data\\github_clusters.csv";
 
 	private enum DataSet {
-		AT_LEAST_1_COMMIT, MOST_OFTEN_STARRED, TOPREPOS_AND_THEIRUSERS, 
-		TOPUSERS_AND_THEIRREPOS, TOPREPOS_AND_TOPUSERS, PUSHES_BY_LANGUAGES, 
+		AT_LEAST_1_COMMIT, MOST_OFTEN_STARRED, 
+		TOPREPOS_AND_THEIRUSERS, TOPUSERS_AND_THEIRREPOS, 
+		TOPREPOS_AND_TOPUSERS, PUSHES_BY_LANGUAGES, 
 		SEVERANCE_FROM_MIDDLE, MOST_COMMON_TECHNOLOGY, 
 		ALL_LANGUAGES, TOP_REPOSITORIES, _200_LANGUAGES;
 	}
@@ -82,7 +85,8 @@ public abstract class TaskSkillsPool {
 			new LinkedHashMap<Repository, HashMap<Skill, Double>>();
 	private static ArrayList<HashMap<Skill, Double>> skillSetArray = 
 			new ArrayList<HashMap<Skill, Double>>();
-	private static SkillFactory skillFactory = new SkillFactory();
+	private static SkillFactory skillFactory = 
+			new SkillFactory();
 
 	public static int static_frequency_counter = 0;
 
@@ -128,8 +132,8 @@ public abstract class TaskSkillsPool {
 			}
 		} else if (dataset == DataSet.TOP_REPOSITORIES) {
 			try {
-				sanity("Inside instantiate(DataSet.TOP_REPOSITORIES)");
-				sanity("Lunching parseCsvCluster()");
+				sanity("Inside [instantiate(DataSet.TOP_REPOSITORIES)]");
+				sanity("Lunching [parseCsvCluster()]");
 				parseCsvCluster();
 			} catch (FileNotFoundException e) {
 				System.err.println(e.getMessage());
@@ -158,7 +162,7 @@ public abstract class TaskSkillsPool {
 				e.printStackTrace();
 			}
 		}
-		say("initialized TaskSkillsPool");
+		say("Initialized [TaskSkillsPool]");
 	}
 
 	private static void parseCsvStatic() throws IOException,
@@ -170,7 +174,7 @@ public abstract class TaskSkillsPool {
 		long count = 0;
 		while ((nextLine = reader.readNext()) != null) {
 			Skill skill = skillFactory.getSkill(nextLine[0]);
-			say("Processing skill + " + nextLine[0]);
+			say("Processing [Skill] + " + nextLine[0]);
 			assert skill != null;
 			skill.setCardinalProbability(Integer.parseInt(nextLine[1]));
 			count += skill.getCardinalProbability();
@@ -191,8 +195,7 @@ public abstract class TaskSkillsPool {
 			String repo = nextLine[0];
 			if (nextLine[2].trim().equals("null"))
 				continue;
-			Skill s = skillFactory.getSkill(nextLine[2].trim());// replaceAll("\\s",
-																// "")
+			Skill s = skillFactory.getSkill(nextLine[2].trim());
 			if (s == null)
 				continue;
 			Double value = Double.parseDouble(nextLine[1]);
@@ -229,11 +232,11 @@ public abstract class TaskSkillsPool {
 				CSVParser.DEFAULT_QUOTE_CHARACTER);
 		String[] nextLine;
 		nextLine = reader.readNext();
-		
+
 		List<Skill> headerSkills = new ArrayList<Skill>();
-		for(int i = 0 ; i < 10 ; i++){
-			Skill skill = skillFactory.getSkill(nextLine[i].replace("sc_",
-					"").trim());
+		for (int i = 0; i < 10; i++) {
+			Skill skill = skillFactory.getSkill(nextLine[i].replace("sc_", "")
+					.trim());
 			headerSkills.add(skill);
 		}
 
@@ -242,44 +245,48 @@ public abstract class TaskSkillsPool {
 			HashMap<Skill, Double> hmp = parseCluster(nextLine[10]);
 			for (int i = 0; i < 10; i++) {
 				double howMuch = Double.parseDouble(nextLine[i]);
-				if ( !(howMuch > 0.) )
+				if (!(howMuch > 0.))
 					continue;
-				if ( howMuch > TaskSkillFrequency.MAX)
+				if (howMuch > TaskSkillFrequency.MAX)
 					continue;
 				hmp.put(headerSkills.get(i), howMuch);
 			}
 			skillSetMatrix.put(repo, hmp);
 		}
 		reader.close();
-		
+
 		skillSetArray = sortBySkillLength(skillSetMatrix);
 
 		TaskSkillFrequency.tasksCheckSum = checksum(skillSetMatrix);
-		
+
 		iterator = 0;
 	}
-	
+
 	private static ArrayList<HashMap<Skill, Double>> sortBySkillLength(
-			LinkedHashMap<Repository, HashMap<Skill, Double>> map){
-		List<HashMap<Skill, Double>> l = new ArrayList<HashMap<Skill, Double>>(map.values());
-		Collections.sort(l, new Comparator<HashMap<Skill, Double>>(){
-		    public int compare(HashMap<Skill, Double> s1, HashMap<Skill, Double> s2){
-		        return Integer.compare(s2.size(), s1.size());                
-		    }});
-		
+			LinkedHashMap<Repository, HashMap<Skill, Double>> map) {
+		List<HashMap<Skill, Double>> l = new ArrayList<HashMap<Skill, Double>>(
+				map.values());
+		Collections.sort(l, new Comparator<HashMap<Skill, Double>>() {
+			public int compare(HashMap<Skill, Double> s1,
+					HashMap<Skill, Double> s2) {
+				return Integer.compare(s2.size(), s1.size());
+			}
+		});
+
 		ArrayList<HashMap<Skill, Double>> sortedSkillSetArray = 
 				new ArrayList<HashMap<Skill, Double>>();
-		
-		for(HashMap<Skill, Double> a : l){
-		    Iterator<Entry<Repository, HashMap<Skill, Double>>> iter = map.entrySet().iterator();
-		    while (iter.hasNext()) {
-		        Entry<Repository, HashMap<Skill, Double>> e = iter.next();
-		        if(e.getValue().equals(a)){
-		        	sortedSkillSetArray.add(e.getValue());
-		        }
-		    }
+
+		for (HashMap<Skill, Double> a : l) {
+			Iterator<Entry<Repository, HashMap<Skill, Double>>> iter = map
+					.entrySet().iterator();
+			while (iter.hasNext()) {
+				Entry<Repository, HashMap<Skill, Double>> e = iter.next();
+				if (e.getValue().equals(a)) {
+					sortedSkillSetArray.add(e.getValue());
+				}
+			}
 		}
-		
+
 		return sortedSkillSetArray;
 	}
 
@@ -288,8 +295,6 @@ public abstract class TaskSkillsPool {
 
 		if (cluster.contains("|")) {
 			for (String s : cluster.split("\\|")) {
-				//sanity(s.split(":")[0]);
-				//sanity(s.split(":")[1]);
 				String skillName = s.split(":")[0];
 				String intensive = s.split(":")[1];
 				r.put(skillFactory.getSkill(skillName),
@@ -300,46 +305,18 @@ public abstract class TaskSkillsPool {
 			String skillName = cluster.split(":")[0];
 			String intensive = cluster.split(":")[1];
 			r.put(skillFactory.getSkill(skillName),
-					TaskSkillFrequency.frequency.get(intensive
-							.toUpperCase()));
+					TaskSkillFrequency.frequency.get(intensive.toUpperCase()));
 		}
 		return r;
 	}
 
-	// private static void parseCsvCluster() throws IOException,
-	// FileNotFoundException {
-	// say("parseCsvCluster() executes work..");
-	// CSVReader reader = new CSVReader(
-	// new FileReader(filenameGithubClusters), ',',
-	// CSVParser.DEFAULT_QUOTE_CHARACTER);
-	// String[] nextLine;
-	// nextLine = reader.readNext();
-	//
-	// LinkedList<Skill> shs = new LinkedList<Skill>();
-	//
-	// for (int i = 0; i < 10; i++) {
-	// shs.add(skillFactory
-	// .getSkill(nextLine[i].replace("sc_", "").trim()));
-	// }
-	//
-	// while ((nextLine = reader.readNext()) != null) {
-	// Repository repo = new Repository(nextLine[11], nextLine[12]);
-	// HashMap<Skill, Double> hmp = new HashMap<Skill, Double>();
-	// for (int i = 0; i < 10; i++) {
-	// hmp.put(shs.get(i), Double.parseDouble(nextLine[i]));
-	// }
-	// skillSetMatrix.put(repo, hmp);
-	// }
-	// reader.close();
-	// }
-
 	public static Skill choseRandomSkill() {
-		// Random generator = new Random();
 		int i = RandomHelper.nextIntFromTo(0, singleSkillSet.size() - 1);
 		return getByIndexFromStr(singleSkillSet, i);
 	}
 
-	private static Skill getByIndexFromStr(LinkedHashMap<String, Skill> hMap, int index) {
+	private static Skill getByIndexFromStr(LinkedHashMap<String, Skill> hMap,
+			int index) {
 		return (Skill) hMap.values().toArray()[index];
 	}
 
@@ -365,7 +342,8 @@ public abstract class TaskSkillsPool {
 				WorkUnit w1 = new WorkUnit(RandomHelper.nextDoubleFromTo(0,
 						d / 10));
 				WorkUnit w2 = new WorkUnit(d);
-				TaskInternals taskInternals = new TaskInternals(skill, w2, w1, task);
+				TaskInternals taskInternals = new TaskInternals(skill, w2, w1,
+						task);
 				task.addSkill(skill.getName(), taskInternals);
 				say("Task " + task
 						+ " filled with skills from tasks-skills.csv");
@@ -375,14 +353,15 @@ public abstract class TaskSkillsPool {
 
 			// random element exists here
 
-			int x = ((int) (RandomHelper.nextDouble() * SimulationParameters.staticFrequencyTableSc)) + 1;
+			int x = ((int) (RandomHelper.nextDouble() * 
+					SimulationParameters.staticFrequencyTableSc)) + 1;
 			for (int i = 0; i < x; i++) {
 				Skill skill = choseRandomSkill();
-				// Random generator = new Random();
 				WorkUnit w1 = new WorkUnit(RandomHelper.nextIntFromTo(1,
 						SimulationParameters.maxWorkRequired - 1));
 				WorkUnit w2 = new WorkUnit(0);
-				TaskInternals taskInternals = new TaskInternals(skill, w1, w2, task);
+				TaskInternals taskInternals = new TaskInternals(skill, w1, w2,
+						task);
 				task.addSkill(skill.getName(), taskInternals);
 				say("Task " + task + " filled with skills randomly");
 			}
@@ -395,17 +374,19 @@ public abstract class TaskSkillsPool {
 
 				// created task set will be the same for every execution
 				// because of no randomness elements, use this
-				// when you want to have random only pseudo-random behavior
-				// of step() method and analyzing asynchronous decisions
+				// when you want to have random only pseudo-random behaviour
+				// of step() method and analysing asynchronous decisions
 				// made by agents through heuristics
-				
-				HashMap<Skill, Double> skillEntity = skillSetArray.get(iterator++);
+
+				HashMap<Skill, Double> skillEntity = skillSetArray
+						.get(iterator++);
 				for (Skill skill : skillEntity.keySet()) {
 					assert skillEntity.get(skill) > 0;
 					WorkUnit workRequired = new WorkUnit(skillEntity.get(skill));
-					WorkUnit workDone = new WorkUnit(skillEntity.get(skill) / 
-							(iterator + 1) );
-					TaskInternals taskInternals = new TaskInternals(skill, workRequired, workDone, task);
+					WorkUnit workDone = new WorkUnit(skillEntity.get(skill)
+							/ (iterator + 1));
+					TaskInternals taskInternals = new TaskInternals(skill,
+							workRequired, workDone, task);
 					task.addSkill(skill.getName(), taskInternals);
 					say("Task " + task + " filled with skills");
 				}
@@ -421,7 +402,7 @@ public abstract class TaskSkillsPool {
 
 				HashMap<Skill, Double> skillSetG = getByIndex(skillSetMatrix,
 						(int) (skillSetMatrix.size() * d));
-				Iterator it = skillSetG.entrySet().iterator();
+				Iterator<?> it = skillSetG.entrySet().iterator();
 				while (it.hasNext()) {
 					Map.Entry pairs = (Map.Entry) it.next();
 					Skill key = (Skill) pairs.getKey();

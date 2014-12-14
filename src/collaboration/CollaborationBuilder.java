@@ -221,7 +221,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("[Sqlite engine] and resultset initialized, may take some time..");
 			MyDatabaseConnector.init();
 		} else if (dataSet.isContinuus()) {
-			// TODO: implement rest
+			// TODO: implement rest (e.g. socketlistener etc.)
 		}
 
 		strategyDistribution.setType(SimulationParameters.strategyDistribution);
@@ -267,14 +267,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		gameController = new GameController(strategyDistribution);
 		context.add(gameController);
 
-		say("Task choice algorithm is "
+		say("Task choice [strategy] is "
 				+ SimulationParameters.taskChoiceAlgorithm);
-		sanity("Number of teams created " + getTasks().size());
-		// czy to na pewno zwraca prawidlowo ilosc mimo
-		// ze te obiekty siedza w sub-context?
-		sanity("Number of agents created " + getAgents().size());
-		// to samo tutaj
-		sanity("Algorithm tested: " + SimulationParameters.taskChoiceAlgorithm);
+		sanity("Number of [tasks] created " + getTasks().size());
+		sanity("Number of [agents] created " + getAgents().size());
+		sanity("[Algorithm] tested: " + SimulationParameters.taskChoiceAlgorithm);
 
 		try {
 			outputAgentSkillMatrix();

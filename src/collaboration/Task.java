@@ -102,7 +102,7 @@ public class Task {
 
 	public synchronized void initialize(int countAll) {
 		TaskSkillsPool.fillWithSkills(this, countAll);
-		say("Task object initialized with id: " + this.id);
+		say("[Task] object initialized with id: " + this.id);
 	}
 
 	public Map<String, TaskInternals> getTaskInternals() {

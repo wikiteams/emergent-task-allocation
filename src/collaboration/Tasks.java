@@ -1,8 +1,10 @@
 package collaboration;
 
 import github.DataSet;
+import github.MyDatabaseConnector;
 import intelligence.TasksDiviner;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -145,7 +147,6 @@ public class Tasks extends DefaultContext<Task> {
 	public Tasks(DataSet dataSet, LaunchStatistics launchStatistics,
 			Integer allowedLoad) {
 		super("Tasks");
-
 		this.dataSet = dataSet;
 		this.launchStatistics = launchStatistics;
 		this.allowedLoad = allowedLoad;
@@ -221,7 +222,16 @@ public class Tasks extends DefaultContext<Task> {
 	}
 	
 	private void initFirstTasks(Context<Task> context){
-		
+		try {
+			List<Task> firstTasks = MyDatabaseConnector.get(this.allowedLoad);
+			for(Task task : firstTasks){
+				addTask(task.getName(), task);
+				context.add(task);
+			}
+		} catch (SQLException e) {
+			say("Error during init of first " + this.allowedLoad + " [Tasks]");
+			e.printStackTrace();
+		}
 	}
 	
 	private void initializeTasksNormally(Context<Task> context) {
