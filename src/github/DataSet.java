@@ -9,6 +9,7 @@ public class DataSet {
 	public int Current;
 
 	public DataSet(String name) {
+		System.out.println("Marking the [dataset] as: " + name);
 		this.setCurrent(name);
 	}
 
@@ -27,13 +28,22 @@ public class DataSet {
 	}
 
 	/**
-	 * This should tell the simulator whether to launch scheduled
-	 * task appender or not
+	 * This should tell the simulator whether to launch scheduled task appender
+	 * or not
+	 * 
 	 * @return
 	 */
 	public Boolean isContinuus() {
 		if ((Current == Type.Sqlite.ordinal())
 				|| (Current == Type.SocketListener.ordinal())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public Boolean isDb() {
+		if (Current == Type.Sqlite.ordinal()) {
 			return true;
 		} else {
 			return false;

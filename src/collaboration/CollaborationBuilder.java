@@ -1,6 +1,7 @@
 package collaboration;
 
 import github.DataSet;
+import github.MyDatabaseConnector;
 import github.TaskSkillFrequency;
 import github.TaskSkillsPool;
 
@@ -114,7 +115,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			RandomHelper.setSeed(SimulationParameters.randomSeed);
 			RandomHelper.init();
 			clearStaticHeap();
-			say("RandomHelper initialized and static heap cleared..");
+			say("[RandomHelper] initialized and [static heap] cleared..");
 		} catch (IOException e) {
 			e.printStackTrace();
 			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
@@ -123,19 +124,39 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			exc.printStackTrace();
 			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS);
 		} finally {
-			say("CollaborationBuilder constructor finished execution");
+			say("[CollaborationBuilder constructor] finished execution");
+			// this is where Repast waits for scenario lunch (contexts build)
 		}
 	}
 
 	private void prepareDataControllers() {
 		try {
+			/***
+			 * 
+			 * LoadSet holds information about task numbers and agent numbers
+			 * 
+			 */
 			loadSet = LoadSet.EMPTY;
-			// getting parameters of a simulation from current scenario
+			
 			say(Constraints.LOADING_PARAMETERS);
 			SimulationParameters.init();
+			// getting parameters of a simulation from current scenario
 			dataSet = new DataSet(SimulationParameters.dataSource);
 
+			/***
+			 * 
+			 * LaunchStatistics hold data for outputting results
+			 * i.e. tick numbers, result strategy set, tasks left etc.
+			 * 
+			 */
 			launchStatistics = new LaunchStatistics();
+			
+			/***
+			 * 
+			 * ModelFactory tells whether we want to maximise verbose message and/or
+			 * test all Task assignment STRATEGIES at once.
+			 * 
+			 */
 			modelFactory = new ModelFactory(SimulationParameters.modelType);
 			Model model = modelFactory.getFunctionality();
 
@@ -143,27 +164,32 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			if (model.isValidation())
 				initializeValidationLogger();
 			if (SimulationParameters.multipleAgentSets) {
-				// here we decide if we want different
-				// sets of agent count / task count
-				// i don't need this for evolution at this time,
-				// neither for single computing,
-				// thus lets make sure we don't enable this
+				// here we decide if we want different sets of agent count /
+				// task count i don't need this for evolution at this time,
+				// neither for single computing, thus lets make sure we don't
+				// enable this without a good reason
 				loadSet = DescribeUniverseBulkLoad.init();
 			} else {
 				loadSet.AGENT_COUNT = SimulationParameters.agentCount;
 				loadSet.TASK_COUNT = SimulationParameters.taskCount;
 			}
 
+			/***
+			 * 
+			 * StrategyDistribution holds information on currently tested
+			 * Task assignment strategy and Skill choice strategy
+			 * 
+			 */
 			strategyDistribution = new StrategyDistribution();
 
-			// initialise skill pools
-			say("SkillFactory parsing skills from the chosen dataset");
+			// initialise skill pools - information on all known languages
+			say("SkillFactory parsing skills (programing languages) from file");
 			skillFactory = new SkillFactory();
 			skillFactory.buildSkillsLibrary();
-			say("SkillFactory parsed all known programming languages.");
+			say("SkillFactory parsed all known [programming languages].");
 		} catch (IOException e) {
 			e.printStackTrace();
-			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
+			say(Constraints.ERROR_INITIALIZING_PARAMETERS);
 		} catch (Exception exc) {
 			say(exc.toString());
 			exc.printStackTrace();
@@ -171,28 +197,48 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
-	private void prepareWorkLoaders() {
-		try {
-			if (dataSet.isMockup()) {
-				AgentSkillsPool
-						.instantiate(SimulationParameters.agentSkillPoolDataset);
-				say("Instatiated AgentSkillsPool");
-				TaskSkillsPool.instantiate(SimulationParameters.tasksDataset);
-				say("Instatied TaskSkillsPool");
-			}
+	private void prepareWorkLoadData() {
+		
+		if (dataSet.isMockup()) {
+			/***
+			 * 
+			 * This is previous version of the dataset, 
+			 * already tested and described in our publication
+			 * hence the deprecated flag
+			 * 
+			 */
+			AgentSkillsPool.instantiate(SimulationParameters.agentSkillPoolDataset);
+			say("[Instatiated AgentSkillsPool]");
+			TaskSkillsPool.instantiate(SimulationParameters.tasksDataset);
+			say("[Instatied TaskSkillsPool]");
+		} else if (dataSet.isDb()) {
+			/***
+			 * 
+			 * This is new dataset parsed from GitHub mongodb 
+			 * and specially created for evolutionary model
+			 * 
+			 */
+			MyDatabaseConnector.init();
+		} else if (dataSet.isContinuus()) {
+			// TODO: implement rest
+		}
 
-			strategyDistribution
-					.setType(SimulationParameters.strategyDistribution);
-			assert ((strategyDistribution.getType() == StrategyDistribution.SINGULAR) || (strategyDistribution
-					.getType() == StrategyDistribution.MULTIPLE));
+		strategyDistribution.setType(SimulationParameters.strategyDistribution);
+		
+		assert ((strategyDistribution.getType() == 
+					StrategyDistribution.SINGULAR) || 
+						(strategyDistribution
+								.getType() == StrategyDistribution.MULTIPLE));
 
+		if (strategyDistribution.isSingle()) {
 			strategyDistribution.setSkillChoice(modelFactory,
 					SimulationParameters.skillChoiceAlgorithm);
 			strategyDistribution.setTaskChoice(modelFactory,
 					SimulationParameters.taskChoiceAlgorithm);
-		} catch (Exception exc) {
-			exc.printStackTrace();
-			say(Constraints.UNKNOWN_EXCEPTION);
+		} else if (strategyDistribution.isMultiple()) {
+			strategyDistribution.setSkillChoice(modelFactory,
+					SimulationParameters.skillChoiceAlgorithm);
+			strategyDistribution.setTaskChoiceSet(SimulationParameters.planNumber);
 		}
 	}
 
@@ -201,13 +247,15 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		context.setId("emergent-task-allocation");
 		currentContext = context;
 
-		NetworkBuilder<Object> builder = new NetworkBuilder<Object>(
-				"TasksAndWorkers", context, false);
-		CollaborationNetwork.collaborationNetwork = builder.buildNetwork();
-		CollaborationNetwork.gephiEngine = new DynamicGexfGraph().init();
+		if (SimulationAdvancedParameters.enableNetwork) {
+			NetworkBuilder<Object> builder = new NetworkBuilder<Object>(
+					"TasksAndWorkers", context, false);
+			CollaborationNetwork.collaborationNetwork = builder.buildNetwork();
+			CollaborationNetwork.gephiEngine = new DynamicGexfGraph().init();
+		}
 
 		prepareDataControllers();
-		prepareWorkLoaders();
+		prepareWorkLoadData();
 
 		tasks = new Tasks(dataSet, launchStatistics, loadSet.TASK_COUNT);
 		context.addSubContext(tasks);
@@ -312,7 +360,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		AgentSkillsFrequency.clear();
 	}
 
-	// @ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
+	// @ScheduledMethod(start = 1, interval = 1, priority =
+	// ScheduleParameters.FIRST_PRIORITY)
 	/***
 	 * Because of a continuous work in an evolutionary model, we don't finish
 	 * simulation without a good reason. This method will be enabled but in
@@ -330,7 +379,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
-	// @ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.LAST_PRIORITY)
+	// @ScheduledMethod(start = 1, interval = 1, priority =
+	// ScheduleParameters.LAST_PRIORITY)
 	/***
 	 * Because of a continuous work in an evolutionary model, we don't finish
 	 * simulation without a good reason. This method will be enabled but in

@@ -208,7 +208,9 @@ public class Tasks extends DefaultContext<Task> {
 	}
 	
 	private void initializeTasks(Context<Task> context) {
-		if(dataSet.isMockup()){
+		if (dataSet.isDb()){
+			initFirstTasks(context);
+		} else if (dataSet.isMockup()){
 			initializeTasksNormally(context);
 		} else if (dataSet.isTest()){
 			TaskTestUniverse.init();
@@ -216,6 +218,10 @@ public class Tasks extends DefaultContext<Task> {
 		} else {
 			assert false; // should never happen
 		}
+	}
+	
+	private void initFirstTasks(Context<Task> context){
+		
 	}
 	
 	private void initializeTasksNormally(Context<Task> context) {

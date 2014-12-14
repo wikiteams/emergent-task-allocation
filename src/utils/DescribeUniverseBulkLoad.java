@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import org.apache.commons.digester.annotations.rules.ObjectCreate;
 import org.apache.commons.lang3.SystemUtils;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
@@ -19,6 +20,7 @@ import repast.simphony.random.RandomHelper;
  * @author Oskar Jarczyk
  * @since ?
  */
+@Deprecated
 public class DescribeUniverseBulkLoad {
 
 	private static LinkedList<String[]> combinations;
@@ -46,7 +48,7 @@ public class DescribeUniverseBulkLoad {
 	}
 
 	private static LoadSet getSingleRandomCombination() {
-		LoadSet result = new LoadSet();
+		LoadSet result = LoadSet.EMPTY;
 		String[] chosen = combinations.get(RandomHelper.nextIntFromTo(0,
 				combinations.size() - 1));
 		result.AGENT_COUNT = Integer.parseInt(chosen[0]);

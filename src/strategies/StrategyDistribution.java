@@ -1,5 +1,6 @@
 package strategies;
 
+import github.DataSet;
 import repast.simphony.random.RandomHelper;
 import strategies.Strategy.SkillChoice;
 import strategies.Strategy.TaskChoice;
@@ -16,16 +17,16 @@ public class StrategyDistribution {
 
 	public static final int SINGULAR = 0;
 	public static final int MULTIPLE = 1;
-
-	private String[] taskChoiceSet = { "homophyly", "heterophyly",
+	private static final String[] taskChoiceSet = { "homophyly", "heterophyly",
 			"preferential", "random", "central" };
-	private String[] skillChoiceSet = { "proportional", "greedy", "choice",
-			"random" };
+	private static final String[] skillChoiceSet = { "proportional", "greedy",
+			"choice", "random" };
 
 	private int type;
 
 	private String skillChoice;
 	private String taskChoice;
+	private StrategySet strategySet;
 
 	public Boolean isSingle() {
 		return this.type == SINGULAR;
@@ -81,7 +82,8 @@ public class StrategyDistribution {
 
 	public void setSkillChoice(ModelFactory modelFactory, String skillChoice) {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
-			// this is only important if you launch a "multiple validation" model
+			// this is only important if you launch a "multiple validation"
+			// model
 			int intRandomized = RandomHelper.nextIntFromTo(0,
 					skillChoiceSet.length - 1);
 			assert (intRandomized >= 0)
@@ -103,15 +105,14 @@ public class StrategyDistribution {
 
 	public void setTaskChoice(ModelFactory modelFactory, String taskChoice) {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
-			
-			// this is only important if you launch a "multiple validation" model
-			
+			// this is only important if you launch a "multiple validation"
+			// model
 			int intRandomized = RandomHelper.nextIntFromTo(0,
 					taskChoiceSet.length - 1);
 			assert (intRandomized >= 0)
 					&& (intRandomized <= taskChoiceSet.length - 1);
 			this.taskChoice = taskChoiceSet[intRandomized];
-			
+
 		} else
 			this.taskChoice = taskChoice;
 	}
@@ -122,6 +123,11 @@ public class StrategyDistribution {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public void setTaskChoiceSet(Integer planNumber) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

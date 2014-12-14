@@ -16,6 +16,7 @@ import repast.simphony.random.RandomHelper;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
+@Deprecated
 public abstract class AgentSkillsPool {
 
 	/*****************************************

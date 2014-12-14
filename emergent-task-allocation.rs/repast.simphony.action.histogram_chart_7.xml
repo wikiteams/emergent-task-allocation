@@ -1,6 +1,6 @@
 <repast.simphony.chart2.engine.HistogramChartDescriptor>
   <name>Histogram_Tasks_with_Unfinished_Work</name>
-  <dataSet>Tasks_separate</dataSet>
+  <dataSet>Tasks_state_nonaggr</dataSet>
   <xAxisLabel>Number of skills(work) left</xAxisLabel>
   <yAxisLabel>Number of Tasks</yAxisLabel>
   <chartTitle>Skills left in a Task</chartTitle>
