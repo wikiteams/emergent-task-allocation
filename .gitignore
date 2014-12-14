@@ -18,3 +18,5 @@ debug.log
 /simulation_logs.txt
 /batch.log
 /input_*.csv
+/validation.log
+/src/collaboration/Agent.groovy
