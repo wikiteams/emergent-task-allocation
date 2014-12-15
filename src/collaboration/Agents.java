@@ -53,6 +53,12 @@ public class Agents extends DefaultContext<Agent> {
 		initializeAgents(this);
 	}
 
+	public Agents(StrategyDistribution strategyDistribution, Integer allowedLoad) {
+		this(DataSet.getInstance(SimulationParameters.dataSource),
+				strategyDistribution, LaunchStatistics.getInstance(),
+				allowedLoad);
+	}
+
 	private void addAgents(Context<Agent> context) {
 		Integer agentCnt = SimulationParameters.multipleAgentSets ? allowedLoad
 				: SimulationParameters.agentCount;
@@ -68,7 +74,7 @@ public class Agents extends DefaultContext<Agent> {
 
 			agent.setStrategy(strategy);
 			say(agent.toString());
-			say("in add aggent i: " + i);
+			say("In add [agent] i: " + i);
 			// Required adding agent to context
 
 			for (AgentInternals ai : agent.getAgentInternals()) {
@@ -142,7 +148,7 @@ public class Agents extends DefaultContext<Agent> {
 			ranges.add(maxRange);
 			strategiesBackup.add(p.getStrategy().copy());
 		}
-		
+
 		double step = maxRange / population.size();
 		double start = RandomHelper.nextDoubleFromTo(0, 1) * step;
 		for (int i = 0; i < population.size(); i++) {

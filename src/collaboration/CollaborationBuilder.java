@@ -261,22 +261,21 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		prepareDataControllers();
 		prepareWorkLoadData();
 
-		tasks = new Tasks(dataSet, launchStatistics, loadSet.TASK_COUNT);
+		tasks = new Tasks(loadSet.TASK_COUNT);
 		context.addSubContext(tasks);
-		agents = new Agents(dataSet, strategyDistribution, launchStatistics,
-				loadSet.AGENT_COUNT);
+		agents = new Agents(strategyDistribution, loadSet.AGENT_COUNT);
 		context.addSubContext(agents);
 
 		gameController = new GameController(strategyDistribution);
 		context.add(gameController);
 
-		say("Task choice [strategy] is "
+		say("Task choice [Strategy] is "
 				+ SimulationParameters.taskChoiceAlgorithm);
-		sanity("Number of [tasks] created " + getTasks().size());
-		sanity("Number of [agents] created " + getAgents().size());
+		sanity("Number of [Tasks] created " + getTasks().size());
+		sanity("Number of [Agents] created " + getAgents().size());
 		sanity("[Algorithm] tested: " + SimulationParameters.taskChoiceAlgorithm);
 
-		try {
+/*		try {
 			outputAgentSkillMatrix();
 		} catch (IOException e) {
 			say(Constraints.IO_EXCEPTION);
@@ -284,7 +283,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		} catch (NullPointerException nexc) {
 			say(Constraints.UNKNOWN_EXCEPTION);
 			nexc.printStackTrace();
-		}
+		}*/
 
 		if (SimulationParameters.forceStop)
 			RunEnvironment.getInstance().endAt(SimulationParameters.numSteps);
@@ -329,7 +328,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		validation(Constraints.SEPERATOR);
 	}
 
-	private void outputAgentSkillMatrix() throws IOException {
+/*	private void outputAgentSkillMatrix() throws IOException {
 		CSVWriter writer = new CSVWriter(new FileWriter("input_a1.csv"), ',',
 				CSVWriter.NO_QUOTE_CHARACTER);
 		for (Object agent : getAgents()) {
@@ -345,7 +344,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			}
 		}
 		writer.close();
-	}
+	}*/
 
 	public void clearStaticHeap() {
 		say("Clearing static data from previous simulation");
@@ -533,9 +532,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	}
 	
 	public synchronized void provideSimulatorWithWork(){
-		if (((Tasks) tasks).getCount() < loadSet.TASK_COUNT){
-			int difference = Math.abs(loadSet.TASK_COUNT - ((Tasks) tasks).getCount());
-			say("Adding more [Tasks] to simulator");
+		if (tasks.size() < loadSet.TASK_COUNT){
+			int minus = loadSet.TASK_COUNT - ((Tasks) tasks).getCount();
+			int difference = Math.abs(minus);
+			say("Adding more " + difference + " [Tasks] to simulator");
 			try {
 				List<Task> newTasks = 
 				MyDatabaseConnector.get(difference);

@@ -45,7 +45,7 @@ public class Tasks extends DefaultContext<Task> {
 	private DataSet dataSet;
 	private LaunchStatistics launchStatistics;
 	private Integer allowedLoad;
-	
+
 	private static Map<String, Task> getMappedTasks() {
 		Iterable<Task> it = CollaborationBuilder.tasks.getObjects(Task.class);
 		Map<String, Task> result = new HashMap<String, Task>();
@@ -56,7 +56,7 @@ public class Tasks extends DefaultContext<Task> {
 		}
 		return result;
 	}
-	
+
 	private static Collection<Task> getUnmappedTasks() {
 		Iterable<Task> it = CollaborationBuilder.tasks.getObjects(Task.class);
 		return Lists.newArrayList(it);
@@ -82,8 +82,7 @@ public class Tasks extends DefaultContext<Task> {
 		}
 	}
 
-	public HashMap<Skill, ArrayList<Task>> getTasksPerSkills(
-			Collection<Skill> c) {
+	public HashMap<Skill, ArrayList<Task>> getTasksPerSkills(Collection<Skill> c) {
 		HashMap<Skill, ArrayList<Task>> result = new HashMap<Skill, ArrayList<Task>>();
 		for (Skill skill : c) {
 			for (Task task : getTasks()) {
@@ -121,9 +120,8 @@ public class Tasks extends DefaultContext<Task> {
 		}
 		return result;
 	}
-	
-	public static Set<Task> getTasksHavingSkills(
-			Collection<Skill> c) {
+
+	public static Set<Task> getTasksHavingSkills(Collection<Skill> c) {
 		Set<Task> result = new HashSet<Task>();
 		for (Skill skill : c) {
 			for (Task task : getUnmappedTasks()) {
@@ -167,6 +165,11 @@ public class Tasks extends DefaultContext<Task> {
 		this.launchStatistics = launchStatistics;
 		this.allowedLoad = allowedLoad;
 		initializeTasks(this);
+	}
+
+	public Tasks(Integer allowedLoad) {
+		this(DataSet.getInstance(SimulationParameters.dataSource),
+				LaunchStatistics.getInstance(), allowedLoad);
 	}
 
 	/**
@@ -218,25 +221,25 @@ public class Tasks extends DefaultContext<Task> {
 		}
 		return result;
 	}
-	
+
 	private void initializeTasks(Context<Task> context) {
-		if (dataSet.isDb()){
+		if (dataSet.isDb()) {
 			initFirstTasks(context);
-		} else if (dataSet.isMockup()){
+		} else if (dataSet.isMockup()) {
 			initializeTasksNormally(context);
-		} else if (dataSet.isTest()){
+		} else if (dataSet.isTest()) {
 			TaskTestUniverse.init();
 			initalizeValidationTasks(context);
 		} else {
 			assert false; // should never happen
 		}
 	}
-	
-	private void initFirstTasks(Context<Task> context){
+
+	private void initFirstTasks(Context<Task> context) {
 		try {
 			List<Task> firstTasks = MyDatabaseConnector.get(this.allowedLoad);
-			for(Task task : firstTasks){
-				//addTask(task);
+			for (Task task : firstTasks) {
+				// addTask(task);
 				context.add(task);
 			}
 		} catch (SQLException e) {
@@ -244,14 +247,14 @@ public class Tasks extends DefaultContext<Task> {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void initializeTasksNormally(Context<Task> context) {
 		Integer howMany = SimulationParameters.multipleAgentSets ? allowedLoad
 				: SimulationParameters.taskCount;
 		for (int i = 0; i < howMany; i++) {
 			Task task = new Task();
 			say("Creating Task " + task.getId());
-			//addTask(task);
+			// addTask(task);
 			say("Initializing Task " + task.getId() + " " + task.getName());
 			task.initialize(howMany);
 			context.add(task);
@@ -262,10 +265,10 @@ public class Tasks extends DefaultContext<Task> {
 	private void initalizeValidationTasks(Context<Task> context) {
 		for (Task task : TaskTestUniverse.DATASET) {
 			say("Adding validation task to pool..");
-			//addTask(task);
+			// addTask(task);
 			context.add(task);
 		}
 		launchStatistics.taskCount = getCount();
 	}
-	
+
 }
