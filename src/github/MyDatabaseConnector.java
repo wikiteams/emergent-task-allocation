@@ -48,7 +48,8 @@ public class MyDatabaseConnector {
 								+ " taskid, language order by time asc) group by taskid HAVING ( count(taskid) > 1 )"
 								+ " order by time asc) "
 								+ "group by taskid, language order by time asc",
-						ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.TYPE_FORWARD_ONLY,
+						// SQLite only supports TYPE_FORWARD_ONLY cursors 
 						ResultSet.CONCUR_READ_ONLY);
 		statement.setQueryTimeout(360); // set timeout to 360 sec.
 		return statement.executeQuery();
@@ -57,29 +58,82 @@ public class MyDatabaseConnector {
 	public static List<Task> get(int count) throws SQLException {
 		List<Task> result = new ArrayList<Task>();
 		for (int i = 0; i < count; i++) {
-			String repoId = resultSet.getString(2);
-			Task task = new Task();
-			say("Creating Task " + task.getId());
-			TaskReconstruction.giveWork(task, resultSet.getString(3),
+			
+			Entry entry = new Entry(resultSet.getString(2), resultSet.getString(3),
 					resultSet.getInt(4), resultSet.getInt(5));
+			//results.add(entry);
+			Task task = new Task();
+			say("Creating [Task] " + task.getId());
+			TaskReconstruction.giveWork(task, entry.getSkillName(), entry.getWorkDone(), entry.getWorkLeft());
 
 			while (resultSet.next()) {
-				if (resultSet.getString(2).equals(repoId)) {
-					TaskReconstruction.giveWork(task, resultSet.getString(3),
-							resultSet.getInt(4), resultSet.getInt(5));
+				Entry nextEntry = new Entry(resultSet.getString(2), resultSet.getString(3),
+						resultSet.getInt(4), resultSet.getInt(5));
+				if (nextEntry.getRepoId().equals(entry.getRepoId())) {
+					TaskReconstruction.giveWork(task, nextEntry.getSkillName(),
+							nextEntry.getWorkDone(), nextEntry.getWorkLeft());
 				} else {
-					resultSet.previous();
 					break;
 				}
 			}
 
 			result.add(task);
 		}
+		assert count == result.size();
 		return result;
 	}
+	
+	//private static Queue<Entry> results = new LinkedList<Entry>();
 
 	private static void say(String s) {
 		PjiitOutputter.say(s);
 	}
 
 }
+
+class Entry{
+	private String repoId;
+	private String skillName;
+	private Integer workDone;
+	private Integer workLeft;
+	
+	public Entry(String repoId, String skillName, Integer workDone, Integer workLeft){
+		this.repoId = repoId;
+		this.skillName = skillName;
+		this.workDone = workDone;
+		this.workLeft = workLeft;
+	}
+
+	public String getRepoId() {
+		return repoId;
+	}
+
+	public void setRepoId(String repoId) {
+		this.repoId = repoId;
+	}
+	
+	public String getSkillName() {
+		return skillName;
+	}
+
+	public void setSkillName(String skillName) {
+		this.skillName = skillName;
+	}
+
+	public Integer getWorkDone() {
+		return workDone;
+	}
+
+	public void setWorkDone(Integer workDone) {
+		this.workDone = workDone;
+	}
+
+	public Integer getWorkLeft() {
+		return workLeft;
+	}
+
+	public void setWorkLeft(Integer workLeft) {
+		this.workLeft = workLeft;
+	}
+}
+
