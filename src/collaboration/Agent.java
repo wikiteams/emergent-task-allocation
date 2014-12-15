@@ -26,6 +26,8 @@ import argonauts.PersistRewiring;
 
 /***
  * Simulation agent - a GitHub programmer
+ * as restored from data on users activity
+ * with a help of aggregators like BrainJar etc.
  * 
  * @author Oskar Jarczyk
  * @since 1.0
@@ -42,8 +44,6 @@ public class Agent implements NodeCreator<Agent> {
 	 * @field serialVersionUID
 	 */
 	public static final long serialVersionUID = 42L;
-
-	private static final SkillFactory skillFactory = new SkillFactory();
 	private static GameController gameController;
 	public static int totalAgents = 0;
 
@@ -147,8 +147,8 @@ public class Agent implements NodeCreator<Agent> {
 	public AgentInternals getAgentInternalsOrCreate(String key) {
 		AgentInternals result = null;
 		if (getCurrentSkills().get(key) == null) {
-			result = (new AgentInternals(skillFactory.getSkill(key),
-					new Experience(true)));
+			result = (new AgentInternals(SkillFactory.getInstance().getSkill(
+					key), new Experience(true)));
 			getCurrentSkills().put(key, result);
 			result = getCurrentSkills().get(key);
 		} else {
@@ -422,9 +422,9 @@ public class Agent implements NodeCreator<Agent> {
 			Boolean forceCreate) {
 		if (getCurrentSkills().get(skill.getName()) == null) {
 			if (forceCreate) {
-				AgentInternals result = (new AgentInternals(
-						skillFactory.getSkill(skill.getName()), new Experience(
-								true)));
+				AgentInternals result = (new AgentInternals(SkillFactory
+						.getInstance().getSkill(skill.getName()),
+						new Experience(true)));
 				getCurrentSkills().put(skill.getName(), result);
 			} else {
 				if (unknownSkillIsZero) {

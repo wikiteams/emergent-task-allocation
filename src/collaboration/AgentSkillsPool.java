@@ -21,15 +21,14 @@ public abstract class AgentSkillsPool {
 
 	/*****************************************
 	 * Input format of a .CSV file: 
-	 * username, skill1, skill2, skill3 
-	 * e.g.:
+	 * username, skill1, skill2, skill3 e.g.:
 	 * 'fabpot', 'PHP', 'Shell', 'JavaScript'
 	 *****************************************/
-	private static String filename = 
-			SystemUtils.IS_OS_LINUX ? "data/top-users-final.csv"
+	private static String filename = SystemUtils.IS_OS_LINUX ? 
+			"data/top-users-final.csv"
 			: "data\\top-users-final.csv";
-	private static String filename_ext = 
-			SystemUtils.IS_OS_LINUX ? "data/users-and-their-pull-requests.csv"
+	private static String filename_ext = SystemUtils.IS_OS_LINUX ? 
+			"data/users-and-their-pull-requests.csv"
 			: "data\\users-and-their-pull-requests.csv";
 
 	private enum DataSet {
@@ -42,7 +41,7 @@ public abstract class AgentSkillsPool {
 
 	private static LinkedHashMap<String, HashMap<Skill, Double>> skillSet = 
 			new LinkedHashMap<String, HashMap<Skill, Double>>();
-	private static SkillFactory skillFactory = new SkillFactory();
+	private static SkillFactory skillFactory = SkillFactory.getInstance();
 
 	public static void instantiate(String method) {
 		if (method.toUpperCase().equals("TOP_USERS")

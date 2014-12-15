@@ -11,7 +11,7 @@ public class TaskReconstruction {
 	public static void giveWork(Task task, String skillName,
 			Integer workDoneInt, Integer workRequiredInt) {
 
-		SkillFactory skillFactory = new SkillFactory();
+		SkillFactory skillFactory = SkillFactory.getInstance();
 		Skill skill = skillFactory.getSkill(skillName);
 
 		WorkUnit workDone = new WorkUnit(workDoneInt);

@@ -13,7 +13,7 @@ import logger.PjiitOutputter;
 public class AgentTestUniverse {
 
 	public static ArrayList<Agent> DATASET = new ArrayList<Agent>();
-	private static SkillFactory skillFactory = new SkillFactory();
+	private static SkillFactory skillFactory = SkillFactory.getInstance();
 
 	public static void init() {
 		DATASET.clear();

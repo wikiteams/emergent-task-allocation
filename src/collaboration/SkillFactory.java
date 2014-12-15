@@ -20,8 +20,8 @@ import constants.RandomMethod;
 /***
  * Here are all skills known to GitHub read and hold in ArrayList for more info,
  * please visit:
- * https://github.com/github/linguist/blob/master/lib/linguist/languages.yml
- * In other words, this class loads all know programming languages.
+ * https://github.com/github/linguist/blob/master/lib/linguist/languages.yml In
+ * other words, this class loads all know programming languages.
  * 
  * @author Oskar Jarczyk
  * @since 1.0
@@ -32,7 +32,10 @@ public class SkillFactory {
 	/**
 	 * File format:
 	 * 
-	 * language1,type\r\n language2,type\r\n ... langauage{i},type
+	 * language1,type\r\n 
+	 * language2,type\r\n 
+	 * ... 
+	 * langauage{i},type
 	 * 
 	 * circa 305 entries
 	 */
@@ -40,8 +43,17 @@ public class SkillFactory {
 			: "data\\all-languages.csv";
 	public static ArrayList<Skill> skills = new ArrayList<Skill>();
 
-	public SkillFactory() {
-		say("SkillFactory object created");
+	private static SkillFactory instance = null;
+
+	private SkillFactory() {
+		say("[SkillFactory] object created");
+	}
+
+	public static SkillFactory getInstance() {
+		if (instance == null) {
+			instance = new SkillFactory();
+		}
+		return instance;
 	}
 
 	public Skill getSkill(String name) {

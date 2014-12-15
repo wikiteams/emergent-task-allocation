@@ -185,7 +185,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 			// initialise skill pools - information on all known languages
 			say("SkillFactory parsing skills (programing languages) from file");
-			skillFactory = new SkillFactory();
+			skillFactory = SkillFactory.getInstance();
 			skillFactory.buildSkillsLibrary();
 			say("SkillFactory parsed all known [programming languages].");
 		} catch (IOException e) {
@@ -657,8 +657,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 					Collection<AgentInternals> aic = ((Agent) agent)
 							.getAgentInternals();
 
-					CopyOnWriteArrayList aicconcurrent = new CopyOnWriteArrayList(
-							aic);
+					CopyOnWriteArrayList<AgentInternals> aicconcurrent = 
+							new CopyOnWriteArrayList<AgentInternals>(aic);
 					boolean removal = true;
 					for (Object ai : aicconcurrent) {
 						if (((AgentInternals) ai).getExperience().getDelta() < 1.) {

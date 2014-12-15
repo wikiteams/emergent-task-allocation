@@ -85,8 +85,7 @@ public abstract class TaskSkillsPool {
 			new LinkedHashMap<Repository, HashMap<Skill, Double>>();
 	private static ArrayList<HashMap<Skill, Double>> skillSetArray = 
 			new ArrayList<HashMap<Skill, Double>>();
-	private static SkillFactory skillFactory = 
-			new SkillFactory();
+	private static SkillFactory skillFactory = SkillFactory.getInstance();
 
 	public static int static_frequency_counter = 0;
 

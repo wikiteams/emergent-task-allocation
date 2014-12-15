@@ -12,7 +12,7 @@ import logger.PjiitOutputter;
 public class TaskTestUniverse {
 	
 	public static ArrayList<Task> DATASET = new ArrayList<Task>();
-	private static SkillFactory skillFactory = new SkillFactory();
+	private static SkillFactory skillFactory = SkillFactory.getInstance();
 	
 	public static void init(){
 		DATASET.clear();
