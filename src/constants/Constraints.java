@@ -27,7 +27,7 @@ public abstract class Constraints {
 	public static final String ERROR_INITIALIZING_PARAMETERS = 
 			"Error initializing parameters!";
 	public static final String ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS = 
-			"Error initializing [PjiitLogger] and/or Simulation Parameters!";
+			"Error initializing [PjiitLogger] and/or [Simulation Parameters]!";
 	public static final String INSIDE_PROPORTIONAL_TIME_DIVISION = 
 			"Inside switch - PROPORTIONAL_TIME_DIVISION";
 	public static final String INSIDE_GREEDY_ASSIGNMENT_BY_TASK = 

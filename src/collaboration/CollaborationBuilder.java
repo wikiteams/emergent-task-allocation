@@ -134,7 +134,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		try {
 			/***
 			 * 
-			 * LoadSet holds information about task numbers and agent numbers
+			 * LoadSet holds information about 
+			 * task numbers and agent numbers
 			 * 
 			 */
 			loadSet = LoadSet.EMPTY;
@@ -142,7 +143,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say(Constraints.LOADING_PARAMETERS);
 			SimulationParameters.init();
 			// getting parameters of a simulation from current scenario
-			dataSet = new DataSet(SimulationParameters.dataSource);
+			dataSet = DataSet.getInstance(SimulationParameters.dataSource);
 
 			/***
 			 * 
@@ -150,11 +151,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			 * i.e. tick numbers, result strategy set, tasks left etc.
 			 * 
 			 */
-			launchStatistics = new LaunchStatistics();
+			launchStatistics = LaunchStatistics.getInstance();
 			
 			/***
 			 * 
-			 * ModelFactory tells whether we want to maximise verbose message and/or
+			 * ModelFactory tells whether we want 
+			 * to maximise verbose message and/or
 			 * test all Task assignment STRATEGIES at once.
 			 * 
 			 */
@@ -184,10 +186,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			strategyDistribution = new StrategyDistribution();
 
 			// initialise skill pools - information on all known languages
-			say("SkillFactory parsing skills (programing languages) from file");
+			say("[SkillFactory] parsing skills (programing languages) from file");
 			skillFactory = SkillFactory.getInstance();
 			skillFactory.buildSkillsLibrary();
-			say("SkillFactory parsed all known [programming languages].");
+			say("[SkillFactory] parsed all known [programming languages].");
 		} catch (IOException e) {
 			e.printStackTrace();
 			say(Constraints.ERROR_INITIALIZING_PARAMETERS);

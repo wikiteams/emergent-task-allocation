@@ -1,5 +1,6 @@
 package github;
 
+
 public class DataSet {
 
 	private enum Type {
@@ -7,8 +8,17 @@ public class DataSet {
 	}
 
 	public int Current;
+	
+	private static DataSet instance = null;
 
-	public DataSet(String name) {
+	public static DataSet getInstance(String name) {
+		if (instance == null) {
+			instance = new DataSet(name);
+		}
+		return instance;
+	}
+
+	private DataSet(String name) {
 		System.out.println("Marking the [dataset] as: " + name);
 		this.setCurrent(name);
 	}

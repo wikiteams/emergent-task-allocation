@@ -68,9 +68,10 @@ public class Task {
 	public Task() {
 		this.name = "Task_" + this.id;
 		this.numberOfVisits = 0L;
-		say("Task object " + this + " created");
+		say("[Task] object " + this + " created");
 	}
 
+	@SuppressWarnings("unchecked")
 	public GameController initGameController() {
 		Context<Task> context = ContextUtils.getContext(this);
 		Context<Object> parentContext = ContextUtils.getParentContext(context);
