@@ -45,12 +45,13 @@ public class MyDatabaseConnector {
 								+ "sum(workrequired) from workload where taskid in"
 								+ " (select taskid from (select time, taskid, language, sum(workdone)"
 								+ " as wd, sum(workrequired) as wr from workload group by"
-								+ " taskid, language order by time asc) group by taskid HAVING ( count(taskid) > 1 )"
+								+ " taskid, language order by time asc) group by taskid HAVING ( count(taskid) > ? )"
 								+ " order by time asc) "
 								+ "group by taskid, language order by time asc",
 						ResultSet.TYPE_FORWARD_ONLY,
 						// SQLite only supports TYPE_FORWARD_ONLY cursors 
 						ResultSet.CONCUR_READ_ONLY);
+		statement.setInt(1, 1);
 		statement.setQueryTimeout(360); // set timeout to 360 sec.
 		return statement.executeQuery();
 	}
