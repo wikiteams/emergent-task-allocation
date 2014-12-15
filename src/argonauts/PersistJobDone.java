@@ -1,15 +1,13 @@
 package argonauts;
 
-import collaboration.Agent;
-import collaboration.Skill;
-import collaboration.Task;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import repast.simphony.engine.environment.RunEnvironment;
-import strategies.Strategy.TaskChoice;
+import collaboration.Agent;
+import collaboration.Skill;
+import collaboration.Task;
 
 /**
  * Persist history of job done by agents, for multiple purpose later.

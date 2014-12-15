@@ -13,6 +13,11 @@ import logger.PjiitOutputter;
  */
 public class Skill implements Serializable{
 
+	/**
+	 * Generated serialVersionUID for serialization
+	 */
+	private static final long serialVersionUID = 1804253817796408790L;
+
 	private String name;
 	
 	private int id;

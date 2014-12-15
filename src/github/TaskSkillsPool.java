@@ -403,7 +403,7 @@ public abstract class TaskSkillsPool {
 						(int) (skillSetMatrix.size() * d));
 				Iterator<?> it = skillSetG.entrySet().iterator();
 				while (it.hasNext()) {
-					Map.Entry pairs = (Map.Entry) it.next();
+					Map.Entry<?, ?> pairs = (Map.Entry<?, ?>) it.next();
 					Skill key = (Skill) pairs.getKey();
 					Double value = (Double) pairs.getValue();
 					if (value > 0.0) {

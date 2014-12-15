@@ -6,6 +6,10 @@ import logger.PjiitOutputter;
 
 public class Category implements Serializable{
 	
+	/**
+	 * Generated serialVersionUID for serialisation
+	 */
+	private static final long serialVersionUID = 4085149617945605852L;
 	private CategoryType type;
 	private int hash;
 	

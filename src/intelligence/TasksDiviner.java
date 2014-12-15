@@ -71,7 +71,7 @@ public class TasksDiviner {
 				if (coll instanceof List)
 					internalRandomList = (List) coll;
 				else
-					internalRandomList = new ArrayList(coll);
+					internalRandomList = new ArrayList<Task>(coll);
 				Collections.shuffle(internalRandomList);
 				for (Task singleTaskFromPool : internalRandomList) {
 					if (singleTaskFromPool.getTaskInternals().size() > 0)
@@ -105,7 +105,7 @@ public class TasksDiviner {
 				if (coll instanceof List)
 					internalRandomList = (List) coll;
 				else
-					internalRandomList = new ArrayList(coll);
+					internalRandomList = new ArrayList<Task>(coll);
 				Collections.shuffle(internalRandomList);
 				for (Task singleTaskFromPool : internalRandomList) {
 					if (singleTaskFromPool.getTaskInternals().size() > 0)
