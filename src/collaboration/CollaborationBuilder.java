@@ -7,6 +7,7 @@ import github.TaskSkillsPool;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -287,6 +288,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			RunEnvironment.getInstance().endAt(SimulationParameters.numSteps);
 
 		buildCentralPlanner();
+		buildContinousTaskFlow();
 		buildExperienceReassessment();
 		buildAgentsWithdrawns();
 		decideAboutGranularity();
@@ -358,8 +360,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		AgentSkillsFrequency.clear();
 	}
 
-	// @ScheduledMethod(start = 1, interval = 1, priority =
-	// ScheduleParameters.FIRST_PRIORITY)
+	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
 	/***
 	 * Because of a continuous work in an evolutionary model, we don't finish
 	 * simulation without a good reason. This method will be enabled but in
@@ -377,8 +378,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
-	// @ScheduledMethod(start = 1, interval = 1, priority =
-	// ScheduleParameters.LAST_PRIORITY)
+	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.LAST_PRIORITY)
 	/***
 	 * Because of a continuous work in an evolutionary model, we don't finish
 	 * simulation without a good reason. This method will be enabled but in
@@ -516,6 +516,34 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 					1, ScheduleParameters.FIRST_PRIORITY);
 			schedule.schedule(params, this, "centralPlanning");
 			say("Central planner initiated and awaiting for call.");
+		}
+	}
+	
+	public void buildContinousTaskFlow() {
+		if (gameController.isEvolutionary()){
+			ISchedule schedule = RunEnvironment.getInstance()
+					.getCurrentSchedule();
+			ScheduleParameters params = ScheduleParameters.createRepeating(1,
+					1, ScheduleParameters.LAST_PRIORITY);
+			schedule.schedule(params, this, "provideSimulatorWithWork");
+			say("[Continous Task Flow] initiated");
+		}
+	}
+	
+	public synchronized void provideSimulatorWithWork(){
+		if (((Tasks) tasks).getCount() < loadSet.TASK_COUNT){
+			int difference = Math.abs(loadSet.TASK_COUNT - ((Tasks) tasks).getCount());
+			say("Adding more [Tasks] to simulator");
+			try {
+				List<Task> newTasks = 
+				MyDatabaseConnector.get(difference);
+				for(Task newTask : newTasks){
+					tasks.add(newTask);
+				}
+			} catch (SQLException e) {
+				say("Error during providing simulator with a new [Task(s)]");
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,8 @@ import repast.simphony.context.DefaultContext;
 import strategies.Strategy;
 import test.TaskTestUniverse;
 import utils.LaunchStatistics;
+
+import com.google.common.collect.Lists;
 
 /***
  * Programming Task - a producer in the simulation
@@ -39,9 +42,29 @@ public class Tasks extends DefaultContext<Task> {
 	 */
 	public static final long serialVersionUID = 31415926535897L;
 
+	private DataSet dataSet;
+	private LaunchStatistics launchStatistics;
+	private Integer allowedLoad;
+	
+	private static Map<String, Task> getMappedTasks() {
+		Iterable<Task> it = CollaborationBuilder.tasks.getObjects(Task.class);
+		Map<String, Task> result = new HashMap<String, Task>();
+		Iterator<Task> iterator = it.iterator();
+		while (iterator.hasNext()) {
+			Task task = iterator.next();
+			result.put(task.getName(), task);
+		}
+		return result;
+	}
+	
+	private static Collection<Task> getUnmappedTasks() {
+		Iterable<Task> it = CollaborationBuilder.tasks.getObjects(Task.class);
+		return Lists.newArrayList(it);
+	}
+
 	public static synchronized Task chooseTask(Agent agent,
 			Strategy.TaskChoice strategy) {
-		return TasksDiviner.chooseTask(agent, strategy, tasks);
+		return TasksDiviner.chooseTask(agent, strategy, getMappedTasks());
 	}
 
 	public static void considerEnding(Task task) {
@@ -53,17 +76,17 @@ public class Tasks extends DefaultContext<Task> {
 			}
 		}
 		if (!notfinished) {
-			assert tasks.remove(task.getName()) != null;
+			CollaborationBuilder.tasks.remove(task);
 			sanity("Task id:" + task.getId() + " name:" + task.getName()
 					+ " is depleted and leaving the environment");
 		}
 	}
 
-	public static HashMap<Skill, ArrayList<Task>> getTasksPerSkills(
+	public HashMap<Skill, ArrayList<Task>> getTasksPerSkills(
 			Collection<Skill> c) {
 		HashMap<Skill, ArrayList<Task>> result = new HashMap<Skill, ArrayList<Task>>();
 		for (Skill skill : c) {
-			for (Task task : tasks.values()) {
+			for (Task task : getTasks()) {
 				Collection<Skill> ts = task.getSkills();
 				if (ts.contains(skill)) {
 					ArrayList<Task> value = result.get(skill);
@@ -79,11 +102,11 @@ public class Tasks extends DefaultContext<Task> {
 		return result;
 	}
 
-	public static HashMap<Skill, ArrayList<Task>> getTasksWithoutSkills(
+	public HashMap<Skill, ArrayList<Task>> getTasksWithoutSkills(
 			Collection<Skill> c) {
 		HashMap<Skill, ArrayList<Task>> result = new HashMap<Skill, ArrayList<Task>>();
 		for (Skill skill : c) {
-			for (Task task : tasks.values()) {
+			for (Task task : getTasks()) {
 				Collection<Skill> ts = task.getSkills();
 				if (!ts.contains(skill)) {
 					ArrayList<Task> value = result.get(skill);
@@ -103,7 +126,7 @@ public class Tasks extends DefaultContext<Task> {
 			Collection<Skill> c) {
 		Set<Task> result = new HashSet<Task>();
 		for (Skill skill : c) {
-			for (Task task : tasks.values()) {
+			for (Task task : getUnmappedTasks()) {
 				Collection<Skill> ts = task.getSkills();
 				if (ts.contains(skill)) {
 					result.add(task);
@@ -119,25 +142,18 @@ public class Tasks extends DefaultContext<Task> {
 
 	public static boolean stillNonEmptyTasks() {
 		boolean result = false;
-		if (tasks.size() < 1)
+		if (CollaborationBuilder.tasks.size() < 1)
 			return result;
-		for (Task task : tasks.values()) {
+		for (Task task : getUnmappedTasks()) {
 			if (!task.isClosed())
 				result = true;
 		}
 		return result;
 	}
 
-	private DataSet dataSet;
-
-	private LaunchStatistics launchStatistics;
-
-	private Integer allowedLoad;
-
-	private static Map<String, Task> tasks = new HashMap<String, Task>();
-
 	public static void clearTasks() {
-		tasks.clear();
+		if (CollaborationBuilder.tasks != null)
+			CollaborationBuilder.tasks.clear();
 	}
 
 	private static void say(String s) {
@@ -153,11 +169,6 @@ public class Tasks extends DefaultContext<Task> {
 		initializeTasks(this);
 	}
 
-	public void addTask(String key, Task task) {
-		tasks.put(key, task);
-		say("Task added successfully to pool. Pool size: " + getCount());
-	}
-
 	/**
 	 * Count all Tasks in the pool
 	 * 
@@ -170,10 +181,10 @@ public class Tasks extends DefaultContext<Task> {
 
 	public int getCount(boolean notFinished) {
 		if (!notFinished)
-			return tasks.size();
+			return this.size();
 		else {
 			int counter = 0;
-			for (Task task : tasks.values()) {
+			for (Task task : getTasks()) {
 				if (!task.isClosed())
 					counter++;
 			}
@@ -182,11 +193,11 @@ public class Tasks extends DefaultContext<Task> {
 	}
 
 	public Task getTask(String key) {
-		return tasks.get(key);
+		return getMappedTasks().get(key);
 	}
 
 	public Collection<Task> getTasks() {
-		return tasks.values();
+		return getUnmappedTasks();
 	}
 
 	/**
@@ -201,7 +212,7 @@ public class Tasks extends DefaultContext<Task> {
 
 	public Collection<Task> getUnfinishedTasks() {
 		List<Task> result = new ArrayList<Task>();
-		for (Task task : tasks.values()) {
+		for (Task task : getTasks()) {
 			if (!task.isClosed())
 				result.add(task);
 		}
@@ -225,7 +236,7 @@ public class Tasks extends DefaultContext<Task> {
 		try {
 			List<Task> firstTasks = MyDatabaseConnector.get(this.allowedLoad);
 			for(Task task : firstTasks){
-				addTask(task.getName(), task);
+				//addTask(task);
 				context.add(task);
 			}
 		} catch (SQLException e) {
@@ -240,7 +251,7 @@ public class Tasks extends DefaultContext<Task> {
 		for (int i = 0; i < howMany; i++) {
 			Task task = new Task();
 			say("Creating Task " + task.getId());
-			addTask(task.getName(), task);
+			//addTask(task);
 			say("Initializing Task " + task.getId() + " " + task.getName());
 			task.initialize(howMany);
 			context.add(task);
@@ -251,7 +262,7 @@ public class Tasks extends DefaultContext<Task> {
 	private void initalizeValidationTasks(Context<Task> context) {
 		for (Task task : TaskTestUniverse.DATASET) {
 			say("Adding validation task to pool..");
-			addTask(task.getName(), task);
+			//addTask(task);
 			context.add(task);
 		}
 		launchStatistics.taskCount = getCount();
