@@ -2,9 +2,9 @@ package github;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,16 +39,19 @@ public class MyDatabaseConnector {
 	}
 
 	private static ResultSet createResultSet() throws SQLException {
-		Statement statement = connection.createStatement();
+		PreparedStatement statement = connection
+				.prepareStatement(
+						"select time, taskid, language, sum(workdone), "
+								+ "sum(workrequired) from workload where taskid in"
+								+ " (select taskid from (select time, taskid, language, sum(workdone)"
+								+ " as wd, sum(workrequired) as wr from workload group by"
+								+ " taskid, language order by time asc) group by taskid HAVING ( count(taskid) > 1 )"
+								+ " order by time asc) "
+								+ "group by taskid, language order by time asc",
+						ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.CONCUR_READ_ONLY);
 		statement.setQueryTimeout(360); // set timeout to 360 sec.
-		return statement
-				.executeQuery("select time, taskid, language, sum(workdone), "
-						+ "sum(workrequired) from workload where taskid in"
-						+ " (select taskid from (select time, taskid, language, sum(workdone)"
-						+ " as wd, sum(workrequired) as wr from workload group by"
-						+ " taskid, language order by time asc) group by taskid HAVING ( count(taskid) > 1 )"
-						+ " order by time asc) "
-						+ "group by taskid, language order by time asc");
+		return statement.executeQuery();
 	}
 
 	public static List<Task> get(int count) throws SQLException {
