@@ -1,5 +1,7 @@
 package strategies;
 
+import java.util.LinkedList;
+
 /***
  * Types of Strategies used in the simulation
  * 
@@ -33,6 +35,23 @@ public class Strategy {
 	public Strategy(TaskChoice taskChoice, SkillChoice skillChoice) {
 		this.taskChoice = taskChoice;
 		this.skillChoice = skillChoice;
+	}
+
+	public static Strategy getInstance(StrategyDistribution strategyDistribution,
+			Integer i, Integer max) {
+		StrategySet set = strategyDistribution.getStrategySet();
+		LinkedList<StrategyFrequency> elements = 
+				(LinkedList<StrategyFrequency>) set.strategies
+				.clone();
+		while (true) {
+			StrategyFrequency frequency = elements.poll();
+			if (frequency.getDistribution() <= (i / max)) {
+				return new Strategy(frequency.getTaskChoice(),
+						strategyDistribution.getSkillStrategy());
+			} else {
+				// do nothing
+			}
+		}
 	}
 
 	public enum TaskChoice {

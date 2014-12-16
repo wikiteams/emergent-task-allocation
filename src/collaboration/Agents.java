@@ -67,10 +67,10 @@ public class Agents extends DefaultContext<Agent> {
 		for (int i = 0; i < agentCnt; i++) {
 			Agent agent = listAgents.get(i);
 
-			Strategy strategy = new Strategy(
-					strategyDistribution.getTaskStrategy(),
-					// strategyDistribution.getTaskMaxMinStrategy(),
-					strategyDistribution.getSkillStrategy());
+			Strategy strategy = strategyDistribution.isDistribution() ? Strategy
+					.getInstance(strategyDistribution, i, agentCnt)
+					: new Strategy(strategyDistribution.getTaskStrategy(),
+							strategyDistribution.getSkillStrategy());
 
 			agent.setStrategy(strategy);
 			say(agent.toString());
@@ -92,7 +92,10 @@ public class Agents extends DefaultContext<Agent> {
 	}
 
 	private void initializeAgents(Context<Agent> context) {
-		if (dataSet.isMockup()) {
+		if (dataSet.isContinuus()) {
+			// TODO: make brainjar
+			addAgents(context);
+		} else if (dataSet.isMockup()) {
 			addAgents(context);
 		} else if (dataSet.isTest()) {
 			listAgents = new ArrayList<Agent>();
@@ -108,7 +111,6 @@ public class Agents extends DefaultContext<Agent> {
 			say("Adding validation agent to pool..");
 			Strategy strategy = new Strategy(
 					strategyDistribution.getTaskStrategy(),
-					// strategyDistribution.getTaskMaxMinStrategy(),
 					strategyDistribution.getSkillStrategy());
 			agent.setStrategy(strategy);
 			listAgents.add(agent);
@@ -125,7 +127,7 @@ public class Agents extends DefaultContext<Agent> {
 	}
 
 	/***
-	 * Evolution with Stochasting Universal Sampling
+	 * Evolution with Stochasting Universal Sampling (SUS)
 	 * 
 	 * @author Paulina Adamska
 	 * @since 2.0, partially 1.3

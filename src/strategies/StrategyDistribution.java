@@ -34,6 +34,10 @@ public class StrategyDistribution {
 	public Boolean isMultiple() {
 		return this.type == MULTIPLE;
 	}
+	
+	public Boolean isDistribution() {
+		return this.strategySet != null;
+	}
 
 	public TaskChoice getTaskStrategy() {
 		if (type == SINGULAR) {
@@ -81,8 +85,8 @@ public class StrategyDistribution {
 
 	public void setSkillChoice(ModelFactory modelFactory, String skillChoice) {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
-			// this is only important if you launch a "multiple validation"
-			// model
+			// this is only important if you launch 
+			// a "multiple validation" model
 			int intRandomized = RandomHelper.nextIntFromTo(0,
 					skillChoiceSet.length - 1);
 			assert (intRandomized >= 0)
@@ -104,8 +108,8 @@ public class StrategyDistribution {
 
 	public void setTaskChoice(ModelFactory modelFactory, String taskChoice) {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
-			// this is only important if you launch a "multiple validation"
-			// model
+			// this is only important if you 
+			// launch a "multiple validation" model
 			int intRandomized = RandomHelper.nextIntFromTo(0,
 					taskChoiceSet.length - 1);
 			assert (intRandomized >= 0)
@@ -123,10 +127,13 @@ public class StrategyDistribution {
 	public void setType(int type) {
 		this.type = type;
 	}
+	
+	public StrategySet getStrategySet() {
+		return strategySet;
+	}
 
 	public void setTaskChoiceSet(Integer planNumber) {
-		// TODO Auto-generated method stub
-		
+		this.strategySet = StrategySet.get(planNumber);
 	}
 
 }
