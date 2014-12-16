@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class StrategySet {
 
-	public static LinkedList<StrategyFrequency> strategies;
+	private static LinkedList<StrategyFrequency> strategies;
 
 	private StrategySet() {
 		strategies = new LinkedList<StrategyFrequency>();
@@ -55,6 +55,14 @@ public class StrategySet {
 			break;
 		}
 		return resultSet;
+	}
+
+	public static LinkedList<StrategyFrequency> getStrategies() {
+		return strategies;
+	}
+
+	public static void setStrategies(LinkedList<StrategyFrequency> strategies) {
+		StrategySet.strategies = strategies;
 	}
 
 }

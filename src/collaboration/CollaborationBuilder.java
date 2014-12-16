@@ -130,6 +130,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void prepareDataControllers() {
 		try {
 			/***
@@ -200,6 +201,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void prepareWorkLoadData() {
 		
 		if (dataSet.isMockup()) {
