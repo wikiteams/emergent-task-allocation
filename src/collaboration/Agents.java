@@ -70,6 +70,7 @@ public class Agents extends DefaultContext<Agent> {
 					.getInstance(strategyDistribution, i, agentCnt)
 					: new Strategy(strategyDistribution.getTaskStrategy(),
 							strategyDistribution.getSkillStrategy());
+			say("[Strategy] prepared for agent is: " + strategy.toString());
 
 			agent.setStrategy(strategy);
 			say(agent.toString());

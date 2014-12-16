@@ -41,11 +41,10 @@ public class Strategy {
 			Integer i, Integer max) {
 		StrategySet set = strategyDistribution.getStrategySet();
 		LinkedList<StrategyFrequency> elements = 
-				(LinkedList<StrategyFrequency>) set.getStrategies()
-				.clone();
+				(LinkedList<StrategyFrequency>) set.getStrategies().clone();
 		while (true) {
 			StrategyFrequency frequency = elements.poll();
-			if ((i / max) <= frequency.getDistribution()) {
+			if (( ((double)i) / ((double)max) ) <= frequency.getDistribution()) {
 				return new Strategy(frequency.getTaskChoice(),
 						strategyDistribution.getSkillStrategy());
 			} else {

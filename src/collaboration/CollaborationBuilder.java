@@ -111,9 +111,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public CollaborationBuilder() {
 		try {
 			initializeLoggers();
-			RandomHelper.setSeed(SimulationParameters.randomSeed);
-			RandomHelper.init();
-			clearStaticHeap();
+			// RandomHelper.setSeed(SimulationParameters.randomSeed);
+			// RandomHelper.init();
+			// clearStaticHeap();
+			// moved to context builder build() method
 			say("[RandomHelper] initialized and [static heap] cleared..");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -141,6 +142,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say(Constraints.LOADING_PARAMETERS);
 			SimulationParameters.init();
 			// getting parameters of a simulation from current scenario
+			
+			RandomHelper.setSeed(SimulationParameters.randomSeed);
+			RandomHelper.init();
+			
 			dataSet = DataSet.getInstance(SimulationParameters.dataSource);
 
 			/***
@@ -247,6 +252,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public Context<Object> build(Context<Object> context) {
 		context.setId("emergent-task-allocation");
 		currentContext = context;
+		
+		clearStaticHeap();
 
 		if (SimulationAdvancedParameters.enableNetwork) {
 			NetworkBuilder<Object> builder = new NetworkBuilder<Object>(
@@ -513,6 +520,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			try {
 				List<Task> newTasks = MyDatabaseConnector.get(difference);
 				for (Task newTask : newTasks) {
+					say("[Continous Task Flow] adding a new task to context!");
 					tasks.add(newTask);
 				}
 			} catch (SQLException e) {
