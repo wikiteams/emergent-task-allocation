@@ -342,7 +342,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		AgentSkillsFrequency.clear();
 	}
 
-	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
+	@ScheduledMethod(start = 2, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
 	/***
 	 * Because of a continuous work in an evolutionary model, we don't finish
 	 * simulation without a good reason. This method will be enabled but in
@@ -350,7 +350,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * strategies
 	 */
 	public void finishSimulation() {
-		say("[finishSimulation() check launched] Checking if simulation can be ended..");
+		say("[finishSimulation() check launched] Checking if simulation can be ended...");
 		EnvironmentEquilibrium.setActivity(false);
 		if (((Tasks) tasks).getCount() < 1) {
 			say("count of taskPool is < 1, finishing simulation");

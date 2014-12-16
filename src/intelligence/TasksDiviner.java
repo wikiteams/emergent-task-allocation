@@ -95,9 +95,9 @@ public class TasksDiviner {
 					+ agent.getStrategy() + " and chooses task "
 					+ chosen.getId() + " by " + strategy + " to work on.");
 		} else {
-			sanity("Agent " + agent.toString() + " uses strategy "
+			sanity("Agent (" + agent.getId() + ") " + agent.toString() + " uses strategy "
 					+ agent.getStrategy() + " by " + strategy
-					+ " but didnt found any task to work on.");
+					+ " but didn't found any task to work on.");
 			if (SimulationParameters.allwaysChooseTask) {
 				sanity("Choosing any task left because of param allwaysChooseTask");
 				List<Task> internalRandomList;
