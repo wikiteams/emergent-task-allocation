@@ -1,5 +1,7 @@
 package github;
 
+import collaboration.SimulationParameters;
+
 
 public class DataSet {
 
@@ -16,6 +18,10 @@ public class DataSet {
 			instance = new DataSet(name);
 		}
 		return instance;
+	}
+	
+	public static DataSet getInstance() {
+		return getInstance(SimulationParameters.dataSource);
 	}
 
 	private DataSet(String name) {

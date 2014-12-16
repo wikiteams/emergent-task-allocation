@@ -168,8 +168,7 @@ public class Tasks extends DefaultContext<Task> {
 	}
 
 	public Tasks(Integer allowedLoad) {
-		this(DataSet.getInstance(SimulationParameters.dataSource),
-				LaunchStatistics.getInstance(), allowedLoad);
+		this(DataSet.getInstance(), LaunchStatistics.getInstance(), allowedLoad);
 	}
 
 	/**

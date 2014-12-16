@@ -54,9 +54,8 @@ public class Agents extends DefaultContext<Agent> {
 	}
 
 	public Agents(StrategyDistribution strategyDistribution, Integer allowedLoad) {
-		this(DataSet.getInstance(SimulationParameters.dataSource),
-				strategyDistribution, LaunchStatistics.getInstance(),
-				allowedLoad);
+		this(DataSet.getInstance(), strategyDistribution, 
+				LaunchStatistics.getInstance(), allowedLoad);
 	}
 
 	private void addAgents(Context<Agent> context) {

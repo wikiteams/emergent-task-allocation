@@ -1,5 +1,7 @@
 package collaboration;
 
+import github.DataSet;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,9 +27,8 @@ import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
 
 /***
- * Simulation agent - a GitHub programmer
- * as restored from data on users activity
- * with a help of aggregators like BrainJar etc.
+ * Simulation agent - a GitHub programmer as restored from data on users
+ * activity with a help of aggregators like BrainJar etc.
  * 
  * @author Oskar Jarczyk
  * @since 1.0
@@ -62,20 +63,22 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public Agent(String firstName, String lastName, String nick) {
-		this(firstName, lastName, nick, true);
+		this(firstName, lastName, nick, DataSet.getInstance().isMockup());
 	}
 
 	public Agent(String firstName, String lastName, String nick,
 			Boolean fillWithSkills) {
 		this.agentSkills = new AgentSkills();
 		say("Agent constructor called");
-		if (fillWithSkills)
+		if (fillWithSkills) {
 			AgentSkillsPool.fillWithSkills(this);
+		}
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.nick = nick + this.id;
 	}
 
+	@SuppressWarnings("unchecked")
 	public GameController initGameController() {
 		Context<Agent> context = ContextUtils.getContext(this);
 		Context<Object> parentContext = ContextUtils.getParentContext(context);
