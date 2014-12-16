@@ -34,7 +34,7 @@ public class StrategyDistribution {
 	public Boolean isMultiple() {
 		return this.type == MULTIPLE;
 	}
-	
+
 	public Boolean isDistribution() {
 		return this.strategySet != null;
 	}
@@ -85,7 +85,7 @@ public class StrategyDistribution {
 
 	public void setSkillChoice(ModelFactory modelFactory, String skillChoice) {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
-			// this is only important if you launch 
+			// this is only important if you launch
 			// a "multiple validation" model
 			int intRandomized = RandomHelper.nextIntFromTo(0,
 					skillChoiceSet.length - 1);
@@ -108,7 +108,7 @@ public class StrategyDistribution {
 
 	public void setTaskChoice(ModelFactory modelFactory, String taskChoice) {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
-			// this is only important if you 
+			// this is only important if you
 			// launch a "multiple validation" model
 			int intRandomized = RandomHelper.nextIntFromTo(0,
 					taskChoiceSet.length - 1);
@@ -127,7 +127,11 @@ public class StrategyDistribution {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
+
+	public Boolean isCentralPlannerEnabled() {
+		return (this.taskChoice != null) && (this.taskChoice.equals("central"));
+	}
+
 	public StrategySet getStrategySet() {
 		return strategySet;
 	}

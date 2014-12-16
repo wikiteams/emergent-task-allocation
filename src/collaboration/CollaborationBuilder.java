@@ -509,7 +509,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public void buildCentralPlanner() {
 		say("Method buildCentralPlanner lunched."
 				+ "Checking now if central planer is needed at all.");
-		if (strategyDistribution.getTaskChoice().equals("central")) {
+		if (strategyDistribution.isCentralPlannerEnabled()) {
 			say("Creating a central planner instance.");
 			centralPlanner = CentralPlanning.getSingletonInstance();
 			say("Central planner is initiating schedule.");
