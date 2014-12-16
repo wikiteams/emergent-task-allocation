@@ -17,7 +17,6 @@ import repast.simphony.util.ContextUtils;
 import strategies.StrategyDistribution;
 import utils.AgentEvolve;
 import constants.Constraints;
-import constants.LoadSet;
 
 /**
  * Collaboration controller
@@ -107,7 +106,7 @@ public class GameController {
 	 */
 	private void resetAllAgents() {
 		List<Agent> allAgents = chooseAllAgents(this);
-		say("Resetting all agents, all together " + allAgents.size()
+		say("Resetting all Agents, all together " + allAgents.size()
 				+ " of them.");
 		for (Agent agent : allAgents) {
 			agent.resetMe();
@@ -117,11 +116,7 @@ public class GameController {
 	@ScheduledMethod(start = 1.0, interval = 1.0, priority = -3000)
 	public void step() {
 		if (isEvolutionary()) {
-			DateTime dateTime = new DateTime();
-			Seconds seconds = Seconds.secondsBetween(previous, dateTime);
-			Minutes minutes = Minutes.minutesBetween(previous, dateTime);
-			say("It took " + minutes.getMinutes() + " minutes and "
-					+ seconds.getSeconds() + " seconds between ticks.");
+			benchmark();
 
 			// check whether this is the last generation/iteration
 			if (currentIteration == (iterationNumber - 2)) {
@@ -147,6 +142,14 @@ public class GameController {
 		} else {
 			currentIteration++;
 		}
+	}
+
+	private void benchmark() {
+		DateTime dateTime = new DateTime();
+		Seconds seconds = Seconds.secondsBetween(this.previous, dateTime);
+		Minutes minutes = Minutes.minutesBetween(this.previous, dateTime);
+		say("It took " + minutes.getMinutes() + " minutes and "
+				+ seconds.getSeconds() + " seconds between ticks.");
 	}
 
 	public int getCurrentGeneration() {

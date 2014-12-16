@@ -4,6 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/***
+ * 
+ * Represents Agent's skills (knowledge of programming language) and the initial
+ * value as used later in evolutionary model
+ * 
+ * @version 2.0.6
+ * @author Oskar Jarczyk
+ * 
+ */
 public class AgentSkills {
 
 	private Map<String, AgentInternals> startSkills;
@@ -29,8 +38,8 @@ public class AgentSkills {
 	public void setSkills(Map<String, AgentInternals> skills) {
 		this.skills = skills;
 	}
-	
-	public void removeSkill(String key){
+
+	public void removeSkill(String key) {
 		this.skills.remove(key);
 	}
 
@@ -38,11 +47,19 @@ public class AgentSkills {
 		skills = deepCopy(startSkills);
 	}
 
-	private Map<String, AgentInternals> deepCopy(
-			Map<String, AgentInternals> skills) {
-		Map<String, AgentInternals> result = new HashMap<String, AgentInternals>();
+	public void backup() {
+		assert startSkills != null;
+		startSkills.clear();
 		for (Entry<String, AgentInternals> entry : skills.entrySet()) {
+			startSkills.put(entry.getKey(), entry.getValue().deepCopy());
+		}
+	}
 
+	private Map<String, AgentInternals> deepCopy(
+			Map<String, AgentInternals> source) {
+		Map<String, AgentInternals> result = new HashMap<String, AgentInternals>();
+		for (Entry<String, AgentInternals> entry : source.entrySet()) {
+			result.put(entry.getKey(), entry.getValue().deepCopy());
 		}
 		return result;
 	}

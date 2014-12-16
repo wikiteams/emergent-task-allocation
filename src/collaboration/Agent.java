@@ -67,15 +67,19 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public Agent(String firstName, String lastName, String nick,
-			Boolean fillWithSkills) {
+			Boolean fillWithOldSkills) {
 		this.agentSkills = new AgentSkills();
-		say("Agent constructor called");
-		if (fillWithSkills) {
+		say("[Agent] constructor called");
+		if (fillWithOldSkills) {
+			AgentSkillsPool.fillWithSkills(this);
+		} else {
+			// TODO: change this to BrainJar or OpenHUB (Ohloh) mechanism
 			AgentSkillsPool.fillWithSkills(this);
 		}
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.nick = nick + this.id;
+		this.agentSkills.backup();
 	}
 
 	@SuppressWarnings("unchecked")
