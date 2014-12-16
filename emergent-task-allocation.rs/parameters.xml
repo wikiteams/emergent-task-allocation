@@ -47,6 +47,7 @@
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 	<parameter name="deployedTasksLeave" displayName="deployedTasksLeave"
 		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
+		values="true false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="allowRookieForSkills" displayName="allowRookieForSkills"
 		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"

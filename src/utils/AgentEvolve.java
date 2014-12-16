@@ -22,8 +22,10 @@ public class AgentEvolve {
 		ArrayList<Agent> agents = chooseAgents(context);
 		say("There are " + agents.size() + " agents ");
 		assert agents.size() == SimulationParameters.agentCount;
+		say("Strategy of 1st [Agent] before evolution: " + agents.get(0).getStrategy().toString());
 		say("Experience of 1st [Agent] before evolution: " + agents.get(0).describeExperience());
 		Agents.stochasticSampling(agents);
+		say("Strategy of 1st [Agent] after evolution: " + agents.get(0).getStrategy().toString());
 		say("Experience of 1st [Agent] after evolution: " + agents.get(0).describeExperience());
 	}
 
