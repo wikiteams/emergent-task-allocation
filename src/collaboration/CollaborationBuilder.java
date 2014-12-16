@@ -5,7 +5,6 @@ import github.MyDatabaseConnector;
 import github.TaskSkillFrequency;
 import github.TaskSkillsPool;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -45,7 +44,6 @@ import utils.LaunchStatistics;
 import utils.NamesGenerator;
 import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
-import au.com.bytecode.opencsv.CSVWriter;
 import constants.Constraints;
 import constants.LoadSet;
 import constants.ModelFactory;
@@ -135,12 +133,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		try {
 			/***
 			 * 
-			 * LoadSet holds information about 
-			 * task numbers and agent numbers
+			 * LoadSet holds information about task numbers and agent numbers
 			 * 
 			 */
 			loadSet = LoadSet.EMPTY;
-			
+
 			say(Constraints.LOADING_PARAMETERS);
 			SimulationParameters.init();
 			// getting parameters of a simulation from current scenario
@@ -148,17 +145,16 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 			/***
 			 * 
-			 * LaunchStatistics hold data for outputting results
-			 * i.e. tick numbers, result strategy set, tasks left etc.
+			 * LaunchStatistics hold data for outputting results i.e. tick
+			 * numbers, result strategy set, tasks left etc.
 			 * 
 			 */
 			launchStatistics = LaunchStatistics.getInstance();
-			
+
 			/***
 			 * 
-			 * ModelFactory tells whether we want 
-			 * to maximise verbose message and/or
-			 * test all Task assignment STRATEGIES at once.
+			 * ModelFactory tells whether we want to maximise verbose message
+			 * and/or test all Task assignment STRATEGIES at once.
 			 * 
 			 */
 			modelFactory = new ModelFactory(SimulationParameters.modelType);
@@ -180,8 +176,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 			/***
 			 * 
-			 * StrategyDistribution holds information on currently tested
-			 * Task assignment strategy and Skill choice strategy
+			 * StrategyDistribution holds information on currently tested Task
+			 * assignment strategy and Skill choice strategy
 			 * 
 			 */
 			strategyDistribution = new StrategyDistribution();
@@ -203,24 +199,24 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	@SuppressWarnings("deprecation")
 	private void prepareWorkLoadData() {
-		
+
 		if (dataSet.isMockup()) {
 			/***
 			 * 
-			 * This is previous version of the dataset, 
-			 * already tested and described in our publication
-			 * hence the deprecated flag
+			 * This is previous version of the dataset, already tested and
+			 * described in our publication hence the deprecated flag
 			 * 
 			 */
-			AgentSkillsPool.instantiate(SimulationParameters.agentSkillPoolDataset);
+			AgentSkillsPool
+					.instantiate(SimulationParameters.agentSkillPoolDataset);
 			say("[Instatiated AgentSkillsPool]");
 			TaskSkillsPool.instantiate(SimulationParameters.tasksDataset);
 			say("[Instatied TaskSkillsPool]");
 		} else if (dataSet.isDb()) {
 			/***
 			 * 
-			 * This is new dataset parsed from GitHub mongodb 
-			 * and specially created for evolutionary model
+			 * This is new dataset parsed from GitHub mongodb and specially
+			 * created for evolutionary model
 			 * 
 			 */
 			say("[Sqlite engine] and resultset initialized, may take some time..");
@@ -230,11 +226,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 
 		strategyDistribution.setType(SimulationParameters.strategyDistribution);
-		
-		assert ((strategyDistribution.getType() == 
-					StrategyDistribution.SINGULAR) || 
-						(strategyDistribution
-								.getType() == StrategyDistribution.MULTIPLE));
+
+		assert ((strategyDistribution.getType() == StrategyDistribution.SINGULAR) || (strategyDistribution
+				.getType() == StrategyDistribution.MULTIPLE));
 
 		if (strategyDistribution.isSingle()) {
 			strategyDistribution.setSkillChoice(modelFactory,
@@ -244,7 +238,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		} else if (strategyDistribution.isMultiple()) {
 			strategyDistribution.setSkillChoice(modelFactory,
 					SimulationParameters.skillChoiceAlgorithm);
-			strategyDistribution.setTaskChoiceSet(SimulationParameters.planNumber);
+			strategyDistribution
+					.setTaskChoiceSet(SimulationParameters.planNumber);
 		}
 	}
 
@@ -272,20 +267,14 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		context.add(gameController);
 
 		say("Task choice [Strategy] is "
-				+ SimulationParameters.taskChoiceAlgorithm);
+				+ (strategyDistribution.isDistribution() ? strategyDistribution
+						.getStrategySet().describe()
+						: SimulationParameters.taskChoiceAlgorithm));
 		sanity("Number of [Tasks] created " + getTasks().size());
 		sanity("Number of [Agents] created " + getAgents().size());
-		sanity("[Algorithm] tested: " + SimulationParameters.taskChoiceAlgorithm);
-
-/*		try {
-			outputAgentSkillMatrix();
-		} catch (IOException e) {
-			say(Constraints.IO_EXCEPTION);
-			e.printStackTrace();
-		} catch (NullPointerException nexc) {
-			say(Constraints.UNKNOWN_EXCEPTION);
-			nexc.printStackTrace();
-		}*/
+		sanity("[Algorithm] tested: "
+				+ (strategyDistribution.isDistribution() ? "Distributed"
+						: SimulationParameters.taskChoiceAlgorithm));
 
 		if (SimulationParameters.forceStop)
 			RunEnvironment.getInstance().endAt(SimulationParameters.numSteps);
@@ -330,24 +319,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		validation(Constraints.SEPERATOR);
 	}
 
-/*	private void outputAgentSkillMatrix() throws IOException {
-		CSVWriter writer = new CSVWriter(new FileWriter("input_a1.csv"), ',',
-				CSVWriter.NO_QUOTE_CHARACTER);
-		for (Object agent : getAgents()) {
-			for (AgentInternals __agentInternal : ((Agent) agent)
-					.getAgentInternals()) {
-				ArrayList<String> entries = new ArrayList<String>();
-				entries.add(((Agent) agent).getNick());
-				entries.add(__agentInternal.getExperience().getValue() + "");
-				entries.add(__agentInternal.getSkill().getName());
-				String[] stockArr = new String[entries.size()];
-				stockArr = entries.toArray(stockArr);
-				writer.writeNext(stockArr);
-			}
-		}
-		writer.close();
-	}*/
-
+	@SuppressWarnings("deprecation")
 	public void clearStaticHeap() {
 		say("Clearing static data from previous simulation");
 		PersistJobDone.clear();
@@ -521,9 +493,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("Central planner initiated and awaiting for call.");
 		}
 	}
-	
+
 	public void buildContinousTaskFlow() {
-		if (gameController.isEvolutionary()){
+		if (gameController.isEvolutionary()) {
 			ISchedule schedule = RunEnvironment.getInstance()
 					.getCurrentSchedule();
 			ScheduleParameters params = ScheduleParameters.createRepeating(1,
@@ -532,16 +504,15 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("[Continous Task Flow] initiated");
 		}
 	}
-	
-	public synchronized void provideSimulatorWithWork(){
-		if (tasks.size() < loadSet.TASK_COUNT){
+
+	public synchronized void provideSimulatorWithWork() {
+		if (tasks.size() < loadSet.TASK_COUNT) {
 			int minus = loadSet.TASK_COUNT - ((Tasks) tasks).getCount();
 			int difference = Math.abs(minus);
 			say("Adding more " + difference + " [Tasks] to simulator");
 			try {
-				List<Task> newTasks = 
-				MyDatabaseConnector.get(difference);
-				for(Task newTask : newTasks){
+				List<Task> newTasks = MyDatabaseConnector.get(difference);
+				for (Task newTask : newTasks) {
 					tasks.add(newTask);
 				}
 			} catch (SQLException e) {
@@ -661,8 +632,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 					Collection<AgentInternals> aic = ((Agent) agent)
 							.getAgentInternals();
 
-					CopyOnWriteArrayList<AgentInternals> aicconcurrent = 
-							new CopyOnWriteArrayList<AgentInternals>(aic);
+					CopyOnWriteArrayList<AgentInternals> aicconcurrent = new CopyOnWriteArrayList<AgentInternals>(
+							aic);
 					boolean removal = true;
 					for (Object ai : aicconcurrent) {
 						if (((AgentInternals) ai).getExperience().getDelta() < 1.) {

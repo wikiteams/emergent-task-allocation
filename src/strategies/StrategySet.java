@@ -2,9 +2,21 @@ package strategies;
 
 import java.util.LinkedList;
 
+import com.google.common.collect.Lists;
+
 public class StrategySet {
 
 	private static LinkedList<StrategyFrequency> strategies;
+	
+	public String describe(){
+		StringBuilder str = new StringBuilder();
+		for(StrategyFrequency s : Lists.newArrayList(strategies.iterator())){
+			str.append(s.getDistribution());
+			str.append(' ');
+			str.append(s.getTaskChoice().name());
+		}
+		return str.toString();
+	}
 
 	private StrategySet() {
 		strategies = new LinkedList<StrategyFrequency>();
