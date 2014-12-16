@@ -267,13 +267,13 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		context.add(gameController);
 
 		say("Task choice [Strategy] is "
-				+ (strategyDistribution.isDistribution() ? strategyDistribution
+				+ (strategyDistribution.isDistributionLoaded() ? strategyDistribution
 						.getStrategySet().describe()
 						: SimulationParameters.taskChoiceAlgorithm));
 		sanity("Number of [Tasks] created " + getTasks().size());
 		sanity("Number of [Agents] created " + getAgents().size());
 		sanity("[Algorithm] tested: "
-				+ (strategyDistribution.isDistribution() ? "Distributed"
+				+ (strategyDistribution.isDistributionLoaded() ? "Distributed"
 						: SimulationParameters.taskChoiceAlgorithm));
 
 		if (SimulationParameters.forceStop)

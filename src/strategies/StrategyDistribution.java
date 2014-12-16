@@ -16,6 +16,7 @@ public class StrategyDistribution {
 
 	public static final int SINGULAR = 0;
 	public static final int MULTIPLE = 1;
+
 	private static final String[] taskChoiceSet = { "homophyly", "heterophyly",
 			"preferential", "random", "central" };
 	private static final String[] skillChoiceSet = { "proportional", "greedy",
@@ -35,42 +36,34 @@ public class StrategyDistribution {
 		return this.type == MULTIPLE;
 	}
 
-	public Boolean isDistribution() {
+	public Boolean isDistributionLoaded() {
 		return this.strategySet != null;
 	}
 
 	public TaskChoice getTaskStrategy() {
-		if (type == SINGULAR) {
-			if (taskChoice.equals(taskChoiceSet[0])) {
-				return Strategy.TaskChoice.HOMOPHYLY;
-			} else if (taskChoice.equals(taskChoiceSet[1])) {
-				return Strategy.TaskChoice.HETEROPHYLY;
-			} else if (taskChoice.equals(taskChoiceSet[2])) {
-				return Strategy.TaskChoice.PREFERENTIAL;
-			} else if (taskChoice.equals(taskChoiceSet[3])) {
-				return Strategy.TaskChoice.RANDOM;
-			} else if (taskChoice.equals(taskChoiceSet[4])) {
-				return Strategy.TaskChoice.CENTRAL_ASSIGNMENT;
-			}
-		} else {
-			assert false;
+		if (taskChoice.equals(taskChoiceSet[0])) {
+			return Strategy.TaskChoice.HOMOPHYLY;
+		} else if (taskChoice.equals(taskChoiceSet[1])) {
+			return Strategy.TaskChoice.HETEROPHYLY;
+		} else if (taskChoice.equals(taskChoiceSet[2])) {
+			return Strategy.TaskChoice.PREFERENTIAL;
+		} else if (taskChoice.equals(taskChoiceSet[3])) {
+			return Strategy.TaskChoice.RANDOM;
+		} else if (taskChoice.equals(taskChoiceSet[4])) {
+			return Strategy.TaskChoice.CENTRAL_ASSIGNMENT;
 		}
 		return null;
 	}
 
 	public SkillChoice getSkillStrategy() {
-		if (type == SINGULAR) {
-			if (skillChoice.equals(skillChoiceSet[0])) {
-				return Strategy.SkillChoice.PROPORTIONAL_TIME_DIVISION;
-			} else if (skillChoice.equals(skillChoiceSet[1])) {
-				return Strategy.SkillChoice.GREEDY_ASSIGNMENT;
-			} else if (skillChoice.equals(skillChoiceSet[2])) {
-				return Strategy.SkillChoice.CHOICE_OF_AGENT;
-			} else if (skillChoice.equals(skillChoiceSet[3])) {
-				return Strategy.SkillChoice.RANDOM;
-			}
-		} else {
-			assert false;
+		if (skillChoice.equals(skillChoiceSet[0])) {
+			return Strategy.SkillChoice.PROPORTIONAL_TIME_DIVISION;
+		} else if (skillChoice.equals(skillChoiceSet[1])) {
+			return Strategy.SkillChoice.GREEDY_ASSIGNMENT;
+		} else if (skillChoice.equals(skillChoiceSet[2])) {
+			return Strategy.SkillChoice.CHOICE_OF_AGENT;
+		} else if (skillChoice.equals(skillChoiceSet[3])) {
+			return Strategy.SkillChoice.RANDOM;
 		}
 		return null;
 	}

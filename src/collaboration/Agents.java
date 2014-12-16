@@ -66,7 +66,7 @@ public class Agents extends DefaultContext<Agent> {
 		for (int i = 0; i < agentCnt; i++) {
 			Agent agent = listAgents.get(i);
 
-			Strategy strategy = strategyDistribution.isDistribution() ? Strategy
+			Strategy strategy = strategyDistribution.isMultiple() ? Strategy
 					.getInstance(strategyDistribution, i, agentCnt)
 					: new Strategy(strategyDistribution.getTaskStrategy(),
 							strategyDistribution.getSkillStrategy());
