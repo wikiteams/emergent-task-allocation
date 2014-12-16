@@ -133,9 +133,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private void prepareDataControllers() {
 		try {
 			/***
-			 * 
+			 * LoadSet.EMPTY singleton is here filled with values
 			 * LoadSet holds information about task numbers and agent numbers
-			 * 
+			 * those values are used later for load control
 			 */
 			loadSet = LoadSet.EMPTY;
 
@@ -149,18 +149,18 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			dataSet = DataSet.getInstance(SimulationParameters.dataSource);
 
 			/***
-			 * 
 			 * LaunchStatistics hold data for outputting results i.e. tick
 			 * numbers, result strategy set, tasks left etc.
-			 * 
+			 * they are all used later for outputting to batch.log
+			 * at the very end of a simulation
 			 */
 			launchStatistics = LaunchStatistics.getInstance();
 
 			/***
-			 * 
 			 * ModelFactory tells whether we want to maximise verbose message
 			 * and/or test all Task assignment STRATEGIES at once.
-			 * 
+			 * Normal model means a typical execution, while i.e.
+			 * validation means e.g. maximum message output to console etc.
 			 */
 			modelFactory = new ModelFactory(SimulationParameters.modelType);
 			Model model = modelFactory.getFunctionality();
@@ -180,17 +180,17 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			}
 
 			/***
-			 * 
 			 * StrategyDistribution holds information on currently tested Task
 			 * assignment strategy and Skill choice strategy
-			 * 
+			 * Single distribution means evolution disabled, while
+			 * multiple distribution enables evolutionary model
 			 */
 			strategyDistribution = new StrategyDistribution();
 
 			// initialise skill pools - information on all known languages
 			say("[SkillFactory] parsing skills (programing languages) from file");
 			skillFactory = SkillFactory.getInstance();
-			skillFactory.buildSkillsLibrary();
+			skillFactory.buildSkillsLibrary(model.isValidation());
 			say("[SkillFactory] parsed all known [programming languages].");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -207,23 +207,20 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 		if (dataSet.isMockup()) {
 			/***
-			 * 
 			 * This is previous version of the dataset, already tested and
 			 * described in our publication hence the deprecated flag
-			 * 
 			 */
-			AgentSkillsPool
-					.instantiate(SimulationParameters.agentSkillPoolDataset);
+			AgentSkillsPool.instantiate(SimulationParameters.agentSkillPoolDataset);
 			say("[Instatiated AgentSkillsPool]");
 			TaskSkillsPool.instantiate(SimulationParameters.tasksDataset);
 			say("[Instatied TaskSkillsPool]");
 		} else if (dataSet.isDb()) {
 			/***
-			 * 
-			 * This is new dataset parsed from GitHub mongodb and specially
-			 * created for evolutionary model
-			 * 
+			 * This is new dataset parsed from our 
+			 * GitHub MongoDB database and specially
+			 * created for the sake of [evolutionary model]
 			 */
+			AgentSkillsPool.instantiate(SimulationParameters.agentSkillPoolDataset);
 			say("[Sqlite engine] and resultset initialized, may take some time..");
 			MyDatabaseConnector.init();
 		} else if (dataSet.isContinuus()) {

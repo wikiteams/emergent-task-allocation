@@ -109,15 +109,16 @@ public class SkillFactory {
 		return null;
 	}
 
-	public void buildSkillsLibrary() throws IOException, FileNotFoundException {
+	public void buildSkillsLibrary(boolean verbose) throws IOException, FileNotFoundException {
 		say("Searching for file in: " + new File(".").getAbsolutePath());
 		CSVReader reader = new CSVReader(new FileReader(filename));
 		String[] nextLine;
 		while ((nextLine = reader.readNext()) != null) {
 			Skill skill = new Skill(nextLine[0], nextLine[1], skills.size() + 1);
 			skills.add(skill);
-			say("Skill " + skill.getId() + ": " + skill.getName()
-					+ " added to factory");
+			if (verbose)
+				say("[Skill] " + skill.getId() + ": " + skill.getName()
+					+ " added to [Skill Factory]");
 		}
 		reader.close();
 	}
