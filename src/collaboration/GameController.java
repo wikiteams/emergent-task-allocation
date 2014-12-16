@@ -17,6 +17,7 @@ import repast.simphony.util.ContextUtils;
 import strategies.StrategyDistribution;
 import utils.AgentEvolve;
 import constants.Constraints;
+import constants.LoadSet;
 
 /**
  * Collaboration controller
@@ -83,7 +84,7 @@ public class GameController {
 	public void firstStep() {
 		// 1-generation scenarios don't need evolution
 		if (isEvolutionary()) {
-			// hence there is no distinction between 
+			// hence there is no distinction between
 			// first generation and any other generations
 			// which you can find e.g. in hyip game or credibility game
 			if (currentIteration == (iterationNumber - 1)) {
@@ -133,7 +134,8 @@ public class GameController {
 			if (currentIteration == (iterationNumber - 1)) {
 				say("[This is the last iteration in this generation]");
 				currentIteration = 0;
-				System.out.println("Current generation is: " + currentGeneration);
+				System.out.println("Current generation is: "
+						+ currentGeneration);
 				say("[Ending current generation]");
 				currentGeneration++;
 			} else {
@@ -182,6 +184,7 @@ public class GameController {
 	 * @return
 	 */
 	public static ArrayList<Agent> chooseAllAgents(Object contextBeing) {
+		@SuppressWarnings("unchecked")
 		Context<Object> context = ContextUtils.getContext(contextBeing);
 		Iterable<Object> it = context.getObjects(Agent.class);
 		ArrayList<Agent> result = new ArrayList<Agent>();
@@ -189,6 +192,8 @@ public class GameController {
 		while (iterator.hasNext()) {
 			result.add((Agent) iterator.next());
 		}
+		assert (result.size() == SimulationParameters.agentCount)
+				|| (SimulationParameters.fullyLearnedAgentsLeave);
 		return result;
 	}
 
