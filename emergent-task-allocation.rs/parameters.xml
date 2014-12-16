@@ -50,6 +50,7 @@
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="allowRookieForSkills" displayName="allowRookieForSkills"
 		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
+		values="false true"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="agentCount" displayName="agentCount" type="java.lang.Integer"
 		defaultValue="50" isReadOnly="false"
@@ -71,6 +72,7 @@
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="fullyLearnedAgentsLeave" displayName="fullyLearnedAgentsLeave"
 		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
+		values="false true"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="allwaysChooseTask" displayName="Agent will always choose a Task?"
 		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
@@ -80,7 +82,7 @@
 	<!-- Granularity of work -->
 	
 	<parameter name="granularity" displayName="granularity" type="java.lang.Boolean"
-		defaultValue="false" isReadOnly="false"
+		defaultValue="false" isReadOnly="false" values="false true"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="granularityObstinacy" displayName="granularityObstinacy"
 		type="java.lang.Integer" defaultValue="75" isReadOnly="false"
@@ -144,7 +146,7 @@
 	<!-- "Force stop" don't use it unless you know what you are doing -->
 
 	<parameter name="forceStop" displayName="Force stop?" type="java.lang.Boolean"
-		defaultValue="false" isReadOnly="false"
+		defaultValue="false" isReadOnly="false" values="false true"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="numSteps" displayName="Force stop number of steps" type="java.lang.Integer"
 		defaultValue="5000" isReadOnly="false"

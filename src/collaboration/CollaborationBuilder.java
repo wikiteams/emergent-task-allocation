@@ -611,7 +611,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	}
 
 	/***
-	 * Scheduled methods which checks for fully learned agents - only when fll
+	 * Scheduled methods which checks for 
+	 * fully learned agents - only when 'fll' parameter
 	 * set as true in scenario parameters
 	 * 
 	 * @since 1.3
