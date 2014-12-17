@@ -28,8 +28,8 @@ public abstract class AgentSkillsPool {
 			"data/deprecated/top-users-final.csv"
 			: "data\\deprecated\\top-users-final.csv";
 	private static String filename_ext = SystemUtils.IS_OS_LINUX ? 
-			"data/users-and-their-pull-requests.csv"
-			: "data\\users-and-their-pull-requests.csv";
+			"data/deprecated/users-and-their-pull-requests.csv"
+			: "data\\deprecated\\users-and-their-pull-requests.csv";
 
 	private enum DataSet {
 		TOP_USERS, BRAIN_JAR;
