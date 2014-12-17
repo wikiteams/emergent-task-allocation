@@ -25,8 +25,8 @@ public abstract class AgentSkillsPool {
 	 * 'fabpot', 'PHP', 'Shell', 'JavaScript'
 	 *****************************************/
 	private static String filename = SystemUtils.IS_OS_LINUX ? 
-			"data/top-users-final.csv"
-			: "data\\top-users-final.csv";
+			"data/deprecated/top-users-final.csv"
+			: "data\\deprecated\\top-users-final.csv";
 	private static String filename_ext = SystemUtils.IS_OS_LINUX ? 
 			"data/users-and-their-pull-requests.csv"
 			: "data\\users-and-their-pull-requests.csv";
@@ -46,6 +46,7 @@ public abstract class AgentSkillsPool {
 	public static void instantiate(String method) {
 		if (method.toUpperCase().equals("TOP_USERS")
 				|| method.toUpperCase().equals("STATIC_PULL_REQUESTS"))
+			say("Reading data and creating [Agent's Skill Pool]...");
 			instantiate(DataSet.TOP_USERS);
 		if (method.toUpperCase().equals("BRAIN_JAR"))
 			instantiate(DataSet.BRAIN_JAR);
