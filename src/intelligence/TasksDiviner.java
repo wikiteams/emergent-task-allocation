@@ -43,7 +43,7 @@ public class TasksDiviner {
 			chosen = heterophyly.concludeMath(agent);
 			break;
 		case PREFERENTIAL:
-			Preferential preferential = new Preferential();
+			Preferential preferential = new Preferential(tasks);
 			chosen = preferential.concludeMath(agent);
 			break;
 		case RANDOM:

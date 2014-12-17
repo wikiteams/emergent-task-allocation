@@ -1,10 +1,13 @@
 package tasks;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 import utils.ObjectsHelper;
 import collaboration.Agent;
+import collaboration.CollaborationBuilder;
+import collaboration.GameController;
 import collaboration.Skill;
 import collaboration.Task;
 import collaboration.Tasks;
@@ -26,6 +29,12 @@ import collaboration.Tasks;
  * @version 2.0.6
  */
 public class Preferential {
+	
+	private Map<String, Task> tasks;
+	
+	public Preferential(Map<String, Task> tasks){
+		this.tasks = tasks;
+	}
 
 	public Task concludeMath(Agent agent) {
 		Collection<Skill> allAgentSkills = agent.getSkills();
@@ -33,13 +42,12 @@ public class Preferential {
 
 		// get all tasks with agent skills
 
-		Set<Task> tasks = Tasks.getTasksHavingSkills(allAgentSkills);
+		Set<Task> tasksHavingSkills = Tasks.getTasksHavingSkills(allAgentSkills);
 
 		Long mostVisitedCount = null;
 		Task mostPopularTask = null;
-		// List<Task> consideration = new ArrayList<Task>();
 
-		for (Task task : tasks) {
+		for (Task task : tasksHavingSkills) {
 			if (task.getNumberOfVisits() > 0) {
 				if (ObjectsHelper.is2ndHigher(mostVisitedCount,
 						task.getNumberOfVisits())) {
@@ -51,10 +59,14 @@ public class Preferential {
 			}
 		}
 		
-		if (mostPopularTask == null){
+		chosen = mostPopularTask;
+		
+		// a situation in which tasks having user skills
+		// where never 'worked on' yet
+		if (chosen == null){
 			Double highestAdv = null;
 			Task mostDoneTask = null;
-			for (Task task : tasks) {
+			for (Task task : tasksHavingSkills) {
 				Double generalAdv = task.getGeneralAdvance();
 				if (ObjectsHelper.is2ndHigher(highestAdv,
 						generalAdv)) {
@@ -62,6 +74,24 @@ public class Preferential {
 					mostDoneTask = task;
 				}
 			}
+			chosen = mostDoneTask;
+		}
+		
+		// a situation in which there are no tasks
+		// having user skills
+		if (chosen == null){
+			Collection<Task> allTasks = tasks.values();
+			Double highestAdv = null;
+			Task mostDoneTask = null;
+			for (Task task : allTasks) {
+				Double generalAdv = task.getGeneralAdvance();
+				if (ObjectsHelper.is2ndHigher(highestAdv,
+						generalAdv)) {
+					highestAdv = generalAdv;
+					mostDoneTask = task;
+				}
+			}
+			chosen = mostDoneTask;
 		}
 
 		return chosen;
