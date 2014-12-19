@@ -14,7 +14,9 @@
     <string>SkillStrategy</string>
     <string>WasWorkingOnAnything</string>
     <string>Experience</string>
+    <string>GeneralExperience</string>
+    <string>Utility</string>
   </sourceIds>
-  <fileName>agents_state.csv</fileName>
+  <fileName>agents_nonaggr_state.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

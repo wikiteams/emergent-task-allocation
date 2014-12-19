@@ -88,6 +88,22 @@
         <methodName>describeExperience</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
+    <entry>
+      <string>GeneralExperience</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>GeneralExperience</id>
+        <className>collaboration.Agent</className>
+        <methodName>getGeneralExperience</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Utility</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Utility</id>
+        <className>collaboration.Agent</className>
+        <methodName>getUtility</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
   </methodDataSources>
   <countSources class="linked-hash-map"/>
   <customNADataSources class="linked-hash-map"/>

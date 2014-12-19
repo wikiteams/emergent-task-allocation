@@ -32,7 +32,7 @@ import argonauts.PersistRewiring;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.6
+ * @version 2.0.7
  */
 @AgentAnnot(displayName = "Agent")
 public class Agent implements NodeCreator<Agent> {
@@ -411,6 +411,15 @@ public class Agent implements NodeCreator<Agent> {
 					.format(ai.getExperience().getDelta()));
 		}
 		return deltaE.entrySet().toString();
+	}
+	
+	public String getGeneralExperience() {
+		Collection<AgentInternals> internals = this.getAgentInternals();
+		double sum = 0.0;
+		for (AgentInternals ai : internals) {
+			sum += ai.getExperience().getDelta();
+		}
+		return new DecimalFormat("#.######").format((sum/internals.size()));
 	}
 
 	/***
