@@ -106,6 +106,10 @@ public class Agent implements NodeCreator<Agent> {
 		average = average / count;
 		return result + (0.05 * average);
 	}
+	
+	public String getDecimalFormatUtility(){
+		return new DecimalFormat("#.######").format(getUtility());
+	}
 
 	public void mutate() {
 		// 1% chances for deleting (abandoning) skill

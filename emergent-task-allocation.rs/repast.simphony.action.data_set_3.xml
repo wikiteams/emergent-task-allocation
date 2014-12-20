@@ -101,7 +101,7 @@
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>Utility</id>
         <className>collaboration.Agent</className>
-        <methodName>getUtility</methodName>
+        <methodName>getDecimalFormatUtility</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>
