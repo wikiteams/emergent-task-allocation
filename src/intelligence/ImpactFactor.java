@@ -1,15 +1,14 @@
 package intelligence;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.collections15.map.HashedMap;
 
 import collaboration.Agent;
 import collaboration.SimulationParameters;
 
 public class ImpactFactor {
 
-	public static Map<Agent, CircularFifoQueue<Double>> impacts = new HashedMap<>();
+	public static Map<Agent, CircularFifoQueue<Double>> impacts = new HashMap<>();
 
 	public static void update(Agent agent, Double newImpactFactor) {
 		if (impacts.containsKey(agent)) {
