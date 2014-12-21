@@ -1,5 +1,6 @@
 package collaboration;
 
+import intelligence.UtilityType;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 import test.Model;
@@ -17,6 +18,7 @@ import test.ModelConverter;
 public class SimulationParameters {
 
 	public static final String tasksDataset = "ALL_REPOSITORIES";
+	public static final int IMPACT_MEMORY = 3;
 	public static boolean multipleAgentSets = true;
 	public static boolean allowSkillDeath = false;
 
@@ -32,6 +34,9 @@ public class SimulationParameters {
 	public static String dataSource = "";
 	public static int planNumber = 0;
 	public static int iterationCount = 0;
+	private static String utilityFunction = "";
+	public static boolean isAgentOrientedUtility;
+	public static boolean isTaskOrientedUtility;
 
 	public static int agentCount = 0;
 	public static int taskCount = 0;
@@ -80,6 +85,9 @@ public class SimulationParameters {
 		modelType = (Model) modelConverter.fromString((String) param
 				.getValue("modelType"));
 		dataSource = (String) param.getValue("dataSource");
+		utilityFunction = (String) param.getValue("utilityFunction");
+		isAgentOrientedUtility = utilityFunction.equals(UtilityType.LEARNING) ? true : false;
+		isTaskOrientedUtility = utilityFunction.equals(UtilityType.IMPACT) ? true : false;
 		planNumber = (Integer) param.getValue("planNumber");
 		iterationCount = (Integer) param.getValue("iterationCount");
 		

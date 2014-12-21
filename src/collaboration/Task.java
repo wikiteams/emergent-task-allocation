@@ -1,6 +1,8 @@
 package collaboration;
 
 import github.TaskSkillsPool;
+import intelligence.ImpactFactor;
+import intelligence.UtilityType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -241,6 +243,10 @@ public class Task {
 
 	public Boolean workOnTask(Agent agent, Strategy.SkillChoice strategy) {
 		CollaborationNetwork.addEdge(agent, this);
+		Double impactFactor = null;
+		if (SimulationParameters.isTaskOrientedUtility){
+			impactFactor = this.getGeneralAdvance();
+		}
 		
 		Collection<TaskInternals> intersection;
 		List<Skill> skillsImprovedList = new ArrayList<Skill>();
@@ -399,6 +405,10 @@ public class Task {
 
 		if (SimulationParameters.deployedTasksLeave)
 			Tasks.considerEnding(this);
+		
+		if (SimulationParameters.isTaskOrientedUtility){
+			ImpactFactor.update(agent, this.getGeneralAdvance() - impactFactor);
+		}
 
 		if (skillsImprovedList.size() > 0) {
 			PersistJobDone.addContribution(agent, this, skillsImprovedList);

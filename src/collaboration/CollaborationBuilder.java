@@ -4,6 +4,7 @@ import github.DataSet;
 import github.MyDatabaseConnector;
 import github.TaskSkillFrequency;
 import github.TaskSkillsPool;
+import intelligence.ImpactFactor;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -325,7 +326,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	@SuppressWarnings("deprecation")
 	public void clearStaticHeap() {
-		say("Clearing static data from previous simulation");
+		say("Clearing [static data] from previous simulation");
+		sanity("Hence despite the fact there is a seperate JVM " + 
+				"for every instance, a new run should clear previous results");
 		PersistJobDone.clear();
 		PersistRewiring.clear();
 		TaskSkillsPool.clear();
@@ -337,6 +340,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		TaskSkillsPool.static_frequency_counter = 0;
 		TaskSkillFrequency.clear();
 		AgentSkillsFrequency.clear();
+		ImpactFactor.clear();
 	}
 
 	@ScheduledMethod(start = 2, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)

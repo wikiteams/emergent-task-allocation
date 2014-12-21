@@ -1,6 +1,8 @@
 package collaboration;
 
 import github.DataSet;
+import intelligence.ImpactFactor;
+import intelligence.UtilityType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -9,6 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import logger.PjiitOutputter;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
+
 import repast.simphony.annotate.AgentAnnot;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.graph.NodeCreator;
@@ -92,6 +98,20 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public Double getUtility() {
+		if(SimulationParameters.isAgentOrientedUtility){
+			return getLearningUtility();
+		} else {
+			return getImpactUtility();
+		}
+	}
+	
+	public Double getImpactUtility(){
+		Mean mean = new Mean();
+		return mean.evaluate(
+				ArrayUtils.toPrimitive ( ImpactFactor.get(this) ));
+	}
+	
+	public Double getLearningUtility(){
 		Double result = null;
 		double average = 0;
 		int count = 0;
