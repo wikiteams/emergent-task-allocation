@@ -93,7 +93,8 @@ public class Agents extends DefaultContext<Agent> {
 
 	private void initializeAgents(Context<Agent> context) {
 		if (dataSet.isContinuus()) {
-			// TODO: make brainjar
+			// OSRC is used here
+			// TODO: add later brainjar
 			addAgents(context);
 		} else if (dataSet.isMockup()) {
 			addAgents(context);

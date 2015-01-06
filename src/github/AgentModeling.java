@@ -12,18 +12,21 @@ import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.math3.analysis.function.Sigmoid;
 
 import au.com.bytecode.opencsv.CSVReader;
+import collaboration.Agent;
+import collaboration.AgentInternals;
+import collaboration.Experience;
 import collaboration.Skill;
 import collaboration.SkillFactory;
 
 public class AgentModeling {
 
-	private static LinkedHashMap<String, HashMap<Skill, Double>> skillSet = 
-			new LinkedHashMap<String, HashMap<Skill, Double>>();
+	private static LinkedHashMap<String, HashMap<Skill, Experience>> skillSet = 
+			new LinkedHashMap<String, HashMap<Skill, Experience>>();
 	private static SkillFactory skillFactory = 
 			SkillFactory.getInstance();
 
-	private final static String filename = SystemUtils.IS_OS_LINUX ? 
-			"data/agents-model/results.csv"
+	private final static String filename = 
+			SystemUtils.IS_OS_LINUX ? "data/agents-model/results.csv"
 			: "data\\agents-model\\results.csv";
 
 	public static void instantiate(String method) {
@@ -31,6 +34,10 @@ public class AgentModeling {
 			say("Reading data and creating [Agent's Skill Pool]...");
 			instantiate();
 		}
+	}
+
+	public static void clear() {
+		skillSet.clear();
 	}
 
 	public static void instantiate() {
@@ -55,36 +62,48 @@ public class AgentModeling {
 			String id = nextLine[0];
 			String nick = nextLine[1];
 			String language = nextLine[2];
-			double workDone = Double.parseDouble(nextLine[3]);
-			double cluster = Double.parseDouble(nextLine[4]);
+			int workDone = Integer.parseInt(nextLine[3]);
+			int cluster = Integer.parseInt(nextLine[4]);
 			if (previousId.equals(id)) {
-				HashMap<Skill, Double> l = skillSet.get(nick);
+				HashMap<Skill, Experience> l = skillSet.get(nick);
 				say("Parsed from CSV new language to existing person: " + nick
 						+ " - " + language);
-				l.put(skillFactory.getSkill(language), workDone);
+				Experience experience = calculateExperience(workDone, cluster);
+				l.put(skillFactory.getSkill(language), experience);
 				skillSet.put(nick, l);
 			} else {
 				// add new user
-				HashMap<Skill, Double> l = new HashMap<Skill, Double>();
+				HashMap<Skill, Experience> l = new HashMap<Skill, Experience>();
 				say("Parsed from CSV new person: " + nick + " - " + language);
-				l.put(skillFactory.getSkill(language),
-						calculateExperience(workDone, cluster));
+				Experience experience = calculateExperience(workDone, cluster);
+				l.put(skillFactory.getSkill(language), experience);
 				skillSet.put(nick, l);
 			}
 			previousId = id;
-			assert skillSet.size() > 99;
 		}
+		assert skillSet.size() > 99;
 		reader.close();
 	}
 
-	private static Double calculateExperience(double experience, double cluster) {
+	private static Experience calculateExperience(int experience, int cluster) {
 		if (experience / cluster > 0.99) {
-			return experience / (experience + 1);
-		} else
-		if (experience / cluster > 0.9) {
-			return new Sigmoid().value(6.0 * (experience / cluster));
+			return new Experience(experience, experience + 1);
+		} else if (experience / cluster > 0.9) {
+			double part = new Sigmoid().value(6.0 * (experience / cluster));
+			assert part <= 1.0;
+			return new Experience(experience * part, experience);
 		} else {
-			return experience / cluster;
+			return new Experience(experience, cluster);
+		}
+	}
+
+	public static void fillWithSkills(Agent agent) {
+		HashMap<Skill, Experience> iterationSkills = AgentModelingUtils
+				.getByIndex(skillSet, agent.getId());
+		for (Skill iterationSkill : iterationSkills.keySet()) {
+			AgentInternals builtAgentInternals = new AgentInternals(
+					iterationSkill, iterationSkills.get(iterationSkill));
+			agent.addSkill(iterationSkill.getName(), builtAgentInternals);
 		}
 	}
 

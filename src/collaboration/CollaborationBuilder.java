@@ -341,6 +341,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		TaskSkillsPool.static_frequency_counter = 0;
 		TaskSkillFrequency.clear();
 		AgentSkillsFrequency.clear();
+		AgentModeling.clear();
 		ImpactFactor.clear();
 	}
 

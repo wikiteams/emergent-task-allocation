@@ -1,5 +1,6 @@
 package collaboration;
 
+import github.AgentModeling;
 import github.DataSet;
 import intelligence.ImpactFactor;
 import intelligence.UtilityType;
@@ -79,8 +80,9 @@ public class Agent implements NodeCreator<Agent> {
 		if (fillWithOldSkills) {
 			AgentSkillsPool.fillWithSkills(this);
 		} else {
-			// TODO: change this to BrainJar or OpenHUB (Ohloh) mechanism
-			AgentSkillsPool.fillWithSkills(this);
+			// calls for filling data got from OSRC
+			// TODO: add BrainJar or OpenHUB (Ohloh) mechanism
+			AgentModeling.fillWithSkills(this);
 		}
 		this.firstName = firstName;
 		this.lastName = lastName;
