@@ -9,17 +9,19 @@ import java.util.LinkedHashMap;
 import logger.PjiitOutputter;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.math3.analysis.function.Sigmoid;
 
 import au.com.bytecode.opencsv.CSVReader;
 import collaboration.Skill;
 import collaboration.SkillFactory;
 
 public class AgentModeling {
-	
+
 	private static LinkedHashMap<String, HashMap<Skill, Double>> skillSet = 
 			new LinkedHashMap<String, HashMap<Skill, Double>>();
-	private static SkillFactory skillFactory = SkillFactory.getInstance();
-	
+	private static SkillFactory skillFactory = 
+			SkillFactory.getInstance();
+
 	private final static String filename = SystemUtils.IS_OS_LINUX ? 
 			"data/agents-model/results.csv"
 			: "data\\agents-model\\results.csv";
@@ -54,24 +56,36 @@ public class AgentModeling {
 			String nick = nextLine[1];
 			String language = nextLine[2];
 			double workDone = Double.parseDouble(nextLine[3]);
-			String cluster = nextLine[4];
-			if (previousId.equals(id)){
+			double cluster = Double.parseDouble(nextLine[4]);
+			if (previousId.equals(id)) {
 				HashMap<Skill, Double> l = skillSet.get(nick);
-				say("Parsed from CSV new language to existing person: " 
-						+ nick + " - " + language);
+				say("Parsed from CSV new language to existing person: " + nick
+						+ " - " + language);
 				l.put(skillFactory.getSkill(language), workDone);
 				skillSet.put(nick, l);
-			}else{
+			} else {
 				// add new user
 				HashMap<Skill, Double> l = new HashMap<Skill, Double>();
 				say("Parsed from CSV new person: " + nick + " - " + language);
-				l.put(skillFactory.getSkill(language), workDone);
+				l.put(skillFactory.getSkill(language),
+						calculateExperience(workDone, cluster));
 				skillSet.put(nick, l);
 			}
 			previousId = id;
-		assert skillSet.size() > 99;
+			assert skillSet.size() > 99;
 		}
 		reader.close();
+	}
+
+	private static Double calculateExperience(double experience, double cluster) {
+		if (experience / cluster > 0.99) {
+			return experience / (experience + 1);
+		} else
+		if (experience / cluster > 0.9) {
+			return new Sigmoid().value(6.0 * (experience / cluster));
+		} else {
+			return experience / cluster;
+		}
 	}
 
 	private static void say(String s) {
