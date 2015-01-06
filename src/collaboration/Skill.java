@@ -109,6 +109,9 @@ public class Skill implements Serializable{
 
 	@Override
 	public boolean equals(Object obj) {
+		if (!(obj instanceof Skill)) {
+			return false;
+		}
 		if (this.name.toLowerCase().equals(((Skill) obj).name.toLowerCase()))
 			return true;
 		else

@@ -22,11 +22,10 @@ public class AgentModeling {
 
 	private static LinkedHashMap<String, HashMap<Skill, Experience>> skillSet = 
 			new LinkedHashMap<String, HashMap<Skill, Experience>>();
-	private static SkillFactory skillFactory = 
-			SkillFactory.getInstance();
+	private static SkillFactory skillFactory = SkillFactory.getInstance();
 
-	private final static String filename = 
-			SystemUtils.IS_OS_LINUX ? "data/agents-model/results.csv"
+	private final static String filename = SystemUtils.IS_OS_LINUX ? 
+			"data/agents-model/results.csv"
 			: "data\\agents-model\\results.csv";
 
 	public static void instantiate(String method) {
@@ -70,7 +69,7 @@ public class AgentModeling {
 						+ " - " + language);
 				Experience experience = calculateExperience(workDone, cluster);
 				l.put(skillFactory.getSkill(language), experience);
-				skillSet.put(nick, l);
+				//skillSet.put(nick, l);
 			} else {
 				// add new user
 				HashMap<Skill, Experience> l = new HashMap<Skill, Experience>();
@@ -99,7 +98,7 @@ public class AgentModeling {
 
 	public static void fillWithSkills(Agent agent) {
 		HashMap<Skill, Experience> iterationSkills = AgentModelingUtils
-				.getByIndex(skillSet, agent.getId());
+				.getByIndexWithIterate(skillSet, agent.getId() - 1);
 		for (Skill iterationSkill : iterationSkills.keySet()) {
 			AgentInternals builtAgentInternals = new AgentInternals(
 					iterationSkill, iterationSkills.get(iterationSkill));
