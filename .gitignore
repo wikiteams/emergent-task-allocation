@@ -20,3 +20,5 @@ debug.log
 /input_*.csv
 /validation.log
 /src/collaboration/Agent.groovy
+/data/agents-model/github_wikiteams_trace.log
+/data/agents-model/progress_bar.lock
