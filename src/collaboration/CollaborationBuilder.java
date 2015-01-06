@@ -1,5 +1,6 @@
 package collaboration;
 
+import github.AgentModeling;
 import github.DataSet;
 import github.MyDatabaseConnector;
 import github.TaskSkillFrequency;
@@ -221,7 +222,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			 * GitHub MongoDB database and specially
 			 * created for the sake of [evolutionary model]
 			 */
-			AgentSkillsPool.instantiate(SimulationParameters.agentSkillPoolDataset);
+			AgentModeling.instantiate(SimulationParameters.agentSkillPoolDataset);
 			say("[Sqlite engine] and resultset initialized, may take some time..");
 			MyDatabaseConnector.init();
 		} else if (dataSet.isContinuus()) {

@@ -44,12 +44,17 @@ public abstract class AgentSkillsPool {
 	private static SkillFactory skillFactory = SkillFactory.getInstance();
 
 	public static void instantiate(String method) {
-		if (method.toUpperCase().equals("TOP_USERS")
-				|| method.toUpperCase().equals("STATIC_PULL_REQUESTS"))
+		if (method.toUpperCase().equals("TOP_USERS")){
 			say("Reading data and creating [Agent's Skill Pool]...");
 			instantiate(DataSet.TOP_USERS);
-		if (method.toUpperCase().equals("BRAIN_JAR"))
+		}
+		else if (method.toUpperCase().equals("STATIC_PULL_REQUESTS")){
+			say("Reading data and creating [Agent's Skill Pool]...");
+			instantiate(DataSet.TOP_USERS);
+		}
+		else if (method.toUpperCase().equals("BRAIN_JAR")){
 			instantiate(DataSet.BRAIN_JAR);
+		}
 	}
 
 	public static void clear() {

@@ -107,8 +107,8 @@
 		type="java.lang.Integer" defaultValue="10" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="agentSkillPoolDataset" displayName="agentSkillPoolDataset"
-		type="java.lang.String" defaultValue="STATIC_PULL_REQUESTS"
-		isReadOnly="false"
+		type="java.lang.String" defaultValue="OSRC"
+		isReadOnly="false" values="OSRC STATIC_PULL_REQUESTS"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 	<parameter name="taskSkillPoolDataset" displayName="taskSkillPoolDataset"
 		type="java.lang.String" defaultValue="STATIC_FREQUENCY_TABLE"
