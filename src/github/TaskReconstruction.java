@@ -10,16 +10,19 @@ public class TaskReconstruction {
 
 	public static void giveWork(Task task, String skillName,
 			Integer workDoneInt, Integer workRequiredInt) {
+		try {
+			SkillFactory skillFactory = SkillFactory.getInstance();
+			Skill skill = skillFactory.getSkill(skillName);
 
-		SkillFactory skillFactory = SkillFactory.getInstance();
-		Skill skill = skillFactory.getSkill(skillName);
+			WorkUnit workDone = new WorkUnit(workDoneInt);
+			WorkUnit workRequired = new WorkUnit(workRequiredInt);
 
-		WorkUnit workDone = new WorkUnit(workDoneInt);
-		WorkUnit workRequired = new WorkUnit(workRequiredInt);
-
-		TaskInternals taskInternals = new TaskInternals(skill, workRequired,
-				workDone, task);
-		task.addSkill(skill.getName(), taskInternals);
-
+			TaskInternals taskInternals = new TaskInternals(skill,
+					workRequired, workDone, task);
+			task.addSkill(skill.getName(), taskInternals);
+		} catch (NullPointerException nexc) {
+			System.out.println("Problematic skill name: " + skillName);
+			throw nexc;
+		}
 	}
 }
