@@ -237,3 +237,15 @@ Performance of strategy is measured by number of ticks required to close all the
 ### Validation model
 
 Validation model under construction...
+
+#### Known problems
+
+**Q: I got this warning message in the output console**
+
+"WARNING: Unevenly distributed hash code - Degraded Preformance"
+
+A: This is normal behaviour, when adding lot of Agents, from JScience's Fast Map, [described here](http://sourceforge.net/p/repast/mailman/message/29271895/). Just make sure that your Agent class implements hashCode() and equals() very properly.
+
+**Q: Simulation runs very slowly**
+
+A: Run in a batch *remote* mode on an Unix computational machine, where there is lot of RAM and cores. Disable outputting messages in classes: *PjiitOutputter* and *ValidationOutputter*.
