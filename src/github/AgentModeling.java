@@ -54,12 +54,13 @@ public class AgentModeling {
 
 	private static void parseCsvTopUsers() throws IOException,
 			FileNotFoundException {
+		Integer counter = 0;
 		CSVReader reader = new CSVReader(new FileReader(filename), ';', '\"');
 		String[] nextLine;
 		String previousId = "-1";
 		while ((nextLine = reader.readNext()) != null) {
 			String id = nextLine[0];
-			String nick = nextLine[1];
+			String nick = nextLine[1] + counter;
 			String language = nextLine[2];
 			int workDone = Integer.parseInt(nextLine[3]);
 			int cluster = Integer.parseInt(nextLine[4]);
@@ -72,6 +73,8 @@ public class AgentModeling {
 				//skillSet.put(nick, l);
 			} else {
 				// add new user
+				counter++;
+				nick = nextLine[1] + counter;
 				HashMap<Skill, Experience> l = new HashMap<Skill, Experience>();
 				say("Parsed from CSV new person: " + nick + " - " + language);
 				Experience experience = calculateExperience(workDone, cluster);

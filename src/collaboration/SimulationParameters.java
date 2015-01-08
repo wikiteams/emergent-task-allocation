@@ -35,6 +35,7 @@ public class SimulationParameters {
 	public static int planNumber = 0;
 	public static int iterationCount = 0;
 	private static String utilityFunction = "";
+	
 	public static boolean isAgentOrientedUtility;
 	public static boolean isTaskOrientedUtility;
 
@@ -69,6 +70,7 @@ public class SimulationParameters {
 	public static boolean experienceCutPoint = false;
 
 	public static boolean deployedTasksLeave = false;
+	public static boolean deployedTaskInternalsLeave = false;
 	public static boolean fullyLearnedAgentsLeave = false;
 	public static boolean forceStop = false;
 
@@ -86,8 +88,14 @@ public class SimulationParameters {
 				.getValue("modelType"));
 		dataSource = (String) param.getValue("dataSource");
 		utilityFunction = (String) param.getValue("utilityFunction");
+		
 		isAgentOrientedUtility = utilityFunction.equals(UtilityType.LEARNING) ? true : false;
 		isTaskOrientedUtility = utilityFunction.equals(UtilityType.IMPACT) ? true : false;
+		
+		if (isAgentOrientedUtility){
+			deployedTaskInternalsLeave = true;
+		}
+		
 		planNumber = (Integer) param.getValue("planNumber");
 		iterationCount = (Integer) param.getValue("iterationCount");
 		

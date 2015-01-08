@@ -15,7 +15,7 @@
 		values="Normal Validation MultipleValidation Normal+Validation Stress" />
 	<parameter name="dataSource" displayName="Data source (db or fileset etc.)"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		type="string" defaultValue="FileSoup"
+		type="string" defaultValue="Sqlite"
 		values="SocketListener Sqlite FileSoup Mockup AgentTestUniverse" />
 	<parameter name="planNumber" displayName="Evolutionary plan no."
 		type="java.lang.Integer" defaultValue="0" isReadOnly="false"
@@ -24,7 +24,7 @@
 	<parameter name="utilityFunction" displayName="Utility function"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		type="string" defaultValue="LearningSkills"
-		values="LearningSkills ImpactFactor" />
+		values="LearningSkills ImpactFactor ImpactFactorMax" />
 	<parameter name="numTasks" displayName="Number of tasks"
 		type="java.lang.Integer" defaultValue="20" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />

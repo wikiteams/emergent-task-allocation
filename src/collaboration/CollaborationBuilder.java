@@ -445,6 +445,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private void say(String s) {
 		PjiitOutputter.say(s);
 	}
+	
+	private void forcesay(String s) {
+		System.out.println(s);
+	}
 
 	private void validation(String s) {
 		ValidationOutputter.say(s);
@@ -519,7 +523,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		if (tasks.size() < loadSet.TASK_COUNT) {
 			int minus = loadSet.TASK_COUNT - ((Tasks) tasks).getCount();
 			int difference = Math.abs(minus);
-			say("Adding more " + difference + " [Tasks] to simulator");
+			forcesay("Adding more " + difference + " [Tasks] to simulator");
 			try {
 				List<Task> newTasks = MyDatabaseConnector.get(difference);
 				for (Task newTask : newTasks) {

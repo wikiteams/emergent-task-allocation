@@ -2,7 +2,6 @@ package collaboration;
 
 import github.TaskSkillsPool;
 import intelligence.ImpactFactor;
-import intelligence.UtilityType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import networking.CollaborationNetwork;
 import logger.PjiitOutputter;
+import networking.CollaborationNetwork;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.util.ContextUtils;
@@ -32,7 +31,7 @@ import constants.Constraints;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.6
+ * @version 2.0.7
  */
 public class Task {
 
@@ -105,7 +104,7 @@ public class Task {
 
 	public synchronized void initialize(int countAll) {
 		TaskSkillsPool.fillWithSkills(this, countAll);
-		say("[Task] object initialized with id: " + this.id);
+		say("[Task] object initialized with Id: " + this.id);
 	}
 
 	public Map<String, TaskInternals> getTaskInternals() {
@@ -148,12 +147,9 @@ public class Task {
 		TaskInternals ti = this.getTaskInternals(skill.getName());
 		if (ti == null) {
 			persistAdvance.put(skill, 1.);
-			// persistTaskAdvance += 1 / this.getTaskInternals().size();
 		} else {
 			double progress = ti.getProgress();
 			persistAdvance.put(skill, progress);
-			// persistTaskAdvance += (progress-before) /
-			// this.getTaskInternals().size();
 		}
 		for (Double d : persistAdvance.values()) {
 			persistTaskAdvance += d;
@@ -172,21 +168,21 @@ public class Task {
 		double count = 0;
 		for (TaskInternals skill : skills.values()) {
 			double progress = skill.getProgress();
-			say("skill " + skill.getSkill().getName() + " progress " + progress);
-			result += progress > 1. ? 1. : progress;
-			say("result " + result);
+			say("Skill " + skill.getSkill().getName() + " progress " + progress);
+			result += progress > 1.0 ? 1.0 : progress;
+			say("Result GA(T) is: " + result);
 			persistAdvance.put(skill.getSkill(), progress);
 			count++;
 		}
-		say("skills count " + count);
+		say("Skills count " + count);
 		if (count == 0) {
 			// all TaskInternals are gone, thus the Task is finished 100% !
 			return 1;
 		}
-		assert count > 0.; // avoid dividing by 0;
+		assert count > 0.0; // avoid dividing by 0;
 		result = (result / count);
-		assert result >= 0.;
-		assert result <= 1.;
+		assert result >= 0.0;
+		assert result <= 1.0;
 		// persistTaskAdvance = result;
 		return result;
 	}
@@ -243,11 +239,13 @@ public class Task {
 
 	public Boolean workOnTask(Agent agent, Strategy.SkillChoice strategy) {
 		CollaborationNetwork.addEdge(agent, this);
+		
 		Double impactFactor = null;
-		if (SimulationParameters.isTaskOrientedUtility){
+		
+		if (!SimulationParameters.isAgentOrientedUtility) {
 			impactFactor = this.getGeneralAdvance();
 		}
-		
+
 		Collection<TaskInternals> intersection;
 		List<Skill> skillsImprovedList = new ArrayList<Skill>();
 
@@ -255,17 +253,12 @@ public class Task {
 
 		GreedyAssignmentTask greedyAssignmentTask = new GreedyAssignmentTask();
 		TaskInternals singleTaskInternal = null;
-		double highest = -1.;
+		double highest = -1.0;
 
 		assert intersection != null;
-		// if ((SimulationParameters.granularity) && (intersection.size() < 1))
-		// return false; // happens when agent tries to work on
-		// task with no intersection of skills
 
-		// assert intersection.size() > 0; // assertion for the rest of cases
 		if (intersection.size() < 1) {
-			intersection = skills.values(); // experience - genesis action
-											// needed!
+			intersection = skills.values(); // experience - genesis action needed!
 			if (intersection.size() < 1)
 				return false;
 		}
@@ -311,7 +304,7 @@ public class Task {
 			/**
 			 * zmienna highest zawsze jest w przedziale od [0..*]
 			 */
-			assert highest > -1.;
+			assert highest > -1.0;
 			/**
 			 * musimy miec jakis pojedynczy task internal (skill) nad ktorym
 			 * bedziemy pracowac..
@@ -322,8 +315,6 @@ public class Task {
 				sanity("Choosing Si:{"
 						+ singleTaskInternal.getSkill().getName()
 						+ "} inside Ti:{" + singleTaskInternal.toString() + "}");
-				// int n = skills.size();
-				// double alpha = 1 / n;
 				Experience experience = agent.getAgentInternalsOrCreate(
 						singleTaskInternal.getSkill().getName())
 						.getExperience();
@@ -353,13 +344,12 @@ public class Task {
 			/**
 			 * zmienna highest zawsze jest w przedziale od [0..*]
 			 */
-			assert highest != -1.;
+			assert highest != -1.0;
 			/**
 			 * musimy miec jakis pojedynczy task internal (skill) nad ktorym
 			 * bedziemy pracowac..
 			 */
 			assert singleTaskInternal != null;
-
 			{
 				sanity("Choosing Si:{"
 						+ singleTaskInternal.getSkill().getName()
@@ -403,12 +393,13 @@ public class Task {
 			break;
 		}
 
+		if (!SimulationParameters.isAgentOrientedUtility) {
+			double newImpactFactor = this.getGeneralAdvance() - impactFactor;
+			ImpactFactor.update(agent, newImpactFactor);
+		}
+
 		if (SimulationParameters.deployedTasksLeave)
 			Tasks.considerEnding(this);
-		
-		if (SimulationParameters.isTaskOrientedUtility){
-			ImpactFactor.update(agent, this.getGeneralAdvance() - impactFactor);
-		}
 
 		if (skillsImprovedList.size() > 0) {
 			PersistJobDone.addContribution(agent, this, skillsImprovedList);

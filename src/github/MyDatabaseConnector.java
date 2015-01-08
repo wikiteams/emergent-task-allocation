@@ -52,7 +52,7 @@ public class MyDatabaseConnector {
 						// SQLite only supports TYPE_FORWARD_ONLY cursors 
 						ResultSet.CONCUR_READ_ONLY);
 		statement.setInt(1, 1);
-		statement.setQueryTimeout(360); // set timeout to 360 sec.
+		statement.setQueryTimeout(360*100); // set timeout to very long time.
 		return statement.executeQuery();
 	}
 
@@ -65,7 +65,10 @@ public class MyDatabaseConnector {
 			//results.add(entry);
 			Task task = new Task();
 			say("Creating [Task] " + task.getId());
-			TaskReconstruction.giveWork(task, entry.getSkillName(), entry.getWorkDone(), entry.getWorkLeft());
+			TaskReconstruction.giveWork(task,
+					entry.getSkillName(),
+					entry.getWorkDone(),
+					entry.getWorkLeft());
 
 			while (resultSet.next()) {
 				Entry nextEntry = new Entry(resultSet.getString(2), resultSet.getString(3),

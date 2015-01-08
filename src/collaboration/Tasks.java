@@ -77,7 +77,7 @@ public class Tasks extends DefaultContext<Task> {
 		}
 		if (!notfinished) {
 			CollaborationBuilder.tasks.remove(task);
-			sanity("Task id:" + task.getId() + " name:" + task.getName()
+			sanity("[Task] id:" + task.getId() + " name:" + task.getName()
 					+ " is depleted and leaving the environment");
 		}
 	}

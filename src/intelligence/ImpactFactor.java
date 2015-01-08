@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import utils.MathHelper;
 import collaboration.Agent;
 import collaboration.SimulationParameters;
 
@@ -15,11 +16,13 @@ public class ImpactFactor {
 	public static void update(Agent agent, Double newImpactFactor) {
 		if (impacts.containsKey(agent)) {
 			CircularFifoQueue<Double> queue = impacts.get(agent);
+			assert MathHelper.isBetweenInc(newImpactFactor, 0.0, 1.0);
 			queue.add(newImpactFactor);
 		} else {
 			CircularFifoQueue<Double> newQueue = new CircularFifoQueue<Double>(
-					SimulationParameters.IMPACT_MEMORY);
+					SimulationParameters.IMPACT_MEMORY); // it is size - e.i. 3
 			newQueue.add(newImpactFactor);
+			assert MathHelper.isBetweenInc(newImpactFactor, 0.0, 1.0);
 			impacts.put(agent, newQueue);
 		}
 		checkIfHighest(agent, newImpactFactor);
@@ -28,7 +31,7 @@ public class ImpactFactor {
 	private static void checkIfHighest(Agent agent, Double newImpactFactor) {
 		if (highestImpacts.containsKey(agent)) {
 			CircularFifoQueue<Double> queue = impacts.get(agent);
-			Iterator<Double> elements = queue.iterator();
+			Iterator<Double> elements = queue.iterator(); // iterates, doesn't delete
 			boolean thereAreHigher = false;
 			while (elements.hasNext()) {
 				Double next = elements.next();
@@ -48,8 +51,33 @@ public class ImpactFactor {
 	}
 
 	public static Double[] get(Agent agent) {
-		Double[] result = new Double[3];
-		result = impacts.get(agent).toArray(result);
+		// returns array of 3 last registered [Impact Factors]
+		CircularFifoQueue<Double> c = impacts.get(agent);
+		Double[] result;
+		if (c != null){
+			result = new Double[c.size()];
+			c.toArray(result);
+		}
+		else
+			result = new Double[]{0.0};
+		
+		assert (c == null) || (c.size() == result.length);
+		
+		return result;
+	}
+	
+	public static Double[] getHighest(Agent agent) {
+		CircularFifoQueue<Double> c = highestImpacts.get(agent);
+		Double[] result;
+		if (c != null){
+			result = new Double[c.size()];
+			c.toArray(result);
+		}
+		else
+			result = new Double[]{0.0};
+		
+		assert (c == null) || (c.size() == result.length);
+		
 		return result;
 	}
 

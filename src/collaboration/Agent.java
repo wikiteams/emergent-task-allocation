@@ -3,7 +3,6 @@ package collaboration;
 import github.AgentModeling;
 import github.DataSet;
 import intelligence.ImpactFactor;
-import intelligence.UtilityType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -103,14 +102,38 @@ public class Agent implements NodeCreator<Agent> {
 		if(SimulationParameters.isAgentOrientedUtility){
 			return getLearningUtility();
 		} else {
-			return getImpactUtility();
+			if (SimulationParameters.isTaskOrientedUtility)
+				return getImpactUtility();
+			else return getImpactHUtility();
 		}
 	}
 	
+	/***
+	 * "Impact Factor"
+	 * 
+	 * @since 2.0.7
+	 * @return Double - Avg Impact Factor
+	 */
 	public Double getImpactUtility(){
 		Mean mean = new Mean();
+		// below I return average from 3 last impact factors
+		// registered for exactly this agent
 		return mean.evaluate(
 				ArrayUtils.toPrimitive ( ImpactFactor.get(this) ));
+	}
+	
+	/***
+	 * "H" factor
+	 * 
+	 * @since 2.0.7
+	 * @return Double - Avg Highest Impact Factor
+	 */
+	public Double getImpactHUtility(){
+		Mean mean = new Mean();
+		// below I return average from 3 highest impact factors
+		// registered for exactly this agent
+		return mean.evaluate(
+				ArrayUtils.toPrimitive ( ImpactFactor.getHighest(this) ));
 	}
 	
 	public Double getLearningUtility(){
