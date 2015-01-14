@@ -36,6 +36,8 @@ public class SimulationParameters {
 	public static int iterationCount = 0;
 	private static String utilityFunction = "";
 	
+	public static boolean complexStrategies;
+	
 	public static boolean isAgentOrientedUtility;
 	public static boolean isTaskOrientedUtility;
 
@@ -83,6 +85,8 @@ public class SimulationParameters {
 		ModelConverter modelConverter = new ModelConverter();
 		
 		multipleAgentSets = (Boolean) param.getValue("multipleAgentSets");
+		
+		complexStrategies = (Boolean) param.getValue("complexStrategies");
 
 		modelType = (Model) modelConverter.fromString((String) param
 				.getValue("modelType"));

@@ -9,10 +9,10 @@ import java.util.LinkedList;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.6
+ * @version 2.0.8
  * 
  */
-public class Strategy {
+public class Strategy implements StrategyInterface {
 
 	/**
 	 * This value is used to automatically generate agent identifiers.
@@ -29,7 +29,7 @@ public class Strategy {
 	 */
 	public static final long serialVersionUID = 8086L;
 
-	public TaskChoice taskChoice;
+	private TaskChoice taskChoice;
 	public SkillChoice skillChoice;
 
 	public Strategy(TaskChoice taskChoice, SkillChoice skillChoice) {
@@ -135,6 +135,11 @@ public class Strategy {
 	public void copyStrategy(Strategy copyFrom) {
 		this.taskChoice = copyFrom.taskChoice;
 		this.skillChoice = copyFrom.skillChoice;
+	}
+
+	@Override
+	public TaskChoice getTaskChoice() {
+		return this.taskChoice;
 	}
 
 }

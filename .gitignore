@@ -22,3 +22,4 @@ debug.log
 /src/collaboration/Agent.groovy
 /data/agents-model/github_wikiteams_trace.log
 /data/agents-model/progress_bar.lock
+/agents_nonaggr_state*.csv

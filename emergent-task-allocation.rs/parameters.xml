@@ -6,6 +6,10 @@
 		type="java.lang.Boolean" defaultValue="false" 
 		values="false true" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
+	<parameter name="complexStrategies" displayName="Use complex probabilistic strategies?"
+		type="java.lang.Boolean" defaultValue="false" 
+		values="false true" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	
 	<!-- Evolutionary parameters -->
 	
