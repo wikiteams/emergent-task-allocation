@@ -26,7 +26,7 @@ public class ComplexStrategy extends Strategy implements StrategyInterface {
 	 * 1979, the 8088 had an 8-bit external data bus instead of the 16-bit bus
 	 * of the 8086. The 16-bit registers and the one megabyte address range were
 	 * unchanged, however. In fact, according to the Intel documentation, the
-	 * 8086 and 8088 have the same execution unit (EU)—only the bus interface
+	 * 8086 and 8088 have the same execution unit (EU)-only the bus interface
 	 * unit (BIU) is different. The original IBM PC was based on the 8088.
 	 * 
 	 * @field serialVersionUID
