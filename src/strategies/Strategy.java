@@ -127,6 +127,11 @@ public class Strategy implements StrategyInterface {
 	public String toString() {
 		return this.taskChoice.name() + "," + this.skillChoice.name();
 	}
+	
+	@Override
+	public int hashCode() {
+		return this.taskChoice.name().hashCode() * this.skillChoice.name().hashCode();
+	}
 
 	public Strategy copy() {
 		return new Strategy(this.taskChoice, this.skillChoice);
@@ -137,7 +142,6 @@ public class Strategy implements StrategyInterface {
 		this.skillChoice = copyFrom.skillChoice;
 	}
 
-	@Override
 	public TaskChoice getTaskChoice() {
 		return this.taskChoice;
 	}

@@ -1,11 +1,13 @@
 package utils;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
+import strategies.Strategy.TaskChoice;
 import collaboration.Agent;
 
 public class ObjectsHelper {
-	
+
 	public static Boolean is2ndHigher(Double d1, Double d2) {
 		if (d1 == null) {
 			return true;
@@ -17,7 +19,7 @@ public class ObjectsHelper {
 			}
 		}
 	}
-	
+
 	public static Boolean is2ndLower(Double d1, Double d2) {
 		if (d1 == null) {
 			return true;
@@ -29,7 +31,7 @@ public class ObjectsHelper {
 			}
 		}
 	}
-	
+
 	public static Boolean is2ndHigher(Long d1, Long d2) {
 		if (d1 == null) {
 			return true;
@@ -42,16 +44,27 @@ public class ObjectsHelper {
 		}
 	}
 
-	public static Boolean isHigherThanMapEntries(Map<Agent, Double> measurements,
-			Object agent, Double highestValue) {
-		if (measurements.get(agent) == null){
+	public static Boolean isHigherThanMapEntries(
+			Map<Agent, Double> measurements, Object agent, Double highestValue) {
+		if (measurements.get(agent) == null) {
 			return true;
 		} else {
-			if (highestValue > measurements.get(agent)){
+			if (highestValue > measurements.get(agent)) {
 				return true;
 			} else {
 				return false;
 			}
 		}
+	}
+
+	public static TaskChoice getProbKey(double nextDoubleFromTo,
+			Map<TaskChoice, Double> p) {
+		TaskChoice result = null;
+		for (Entry<TaskChoice, Double> entrySet : p.entrySet()){
+			if (nextDoubleFromTo <= entrySet.getValue()){
+				result = entrySet.getKey();
+			}
+		}
+		return result;
 	}
 }

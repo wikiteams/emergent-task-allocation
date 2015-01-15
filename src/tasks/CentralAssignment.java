@@ -28,7 +28,7 @@ public class CentralAssignment {
 			Collection<Agent> busy) {
 		List<Agent> list = new ArrayList<Agent>();
 		for (Agent agent : agents) {
-			if (agent.getStrategy().taskChoice
+			if (agent.getStrategy().getTaskChoice()
 					.equals(TaskChoice.CENTRAL_ASSIGNMENT)) {
 				if (!busy.contains(agent)){
 					CentralAssignmentOrders cao = agent

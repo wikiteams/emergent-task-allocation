@@ -1,7 +1,6 @@
 package utils;
 
 import logger.PjiitOutputter;
-import collaboration.SkillFactory;
 import constants.Constraints;
 
 /***

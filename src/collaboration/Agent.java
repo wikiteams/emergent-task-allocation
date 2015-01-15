@@ -270,7 +270,7 @@ public class Agent implements NodeCreator<Agent> {
 					if (!workDone) {
 						// chose new task for granulated choice !
 						Task taskToWork = Tasks.chooseTask(this,
-								this.strategy.taskChoice);
+								this.strategy.getTaskChoice());
 						executeJob(taskToWork);
 						if (taskToWork != null) {
 							switch (GranularityType
@@ -293,7 +293,7 @@ public class Agent implements NodeCreator<Agent> {
 							+ " choosing new task for granulated choice");
 					// chose new task for granulated choice !
 					Task taskToWork = Tasks.chooseTask(this,
-							this.strategy.taskChoice);
+							this.strategy.getTaskChoice());
 					executeJob(taskToWork);
 					if (taskToWork != null) {
 						switch (GranularityType
@@ -319,7 +319,7 @@ public class Agent implements NodeCreator<Agent> {
 				// first run
 				// chose new task and assign granulated choice !
 				Task taskToWork = Tasks.chooseTask(this,
-						this.strategy.taskChoice);
+						this.strategy.getTaskChoice());
 				executeJob(taskToWork);
 				if (taskToWork != null) {
 					switch (GranularityType
@@ -342,7 +342,7 @@ public class Agent implements NodeCreator<Agent> {
 		} else { // block without granularity
 			// Agent Aj uses Aj {strategy for choosing tasks}
 			// and chooses a task to work on
-			Task taskToWork = Tasks.chooseTask(this, this.strategy.taskChoice);
+			Task taskToWork = Tasks.chooseTask(this, this.strategy.getTaskChoice());
 			// TO DO: make a good assertion to prevent nulls !!
 			executeJob(taskToWork);
 		}
@@ -432,7 +432,7 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public Strategy.TaskChoice getTaskStrategy() {
-		return strategy.taskChoice;
+		return strategy.getTaskChoice();
 	}
 
 	public void setStrategy(Strategy strategy) {
@@ -516,15 +516,15 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public int usesHomophyly() {
-		return this.strategy.taskChoice.equals(TaskChoice.HOMOPHYLY) ? 1 : 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.HOMOPHYLY) ? 1 : 0;
 	}
 
 	public int usesHeterohyly() {
-		return this.strategy.taskChoice.equals(TaskChoice.HETEROPHYLY) ? 1 : 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.HETEROPHYLY) ? 1 : 0;
 	}
 
 	public int usesPreferential() {
-		return this.strategy.taskChoice.equals(TaskChoice.PREFERENTIAL) ? 1 : 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.PREFERENTIAL) ? 1 : 0;
 	}
 
 	@ProbeID()
