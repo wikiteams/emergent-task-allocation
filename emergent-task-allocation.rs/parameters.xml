@@ -2,7 +2,7 @@
 <parameters>
 	<!-- General -->
 	
-	<parameter name="multipleAgentSets" displayName="Choose randomly from set of (no of agents/tasks)?"
+	<parameter name="multipleAgentSets" displayName="Choose randomly from even set of parameters?"
 		type="java.lang.Boolean" defaultValue="false" 
 		values="false true" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
@@ -35,9 +35,15 @@
 	<parameter name="iterationCount" displayName="Number of iterations"
 		type="java.lang.Integer" defaultValue="20" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+		
+	<!-- Mechanism for automatic stop -->
+		
 	<parameter name="equilibriumDetectionSensitivity" displayName="equilibriumDetectionSensitivity" type="double"
 		defaultValue="50" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
+	
+	<!-- Evolution enabler -->
+	
 	<parameter name="strategyDistribution" displayName="Evolution enabled/disabled"
 		type="java.lang.Integer" defaultValue="0" isReadOnly="false"
 		values="0 1"

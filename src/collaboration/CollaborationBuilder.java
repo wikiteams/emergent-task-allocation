@@ -44,6 +44,7 @@ import test.Model;
 import utils.DescribeUniverseBulkLoad;
 import utils.LaunchStatistics;
 import utils.NamesGenerator;
+import utils.ObjectsHelper;
 import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
 import constants.Constraints;
@@ -547,26 +548,26 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			IndexedIterable<Agent> agentObjects = agents
 					.getObjects(Agent.class);
 			for (Agent agent : agentObjects) {
-
-				say("Checking if I may have to decrease exp of " + agent);
-
+				say("Checking if I may have to [decrease exp] of " + agent);
+				if (!agent.getAgentSkills().hasAny()){
+					continue;
+				}
+				
 				// Use PersistJobDone to check work history
 				Map<Integer, List<Skill>> c = PersistJobDone
 						.getSkillsWorkedOn(agent);
-				if ((c == null) || (c.size() < 1)) { // agent didn't work on
-														// anything yet !
-					continue; // move on to next agent in pool
+				
+				List<Skill> persistedJob = c != null ? c.get(ObjectsHelper.fromDouble(
+						gameController.getCurrentTick())) : null;
+				if (persistedJob == null){
+					persistedJob = new ArrayList<Skill>();
 				}
-				List<Skill> persistedJob = c.get(Integer
-						.parseInt(gameController.getCurrentTick().toString()));
-				List<Skill> inTickJobDone = persistedJob == null ? new ArrayList<Skill>()
-						: persistedJob;
 
 				Collection<AgentInternals> aic = (agent).getAgentInternals();
-				CopyOnWriteArrayList<AgentInternals> aicconcurrent = new CopyOnWriteArrayList<AgentInternals>(
-						aic);
+				CopyOnWriteArrayList<AgentInternals> aicconcurrent = 
+						new CopyOnWriteArrayList<AgentInternals>(aic);
 				for (AgentInternals ai : aicconcurrent) {
-					if (inTickJobDone.contains(ai.getSkill())) {
+					if (persistedJob.contains(ai.getSkill())) {
 						// was working on a task, don't decay this skill
 					} else {
 						// decay this experience by beta < 1
@@ -578,11 +579,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 						} else {
 							double value = ai.decayExperience();
 							if (value == -1) {
-								say("Experience of agent "
+								say("[Experience] of [Agent] "
 										+ (agent.getNick())
 										+ " wasn't decreased because it's already low");
 							} else
-								say("Experience of agent " + (agent.getNick())
+								say("[Experience] of [Agent] " + (agent.getNick())
 										+ " decreased and is now " + value);
 						}
 					}
@@ -593,7 +594,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			validationError(exc.getMessage());
 			exc.printStackTrace();
 		} finally {
-			say("Regular method run for expDecay finished for this step.");
+			say("Regular method run for [expDecay] finished for this step.");
 		}
 	}
 
@@ -607,21 +608,20 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			int reassess = RandomHelper.nextIntFromTo(0, 1);
 			// I want in results both expDecay off and on!
 			// thats why randomise to use both
-			if (reassess == 0) {
+			if ((reassess == 0) && SimulationParameters.multipleAgentSets) {
 				SimulationParameters.experienceDecay = false;
 				launchStatistics.expDecay = false;
-			} else if (reassess == 1) {
+			} else {
 				SimulationParameters.experienceDecay = true;
 				launchStatistics.expDecay = true;
-				say("Exp decay initiating.....");
+				say("[Exp decay] is enabled for this run");
 				ISchedule schedule = RunEnvironment.getInstance()
 						.getCurrentSchedule();
 				ScheduleParameters params = ScheduleParameters.createRepeating(
 						1, 1, ScheduleParameters.LAST_PRIORITY);
 				schedule.schedule(params, this, "experienceReassess");
 				say("Experience decay initiated and awaiting for call !");
-			} else
-				assert false; // reassess is always 0 or 1
+			}
 		}
 	}
 

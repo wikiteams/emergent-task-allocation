@@ -67,5 +67,9 @@ public class AgentSkills {
 	public double count() {
 		return this.skills.size();
 	}
+	
+	public boolean hasAny(){
+		return this.count() > 0;
+	}
 
 }

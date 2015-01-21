@@ -7,6 +7,10 @@ import strategies.Strategy.TaskChoice;
 import collaboration.Agent;
 
 public class ObjectsHelper {
+	
+	public static Integer fromDouble(double value){
+		return (int) value;
+	}
 
 	public static Boolean is2ndHigher(Double d1, Double d2) {
 		if (d1 == null) {
