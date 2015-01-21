@@ -38,7 +38,7 @@ import argonauts.PersistRewiring;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.7
+ * @version 2.0.8
  */
 @AgentAnnot(displayName = "Agent")
 public class Agent implements NodeCreator<Agent> {
@@ -99,44 +99,44 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public Double getUtility() {
-		if(SimulationParameters.isAgentOrientedUtility){
+		if (SimulationParameters.isAgentOrientedUtility) {
 			return getLearningUtility();
 		} else {
 			if (SimulationParameters.isTaskOrientedUtility)
 				return getImpactUtility();
-			else return getImpactHUtility();
+			else
+				return getImpactHUtility();
 		}
 	}
-	
+
 	/***
 	 * "Impact Factor"
 	 * 
 	 * @since 2.0.7
 	 * @return Double - Avg Impact Factor
 	 */
-	public Double getImpactUtility(){
+	public Double getImpactUtility() {
 		Mean mean = new Mean();
 		// below I return average from 3 last impact factors
 		// registered for exactly this agent
-		return mean.evaluate(
-				ArrayUtils.toPrimitive ( ImpactFactor.get(this) ));
+		return mean.evaluate(ArrayUtils.toPrimitive(ImpactFactor.get(this)));
 	}
-	
+
 	/***
 	 * "H" factor
 	 * 
 	 * @since 2.0.7
 	 * @return Double - Avg Highest Impact Factor
 	 */
-	public Double getImpactHUtility(){
+	public Double getImpactHUtility() {
 		Mean mean = new Mean();
 		// below I return average from 3 highest impact factors
 		// registered for exactly this agent
-		return mean.evaluate(
-				ArrayUtils.toPrimitive ( ImpactFactor.getHighest(this) ));
+		return mean.evaluate(ArrayUtils.toPrimitive(ImpactFactor
+				.getHighest(this)));
 	}
-	
-	public Double getLearningUtility(){
+
+	public Double getLearningUtility() {
 		Double result = null;
 		double average = 0;
 		int count = 0;
@@ -151,8 +151,8 @@ public class Agent implements NodeCreator<Agent> {
 		average = average / count;
 		return result + (0.05 * average);
 	}
-	
-	public String getDecimalFormatUtility(){
+
+	public String getDecimalFormatUtility() {
 		return new DecimalFormat("#.######").format(getUtility());
 	}
 
@@ -340,10 +340,10 @@ public class Agent implements NodeCreator<Agent> {
 			 * Granularity ends here
 			 *****************************/
 		} else { // block without granularity
-			// Agent Aj uses Aj {strategy for choosing tasks}
-			// and chooses a task to work on
-			Task taskToWork = Tasks.chooseTask(this, this.strategy.getTaskChoice());
-			// TO DO: make a good assertion to prevent nulls !!
+			// [Agent] Aj uses Aj_S ([Strategy] for choosing tasks)
+			// and chooses a Task Ti to work on
+			Task taskToWork = Tasks.chooseTask(this,
+					this.strategy.getTaskChoice());
 			executeJob(taskToWork);
 		}
 	}
@@ -461,14 +461,27 @@ public class Agent implements NodeCreator<Agent> {
 		}
 		return deltaE.entrySet().toString();
 	}
-	
+
 	public String getGeneralExperience() {
 		Collection<AgentInternals> internals = this.getAgentInternals();
 		double sum = 0.0;
 		for (AgentInternals ai : internals) {
 			sum += ai.getExperience().getDelta();
 		}
-		return new DecimalFormat("#.######").format((sum/internals.size()));
+		return new DecimalFormat("#.######").format((sum / internals.size()));
+	}
+
+	public Double getFilteredExperience(Collection<Skill> common) {
+		Collection<AgentInternals> internals = this.getAgentInternals();
+		double sum = 0.0;
+		int count = 0;
+		for (AgentInternals ai : internals) {
+			if (common.contains(ai.getSkill())) {
+				count ++;
+				sum += ai.getExperience().getDelta();
+			}
+		}
+		return sum / count;
 	}
 
 	/***
@@ -516,15 +529,18 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public int usesHomophyly() {
-		return this.strategy.getTaskChoice().equals(TaskChoice.HOMOPHYLY) ? 1 : 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.HOMOPHYLY) ? 1
+				: 0;
 	}
 
 	public int usesHeterohyly() {
-		return this.strategy.getTaskChoice().equals(TaskChoice.HETEROPHYLY) ? 1 : 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.HETEROPHYLY) ? 1
+				: 0;
 	}
 
 	public int usesPreferential() {
-		return this.strategy.getTaskChoice().equals(TaskChoice.PREFERENTIAL) ? 1 : 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.PREFERENTIAL) ? 1
+				: 0;
 	}
 
 	@ProbeID()

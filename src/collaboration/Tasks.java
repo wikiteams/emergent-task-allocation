@@ -82,10 +82,10 @@ public class Tasks extends DefaultContext<Task> {
 		}
 	}
 
-	public HashMap<Skill, ArrayList<Task>> getTasksPerSkills(Collection<Skill> c) {
+	/*public static HashMap<Skill, ArrayList<Task>> getTasksPerSkills(Collection<Skill> c) {
 		HashMap<Skill, ArrayList<Task>> result = new HashMap<Skill, ArrayList<Task>>();
 		for (Skill skill : c) {
-			for (Task task : getTasks()) {
+			for (Task task : getUnmappedTasks()) {
 				Collection<Skill> ts = task.getSkills();
 				if (ts.contains(skill)) {
 					ArrayList<Task> value = result.get(skill);
@@ -99,7 +99,7 @@ public class Tasks extends DefaultContext<Task> {
 			}
 		}
 		return result;
-	}
+	}*/
 
 	public HashMap<Skill, ArrayList<Task>> getTasksWithoutSkills(
 			Collection<Skill> c) {

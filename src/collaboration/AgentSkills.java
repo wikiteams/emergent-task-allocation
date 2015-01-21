@@ -9,7 +9,7 @@ import java.util.Map.Entry;
  * Represents Agent's skills (knowledge of programming language) and the initial
  * value as used later in evolutionary model
  * 
- * @version 2.0.6
+ * @version 2.0.8
  * @author Oskar Jarczyk
  * 
  */
@@ -62,6 +62,10 @@ public class AgentSkills {
 			result.put(entry.getKey(), entry.getValue().deepCopy());
 		}
 		return result;
+	}
+
+	public double count() {
+		return this.skills.size();
 	}
 
 }

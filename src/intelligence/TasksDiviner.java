@@ -23,19 +23,19 @@ import collaboration.Task;
  * 
  * @author Oskar Jarczyk
  * @since 2.0
- * @version 2.0.6
+ * @version 2.0.8
  */
 public class TasksDiviner {
-	
+
 	public static synchronized Task chooseTask(Agent agent,
 			Strategy.TaskChoice strategy, Map<String, Task> tasks) {
-		
+
 		Task chosen = null;
 		assert strategy != null;
 
 		switch (strategy) {
 		case HOMOPHYLY:
-			Homophyly homophyly = new Homophyly(tasks);
+			Homophyly homophyly = new Homophyly();
 			chosen = homophyly.concludeMath(agent);
 			break;
 		case HETEROPHYLY:
@@ -95,9 +95,9 @@ public class TasksDiviner {
 					+ agent.getStrategy() + " and chooses task "
 					+ chosen.getId() + " by " + strategy + " to work on.");
 		} else {
-			sanity("Agent (" + agent.getId() + ") " + agent.toString() + " uses strategy "
-					+ agent.getStrategy() + " by " + strategy
-					+ " but didn't found any task to work on.");
+			sanity("Agent (" + agent.getId() + ") " + agent.toString()
+					+ " uses strategy " + agent.getStrategy() + " by "
+					+ strategy + " but didn't found any task to work on.");
 			if (SimulationParameters.allwaysChooseTask) {
 				sanity("Choosing any task left because of param allwaysChooseTask");
 				List<Task> internalRandomList;
@@ -114,16 +114,16 @@ public class TasksDiviner {
 							break;
 						}
 				}
+				assert chosen != null;
 			}
 		}
-		// assert chosen != null;
 		return chosen;
 	}
-	
+
 	private static void say(String s) {
 		PjiitOutputter.say(s);
 	}
-	
+
 	private static void sanity(String s) {
 		PjiitOutputter.sanity(s);
 	}
