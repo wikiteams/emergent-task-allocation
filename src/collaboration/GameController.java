@@ -1,5 +1,7 @@
 package collaboration;
 
+import intelligence.ImpactFactor;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -102,7 +104,13 @@ public class GameController {
 	}
 
 	/**
-	 * Resets states in all Agents
+	 * Resets states in all Agents.
+	 * This is very important method;
+	 * 
+	 * Make sure that every new generation will
+	 * have fresh state of agents, also reset
+	 * impact factors and any hidden attributes
+	 * of agents !
 	 */
 	private void resetAllAgents() {
 		List<Agent> allAgents = chooseAllAgents(this);
@@ -111,6 +119,7 @@ public class GameController {
 		for (Agent agent : allAgents) {
 			agent.resetMe();
 		}
+		ImpactFactor.clear();
 	}
 
 	@ScheduledMethod(start = 1.0, interval = 1.0, priority = -3000)
