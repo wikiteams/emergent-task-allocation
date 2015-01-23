@@ -108,6 +108,28 @@ public class Agent implements NodeCreator<Agent> {
 				return getImpactHUtility();
 		}
 	}
+	
+	public String getDecimalFormatLeftUtility(){
+		return new DecimalFormat("#.######").format(getLeftAgentUtility());
+	}
+	
+	public String getDecimalFormatRightUtility(){
+		return new DecimalFormat("#.######").format(getRightAgentUtility());
+	}
+	
+	private Double getLeftAgentUtility() {
+		if (SimulationParameters.isAgentOrientedUtility) {
+			return Utility.getLeftLearningUtility(getAgentInternals());
+		} else
+			return ObjectsHelper.notApplicable;
+	}
+	
+	private Double getRightAgentUtility() {
+		if (SimulationParameters.isAgentOrientedUtility) {
+			return Utility.getRightLearningUtility(getAgentInternals());
+		} else
+			return ObjectsHelper.notApplicable;
+	}
 
 	/***
 	 * "Impact Factor"
@@ -137,19 +159,7 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public Double getLearningUtility() {
-		Double result = null;
-		double average = 0;
-		int count = 0;
-		for (AgentInternals currentSkill : getAgentInternals()) {
-			double delta = currentSkill.getExperience().getDelta();
-			if (ObjectsHelper.is2ndLower(result, delta)) {
-				result = delta;
-			}
-			count++;
-			average += delta;
-		}
-		average = average / count;
-		return result + (0.05 * average);
+		return Utility.getLearningUtility(getAgentInternals());
 	}
 
 	public String getDecimalFormatUtility() {

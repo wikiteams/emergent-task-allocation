@@ -104,6 +104,22 @@
         <methodName>getDecimalFormatUtility</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
+    <entry>
+      <string>LUtility</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>LUtility</id>
+        <className>collaboration.Agent</className>
+        <methodName>getDecimalFormatLeftUtility</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>RUtility</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>RUtility</id>
+        <className>collaboration.Agent</className>
+        <methodName>getDecimalFormatRightUtility</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
   </methodDataSources>
   <countSources class="linked-hash-map"/>
   <customNADataSources class="linked-hash-map"/>

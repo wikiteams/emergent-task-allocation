@@ -8,6 +8,8 @@ import collaboration.Agent;
 
 public class ObjectsHelper {
 	
+	public static final Double notApplicable = -1.0;
+
 	public static Integer fromDouble(double value){
 		return (int) value;
 	}

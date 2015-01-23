@@ -16,6 +16,8 @@
     <string>Experience</string>
     <string>GeneralExperience</string>
     <string>Utility</string>
+    <string>LUtility</string>
+    <string>RUtility</string>
   </sourceIds>
   <fileName>agents_nonaggr_state.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
