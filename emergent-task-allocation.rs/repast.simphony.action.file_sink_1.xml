@@ -4,9 +4,10 @@
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
+  	<string>run</string>
     <string>tick</string>
-    <string>Generation</string>
-    <string>Iteration</string>
+    <string>EvolutionGeneration</string>
+    <string>EvolutionIteration</string>
     <string>Name</string>
     <string>Id</string>
     <string>Strategy</string>

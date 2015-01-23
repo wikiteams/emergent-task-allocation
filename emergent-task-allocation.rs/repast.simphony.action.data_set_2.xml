@@ -3,7 +3,7 @@
   <type>NON_AGGREGATE</type>
   <sourceType>collaboration.Task</sourceType>
   <inclTick>true</inclTick>
-  <inclBatchRun>false</inclBatchRun>
+  <inclBatchRun>true</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
@@ -17,17 +17,17 @@
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Generation</string>
+      <string>EvolutionGeneration</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Generation</id>
+        <id>EvolutionGeneration</id>
         <className>collaboration.Task</className>
         <methodName>getGeneration</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Iteration</string>
+      <string>EvolutionIteration</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Iteration</id>
+        <id>EvolutionIteration</id>
         <className>collaboration.Task</className>
         <methodName>getIteration</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
@@ -78,6 +78,14 @@
         <id>GeneralAdvance</id>
         <className>collaboration.Task</className>
         <methodName>getGeneralAdvance</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>NoOfVisits</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>NoOfVisits</id>
+        <className>collaboration.Task</className>
+        <methodName>getNumberOfVisits</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

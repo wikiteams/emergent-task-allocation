@@ -31,7 +31,7 @@ import constants.Constraints;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.7
+ * @version 2.0.8
  */
 public class Task {
 
