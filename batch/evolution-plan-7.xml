@@ -5,6 +5,7 @@
 	<parameter name="dataSource" type="constant" constant_type="java.lang.String" value="Sqlite" />
 	<parameter name="modelType" type="constant" constant_type="java.lang.String" value="MultipleValidation" />
 	<parameter name="multipleAgentSets" type="constant" constant_type="java.lang.Boolean" value="true" />
+	<parameter name="allowSkillDeath" type="constant" constant_type="java.lang.Boolean" value="true" />
 	
 	<parameter name="fullyLearnedAgentsLeave" type="constant" constant_type="java.lang.Boolean" value="false" />
 	<parameter name="deployedTasksLeave" type="constant" constant_type="java.lang.Boolean" value="true" />

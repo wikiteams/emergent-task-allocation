@@ -416,6 +416,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 						.getTickCount() + "," + launchStatistics.agentCount
 				+ "," + launchStatistics.taskCount + "," + getTaskLeft() + ","
 				+ launchStatistics.expDecay + ","
+				+ SimulationParameters.allowSkillDeath + ","
 				+ launchStatistics.fullyLearnedAgentsLeave + ","
 				+ launchStatistics.experienceCutPoint + ","
 				+ launchStatistics.granularity + ","
@@ -450,10 +451,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private String buildFinalMessageHeader() {
 		return "Batch_Number" + "," + "Run_Number" + "," + "Tick_Count" + ","
 				+ "Agents_Count" + "," + "Tasks_Count" + "," + "Tasks_Left"
-				+ "," + "Experience_Decay" + "," + "Fll_Enabled" + ","
-				+ "Exp_cut_point" + "," + "Granularity" + ","
-				+ "Granularity_type" + "," + "Granularity_obstinancy" + ","
-				+ "Task_choice_strategy" + "," + "Skill_choice_strategy"
+				+ "," + "Experience_Decay" + "," + "Allow_Skill_Death" + ","
+				+ "Fll_Enabled" + "," + "Exp_cut_point" + "," + "Granularity"
+				+ "," + "Granularity_type" + "," + "Granularity_obstinancy"
+				+ "," + "Task_choice_strategy" + "," + "Skill_choice_strategy"
 				+ "Plan_Number" + "," + "Generation" + ","
 				+ "Allways_Choose_Task" + "," + "Homophily_Count" + ","
 				+ "Heterophily_Count" + "," + "Preferential_Count";
@@ -638,6 +639,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			} else {
 				SimulationParameters.experienceDecay = true;
 				launchStatistics.expDecay = true;
+				int allowSkillDeath = RandomHelper.nextIntFromTo(0, 1);
+				if ((allowSkillDeath == 0)
+						&& SimulationParameters.allowSkillDeath) {
+					SimulationParameters.allowSkillDeath = true;
+					say("[Allow skill abandon] is enabled for this run");
+				}
 				say("[Exp decay] is enabled for this run");
 				ISchedule schedule = RunEnvironment.getInstance()
 						.getCurrentSchedule();
