@@ -19,7 +19,6 @@ import constants.LoadSet;
  * @author Oskar Jarczyk
  * @since ?
  */
-@Deprecated
 public class DescribeUniverseBulkLoad {
 
 	private static LinkedList<String[]> combinations;

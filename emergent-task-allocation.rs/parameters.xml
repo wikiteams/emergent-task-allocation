@@ -38,9 +38,9 @@
 		
 	<!-- Mechanism for automatic stop -->
 		
-	<parameter name="equilibriumDetectionSensitivity" displayName="equilibriumDetectionSensitivity" type="double"
-		defaultValue="50" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
+	<parameter name="equilibriumDetectionSensitivity" displayName="equilibriumDetectionSensitivity" 
+		type="java.lang.Integer" defaultValue="10" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	
 	<!-- Evolution enabler -->
 	
@@ -62,10 +62,6 @@
 	<parameter name="deployedTasksLeave" displayName="Finished tasks leave simulation?"
 		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
 		values="true false"
-		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
-	<parameter name="allowRookieForSkills" displayName="allowRookieForSkills"
-		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
-		values="false true"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="agentCount" displayName="agentCount" type="java.lang.Integer"
 		defaultValue="50" isReadOnly="false"
@@ -113,9 +109,6 @@
 	<parameter name="gitHubClusterizedDistribution" displayName="gitHubClusterizedDistribution"
 		type="java.lang.String" defaultValue="distribute" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
-	<parameter name="percStartMembership" displayName="percStartMembership"
-		type="java.lang.Integer" defaultValue="10" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="agentSkillPoolDataset" displayName="agentSkillPoolDataset"
 		type="java.lang.String" defaultValue="OSRC"
 		isReadOnly="false" values="OSRC STATIC_PULL_REQUESTS"
@@ -130,9 +123,6 @@
 	<parameter name="fillAgentSkillsMethod" displayName="fillAgentSkillsMethod"
 		type="java.lang.String" defaultValue="TOP_ACTIVE" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
-	<parameter name="allowMultiMembership" displayName="allowMultiMembership"
-		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="taskMinMaxChoiceAlgorithm" displayName="taskMinMaxChoiceAlgorithm"
 		type="java.lang.String" defaultValue="maxmax" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
@@ -154,9 +144,6 @@
 	<parameter name="randomSeed" displayName="Default Random Seed"
 		type="int" defaultValue="__NULL__" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-<!-- 	<parameter name="dataSetAll" displayName="experienceCutPoint"
-		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" /> -->
 	
 	<!-- "Force stop" don't use it unless you know what you are doing -->
 

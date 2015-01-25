@@ -27,7 +27,8 @@ import com.google.common.collect.Lists;
  * Programming Task - a producer in the simulation
  * 
  * @author Oskar Jarczyk
- * @version 2.0.6
+ * @since 2.0
+ * @version 2.0.9
  */
 public class Tasks extends DefaultContext<Task> {
 
@@ -248,8 +249,7 @@ public class Tasks extends DefaultContext<Task> {
 	}
 
 	private void initializeTasksNormally(Context<Task> context) {
-		Integer howMany = SimulationParameters.multipleAgentSets ? allowedLoad
-				: SimulationParameters.taskCount;
+		Integer howMany = allowedLoad;
 		for (int i = 0; i < howMany; i++) {
 			Task task = new Task();
 			say("Creating Task " + task.getId());

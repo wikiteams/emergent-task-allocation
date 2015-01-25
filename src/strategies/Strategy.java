@@ -2,14 +2,15 @@ package strategies;
 
 import java.util.LinkedList;
 
+
 /***
  * Types of Strategies used in the simulation
  * 
- * Strategy for Agent {strategy for choosing tasks}
+ * Strategy for Agent {Strategy for choosing Tasks}
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.8
+ * @version 2.0.9 'White fox' edition
  * 
  */
 public class Strategy implements StrategyInterface {
@@ -47,8 +48,6 @@ public class Strategy implements StrategyInterface {
 			if (( ((double)i) / ((double)max) ) <= frequency.getDistribution()) {
 				return new Strategy(frequency.getTaskChoice(),
 						strategyDistribution.getSkillStrategy());
-			} else {
-				// do nothing
 			}
 		}
 	}
@@ -79,7 +78,7 @@ public class Strategy implements StrategyInterface {
 		 * use an algorithm for assigning tasks which are most (mis)matched to
 		 * an agent
 		 */
-		HOMOPHYLY, HETEROPHYLY,
+		HOMOPHYLY, HETEROPHYLY, HOMOPHYLY_EXP, HETEROPHYLY_EXP,
 		/**
 		 * *Central strategy* - We also call it a 'strategy of central
 		 * assignment', or a 'central planner' or 'central task allocation'

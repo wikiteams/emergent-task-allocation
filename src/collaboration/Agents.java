@@ -22,7 +22,8 @@ import utils.NamesGenerator;
  * structure. Context holds all simulation Agents.
  * 
  * @author Oskar Jarczyk
- * @version 2.0.6
+ * @version 2.0.9 'White fox' edition
+ * @since ?
  */
 public class Agents extends DefaultContext<Agent> {
 

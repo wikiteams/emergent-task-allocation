@@ -10,7 +10,7 @@ import constants.ModelFactory;
  * distribution there is currently set.
  * 
  * @author Oskar Jarczyk
- * @version 2.0.6
+ * @version 2.0.9
  */
 public class StrategyDistribution {
 
@@ -75,20 +75,20 @@ public class StrategyDistribution {
 	public void setSkillChoice(String skillChoice) {
 		this.skillChoice = skillChoice;
 	}
-
+	
 	public void setSkillChoice(ModelFactory modelFactory, String skillChoice) {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
 			// this is only important if you launch
-			// a "multiple validation" model
+			// a "multiple validation" parameter set in modelType
+			// it chooses a random skill strategy
 			int intRandomized = RandomHelper.nextIntFromTo(0,
 					skillChoiceSet.length - 1);
-			assert (intRandomized >= 0)
-					&& (intRandomized <= skillChoiceSet.length - 1);
 			this.skillChoice = skillChoiceSet[intRandomized];
 		} else
 			// otherwise assign to every agent the same strategy
 			// and make sure this is set from this later
 			this.skillChoice = skillChoice;
+		assert this.skillChoice != null;
 	}
 
 	public String getTaskChoice() {

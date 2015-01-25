@@ -38,7 +38,7 @@ import argonauts.PersistRewiring;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.8
+ * @version 2.0.9 'White fox' edition
  */
 @AgentAnnot(displayName = "Agent")
 public class Agent implements NodeCreator<Agent> {

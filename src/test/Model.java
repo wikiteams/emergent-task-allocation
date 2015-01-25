@@ -7,7 +7,7 @@ package test;
  * 
  * Validation - all assertions enabled, maximum logging and verbose messaging
  * 
- * Multiple validation - 
+ * Multiple validation - checks in one batch run all important parameters (through randomising)
  * 
  * Stress - Creates hilariously high values in test tasks 
  * and test agents, it multiplies the "work left" and
@@ -15,6 +15,7 @@ package test;
  * 
  * @author Oskar Jarczyk
  * @since 2.0
+ * @version 2.0.9
  */
 public class Model {
 
@@ -25,11 +26,8 @@ public class Model {
 	private boolean multipleValidation;
 	private boolean stress;
 
-	private int hashCode;
-
 	public Model(String name) {
 		this.name = name;
-		hashCode = 37 * name.hashCode();
 	}
 
 	public String getName() {
@@ -49,7 +47,7 @@ public class Model {
 	}
 
 	public boolean isValidation() {
-		return validation || multipleValidation;
+		return validation;
 	}
 
 	public void setValidation(boolean validation) {
@@ -81,14 +79,14 @@ public class Model {
 		if (obj instanceof Model) {
 			Model other = (Model) obj;
 			return other.name.equals(this.name)
-					&& (other.hashCode == this.hashCode);
+					&& (other.hashCode() == this.hashCode());
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return this.hashCode;
+		return 37 * this.name.hashCode();
 	}
 
 	@Override

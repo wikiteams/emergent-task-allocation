@@ -13,7 +13,7 @@ import test.ModelConverter;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.6
+ * @version 2.0.9
  */
 public class SimulationParameters {
 
@@ -43,8 +43,6 @@ public class SimulationParameters {
 
 	public static int agentCount = 0;
 	public static int taskCount = 0;
-	public static int percStartMembership = 0;
-	public static boolean allowMultiMembership = false;
 	public static int numSteps = 0;
 	public static boolean allwaysChooseTask = true;
 
@@ -105,8 +103,6 @@ public class SimulationParameters {
 		
 		agentCount = (Integer) param.getValue("agentCount");
 		taskCount = (Integer) param.getValue("numTasks");
-		percStartMembership = (Integer) param.getValue("percStartMembership");
-		allowMultiMembership = (Boolean) param.getValue("allowMultiMembership");
 		numSteps = (Integer) param.getValue("numSteps");
 		allwaysChooseTask = (Boolean) param.getValue("allwaysChooseTask");
 

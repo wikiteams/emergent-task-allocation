@@ -1,5 +1,12 @@
 package constants;
 
+/**
+ * Holds number of agents and number of tasks
+ * - parameters which are used in current simulator run
+ * 
+ * @author Oskar Jarczyk
+ * @since ?
+ */
 public class LoadSet {
 	
 	public static final LoadSet EMPTY = new LoadSet();

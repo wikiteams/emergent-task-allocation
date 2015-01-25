@@ -18,13 +18,15 @@ import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.util.ContextUtils;
 import strategies.StrategyDistribution;
 import utils.AgentEvolve;
+import utils.ObjectsHelper;
 import constants.Constraints;
 
 /**
- * Collaboration controller
+ * Collaboration controller (evolution controller)
  * 
  * @author Oskar Jarczyk, inspired by code from Paulina Adamska
- * @version 2.0.6
+ * @since 2.0
+ * @version 2.0.9 'White fox'
  */
 public class GameController {
 
@@ -69,6 +71,10 @@ public class GameController {
 		say("generationNumber: " + generationNumber);
 		say("iterationNumber: " + iterationNumber);
 		this.strategyDistribution = strategyDistribution;
+	}
+	
+	public void randomizeGenerationLength(Integer[] set){
+		iterationNumber = ObjectsHelper.randomFrom(set);
 	}
 
 	/**

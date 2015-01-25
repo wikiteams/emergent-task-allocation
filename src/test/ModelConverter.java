@@ -25,7 +25,8 @@ import repast.simphony.parameter.StringConverter;
  * It multiplies the "work left" and "experience left" by x10000;
  * 
  * @author Oskar Jarczyk
- * @version 2.0
+ * @since 2.0
+ * @version 2.0.9
  */
 public class ModelConverter implements StringConverter<Model> {
 

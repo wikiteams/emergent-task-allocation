@@ -3,14 +3,19 @@ package utils;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import repast.simphony.random.RandomHelper;
 import strategies.Strategy.TaskChoice;
 import collaboration.Agent;
 
 public class ObjectsHelper {
-	
+
 	public static final Double notApplicable = -1.0;
 
-	public static Integer fromDouble(double value){
+	public static <T> T randomFrom(T... items) {
+		return items[RandomHelper.nextIntFromTo(0, items.length - 1)];
+	}
+
+	public static Integer fromDouble(double value) {
 		return (int) value;
 	}
 
@@ -66,8 +71,8 @@ public class ObjectsHelper {
 	public static TaskChoice getProbKey(double nextDoubleFromTo,
 			Map<TaskChoice, Double> p) {
 		TaskChoice result = null;
-		for (Entry<TaskChoice, Double> entrySet : p.entrySet()){
-			if (nextDoubleFromTo <= entrySet.getValue()){
+		for (Entry<TaskChoice, Double> entrySet : p.entrySet()) {
+			if (nextDoubleFromTo <= entrySet.getValue()) {
 				result = entrySet.getKey();
 			}
 		}

@@ -71,7 +71,7 @@ import constants.ModelFactory;
  * 
  * Project uses ini4j library which is licensed under Apache License.
  * 
- * @version 2.0.6 Work Evolve
+ * @version 2.0.9 'White Fox' edition
  * @category Agent-organised Social Simulations
  * @since 1.0
  * @author Oskar Jarczyk, Bla\zej Gruszka et.al.
@@ -114,11 +114,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public CollaborationBuilder() {
 		try {
 			initializeLoggers();
-			// RandomHelper.setSeed(SimulationParameters.randomSeed);
-			// RandomHelper.init();
-			// clearStaticHeap();
-			// moved to context builder build() method
-			say("[RandomHelper] initialized and [static heap] cleared..");
+			say("[Loggers] initialized...");
 		} catch (IOException e) {
 			e.printStackTrace();
 			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
@@ -128,11 +124,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS);
 		} finally {
 			say("[CollaborationBuilder constructor] finished execution");
-			// this is where Repast waits for scenario lunch (contexts build)
+			// this is where Repast waits for scenario lunch (context builds up)
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void prepareDataControllers() {
 		try {
 			/***
@@ -148,6 +143,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			
 			RandomHelper.setSeed(SimulationParameters.randomSeed);
 			RandomHelper.init();
+			say("[RandomHelper] initialized...");
 			
 			dataSet = DataSet.getInstance(SimulationParameters.dataSource);
 
@@ -172,10 +168,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			if (model.isValidation())
 				initializeValidationLogger();
 			if (SimulationParameters.multipleAgentSets) {
-				// here we decide if we want different sets of agent count /
-				// task count i don't need this for evolution at this time,
-				// neither for single computing, thus lets make sure we don't
-				// enable this without a good reason
 				loadSet = DescribeUniverseBulkLoad.init();
 			} else {
 				loadSet.AGENT_COUNT = SimulationParameters.agentCount;
@@ -219,21 +211,20 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("[Instatied TaskSkillsPool]");
 		} else if (dataSet.isDb()) {
 			/***
-			 * This is new dataset parsed from our 
-			 * GitHub MongoDB database and specially
-			 * created for the sake of [evolutionary model]
+			 * This is new dataset parsed from our GitHub MongoDB database and specially
+			 * created for the sake of evolutionary model
 			 */
 			AgentModeling.instantiate(SimulationParameters.agentSkillPoolDataset);
 			say("[Sqlite engine] and resultset initialized, may take some time..");
 			MyDatabaseConnector.init();
 		} else if (dataSet.isContinuus()) {
-			// TODO: implement rest (e.g. socketlistener etc.)
+			// TODO: Implement the rest (e.g. SocketListener etc.)
 		}
 
 		strategyDistribution.setType(SimulationParameters.strategyDistribution);
 
-		assert ((strategyDistribution.getType() == StrategyDistribution.SINGULAR) || (strategyDistribution
-				.getType() == StrategyDistribution.MULTIPLE));
+		assert ((strategyDistribution.getType() == StrategyDistribution.SINGULAR) || 
+				(strategyDistribution.getType() == StrategyDistribution.MULTIPLE));
 
 		if (strategyDistribution.isSingle()) {
 			strategyDistribution.setSkillChoice(modelFactory,
@@ -242,10 +233,18 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 					SimulationParameters.taskChoiceAlgorithm);
 		} else if (strategyDistribution.isMultiple()) {
 			strategyDistribution.setSkillChoice(modelFactory,
-					SimulationParameters.skillChoiceAlgorithm);
+						SimulationParameters.skillChoiceAlgorithm);
 			strategyDistribution
 					.setTaskChoiceSet(SimulationParameters.planNumber);
 		}
+	}
+	
+	public void prepareGameController(Context<Object> context){
+		gameController = new GameController(strategyDistribution);
+		if(modelFactory.getFunctionality().isMultipleValidation()){
+			gameController.randomizeGenerationLength(new Integer[]{20,50,100});
+		}
+		context.add(gameController);
 	}
 
 	@Override
@@ -254,6 +253,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		currentContext = context;
 		
 		clearStaticHeap();
+		say("[Static heap] cleared..");
 
 		if (SimulationAdvancedParameters.enableNetwork) {
 			NetworkBuilder<Object> builder = new NetworkBuilder<Object>(
@@ -270,8 +270,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		agents = new Agents(strategyDistribution, loadSet.AGENT_COUNT);
 		context.addSubContext(agents);
 
-		gameController = new GameController(strategyDistribution);
-		context.add(gameController);
+		prepareGameController(context);
+		assert context.getObjects(GameController.class).size() > 0;
+		say("[Game Controller] initialized and added to context.");
 
 		say("Task choice [Strategy] is "
 				+ (strategyDistribution.isDistributionLoaded() ? strategyDistribution
@@ -603,14 +604,14 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * is enabled for the simulation whether not.
 	 */
 	public void buildExperienceReassessment() {
-		say("buildExperienceReassessment lunched !");
+		say("buildExperienceReassessment() lunched !");
 		if (SimulationParameters.experienceDecay) {
 			int reassess = RandomHelper.nextIntFromTo(0, 1);
-			// I want in results both expDecay off and on!
-			// thats why randomise to use both
+			// I want to randomise whether turn expDecay off or on
 			if ((reassess == 0) && SimulationParameters.multipleAgentSets) {
 				SimulationParameters.experienceDecay = false;
 				launchStatistics.expDecay = false;
+				say("[Exp decay] is disabled for this run");
 			} else {
 				SimulationParameters.experienceDecay = true;
 				launchStatistics.expDecay = true;
