@@ -11,6 +11,7 @@ public class ObjectsHelper {
 
 	public static final Double notApplicable = -1.0;
 
+	@SafeVarargs
 	public static <T> T randomFrom(T... items) {
 		return items[RandomHelper.nextIntFromTo(0, items.length - 1)];
 	}

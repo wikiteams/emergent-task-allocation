@@ -29,7 +29,7 @@
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>Heterophyly</id>
         <className>collaboration.Agent</className>
-        <methodName>usesHeterohyly</methodName>
+        <methodName>usesHeterophyly</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

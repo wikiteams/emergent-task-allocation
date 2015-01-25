@@ -95,7 +95,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public static final long serialVersionUID = 9223372036854775807L;
 	public static Context<Task> tasks;
 	public static Context<Agent> agents;
-	public static Integer batchRunCount = 0;
 
 	private Context<Object> currentContext;
 
@@ -133,35 +132,34 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private void prepareDataControllers() {
 		try {
 			/***
-			 * LoadSet.EMPTY singleton is here filled with values
-			 * LoadSet holds information about task numbers and agent numbers
-			 * those values are used later for load control
+			 * LoadSet.EMPTY singleton is here filled with values LoadSet holds
+			 * information about task numbers and agent numbers those values are
+			 * used later for load control
 			 */
 			loadSet = LoadSet.EMPTY;
 
 			say(Constraints.LOADING_PARAMETERS);
 			SimulationParameters.init();
 			// getting parameters of a simulation from current scenario
-			
+
 			RandomHelper.setSeed(SimulationParameters.randomSeed);
 			RandomHelper.init();
 			say("[RandomHelper] initialized...");
-			
+
 			dataSet = DataSet.getInstance(SimulationParameters.dataSource);
 
 			/***
 			 * LaunchStatistics hold data for outputting results i.e. tick
-			 * numbers, result strategy set, tasks left etc.
-			 * they are all used later for outputting to batch.log
-			 * at the very end of a simulation
+			 * numbers, result strategy set, tasks left etc. they are all used
+			 * later for outputting to batch.log at the very end of a simulation
 			 */
 			launchStatistics = LaunchStatistics.getInstance();
 
 			/***
 			 * ModelFactory tells whether we want to maximise verbose message
-			 * and/or test all Task assignment STRATEGIES at once.
-			 * Normal model means a typical execution, while i.e.
-			 * validation means e.g. maximum message output to console etc.
+			 * and/or test all Task assignment STRATEGIES at once. Normal model
+			 * means a typical execution, while i.e. validation means e.g.
+			 * maximum message output to console etc.
 			 */
 			modelFactory = new ModelFactory(SimulationParameters.modelType);
 			Model model = modelFactory.getFunctionality();
@@ -178,9 +176,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 			/***
 			 * StrategyDistribution holds information on currently tested Task
-			 * assignment strategy and Skill choice strategy
-			 * Single distribution means evolution disabled, while
-			 * multiple distribution enables evolutionary model
+			 * assignment strategy and Skill choice strategy Single distribution
+			 * means evolution disabled, while multiple distribution enables
+			 * evolutionary model
 			 */
 			strategyDistribution = new StrategyDistribution();
 
@@ -207,16 +205,18 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			 * This is previous version of the dataset, already tested and
 			 * described in our publication hence the deprecated flag
 			 */
-			AgentSkillsPool.instantiate(SimulationParameters.agentSkillPoolDataset);
+			AgentSkillsPool
+					.instantiate(SimulationParameters.agentSkillPoolDataset);
 			say("[Instatiated AgentSkillsPool]");
 			TaskSkillsPool.instantiate(SimulationParameters.tasksDataset);
 			say("[Instatied TaskSkillsPool]");
 		} else if (dataSet.isDb()) {
 			/***
-			 * This is new dataset parsed from our GitHub MongoDB database and specially
-			 * created for the sake of evolutionary model
+			 * This is new dataset parsed from our GitHub MongoDB database and
+			 * specially created for the sake of evolutionary model
 			 */
-			AgentModeling.instantiate(SimulationParameters.agentSkillPoolDataset);
+			AgentModeling
+					.instantiate(SimulationParameters.agentSkillPoolDataset);
 			say("[Sqlite engine] and resultset initialized, may take some time..");
 			MyDatabaseConnector.init();
 		} else if (dataSet.isContinuus()) {
@@ -225,8 +225,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 		strategyDistribution.setType(SimulationParameters.strategyDistribution);
 
-		assert ((strategyDistribution.getType() == StrategyDistribution.SINGULAR) || 
-				(strategyDistribution.getType() == StrategyDistribution.MULTIPLE));
+		assert ((strategyDistribution.getType() == StrategyDistribution.SINGULAR) || (strategyDistribution
+				.getType() == StrategyDistribution.MULTIPLE));
 
 		if (strategyDistribution.isSingle()) {
 			strategyDistribution.setSkillChoice(modelFactory,
@@ -235,16 +235,17 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 					SimulationParameters.taskChoiceAlgorithm);
 		} else if (strategyDistribution.isMultiple()) {
 			strategyDistribution.setSkillChoice(modelFactory,
-						SimulationParameters.skillChoiceAlgorithm);
+					SimulationParameters.skillChoiceAlgorithm);
 			strategyDistribution
 					.setTaskChoiceSet(SimulationParameters.planNumber);
 		}
 	}
-	
-	public void prepareGameController(Context<Object> context){
+
+	public void prepareGameController(Context<Object> context) {
 		gameController = new GameController(strategyDistribution);
-		if(modelFactory.getFunctionality().isMultipleValidation()){
-			gameController.randomizeGenerationLength(new Integer[]{20,50,100});
+		if (modelFactory.getFunctionality().isMultipleValidation()) {
+			gameController.randomizeGenerationLength(new Integer[] { 20, 50,
+					100 });
 		}
 		EquilibriumDetector.init();
 		context.add(gameController);
@@ -252,11 +253,17 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	@Override
 	public Context<Object> build(Context<Object> context) {
-		System.out.println("CollaborationBuilder is building context, sweep run no: " + batchRunCount++);
-		
+		Integer strBatchNumber = RunState.getInstance().getRunInfo()
+				.getBatchNumber();
+		Integer strRunNumber = RunState.getInstance().getRunInfo()
+				.getRunNumber();
+		System.out
+				.println("CollaborationBuilder is building context, sweep run no: "
+						+ strBatchNumber + "," + strRunNumber);
+
 		context.setId("emergent-task-allocation");
 		currentContext = context;
-		
+
 		clearStaticHeap();
 		say("[Static heap] cleared..");
 
@@ -335,8 +342,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	@SuppressWarnings("deprecation")
 	public void clearStaticHeap() {
 		say("Clearing [static data] from previous simulation");
-		sanity("Hence despite the fact there is a seperate JVM " + 
-				"for every instance, a new run should clear previous results");
+		sanity("Hence despite the fact there is a seperate JVM "
+				+ "for every instance, a new run should clear previous results");
 		PersistJobDone.clear();
 		PersistRewiring.clear();
 		TaskSkillsPool.clear();
@@ -363,8 +370,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public void finishSimulation() {
 		say("[finishSimulation() check launched] Checking if simulation can be ended...");
 		EnvironmentEquilibrium.setActivity(false);
-		if (gameController.isEvolutionary()){
-			if (!EquilibriumDetector.evaluate(gameController)){
+		if (gameController.isEvolutionary()) {
+			if (!EquilibriumDetector.evaluate(gameController)) {
 				say("[Stable set of Strategies] detected, finishing simulation");
 				finalMessage(buildFinalMessage());
 				RunEnvironment.getInstance().endRun();
@@ -415,13 +422,15 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ launchStatistics.granularityType + ","
 				+ SimulationParameters.granularityObstinacy + ","
 				+ strategyDistribution.getTaskChoice() + ","
-				+ SimulationParameters.fillAgentSkillsMethod + ","
-				+ SimulationParameters.agentSkillPoolDataset + ","
-				+ SimulationParameters.taskSkillPoolDataset + ","
 				+ strategyDistribution.getSkillChoice() + ","
-				// + strategyDistribution.getTaskMinMaxChoice() + ","
-				+ TaskSkillFrequency.tasksCheckSum + ","
-				+ AgentSkillsFrequency.tasksCheckSum;
+				+ SimulationParameters.planNumber + ","
+				+ gameController.getCurrentGeneration() + ","
+				+ SimulationParameters.allwaysChooseTask + ","
+				+ gameController.countHomophilyDistribution(currentContext)
+				+ ","
+				+ gameController.countHeterophilyDistribution(currentContext)
+				+ ","
+				+ gameController.countPreferentialDistribution(currentContext);
 	}
 
 	private int getTaskLeft() {
@@ -439,15 +448,15 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	}
 
 	private String buildFinalMessageHeader() {
-		return "Batch Number" + "," + "Run Number" + "," + "Tick Count" + ","
-				+ "Agents count" + "," + "Tasks count" + "," + "Tasks left"
-				+ "," + "Experience decay" + "," + "Fully-learned agents leave"
-				+ "," + "Exp cut point" + "," + "Granularity" + ","
-				+ "Granularity type" + "," + "Granularity obstinancy" + ","
-				+ "Task choice strategy" + "," + "fillAgentSkillsMethod" + ","
-				+ "agentSkillPoolDataset" + "," + "taskSkillPoolDataset" + ","
-				+ "Skill choice strategy" + "," + "Task MinMax choice" + ","
-				+ "Task dataset checksum" + "," + "Agent dataset checksum";
+		return "Batch_Number" + "," + "Run_Number" + "," + "Tick_Count" + ","
+				+ "Agents_Count" + "," + "Tasks_Count" + "," + "Tasks_Left"
+				+ "," + "Experience_Decay" + "," + "Fll_Enabled" + ","
+				+ "Exp_cut_point" + "," + "Granularity" + ","
+				+ "Granularity_type" + "," + "Granularity_obstinancy" + ","
+				+ "Task_choice_strategy" + "," + "Skill_choice_strategy"
+				+ "Plan_Number" + "," + "Generation" + ","
+				+ "Allways_Choose_Task" + "," + "Homophily_Count" + ","
+				+ "Heterophily_Count" + "," + "Preferential_Count";
 	}
 
 	private void cleanAfter() {
@@ -460,7 +469,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private void say(String s) {
 		PjiitOutputter.say(s);
 	}
-	
+
 	private void forcesay(String s) {
 		System.out.println(s);
 	}
@@ -563,23 +572,23 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 					.getObjects(Agent.class);
 			for (Agent agent : agentObjects) {
 				say("Checking if I may have to [decrease exp] of " + agent);
-				if (!agent.getAgentSkills().hasAny()){
+				if (!agent.getAgentSkills().hasAny()) {
 					continue;
 				}
-				
+
 				// Use PersistJobDone to check work history
 				Map<Integer, List<Skill>> c = PersistJobDone
 						.getSkillsWorkedOn(agent);
-				
-				List<Skill> persistedJob = c != null ? c.get(ObjectsHelper.fromDouble(
-						gameController.getCurrentTick())) : null;
-				if (persistedJob == null){
+
+				List<Skill> persistedJob = c != null ? c.get(ObjectsHelper
+						.fromDouble(gameController.getCurrentTick())) : null;
+				if (persistedJob == null) {
 					persistedJob = new ArrayList<Skill>();
 				}
 
 				Collection<AgentInternals> aic = (agent).getAgentInternals();
-				CopyOnWriteArrayList<AgentInternals> aicconcurrent = 
-						new CopyOnWriteArrayList<AgentInternals>(aic);
+				CopyOnWriteArrayList<AgentInternals> aicconcurrent = new CopyOnWriteArrayList<AgentInternals>(
+						aic);
 				for (AgentInternals ai : aicconcurrent) {
 					if (persistedJob.contains(ai.getSkill())) {
 						// was working on a task, don't decay this skill
@@ -597,7 +606,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 										+ (agent.getNick())
 										+ " wasn't decreased because it's already low");
 							} else
-								say("[Experience] of [Agent] " + (agent.getNick())
+								say("[Experience] of [Agent] "
+										+ (agent.getNick())
 										+ " decreased and is now " + value);
 						}
 					}
@@ -640,9 +650,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	}
 
 	/***
-	 * Scheduled methods which checks for 
-	 * fully learned agents - only when 'fll' parameter
-	 * set as true in scenario parameters
+	 * Scheduled methods which checks for fully learned agents - only when 'fll'
+	 * parameter set as true in scenario parameters
 	 * 
 	 * @since 1.3
 	 */

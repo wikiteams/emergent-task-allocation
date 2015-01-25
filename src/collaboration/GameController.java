@@ -7,11 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import logger.PjiitOutputter;
-
-import org.joda.time.DateTime;
-import org.joda.time.Minutes;
-import org.joda.time.Seconds;
-
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
@@ -26,7 +21,7 @@ import constants.Constraints;
  * 
  * @author Oskar Jarczyk, inspired by code from Paulina Adamska
  * @since 2.0
- * @version 2.0.9 'White fox'
+ * @version 2.0.9 'White fox' release
  */
 public class GameController {
 
@@ -58,7 +53,7 @@ public class GameController {
 
 	private boolean secondStage;
 
-	private DateTime previous = new DateTime();
+	//private DateTime previous = new DateTime();
 
 	public GameController(StrategyDistribution strategyDistribution) {
 		secondStage = false;
@@ -153,19 +148,19 @@ public class GameController {
 						+ (currentIteration + 1));
 				currentIteration++;
 			}
-			previous = new DateTime();
+			//previous = new DateTime();
 		} else {
 			currentIteration++;
 		}
 	}
 
-	private void benchmark() {
+/*	private void benchmark() {
 		DateTime dateTime = new DateTime();
 		Seconds seconds = Seconds.secondsBetween(this.previous, dateTime);
 		Minutes minutes = Minutes.minutesBetween(this.previous, dateTime);
 		say("It took " + minutes.getMinutes() + " minutes and "
 				+ seconds.getSeconds() + " seconds between ticks.");
-	}
+	}*/
 
 	public int getCurrentGeneration() {
 		if (isEvolutionary()) {
@@ -183,9 +178,9 @@ public class GameController {
 		return RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 	}
 
-	public boolean isWarmedUp() {
+/*	public boolean isWarmedUp() {
 		return currentIteration >= (iterationNumber * 0.05);
-	}
+	}*/
 
 	public boolean isSecondStage() {
 		return secondStage;
@@ -212,6 +207,48 @@ public class GameController {
 		}
 		assert (result.size() == SimulationParameters.agentCount)
 				|| (SimulationParameters.fullyLearnedAgentsLeave);
+		return result;
+	}
+	
+	public Integer countHomophilyDistribution(Object contextBeing){
+		Integer result = 0;
+		@SuppressWarnings("unchecked")
+		Context<Object> context = ContextUtils.getContext(contextBeing);
+		Iterable<Object> it = context.getObjects(Agent.class);
+		Iterator<Object> iterator = it.iterator();
+		while (iterator.hasNext()) {
+			if ( ((Agent) iterator.next()).usesHomophyly() > 0 ){
+				result++;
+			}
+		}
+		return result;
+	}
+	
+	public Integer countHeterophilyDistribution(Object contextBeing){
+		Integer result = 0;
+		@SuppressWarnings("unchecked")
+		Context<Object> context = ContextUtils.getContext(contextBeing);
+		Iterable<Object> it = context.getObjects(Agent.class);
+		Iterator<Object> iterator = it.iterator();
+		while (iterator.hasNext()) {
+			if ( ((Agent) iterator.next()).usesHeterophyly() > 0 ){
+				result++;
+			}
+		}
+		return result;
+	}
+	
+	public Integer countPreferentialDistribution(Object contextBeing){
+		Integer result = 0;
+		@SuppressWarnings("unchecked")
+		Context<Object> context = ContextUtils.getContext(contextBeing);
+		Iterable<Object> it = context.getObjects(Agent.class);
+		Iterator<Object> iterator = it.iterator();
+		while (iterator.hasNext()) {
+			if ( ((Agent) iterator.next()).usesPreferential() > 0 ){
+				result++;
+			}
+		}
 		return result;
 	}
 

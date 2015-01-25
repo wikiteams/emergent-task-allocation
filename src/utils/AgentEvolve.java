@@ -9,7 +9,6 @@ import java.util.Map;
 
 import logger.PjiitOutputter;
 import repast.simphony.random.RandomHelper;
-import strategies.Strategy;
 import strategies.Strategy.TaskChoice;
 import collaboration.Agent;
 import collaboration.Agents;

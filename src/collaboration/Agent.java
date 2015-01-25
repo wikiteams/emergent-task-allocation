@@ -108,22 +108,22 @@ public class Agent implements NodeCreator<Agent> {
 				return getImpactHUtility();
 		}
 	}
-	
-	public String getDecimalFormatLeftUtility(){
+
+	public String getDecimalFormatLeftUtility() {
 		return new DecimalFormat("#.######").format(getLeftAgentUtility());
 	}
-	
-	public String getDecimalFormatRightUtility(){
+
+	public String getDecimalFormatRightUtility() {
 		return new DecimalFormat("#.######").format(getRightAgentUtility());
 	}
-	
+
 	private Double getLeftAgentUtility() {
 		if (SimulationParameters.isAgentOrientedUtility) {
 			return Utility.getLeftLearningUtility(getAgentInternals());
 		} else
 			return ObjectsHelper.notApplicable;
 	}
-	
+
 	private Double getRightAgentUtility() {
 		if (SimulationParameters.isAgentOrientedUtility) {
 			return Utility.getRightLearningUtility(getAgentInternals());
@@ -487,14 +487,14 @@ public class Agent implements NodeCreator<Agent> {
 		int count = 0;
 		for (AgentInternals ai : internals) {
 			if (common.contains(ai.getSkill())) {
-				count ++;
+				count++;
 				sum += ai.getExperience().getDelta();
 			}
 		}
 		return sum / count;
 	}
-	
-	public Double getExperience(Skill skill){
+
+	public Double getExperience(Skill skill) {
 		return this.describeExperience(skill, false, false);
 	}
 
@@ -543,13 +543,15 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public int usesHomophyly() {
-		return this.strategy.getTaskChoice().equals(TaskChoice.HOMOPHYLY) ? 1
-				: 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.HOMOPHYLY)
+				|| this.strategy.getTaskChoice().equals(
+						TaskChoice.HOMOPHYLY_EXP) ? 1 : 0;
 	}
 
-	public int usesHeterohyly() {
-		return this.strategy.getTaskChoice().equals(TaskChoice.HETEROPHYLY) ? 1
-				: 0;
+	public int usesHeterophyly() {
+		return this.strategy.getTaskChoice().equals(TaskChoice.HETEROPHYLY)
+				|| this.strategy.getTaskChoice().equals(
+						TaskChoice.HETEROPHYLY_EXP) ? 1 : 0;
 	}
 
 	public int usesPreferential() {

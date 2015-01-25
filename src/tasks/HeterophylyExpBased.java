@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import logger.PjiitOutputter;
 import collaboration.Agent;
 import collaboration.Skill;
 import collaboration.Task;

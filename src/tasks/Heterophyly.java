@@ -1,11 +1,5 @@
 package tasks;
 
-import collaboration.Agent;
-import collaboration.Skill;
-import collaboration.Task;
-import collaboration.Tasks;
-import collaboration.TasksUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,9 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import logger.PjiitOutputter;
-import constants.Constraints;
-import repast.simphony.random.RandomHelper;
+import collaboration.Agent;
+import collaboration.Skill;
+import collaboration.Task;
+import collaboration.TasksUtils;
 
 /***
  * Heterophyly strategy simplified to one method
@@ -100,10 +95,6 @@ public class Heterophyly {
 		}
 
 		return chosen;
-	}
-	
-	private static void say(String s) {
-		PjiitOutputter.say(s);
 	}
 
 }
