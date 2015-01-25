@@ -8,6 +8,12 @@ import utils.ObjectsHelper;
 import collaboration.GameController;
 import collaboration.SimulationParameters;
 
+/**
+ * Class responsible for finding a stable set of strategies
+ * 
+ * @author Oskar Jarczyk
+ * @since 2.0.09
+ */
 public class EquilibriumDetector {
 
 	public static CircularFifoQueue<Map<TaskChoice, Integer>> possiblyStableSet;
@@ -18,7 +24,8 @@ public class EquilibriumDetector {
 	}
 	
 	public static void clear(){
-		possiblyStableSet.clear();
+		if (possiblyStableSet != null)
+			possiblyStableSet.clear();
 	}
 
 	public static void report(Map<TaskChoice, Integer> newRecord) {
