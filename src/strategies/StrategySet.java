@@ -32,39 +32,39 @@ public class StrategySet {
 		switch (planNumber) {
 		case 1:
 			resultSet = new StrategySet();
-			resultSet.addFrequency(0.2, Strategy.TaskChoice.HETEROPHYLY);
-			resultSet.addFrequency(0.8 + 0.20001, Strategy.TaskChoice.HOMOPHYLY);
+			resultSet.addFrequency(0.2, Strategy.TaskChoice.HETEROPHYLY_EXP);
+			resultSet.addFrequency(0.8 + 0.20001, Strategy.TaskChoice.HOMOPHYLY_EXP);
 			// sum of frequencies must always be 1.0
 			break;
 		case 2:
 			resultSet = new StrategySet();
 			resultSet.addFrequency(0.2, Strategy.TaskChoice.PREFERENTIAL);
-			resultSet.addFrequency(0.8 + 0.20001, Strategy.TaskChoice.HOMOPHYLY);
+			resultSet.addFrequency(0.8 + 0.20001, Strategy.TaskChoice.HOMOPHYLY_EXP);
 			break;
 		case 3:
 			resultSet = new StrategySet();
-			resultSet.addFrequency(0.2, Strategy.TaskChoice.HOMOPHYLY);
-			resultSet.addFrequency(0.8 + 0.20001, Strategy.TaskChoice.HETEROPHYLY);
+			resultSet.addFrequency(0.2, Strategy.TaskChoice.HOMOPHYLY_EXP);
+			resultSet.addFrequency(0.8 + 0.20001, Strategy.TaskChoice.HETEROPHYLY_EXP);
 			break;
 		case 4:
 			resultSet = new StrategySet();
 			resultSet.addFrequency(0.2, Strategy.TaskChoice.PREFERENTIAL);
-			resultSet.addFrequency(0.8 + 0.20001, Strategy.TaskChoice.HETEROPHYLY);
+			resultSet.addFrequency(0.8 + 0.20001, Strategy.TaskChoice.HETEROPHYLY_EXP);
 			break;
 		case 5:
 			resultSet = new StrategySet();
-			resultSet.addFrequency(0.2, Strategy.TaskChoice.HOMOPHYLY);
+			resultSet.addFrequency(0.2, Strategy.TaskChoice.HOMOPHYLY_EXP);
 			resultSet.addFrequency(0.8 + 0.20001, Strategy.TaskChoice.PREFERENTIAL);
 			break;
 		case 6:
 			resultSet = new StrategySet();
-			resultSet.addFrequency(0.2, Strategy.TaskChoice.HETEROPHYLY);
+			resultSet.addFrequency(0.2, Strategy.TaskChoice.HETEROPHYLY_EXP);
 			resultSet.addFrequency(0.8 + 0.20001, Strategy.TaskChoice.PREFERENTIAL);
 			break;
 		case 7:
 			resultSet = new StrategySet();
-			resultSet.addFrequency(0.333, Strategy.TaskChoice.HETEROPHYLY);
-			resultSet.addFrequency(0.333 + 0.333, Strategy.TaskChoice.HOMOPHYLY);
+			resultSet.addFrequency(0.333, Strategy.TaskChoice.HETEROPHYLY_EXP);
+			resultSet.addFrequency(0.333 + 0.333, Strategy.TaskChoice.HOMOPHYLY_EXP);
 			resultSet.addFrequency(0.334 + 0.333 + 0.333, Strategy.TaskChoice.PREFERENTIAL);
 			break;
 		}

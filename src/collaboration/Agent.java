@@ -493,6 +493,10 @@ public class Agent implements NodeCreator<Agent> {
 		}
 		return sum / count;
 	}
+	
+	public Double getExperience(Skill skill){
+		return this.describeExperience(skill, false, false);
+	}
 
 	/***
 	 * Returns the experience of Agent in a particular programming Skill
