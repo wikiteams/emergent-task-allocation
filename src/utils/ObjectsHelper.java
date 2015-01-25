@@ -18,6 +18,18 @@ public class ObjectsHelper {
 	public static Integer fromDouble(double value) {
 		return (int) value;
 	}
+	
+	public static Boolean isSecondEqual(Map m1, Map m2) {
+		if (m2 == null) {
+			return true;
+		} else {
+			if (m1.hashCode() == m2.hashCode()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
 
 	public static Boolean is2ndHigher(Double d1, Double d2) {
 		if (d1 == null) {

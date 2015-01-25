@@ -5,6 +5,7 @@ import github.DataSet;
 import github.MyDatabaseConnector;
 import github.TaskSkillFrequency;
 import github.TaskSkillsPool;
+import intelligence.EquilibriumDetector;
 import intelligence.ImpactFactor;
 
 import java.io.IOException;
@@ -94,6 +95,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public static final long serialVersionUID = 9223372036854775807L;
 	public static Context<Task> tasks;
 	public static Context<Agent> agents;
+	public static Integer batchRunCount = 0;
 
 	private Context<Object> currentContext;
 
@@ -244,11 +246,14 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		if(modelFactory.getFunctionality().isMultipleValidation()){
 			gameController.randomizeGenerationLength(new Integer[]{20,50,100});
 		}
+		EquilibriumDetector.init();
 		context.add(gameController);
 	}
 
 	@Override
 	public Context<Object> build(Context<Object> context) {
+		System.out.println("CollaborationBuilder is building context, sweep run no: " + batchRunCount++);
+		
 		context.setId("emergent-task-allocation");
 		currentContext = context;
 		
@@ -345,6 +350,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		AgentSkillsFrequency.clear();
 		AgentModeling.clear();
 		ImpactFactor.clear();
+		EquilibriumDetector.clear();
 	}
 
 	@ScheduledMethod(start = 2, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
@@ -357,8 +363,15 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public void finishSimulation() {
 		say("[finishSimulation() check launched] Checking if simulation can be ended...");
 		EnvironmentEquilibrium.setActivity(false);
-		if (((Tasks) tasks).getCount() < 1) {
-			say("count of taskPool is < 1, finishing simulation");
+		if (gameController.isEvolutionary()){
+			if (!EquilibriumDetector.evaluate(gameController)){
+				say("[Stable set of Strategies] detected, finishing simulation");
+				finalMessage(buildFinalMessage());
+				RunEnvironment.getInstance().endRun();
+				cleanAfter();
+			}
+		} else if (((Tasks) tasks).getCount() < 1) {
+			say("Count of [Task Pool] is < 1, finishing simulation");
 			finalMessage(buildFinalMessage());
 			RunEnvironment.getInstance().endRun();
 			cleanAfter();

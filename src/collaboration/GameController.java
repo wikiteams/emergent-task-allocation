@@ -131,7 +131,7 @@ public class GameController {
 	@ScheduledMethod(start = 1.0, interval = 1.0, priority = -3000)
 	public void step() {
 		if (isEvolutionary()) {
-			benchmark();
+			// benchmark();
 
 			// check whether this is the last generation/iteration
 			if (currentIteration == (iterationNumber - 2)) {

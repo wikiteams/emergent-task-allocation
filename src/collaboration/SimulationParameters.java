@@ -13,7 +13,7 @@ import test.ModelConverter;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.9
+ * @version 2.0.9 'White fox' edition
  */
 public class SimulationParameters {
 
@@ -51,6 +51,7 @@ public class SimulationParameters {
 	public static String taskMinMaxChoiceAlgorithm = "";
 
 	public static int strategyDistribution = 0;
+	public static int equilibriumDetectionSensitivity = 0;
 	public static int randomSeed = 0;
 	public static boolean granularity = false;
 	public static int granularityObstinacy = 0;
@@ -100,6 +101,7 @@ public class SimulationParameters {
 		
 		planNumber = (Integer) param.getValue("planNumber");
 		iterationCount = (Integer) param.getValue("iterationCount");
+		equilibriumDetectionSensitivity = (Integer) param.getValue("equilibriumDetectionSensitivity");
 		
 		agentCount = (Integer) param.getValue("agentCount");
 		taskCount = (Integer) param.getValue("numTasks");
