@@ -52,4 +52,7 @@ public abstract class Constraints {
 	public static final String MAX_VALUE_REACHED = "You are about to twist a Long value!."
 							+ "Simulation terminates unconditionally..";
 
+	public static final String WRONG_AGENT_DATASET = "You cannot use agentSkillPoolDataset" + 
+			" different from OSRC together with enabled evolutionairy model";
+
 }

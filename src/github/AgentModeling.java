@@ -11,6 +11,7 @@ import logger.PjiitOutputter;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.math3.analysis.function.Sigmoid;
 
+import constants.Constraints;
 import au.com.bytecode.opencsv.CSVReader;
 import collaboration.Agent;
 import collaboration.AgentInternals;
@@ -32,6 +33,9 @@ public class AgentModeling {
 		if (method.toUpperCase().equals("OSRC")) {
 			say("Reading data and creating [Agent's Skill Pool]...");
 			instantiate();
+		} else {
+			throw new UnsupportedOperationException(
+					Constraints.WRONG_AGENT_DATASET);
 		}
 	}
 
@@ -70,7 +74,7 @@ public class AgentModeling {
 						+ " - " + language);
 				Experience experience = calculateExperience(workDone, cluster);
 				l.put(skillFactory.getSkill(language), experience);
-				//skillSet.put(nick, l);
+				// skillSet.put(nick, l);
 			} else {
 				// add new user
 				counter++;

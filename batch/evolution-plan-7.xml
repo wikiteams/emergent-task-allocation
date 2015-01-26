@@ -27,7 +27,7 @@
 	<parameter name="agentSkillsPoolRandomize1" type="constant" constant_type="int" value="5" />
 	
 	<parameter name="gitHubClusterizedDistribution" type="constant" constant_type="java.lang.String" value="clusters" />
-	<parameter name="agentSkillPoolDataset" type="constant" constant_type="java.lang.String" value="STATIC_PULL_REQUESTS" />
+	<parameter name="agentSkillPoolDataset" type="constant" constant_type="java.lang.String" value="OSRC" />
 	<parameter name="fillAgentSkillsMethod" type="constant" constant_type="java.lang.String" value="TOP_ACTIVE" />
 	<parameter name="taskSkillPoolDataset" type="constant" constant_type="java.lang.String" value="GITHUB_CLUSTERIZED" />
 	<parameter name="staticFrequencyTableSc" type="constant" constant_type="int" value="10" />
