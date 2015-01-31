@@ -90,11 +90,10 @@ public class SimulationParameters {
 		modelType = (Model) modelConverter.fromString((String) param
 				.getValue("modelType"));
 		dataSource = (String) param.getValue("dataSource");
-		utilityFunction = (String) param.getValue("utilityFunction");
 		
+		utilityFunction = (String) param.getValue("utilityFunction");
 		isAgentOrientedUtility = utilityFunction.equals(UtilityType.LEARNING) ? true : false;
 		isTaskOrientedUtility = utilityFunction.equals(UtilityType.IMPACT) ? true : false;
-		
 		if (isAgentOrientedUtility){
 			deployedTaskInternalsLeave = true;
 		}

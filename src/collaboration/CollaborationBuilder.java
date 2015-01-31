@@ -371,7 +371,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		say("[finishSimulation() check launched] Checking if simulation can be ended...");
 		EnvironmentEquilibrium.setActivity(false);
 		if (gameController.isEvolutionary()) {
-			if (!EquilibriumDetector.evaluate(gameController)) {
+			if (EquilibriumDetector.evaluate(gameController)) {
 				say("[Stable set of Strategies] detected, finishing simulation");
 				finalMessage(buildFinalMessage());
 				RunEnvironment.getInstance().endRun();

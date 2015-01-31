@@ -175,19 +175,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
         return size() == 0;
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * A {@code CircularFifoQueue} can never be full, thus this returns always
-     * {@code false}.
-     *
-     * @return always returns {@code false}
-     */
-    public boolean isFull() {
-        return false;
-    }
-
-    private boolean isAtFullCapacity() {
+    public boolean isAtFullCapacity() {
         return size() == maxElements;
     }
 

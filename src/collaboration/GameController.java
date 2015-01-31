@@ -210,10 +210,8 @@ public class GameController {
 		return result;
 	}
 	
-	public Integer countHomophilyDistribution(Object contextBeing){
+	public Integer countHomophilyDistribution(Context<Object> context){
 		Integer result = 0;
-		@SuppressWarnings("unchecked")
-		Context<Object> context = ContextUtils.getContext(contextBeing);
 		Iterable<Object> it = context.getObjects(Agent.class);
 		Iterator<Object> iterator = it.iterator();
 		while (iterator.hasNext()) {
@@ -224,10 +222,8 @@ public class GameController {
 		return result;
 	}
 	
-	public Integer countHeterophilyDistribution(Object contextBeing){
+	public Integer countHeterophilyDistribution(Context<Object> context){
 		Integer result = 0;
-		@SuppressWarnings("unchecked")
-		Context<Object> context = ContextUtils.getContext(contextBeing);
 		Iterable<Object> it = context.getObjects(Agent.class);
 		Iterator<Object> iterator = it.iterator();
 		while (iterator.hasNext()) {
@@ -238,10 +234,8 @@ public class GameController {
 		return result;
 	}
 	
-	public Integer countPreferentialDistribution(Object contextBeing){
+	public Integer countPreferentialDistribution(Context<Object> context){
 		Integer result = 0;
-		@SuppressWarnings("unchecked")
-		Context<Object> context = ContextUtils.getContext(contextBeing);
 		Iterable<Object> it = context.getObjects(Agent.class);
 		Iterator<Object> iterator = it.iterator();
 		while (iterator.hasNext()) {
