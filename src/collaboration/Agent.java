@@ -15,6 +15,7 @@ import logger.PjiitOutputter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 
+import collaboration.Utility.UtilityType;
 import repast.simphony.annotate.AgentAnnot;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.graph.NodeCreator;
@@ -100,12 +101,21 @@ public class Agent implements NodeCreator<Agent> {
 
 	public Double getUtility() {
 		if (SimulationParameters.isAgentOrientedUtility) {
-			return getLearningUtility();
+			if (SimulationParameters.utilityType.equals(UtilityType.LearningSkills))
+				return getLearningUtility();
+			else if (SimulationParameters.utilityType.equals(UtilityType.LeftLearningSkills))
+				return getLeftAgentUtility();
+			else {
+				assert (SimulationParameters.utilityType.equals(UtilityType.RightLearningSkills));
+				return getRightAgentUtility();
+			}
 		} else {
-			if (SimulationParameters.isTaskOrientedUtility)
+			if (SimulationParameters.utilityType.equals(UtilityType.ImpactFactor))
 				return getImpactUtility();
-			else
+			else {
+				assert (SimulationParameters.utilityType.equals(UtilityType.ImpactFactorMax));
 				return getImpactHUtility();
+			}
 		}
 	}
 
@@ -168,7 +178,7 @@ public class Agent implements NodeCreator<Agent> {
 
 	public void mutate() {
 		// 1% chances for deleting (abandoning) skill
-		if (RandomHelper.nextDoubleFromTo(0, 1) <= 0.01) {
+		if (RandomHelper.nextDoubleFromTo(0, 1) <= SimulationParameters.mutateChances) {
 			Object[] allSkills = agentSkills.getSkills().keySet().toArray();
 			agentSkills.removeSkill((String) allSkills[RandomHelper
 					.nextIntFromTo(0, allSkills.length - 1)]);

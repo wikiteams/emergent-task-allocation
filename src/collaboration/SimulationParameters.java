@@ -1,10 +1,11 @@
 package collaboration;
 
-import intelligence.UtilityType;
+import intelligence.UtilityTypes;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 import test.Model;
 import test.ModelConverter;
+import collaboration.Utility.UtilityType;
 
 /**
  * Basically stores parameters from repast file to a holder Simulation
@@ -19,6 +20,7 @@ public class SimulationParameters {
 
 	public static final String tasksDataset = "ALL_REPOSITORIES";
 	public static final int IMPACT_MEMORY = 3;
+	public static final double mutateChances = 0.01;
 	public static boolean multipleAgentSets = true;
 	public static boolean allowSkillDeath = false;
 
@@ -34,8 +36,9 @@ public class SimulationParameters {
 	public static String dataSource = "";
 	public static int planNumber = 0;
 	public static int iterationCount = 0;
-	private static String utilityFunction = "";
 	
+	private static String utilityFunction = "";
+	public static UtilityType utilityType = null;
 	public static boolean complexStrategies;
 	
 	public static boolean isAgentOrientedUtility;
@@ -92,8 +95,28 @@ public class SimulationParameters {
 		dataSource = (String) param.getValue("dataSource");
 		
 		utilityFunction = (String) param.getValue("utilityFunction");
-		isAgentOrientedUtility = utilityFunction.equals(UtilityType.LEARNING) ? true : false;
-		isTaskOrientedUtility = utilityFunction.equals(UtilityType.IMPACT) ? true : false;
+		if (utilityFunction.equals(UtilityTypes.LearningSkills)){
+			isAgentOrientedUtility = true;
+			isTaskOrientedUtility = false;
+			utilityType = UtilityType.LearningSkills;
+		} else if (utilityFunction.equals(UtilityTypes.LeftLearningSkills)){
+			isAgentOrientedUtility = true;
+			isTaskOrientedUtility = false;
+			utilityType = UtilityType.LeftLearningSkills;
+		} else if (utilityFunction.equals(UtilityTypes.RightLearningSkills)){
+			isAgentOrientedUtility = true;
+			isTaskOrientedUtility = false;
+			utilityType = UtilityType.RightLearningSkills;
+		} else if (utilityFunction.equals(UtilityTypes.ImpactFactor)){
+			isAgentOrientedUtility = false;
+			isTaskOrientedUtility = true;
+			utilityType = UtilityType.ImpactFactor;
+		} else if (utilityFunction.equals(UtilityTypes.ImpactFactorMax)){
+			isAgentOrientedUtility = false;
+			isTaskOrientedUtility = true;
+			utilityType = UtilityType.ImpactFactorMax;
+		}
+		
 		if (isAgentOrientedUtility){
 			deployedTaskInternalsLeave = true;
 		}

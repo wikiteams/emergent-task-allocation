@@ -28,7 +28,7 @@
 	<parameter name="utilityFunction" displayName="Utility function"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		type="string" defaultValue="LearningSkills"
-		values="LearningSkills ImpactFactor ImpactFactorMax" />
+		values="LearningSkills LeftLearningSkills RightLearningSkills ImpactFactor ImpactFactorMax" />
 	<parameter name="numTasks" displayName="Number of tasks"
 		type="java.lang.Integer" defaultValue="20" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />

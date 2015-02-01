@@ -27,6 +27,7 @@ import networking.DynamicGexfGraph;
 
 import org.apache.log4j.LogManager;
 
+import collaboration.Utility.UtilityType;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.graph.NetworkBuilder;
 import repast.simphony.dataLoader.ContextBuilder;
@@ -46,6 +47,7 @@ import utils.DescribeUniverseBulkLoad;
 import utils.LaunchStatistics;
 import utils.NamesGenerator;
 import utils.ObjectsHelper;
+import utils.UtilityFactory;
 import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
 import constants.Constraints;
@@ -246,8 +248,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
 			gameController.randomizeGenerationLength(new Integer[] { 20, 50,
 					100 });
+			UtilityFactory.randomizeUtility(new UtilityType[] {UtilityType.LearningSkills, 
+					UtilityType.LeftLearningSkills, UtilityType.RightLearningSkills});
 		}
-		EquilibriumDetector.init();
+		if (!SimulationParameters.forceStop){
+			EquilibriumDetector.init();
+		}
 		context.add(gameController);
 	}
 
@@ -424,7 +430,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ SimulationParameters.granularityObstinacy + ","
 				+ strategyDistribution.getTaskChoice() + ","
 				+ strategyDistribution.getSkillChoice() + ","
+				+ gameController.isEvolutionary() + ","
 				+ SimulationParameters.planNumber + ","
+				+ SimulationParameters.utilityType + ","
 				+ gameController.getCurrentGeneration() + ","
 				+ SimulationParameters.allwaysChooseTask + ","
 				+ gameController.countHomophilyDistribution(currentContext)
@@ -455,7 +463,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ "Fll_Enabled" + "," + "Exp_cut_point" + "," + "Granularity"
 				+ "," + "Granularity_type" + "," + "Granularity_obstinancy"
 				+ "," + "Task_choice_strategy" + "," + "Skill_choice_strategy"
-				+ "Plan_Number" + "," + "Generation" + ","
+				+ "Is_Evolutionary" + ","
+				+ "Plan_Number" + "," + "Utility_Type" + "," + "Generation" + ","
 				+ "Allways_Choose_Task" + "," + "Homophily_Count" + ","
 				+ "Heterophily_Count" + "," + "Preferential_Count";
 	}

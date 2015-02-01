@@ -43,17 +43,13 @@ public class EquilibriumDetector {
 	public static boolean evaluate(GameController gameController) {
 		boolean result = true;
 		if (gameController.getCurrentIteration() < 1){
-			//System.out.println("evaluate is making more analysis because current iter is < 1");
 			// the only reasonable moment to evaluate stop problem
 			// is before starting a new generation
 			if (possiblyStableSet.isAtFullCapacity()){
-				//System.out.println("And it seems like roundqueue is full. sweeeet.");
 				// further more, wait for equilibriumDetectionSensitivity
 				// (minimum number of past generation to start an evaluation)
 				Iterator<Map<TaskChoice, Integer>> iterator = possiblyStableSet.iterator();
 				Map<TaskChoice, Integer> previous = null;
-				/*System.out.println("comparing roundqueue size " + possiblyStableSet.size() + 
-						" in gen it " + gameController.getCurrentIteration());*/
 				while (iterator.hasNext()){
 					Map<TaskChoice, Integer> current = iterator.next();
 					if (! ObjectsHelper.isSecondEqual(current, previous)){
