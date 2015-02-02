@@ -27,8 +27,24 @@ instance_2$LUtility <- as.numeric(instance_2$LUtility)
 instance_2$Utility <- as.numeric(instance_2$Utility)
 instance_2$GeneralExperience <- as.numeric(instance_2$GeneralExperience)
 
+instance_3$RUtility <- as.numeric(instance_3$RUtility)
+instance_3$LUtility <- as.numeric(instance_3$LUtility)
+instance_3$Utility <- as.numeric(instance_3$Utility)
+instance_3$GeneralExperience <- as.numeric(instance_3$GeneralExperience)
+
+instance_4$RUtility <- as.numeric(instance_4$RUtility)
+instance_4$LUtility <- as.numeric(instance_4$LUtility)
+instance_4$Utility <- as.numeric(instance_4$Utility)
+instance_4$GeneralExperience <- as.numeric(instance_4$GeneralExperience)
+
 write.table(instance_1[selected_columns], "data_ts_1.dat", sep = ",", quote = FALSE, dec = ".")
 data_1 <- file("data_ts_1.dat")
 write.table(instance_2[selected_columns], "data_ts_2.dat", sep = ",", quote = FALSE, dec = ".")
 data_2 <- file("data_ts_2.dat")
-merged <- sqldf("select * from data_1 union select * from data_2", dbname = tempfile(tmpdir = c("~/symulator/simphony_model_1422759723448/")))
+write.table(instance_3[selected_columns], "data_ts_3.dat", sep = ",", quote = FALSE, dec = ".")
+data_3 <- file("data_ts_3.dat")
+write.table(instance_4[selected_columns], "data_ts_4.dat", sep = ",", quote = FALSE, dec = ".")
+data_4 <- file("data_ts_4.dat")
+
+merged <- sqldf("select * from data_1 union select * from data_2 union select * from data_3 union select * from data_4", 
+                dbname = tempfile(tmpdir = c("~/symulator/simphony_model_1422759723448/")))
