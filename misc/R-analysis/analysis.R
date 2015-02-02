@@ -1,6 +1,7 @@
 setwd("~/symulator/simphony_model_1422759723448/")
 
 library(dplyr)
+library(sqldf)
 
 instance_1 <- read.csv('instance_1/agents_nonaggr_state.2015.lut.01.04_04_09.csv', sep=";", quote="\"", header = TRUE, dec=".")
 instance_2 <- read.csv('instance_2/agents_nonaggr_state.2015.lut.01.04_04_11.csv', sep=";", quote="\"", header = TRUE, dec=".")
@@ -12,3 +13,22 @@ instance_7 <- read.csv('instance_7/agents_nonaggr_state.2015.lut.01.04_04_11.csv
 instance_8 <- read.csv('instance_8/agents_nonaggr_state.2015.lut.01.04_04_11.csv', sep=";", quote="\"", header = TRUE, dec=".")
 instance_9 <- read.csv('instance_9/agents_nonaggr_state.2015.lut.01.04_04_10.csv', sep=";", quote="\"", header = TRUE, dec=".")
 instance_10 <- read.csv('instance_10/agents_nonaggr_state.2015.lut.01.04_04_10.csv', sep=";", quote="\"", header = TRUE, dec=".")
+
+selected_columns <- c("run", "tick", "EvolutionGeneration", "EvolutionIteration", "Id", 
+            "TaskStrategy", "SkillStrategy", "WasWorkingOnAnything", "GeneralExperience", "Utility", "LUtility", "RUtility")
+
+instance_1$RUtility <- as.numeric(instance_1$RUtility)
+instance_1$LUtility <- as.numeric(instance_1$LUtility)
+instance_1$Utility <- as.numeric(instance_1$Utility)
+instance_1$GeneralExperience <- as.numeric(instance_1$GeneralExperience)
+
+instance_2$RUtility <- as.numeric(instance_2$RUtility)
+instance_2$LUtility <- as.numeric(instance_2$LUtility)
+instance_2$Utility <- as.numeric(instance_2$Utility)
+instance_2$GeneralExperience <- as.numeric(instance_2$GeneralExperience)
+
+write.table(instance_1[selected_columns], "data_ts_1.dat", sep = ",", quote = FALSE, dec = ".")
+data_1 <- file("data_ts_1.dat")
+write.table(instance_2[selected_columns], "data_ts_2.dat", sep = ",", quote = FALSE, dec = ".")
+data_2 <- file("data_ts_2.dat")
+merged <- sqldf("select * from data_1 union select * from data_2", dbname = tempfile(tmpdir = c("~/symulator/simphony_model_1422759723448/")))
