@@ -381,13 +381,13 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				say("[Stable set of Strategies] detected, finishing simulation");
 				finalMessage(buildFinalMessage());
 				RunEnvironment.getInstance().endRun();
-				cleanAfter();
+				// cleanAfter();
 			}
 		} else if (((Tasks) tasks).getCount() < 1) {
 			say("Count of [Task Pool] is < 1, finishing simulation");
 			finalMessage(buildFinalMessage());
 			RunEnvironment.getInstance().endRun();
-			cleanAfter();
+			// cleanAfter();
 		}
 	}
 
@@ -404,7 +404,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			say("EnvironmentEquilibrium.getActivity() returns false!");
 			finalMessage(buildFinalMessage());
 			RunEnvironment.getInstance().endRun();
-			cleanAfter();
+			// cleanAfter();
 		}
 	}
 
@@ -469,12 +469,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ "Heterophily_Count" + "," + "Preferential_Count";
 	}
 
-	private void cleanAfter() {
+/*	private void cleanAfter() {
 		if (!alreadyFlushed) {
 			LogManager.shutdown();
 			alreadyFlushed = true;
 		}
-	}
+	}*/
 
 	private void say(String s) {
 		PjiitOutputter.say(s);

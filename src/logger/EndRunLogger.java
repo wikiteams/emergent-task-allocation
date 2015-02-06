@@ -1,8 +1,6 @@
 package logger;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
@@ -21,6 +19,9 @@ public class EndRunLogger {
 		try {
 			appender = new FileAppender(
 					layout, "batch.log", true);
+			appender.setImmediateFlush(true);
+			// appender.setBufferedIO(false);
+			appender.setEncoding("UTF-8");
 			logger.addAppender(appender);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -29,7 +30,7 @@ public class EndRunLogger {
 		logger.setLevel((Level) Level.ALL);
 	}
 	
-	public static void init_singleton() {
+/*	public static void init_singleton() {
 		// setting up a FileAppender dynamically...
 		SimpleLayout layout = new SimpleLayout();
 		FileAppender appender;
@@ -43,14 +44,14 @@ public class EndRunLogger {
 		}
 
 		logger.setLevel((Level) Level.ALL);
-	}
+	}*/
 	
-	private static String getCurrentTimeStamp() {
+/*	private static String getCurrentTimeStamp() {
 	    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
 	    Date now = new Date();
 	    String strDate = sdfDate.format(now);
 	    return strDate;
-	}
+	}*/
 	
 	public static void finalMessage(String message){
 		logger.info(message);
