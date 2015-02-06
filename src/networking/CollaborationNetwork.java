@@ -19,7 +19,8 @@ public class CollaborationNetwork {
 	public static DynamicGexfGraph gephiEngine;
 	
 	public static void clear(){
-		collaborationNetwork.removeEdges();
+		if (collaborationNetwork != null)
+			collaborationNetwork.removeEdges();
 	}
 	
 	public static void addEdge(Agent agent, Task task){

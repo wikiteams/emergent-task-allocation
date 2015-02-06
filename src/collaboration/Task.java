@@ -238,7 +238,8 @@ public class Task {
 	}
 
 	public Boolean workOnTask(Agent agent, Strategy.SkillChoice strategy) {
-		CollaborationNetwork.addEdge(agent, this);
+		if (SimulationAdvancedParameters.enableNetwork)
+			CollaborationNetwork.addEdge(agent, this);
 		
 		Double impactFactor = null;
 		
