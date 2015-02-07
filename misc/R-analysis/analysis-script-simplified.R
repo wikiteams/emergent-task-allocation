@@ -14,16 +14,16 @@ setwd("~/symulator/simphony_model_1423341325045/")
 library(dplyr)
 library(sqldf)
 
-instance_1 <- read.csv2('instance_1/agents_nonaggr_state.2015.lut.06.21_57_11.csv', sep=";", quote="\"", header = TRUE, dec=",")
-instance_2 <- read.csv2('instance_2/agents_nonaggr_state.2015.lut.06.21_57_11.csv', sep=";", quote="\"", header = TRUE, dec=",")
-instance_3 <- read.csv2('instance_3/agents_nonaggr_state.2015.lut.06.21_57_11.csv', sep=";", quote="\"", header = TRUE, dec=",")
-instance_4 <- read.csv2('instance_4/agents_nonaggr_state.2015.lut.06.21_57_12.csv', sep=";", quote="\"", header = TRUE, dec=",")
-instance_5 <- read.csv2('instance_5/agents_nonaggr_state.2015.lut.06.21_57_12.csv', sep=";", quote="\"", header = TRUE, dec=",")
-instance_6 <- read.csv2('instance_6/agents_nonaggr_state.2015.lut.06.21_57_11.csv', sep=";", quote="\"", header = TRUE, dec=",")
-instance_7 <- read.csv2('instance_7/agents_nonaggr_state.2015.lut.06.21_57_11.csv', sep=";", quote="\"", header = TRUE, dec=",")
-instance_8 <- read.csv2('instance_8/agents_nonaggr_state.2015.lut.06.21_57_12.csv', sep=";", quote="\"", header = TRUE, dec=",")
-instance_9 <- read.csv2('instance_9/agents_nonaggr_state.2015.lut.06.21_57_12.csv', sep=";", quote="\"", header = TRUE, dec=",")
-instance_10 <- read.csv2('instance_10/agents_nonaggr_state.2015.lut.06.21_57_12.csv', sep=";", quote="\"", header = TRUE, dec=",")
+instance_1 <- read.csv2('instance_1/agents_nonaggr_state.2015.lut.07.21_38_09.csv', sep=";", quote="\"", header = TRUE, dec=",")
+instance_2 <- read.csv2('instance_2/agents_nonaggr_state.2015.lut.07.21_38_07.csv', sep=";", quote="\"", header = TRUE, dec=",")
+instance_3 <- read.csv2('instance_3/agents_nonaggr_state.2015.lut.07.21_38_08.csv', sep=";", quote="\"", header = TRUE, dec=",")
+instance_4 <- read.csv2('instance_4/agents_nonaggr_state.2015.lut.07.21_38_08.csv', sep=";", quote="\"", header = TRUE, dec=",")
+instance_5 <- read.csv2('instance_5/agents_nonaggr_state.2015.lut.07.21_38_08.csv', sep=";", quote="\"", header = TRUE, dec=",")
+instance_6 <- read.csv2('instance_6/agents_nonaggr_state.2015.lut.07.21_38_07.csv', sep=";", quote="\"", header = TRUE, dec=",")
+instance_7 <- read.csv2('instance_7/agents_nonaggr_state.2015.lut.07.21_38_08.csv', sep=";", quote="\"", header = TRUE, dec=",")
+instance_8 <- read.csv2('instance_8/agents_nonaggr_state.2015.lut.07.21_38_09.csv', sep=";", quote="\"", header = TRUE, dec=",")
+instance_9 <- read.csv2('instance_9/agents_nonaggr_state.2015.lut.07.21_38_08.csv', sep=";", quote="\"", header = TRUE, dec=",")
+instance_10 <- read.csv2('instance_10/agents_nonaggr_state.2015.lut.07.21_38_08.csv', sep=";", quote="\"", header = TRUE, dec=",")
 
 batch_1 <- read.csv('instance_1/batch.log', sep=",", quote="", header = TRUE, dec=".")
 batch_2 <- read.csv('instance_2/batch.log', sep=",", quote="", header = TRUE, dec=".")
@@ -161,23 +161,29 @@ names(merged)
 
 # wygeneruj vector kombinacji
 
-kombinacje <- expand.grid(
+combination_of_param <- expand.grid(
   c("LearningSkills","LeftLearningSkills","RightLearningSkills"), 
   c(TRUE, FALSE), 
-  c(20), 
+  c(20, 50, 100), 
   c("choice","greedy","proportional","random"), 
   c(100, 120),
   c(100, 20, 50))
-typeof(kombinacje)
-kombinacje
-lapply( kombinacje , setNames , nm = c(
+typeof(combination_of_param)
+combination_of_param
+
+# bardzo duzo warunkow brzegowych :/ 
+# nastepnym razem policz tylko 2 × 2 × 2 , co da 8 kombinacji
+# w takim razie forkuje kod do analysis-script-simplified.R
+
+my_col_names <- c(
   'Utility', 
   'ExpDecay', 
   'GenerationLength', 
   'SkillStrategy', 
   'AgentCount', 
-  'TaskCount') )
-typeof(kombinacje)
+  'TaskCount')
+colnames(combination_of_param) <- my_col_names
+typeof(combination_of_param)
 
 # teraz majac liste kombinacji mozesz robic query o poszczegolne warunki
 
