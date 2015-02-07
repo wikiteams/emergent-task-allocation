@@ -463,18 +463,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ "Fll_Enabled" + "," + "Exp_cut_point" + "," + "Granularity"
 				+ "," + "Granularity_type" + "," + "Granularity_obstinancy"
 				+ "," + "Task_choice_strategy" + "," + "Skill_choice_strategy"
-				+ "Is_Evolutionary" + ","
+				+ "," + "Is_Evolutionary" + ","
 				+ "Plan_Number" + "," + "Utility_Type" + "," + "Generation" + ","
 				+ "Allways_Choose_Task" + "," + "Homophily_Count" + ","
 				+ "Heterophily_Count" + "," + "Preferential_Count";
 	}
-
-/*	private void cleanAfter() {
-		if (!alreadyFlushed) {
-			LogManager.shutdown();
-			alreadyFlushed = true;
-		}
-	}*/
 
 	private void say(String s) {
 		PjiitOutputter.say(s);

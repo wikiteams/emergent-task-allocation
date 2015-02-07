@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<sweep runs="300">
+<sweep runs="400">
 	<parameter name="strategyDistribution" type="constant" constant_type="int" value="1" />
 	<parameter name="planNumber" type="constant" constant_type="int" value="7" />
 	<parameter name="dataSource" type="constant" constant_type="java.lang.String" value="Sqlite" />
