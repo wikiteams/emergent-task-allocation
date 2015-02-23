@@ -879,6 +879,122 @@ p5_h_hom <-
 p5_multiplot <- multiplot(p5_h_het, p5_h_hom, p5_h_pref, cols=1)
 
 
+# variant 6 -  FALSE ; Agents 100 ; Tasks 50
+
+v6_id_runs <- subset(batch_merged, 
+                     Experience_Decay == combination_of_param[6, c(1)] & 
+                       Agents_Count == combination_of_param[6, c(2)] & 
+                       Tasks_Count == combination_of_param[6, c(3)],
+                     select=c("Run_Number"))
+nrow(v6_id_runs)
+v6_id_runs[,]
+length(v6_id_runs[,])
+scenario_6_t <- subset(merged, run %in% v6_id_runs[,], select=c(1,3,4,6))
+nrow(scenario_6_t)
+max(scenario_6_t$EvolutionIteration)
+scenario_6 <- sqldf("select run, EvolutionGeneration, TaskStrategy, 
+                    count(TaskStrategy) as licznosc 
+                    from scenario_6_t 
+                    where EvolutionIteration = 20
+                    group by 
+                    run, EvolutionGeneration, TaskStrategy")
+
+p6_r <- 
+  ggplot(scenario_6, 
+         aes(x=EvolutionGeneration, y=licznosc, colour=TaskStrategy, group=run)) +
+  geom_point(aes(group = run)) +
+  ggtitle("Set of strategies, grouped, through generations")
+
+scenario_6_u <- subset(merged, run %in% v6_id_runs[,], select=c(1,3,4,10,11,12))
+scenario_6_ut <- sqldf("select run, EvolutionGeneration, EvolutionIteration, 
+                       avg(Utility) as avg_utility, avg(LUtility) as avg_lutility,
+                       avg(RUtility) as avg_rutility
+                       from scenario_6_u 
+                       group by 
+                       run, EvolutionGeneration, EvolutionIteration")
+scenario_6_ut$grp <- paste(scenario_6_ut[,1],scenario_6_ut[,2])
+p6_u <- 
+  ggplot(scenario_6_ut, 
+         aes(x=EvolutionIteration, y=avg_utility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  geom_smooth(na.rm = TRUE, method = 'glm') +
+  ggtitle("Utility values through iterations (avg by all users)")
+p6_ul <- 
+  ggplot(scenario_6_ut, 
+         aes(x=EvolutionIteration, y=avg_lutility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  geom_smooth(na.rm = TRUE, method = 'glm') +
+  ggtitle("LUtility values through iterations (avg by all users)")
+p6_ur <- 
+  ggplot(scenario_6_ut, 
+         aes(x=EvolutionIteration, y=avg_rutility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  geom_smooth(na.rm = TRUE, method = 'glm') +
+  ggtitle("RUtility values through iterations (avg by all users)")
+p6_multiplot_u <- multiplot(p6_u, p6_ul, p6_ur, cols=2)
+
+p6_1 <- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] & 
+                  Agents_Count == combination_of_param[6, c(2)] & 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Generation, fill=Heterophily_Count)) +
+  geom_histogram(colour="black", binwidth=30) +
+  facet_grid(Heterophily_Count ~ .) +
+  ggtitle("How many generations it took")
+# combination_of_param[1, c(1)]
+p6_2 <- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] & 
+                  Agents_Count == combination_of_param[6, c(2)] & 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Generation, fill=Homophily_Count)) +
+  geom_histogram(colour="black", binwidth=30) +
+  facet_grid(Homophily_Count ~ .) +
+  ggtitle("How many generations it took")
+p6_3 <- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] & 
+                  Agents_Count == combination_of_param[6, c(2)] & 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Generation, fill=Preferential_Count)) +
+  geom_histogram(colour="black", binwidth=30) +
+  facet_grid(Preferential_Count ~ .) +
+  ggtitle("How many generations it took")
+p6_multiplot2 <- multiplot(p6_1, p6_2, p6_3, cols=1)
+
+p6_h_pref <- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] & 
+                  Agents_Count == combination_of_param[6, c(2)] & 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Preferential_Count)) + 
+  geom_histogram(binwidth=1, colour="black", fill="white") +
+  geom_vline(aes(xintercept=mean(Preferential_Count, na.rm=T)),
+             color="red", linetype="dashed", size=1) +
+  xlim(c(0,120))
+p6_h_het <- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] & 
+                  Agents_Count == combination_of_param[6, c(2)] & 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Heterophily_Count)) + 
+  geom_histogram(binwidth=1, colour="black", fill="white") +
+  geom_vline(aes(xintercept=mean(Heterophily_Count, na.rm=T)),
+             color="red", linetype="dashed", size=1) +
+  xlim(c(0,120))
+p6_h_hom <- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] & 
+                  Agents_Count == combination_of_param[6, c(2)] & 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Homophily_Count)) + 
+  geom_histogram(binwidth=1, colour="black", fill="white") +
+  geom_vline(aes(xintercept=mean(Homophily_Count, na.rm=T)),
+             color="red", linetype="dashed", size=1) +
+  xlim(c(0,120))
+p6_multiplot <- multiplot(p6_h_het, p6_h_hom, p6_h_pref, cols=1)
+
 unusual_observations <- subset(
   batch_merged, Homophily_Count > 0 | Preferential_Count > 0)
 View(unusual_observations)

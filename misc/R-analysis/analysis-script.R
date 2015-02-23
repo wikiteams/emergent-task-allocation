@@ -171,7 +171,7 @@ combination_of_param <- expand.grid(
 typeof(combination_of_param)
 combination_of_param
 
-# bardzo duzo warunkow brzegowych :/ 
+# bardzo duzo kombinacji parametrow symulatora :( 
 # nastepnym razem policz tylko 2 × 2 × 2 , co da 8 kombinacji
 # w takim razie forkuje kod do analysis-script-simplified.R
 
@@ -186,5 +186,15 @@ colnames(combination_of_param) <- my_col_names
 typeof(combination_of_param)
 
 # teraz majac liste kombinacji mozesz robic query o poszczegolne warunki
+
+# otworz X obiektow multiplot, tyle ile jest kombinacji (combination_of_param)
+# oraz X tabelek ze statystykami
+
+# zlicz licznosc runow o danej konfiguracji
+# 1) iteruj po runach (runid), bedzie szybciej
+#   2) dla pojedynczego runu 
+#       -oblicz wlasciwosci 
+#       -dodaj dane do wlasciwej tabelki
+#       -dodaj dane do wlasciwego plot (wg parametrow)
 
 # narysuj multiplot z przebiegiem ewolucji x razy
