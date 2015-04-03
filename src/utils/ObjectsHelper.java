@@ -20,6 +20,7 @@ public class ObjectsHelper {
 		return (int) value;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public static Boolean isSecondEqual(Map m1, Map m2) {
 		if (m2 == null) {
 			return true;

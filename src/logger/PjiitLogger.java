@@ -46,6 +46,7 @@ public class PjiitLogger {
 	    dumpAll();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static void dumpAll(){
 		Enumeration<Category> loggers = LogManager.getCurrentLoggers();
 		while (loggers.hasMoreElements()){
