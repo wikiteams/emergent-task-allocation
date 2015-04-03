@@ -319,6 +319,7 @@ public abstract class TaskSkillsPool {
 		return (Skill) hMap.values().toArray()[index];
 	}
 
+	@SuppressWarnings("unchecked")
 	private static HashMap<Skill, Double> getByIndex(
 			LinkedHashMap<Repository, HashMap<Skill, Double>> hMap, int index) {
 		return (HashMap<Skill, Double>) hMap.values().toArray()[index];
