@@ -239,9 +239,9 @@ public class Tasks extends DefaultContext<Task> {
 		try {
 			List<Task> firstTasks = MyDatabaseConnector.get(this.allowedLoad);
 			for (Task task : firstTasks) {
-				// addTask(task);
 				context.add(task);
 			}
+			launchStatistics.taskCount = firstTasks.size();
 		} catch (SQLException e) {
 			say("Error during init of first " + this.allowedLoad + " [Tasks]");
 			e.printStackTrace();
