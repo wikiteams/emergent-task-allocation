@@ -38,6 +38,7 @@ public class Strategy implements StrategyInterface {
 		this.skillChoice = skillChoice;
 	}
 
+	@SuppressWarnings({ "unchecked", "static-access" })
 	public static Strategy getInstance(StrategyDistribution strategyDistribution,
 			Integer i, Integer max) {
 		StrategySet set = strategyDistribution.getStrategySet();
