@@ -24,10 +24,6 @@ import logger.ValidationLogger;
 import logger.ValidationOutputter;
 import networking.CollaborationNetwork;
 import networking.DynamicGexfGraph;
-
-import org.apache.log4j.LogManager;
-
-import collaboration.Utility.UtilityType;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.graph.NetworkBuilder;
 import repast.simphony.dataLoader.ContextBuilder;
@@ -50,6 +46,7 @@ import utils.ObjectsHelper;
 import utils.UtilityFactory;
 import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
+import collaboration.Utility.UtilityType;
 import constants.Constraints;
 import constants.LoadSet;
 import constants.ModelFactory;
@@ -74,10 +71,10 @@ import constants.ModelFactory;
  * 
  * Project uses ini4j library which is licensed under Apache License.
  * 
- * @version 2.0.9 'White Fox' edition
+ * @version 2.0.10 'Angry Rat' edition
  * @category Agent-organised Social Simulations
  * @since 1.0
- * @author Oskar Jarczyk, Bla\zej Gruszka et.al.
+ * @author Oskar Jarczyk, Blazej Gruszka et al.
  * @see 1) GitHub markdown 2) "On The Effectiveness of Emergent Task Allocation"
  */
 public class CollaborationBuilder implements ContextBuilder<Object> {
@@ -111,8 +108,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private GameController gameController;
 
 	private CentralPlanning centralPlanner;
-
-	private boolean alreadyFlushed = false;
 
 	public CollaborationBuilder() {
 		try {
@@ -245,7 +240,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	public void prepareGameController(Context<Object> context) {
 		gameController = new GameController(strategyDistribution);
-		if (modelFactory.getFunctionality().isMultipleValidation()) {
+		if (SimulationAdvancedParameters.smallCartesianSet){
+			// Testing [2x2x2] or [2x2] set of params
+			gameController.randomizeGenerationLength( new Integer[] { 20, 100 } );
+			UtilityFactory.setUtility( UtilityType.LearningSkills );
+		} else if (modelFactory.getFunctionality().isMultipleValidation()) {
 			gameController.randomizeGenerationLength(new Integer[] { 20, 50,
 					100 });
 			UtilityFactory.randomizeUtility(new UtilityType[] {UtilityType.LearningSkills, 

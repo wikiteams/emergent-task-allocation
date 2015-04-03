@@ -1,5 +1,6 @@
 package strategies;
 
+import collaboration.SimulationAdvancedParameters;
 import repast.simphony.random.RandomHelper;
 import strategies.Strategy.SkillChoice;
 import strategies.Strategy.TaskChoice;
@@ -77,6 +78,9 @@ public class StrategyDistribution {
 	}
 	
 	public void setSkillChoice(ModelFactory modelFactory, String skillChoice) {
+		if (SimulationAdvancedParameters.smallCartesianSet){
+			this.skillChoice = skillChoice;
+		} else
 		if (modelFactory.getFunctionality().isMultipleValidation()) {
 			// this is only important if you launch
 			// a "multiple validation" parameter set in modelType
