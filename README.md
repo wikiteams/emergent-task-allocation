@@ -249,3 +249,7 @@ A: This is normal behaviour, when adding lot of Agents, from JScience's Fast Map
 **Q: Simulation runs very slowly**
 
 A: Run in a batch *remote* mode on an Unix computational machine, where there is lot of RAM and cores. Disable outputting messages in classes: *PjiitOutputter* and *ValidationOutputter*.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/wikiteams/emergent-task-allocation/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
