@@ -1,0 +1,233 @@
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    displayAlign: "left",
+    "HTML-CSS": { scale: 175 }
+  });
+</script>
+
+Results of run "[2x2]"
+========================================================
+
+# 1\. Data procesing and analyses
+
+## 1\.1 Batch results pre-processing (probably you can skip this)
+
+Reading the summary result data which describes a state when simulation finds the equilibrium.
+
+Let me just point the directory.
+
+```{r, message=F, warning=F}
+wd <- "/mnt/data1/oskar/symulacje-github/simphony_model_1428496490013/"
+library(dplyr)
+library(sqldf)
+```
+
+And load the data.
+
+```{r}
+batch_1 <- read.csv(paste(wd,'instance_1/batch.log',sep=""), sep=",", quote="", header = TRUE, dec=".")
+batch_2 <- read.csv(paste(wd,'instance_2/batch.log',sep=""), sep=",", quote="", header = TRUE, dec=".")
+batch_3 <- read.csv(paste(wd,'instance_3/batch.log',sep=""), sep=",", quote="", header = TRUE, dec=".")
+batch_4 <- read.csv(paste(wd,'instance_4/batch.log',sep=""), sep=",", quote="", header = TRUE, dec=".")
+batch_5 <- read.csv(paste(wd,'instance_5/batch.log',sep=""), sep=",", quote="", header = TRUE, dec=".")
+batch_6 <- read.csv(paste(wd,'instance_6/batch.log',sep=""), sep=",", quote="", header = TRUE, dec=".")
+batch_7 <- read.csv(paste(wd,'instance_7/batch.log',sep=""), sep=",", quote="", header = TRUE, dec=".")
+batch_8 <- read.csv(paste(wd,'instance_8/batch.log',sep=""), sep=",", quote="", header = TRUE, dec=".")
+batch_9 <- read.csv(paste(wd,'instance_9/batch.log',sep=""), sep=",", quote="", header = TRUE, dec=".")
+batch_10 <- read.csv(paste(wd,'instance_10/batch.log',sep=""), sep=",", quote="", header = TRUE, dec=".")
+```
+
+What the single's file size?
+
+```{r}
+typeof(batch_1)
+length(batch_1)
+```
+
+Number of all results (hence the merge)
+
+```{r}
+nrow(batch_1) + nrow(batch_2) + nrow(batch_3) + nrow(batch_4) + nrow(batch_5) +
+  nrow(batch_6) + nrow(batch_7) + nrow(batch_8) + 
+  nrow(batch_9) + nrow(batch_10)
+```
+
+Merging results into one dataframe
+
+```{r}
+batch_merged <- sqldf("select * from batch_1 union select * from batch_2 union select * from batch_3 union select * from batch_4  
+                      union select * from batch_5 union select * from batch_6 union select * from batch_7 union select * from batch_8 
+                      union select * from batch_9 union select * from batch_10")
+
+batch_merged$Experience_Decay <- as.logical(batch_merged$Experience_Decay=='true')
+batch_merged$Allow_Skill_Death <- as.logical(batch_merged$Allow_Skill_Death=='true')
+batch_merged$Fll_Enabled <- as.logical(batch_merged$Fll_Enabled=='true')
+batch_merged$Exp_cut_point <- as.logical(batch_merged$Exp_cut_point=='true')
+batch_merged$Granularity <- as.logical(batch_merged$Granularity=='true')
+batch_merged$Is_Evolutionary <- as.logical(batch_merged$Is_Evolutionary=='true')
+batch_merged$Allways_Choose_Task <- as.logical(batch_merged$Allways_Choose_Task=='true')
+```
+
+Setting indexes
+
+```{r}
+result_idx1 <- sqldf("create index idx_batch_run on batch_merged(Run_Number)")
+```
+```{r}
+typeof(batch_merged)
+sapply(batch_merged, class)
+```
+
+Show head and tail of merged batch results
+
+```{r}
+# head(batch_merged)  -- to long output, skip
+# tail(batch_merged)  -- to long output, skip
+```
+
+Generate vector of combinations
+
+```{r}
+combination_of_param <- expand.grid(
+  c(50, 120),
+  c(20, 100))
+typeof(combination_of_param)
+combination_of_param
+my_col_names <- c(
+  'AgentCount', 
+  'GenerationLength')
+colnames(combination_of_param) <- my_col_names
+typeof(combination_of_param)
+```
+
+We have set of 4 options [2 x 2]
+
+```{r}
+covering <- sqldf("select Experience_Decay, Agents_Count, GenerationLength, 
+                  count(*) as occurences, 
+                  'ExpDec-' || Experience_Decay || '-A-' || Agents_Count || '-GL-' || GenerationLength as optgrp
+                  from batch_merged group by Experience_Decay, Agents_Count, GenerationLength")
+min(covering$occurences)
+max(covering$occurences)
+sd(covering$occurences)
+```
+
+```{r}
+# head(covering) -- to long output, skip
+# sqldf("update batch_merged b set b.opt = (select distinct p.optgrp from covering p where p.Experience_Decay = b.Experience_Decay and p.Agents_Count = b.Agents_Count and p.GenerationLength = b.GenerationLength)")
+batch_merged <- sqldf("select b.*, p.optgrp as OptionGroup, '' as winning from batch_merged b join covering p on (p.Experience_Decay = b.Experience_Decay and p.Agents_Count = b.Agents_Count and p.GenerationLength = b.GenerationLength)")
+# head(batch_merged,5) -- to long output, skip
+# tail(batch_merged) -- to long output, skip
+nrow(batch_merged)
+```
+
+## 1\.2 Ploting time of simulation closure
+
+Box plots of time execution
+
+```{r, fig.width = 10}
+library(ggplot2) 
+# Boxplots of task count by scenario number
+# observations (points) are overlayed and jittered
+qplot(OptionGroup, Tick_Count, data=batch_merged, geom=c("boxplot", "jitter"),
+   fill=OptionGroup, main="Tick count per different scenario",
+   xlab="", ylab="Number of ticks") + stat_boxplot(geom ='errorbar')
+```
+
+## 1\.3 Ploting winning strategies
+
+```{r}
+batch_merged <- sqldf(c("update batch_merged set winning = 'mix' where (Homophily_Count BETWEEN 1 AND Agents_Count - 1) or (Heterophily_Count BETWEEN 1 AND Agents_Count - 1) or (Preferential_Count BETWEEN 1 AND Agents_Count - 1)", "select * from batch_merged"))
+batch_merged <- sqldf(c("update batch_merged set winning = 'hom' where Homophily_Count = Agents_Count", "select * from batch_merged"))
+batch_merged <- sqldf(c("update batch_merged set winning = 'het' where Heterophily_Count = Agents_Count", "select * from batch_merged"))
+batch_merged <- sqldf(c("update batch_merged set winning = 'pre' where Preferential_Count = Agents_Count", "select * from batch_merged"))
+winning <- sqldf("select OptionGroup as subscenario, sum(CASE WHEN winning='hom' THEN 1 ELSE 0 END) as homophily, sum(CASE WHEN winning='het' THEN 1 ELSE 0 END) as heterophily, sum(CASE WHEN winning='pre' THEN 1 ELSE 0 END) as preferential, sum(CASE WHEN winning='mix' THEN 1 ELSE 0 END) as mixed from batch_merged group by subscenario")
+winning$index <- c(1:nrow(winning))
+```
+
+Table with winning strategies is produced here:
+
+```{r table1, comment=NA, results='asis'}
+library(xtable)
+print(xtable(head(winning)), type = "html", include.rownames = F)
+```
+
+# 2\. Definitions
+
+# 2\.1 Basic terms
+
+* Experience
+
+This have values between *0* and *1* returned by a sigmoid function.
+
+```{r}
+sigmoid <- function(x) {
+  1 / ( 1 + exp(-x) )
+}
+point <- 0.75 * 12 - 6
+qplot(c(-6, 6), stat="function", fun=sigmoid, geom="line") + geom_point(aes(point), y=sigmoid(point), colour="red")
+```
+
+And, for example, if agent worked 3000 units on Java which mastering requires 4000 units, he have experience equal sigmoid(0.75 * 12 - 6) because 3000/4000 = 0.75
+
+# 2\.2 Algorithms descriptions
+
+* Similarity
+
+$$
+Similarity_{MIN} = 
+\begin{pmatrix}
+0 & \iff A \cap T = \varnothing \\
+
+\begin{smallmatrix}
+  min \\
+  s \in A \cap T
+\end{smallmatrix}
+
+(\xi_s^A) & \iff A \cap T \neq \varnothing
+\end{pmatrix}
+$$
+
+$$
+Similarity_{MAX} = 
+\begin{pmatrix}
+0 & \iff A \cap T = \varnothing \\
+
+\begin{smallmatrix}
+  max \\
+  s \in A \cap T
+\end{smallmatrix}
+
+(\xi_s^A) & \iff A \cap T \neq \varnothing
+\end{pmatrix}
+$$
+
+* Homophily
+
+This strategy searches for a maximum similarity
+
+$$
+argmax(Similarity_{MAX}(A,T))$
+$$
+
+* Heterophily
+
+This strategy searches for a minium similarity
+
+$$
+argmin(Similarity_{MIN}(A,T))$
+$$
+
+* Preferential
+
+Get all tasks with having at least one agent skill and chose task with highest number of *visits*. In a situation in which tasks having user skills where never 'worked on' (*visited*) yet, chose a *most done* task. Also chose a *most done* task when there are no tasks matching user skill.
+
+# 3\. Agents state and their learning process
+
+* Utility function
+
+Learning function is a sum of two parts, left part is *the lowest single experience* from set of Agent's skills, right part is a *sum of Agent's experiences* multiplied by factor *0.05*.
+
+$$latex
+min \xi _i + \varepsilon \cdot \sum_{i}^{n} \xi_i
+$$

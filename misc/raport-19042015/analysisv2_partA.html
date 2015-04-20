@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title></title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<pre><code class="r"># Multiple plot function
+#
+# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
+# - cols:   Number of columns in layout
+# - layout: A matrix specifying the layout. If present, &#39;cols&#39; is ignored.
+#
+# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+# then plot 1 will go in the upper left, 2 will go in the upper right, and
+# 3 will go all the way across the bottom.
+#
+multiplot &lt;- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  require(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots &lt;- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use &#39;cols&#39; to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout &lt;- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+  if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx &lt;- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+</code></pre>
+
+<pre><code class="r">setwd(&quot;/mnt/data1/oskar/symulacje-github/simphony_model_1428496490013/&quot;)
+wd &lt;- &quot;/mnt/data1/oskar/symulacje-github/simphony_model_1428496490013/&quot;
+</code></pre>
+
+<pre><code class="r">library(dplyr)
+library(sqldf)
+</code></pre>
+
+<p>Wczytywanie stanow agentow z pojedynczych instancji</p>
+
+<pre><code class="r">instance_1 &lt;- read.csv2(paste(wd,&#39;instance_1/agents_nonaggr_state.2015.kwi.08.14_38_03.csv&#39;,sep=&quot;&quot;), sep=&quot;;&quot;, quote=&quot;\&quot;&quot;, header = TRUE, dec=&quot;,&quot;)
+instance_2 &lt;- read.csv2(paste(wd,&#39;instance_2/agents_nonaggr_state.2015.kwi.08.14_38_01.csv&#39;,sep=&quot;&quot;), sep=&quot;;&quot;, quote=&quot;\&quot;&quot;, header = TRUE, dec=&quot;,&quot;)
+instance_3 &lt;- read.csv2(paste(wd,&#39;instance_3/agents_nonaggr_state.2015.kwi.08.14_38_01.csv&#39;,sep=&quot;&quot;), sep=&quot;;&quot;, quote=&quot;\&quot;&quot;, header = TRUE, dec=&quot;,&quot;)
+instance_4 &lt;- read.csv2(paste(wd,&#39;instance_4/agents_nonaggr_state.2015.kwi.08.14_38_03.csv&#39;,sep=&quot;&quot;), sep=&quot;;&quot;, quote=&quot;\&quot;&quot;, header = TRUE, dec=&quot;,&quot;)
+instance_5 &lt;- read.csv2(paste(wd,&#39;instance_5/agents_nonaggr_state.2015.kwi.08.14_38_03.csv&#39;,sep=&quot;&quot;), sep=&quot;;&quot;, quote=&quot;\&quot;&quot;, header = TRUE, dec=&quot;,&quot;)
+instance_6 &lt;- read.csv2(paste(wd,&#39;instance_6/agents_nonaggr_state.2015.kwi.08.14_38_01.csv&#39;,sep=&quot;&quot;), sep=&quot;;&quot;, quote=&quot;\&quot;&quot;, header = TRUE, dec=&quot;,&quot;)
+instance_7 &lt;- read.csv2(paste(wd,&#39;instance_7/agents_nonaggr_state.2015.kwi.08.14_38_03.csv&#39;,sep=&quot;&quot;), sep=&quot;;&quot;, quote=&quot;\&quot;&quot;, header = TRUE, dec=&quot;,&quot;)
+instance_8 &lt;- read.csv2(paste(wd,&#39;instance_8/agents_nonaggr_state.2015.kwi.08.14_38_02.csv&#39;,sep=&quot;&quot;), sep=&quot;;&quot;, quote=&quot;\&quot;&quot;, header = TRUE, dec=&quot;,&quot;)
+instance_9 &lt;- read.csv2(paste(wd,&#39;instance_9/agents_nonaggr_state.2015.kwi.08.14_38_02.csv&#39;,sep=&quot;&quot;), sep=&quot;;&quot;, quote=&quot;\&quot;&quot;, header = TRUE, dec=&quot;,&quot;)
+instance_10 &lt;- read.csv2(paste(wd,&#39;instance_10/agents_nonaggr_state.2015.kwi.08.14_38_02.csv&#39;,sep=&quot;&quot;), sep=&quot;;&quot;, quote=&quot;\&quot;&quot;, header = TRUE, dec=&quot;,&quot;)
+</code></pre>
+
+<p>Wczytywanie wynikow runow z pojedynczych instancji zamiast stanow agentow sa tutaj koncowe wartosci, takie jak wystepowanie strategi, ilosc generacji itp.</p>
+
+<pre><code class="r">batch_1 &lt;- read.csv(paste(wd,&#39;instance_1/batch.log&#39;,sep=&quot;&quot;), sep=&quot;,&quot;, quote=&quot;&quot;, header = TRUE, dec=&quot;.&quot;)
+batch_2 &lt;- read.csv(paste(wd,&#39;instance_2/batch.log&#39;,sep=&quot;&quot;), sep=&quot;,&quot;, quote=&quot;&quot;, header = TRUE, dec=&quot;.&quot;)
+batch_3 &lt;- read.csv(paste(wd,&#39;instance_3/batch.log&#39;,sep=&quot;&quot;), sep=&quot;,&quot;, quote=&quot;&quot;, header = TRUE, dec=&quot;.&quot;)
+batch_4 &lt;- read.csv(paste(wd,&#39;instance_4/batch.log&#39;,sep=&quot;&quot;), sep=&quot;,&quot;, quote=&quot;&quot;, header = TRUE, dec=&quot;.&quot;)
+batch_5 &lt;- read.csv(paste(wd,&#39;instance_5/batch.log&#39;,sep=&quot;&quot;), sep=&quot;,&quot;, quote=&quot;&quot;, header = TRUE, dec=&quot;.&quot;)
+batch_6 &lt;- read.csv(paste(wd,&#39;instance_6/batch.log&#39;,sep=&quot;&quot;), sep=&quot;,&quot;, quote=&quot;&quot;, header = TRUE, dec=&quot;.&quot;)
+batch_7 &lt;- read.csv(paste(wd,&#39;instance_7/batch.log&#39;,sep=&quot;&quot;), sep=&quot;,&quot;, quote=&quot;&quot;, header = TRUE, dec=&quot;.&quot;)
+batch_8 &lt;- read.csv(paste(wd,&#39;instance_8/batch.log&#39;,sep=&quot;&quot;), sep=&quot;,&quot;, quote=&quot;&quot;, header = TRUE, dec=&quot;.&quot;)
+batch_9 &lt;- read.csv(paste(wd,&#39;instance_9/batch.log&#39;,sep=&quot;&quot;), sep=&quot;,&quot;, quote=&quot;&quot;, header = TRUE, dec=&quot;.&quot;)
+batch_10 &lt;- read.csv(paste(wd,&#39;instance_10/batch.log&#39;,sep=&quot;&quot;), sep=&quot;,&quot;, quote=&quot;&quot;, header = TRUE, dec=&quot;.&quot;)
+</code></pre>
+
+<p>remember to make  tree | grep -i fail in OS before further analysis</p>
+
+<pre><code class="r">typeof(batch_1)
+</code></pre>
+
+<pre><code>## [1] &quot;list&quot;
+</code></pre>
+
+<pre><code class="r">length(batch_1)
+</code></pre>
+
+<pre><code>## [1] 24
+</code></pre>
+
+<pre><code class="r"># liczba wynikow (lini) ogolem (z plikow batch*)
+nrow(batch_1) + nrow(batch_2) + nrow(batch_3) + nrow(batch_4) + nrow(batch_5) +
+  nrow(batch_6) + nrow(batch_7) + nrow(batch_8) + 
+  nrow(batch_9) + nrow(batch_10)
+</code></pre>
+
+<pre><code>## [1] 391
+</code></pre>
+
+<pre><code class="r"># scalanie wynikow w jeden data frame
+batch_merged &lt;- sqldf(&quot;select * from batch_1 union select * from batch_2 union select * from batch_3 union select * from batch_4  
+                      union select * from batch_5 union select * from batch_6 union select * from batch_7 union select * from batch_8 
+                      union select * from batch_9 union select * from batch_10&quot;)
+
+batch_merged$Experience_Decay &lt;- as.logical(batch_merged$Experience_Decay==&#39;true&#39;)
+batch_merged$Allow_Skill_Death &lt;- as.logical(batch_merged$Allow_Skill_Death==&#39;true&#39;)
+batch_merged$Fll_Enabled &lt;- as.logical(batch_merged$Fll_Enabled==&#39;true&#39;)
+batch_merged$Exp_cut_point &lt;- as.logical(batch_merged$Exp_cut_point==&#39;true&#39;)
+batch_merged$Granularity &lt;- as.logical(batch_merged$Granularity==&#39;true&#39;)
+batch_merged$Is_Evolutionary &lt;- as.logical(batch_merged$Is_Evolutionary==&#39;true&#39;)
+batch_merged$Allways_Choose_Task &lt;- as.logical(batch_merged$Allways_Choose_Task==&#39;true&#39;)
+</code></pre>
+
+<pre><code class="r">sqldf(&quot;create index idx_batch_run on batch_merged(Run_Number)&quot;)
+</code></pre>
+
+<pre><code>## NULL
+</code></pre>
+
+<pre><code class="r">typeof(batch_merged)
+</code></pre>
+
+<pre><code>## [1] &quot;list&quot;
+</code></pre>
+
+<pre><code class="r">sapply(batch_merged, class)
+</code></pre>
+
+<pre><code>##    INFO___Batch_Number             Run_Number             Tick_Count 
+##            &quot;character&quot;              &quot;integer&quot;              &quot;numeric&quot; 
+##           Agents_Count            Tasks_Count             Tasks_Left 
+##              &quot;integer&quot;              &quot;integer&quot;              &quot;integer&quot; 
+##       Experience_Decay      Allow_Skill_Death            Fll_Enabled 
+##              &quot;logical&quot;              &quot;logical&quot;              &quot;logical&quot; 
+##          Exp_cut_point            Granularity       Granularity_type 
+##              &quot;logical&quot;              &quot;logical&quot;               &quot;factor&quot; 
+## Granularity_obstinancy   Task_choice_strategy  Skill_choice_strategy 
+##              &quot;integer&quot;               &quot;factor&quot;               &quot;factor&quot; 
+##        Is_Evolutionary            Plan_Number           Utility_Type 
+##              &quot;logical&quot;              &quot;integer&quot;               &quot;factor&quot; 
+##             Generation       GenerationLength    Allways_Choose_Task 
+##              &quot;integer&quot;              &quot;integer&quot;              &quot;logical&quot; 
+##        Homophily_Count      Heterophily_Count     Preferential_Count 
+##              &quot;integer&quot;              &quot;integer&quot;              &quot;integer&quot;
+</code></pre>
+
+<p>Subset agent&#39;s state only to important attributes</p>
+
+<pre><code class="r">selected_columns &lt;- c(&quot;run&quot;, &quot;tick&quot;, &quot;EvolutionGeneration&quot;, &quot;EvolutionIteration&quot;, &quot;Id&quot;, 
+                      &quot;TaskStrategy&quot;, &quot;GeneralExperience&quot;, &quot;Utility&quot;, &quot;LUtility&quot;, &quot;RUtility&quot;)
+
+instance_1$tick &lt;- as.numeric(instance_1$tick)
+instance_2$tick &lt;- as.numeric(instance_2$tick)
+instance_3$tick &lt;- as.numeric(instance_3$tick)
+instance_4$tick &lt;- as.numeric(instance_4$tick)
+instance_5$tick &lt;- as.numeric(instance_5$tick)
+instance_6$tick &lt;- as.numeric(instance_6$tick)
+instance_7$tick &lt;- as.numeric(instance_7$tick)
+instance_8$tick &lt;- as.numeric(instance_8$tick)
+instance_9$tick &lt;- as.numeric(instance_9$tick)
+instance_10$tick &lt;- as.numeric(instance_10$tick)
+
+instance_1$RUtility &lt;- as.numeric(instance_1$RUtility)
+instance_1$LUtility &lt;- as.numeric(instance_1$LUtility)
+instance_1$Utility &lt;- as.numeric(instance_1$Utility)
+instance_1$GeneralExperience &lt;- as.numeric(instance_1$GeneralExperience)
+
+instance_2$RUtility &lt;- as.numeric(instance_2$RUtility)
+instance_2$LUtility &lt;- as.numeric(instance_2$LUtility)
+instance_2$Utility &lt;- as.numeric(instance_2$Utility)
+instance_2$GeneralExperience &lt;- as.numeric(instance_2$GeneralExperience)
+
+instance_3$RUtility &lt;- as.numeric(instance_3$RUtility)
+instance_3$LUtility &lt;- as.numeric(instance_3$LUtility)
+instance_3$Utility &lt;- as.numeric(instance_3$Utility)
+instance_3$GeneralExperience &lt;- as.numeric(instance_3$GeneralExperience)
+
+instance_4$RUtility &lt;- as.numeric(instance_4$RUtility)
+instance_4$LUtility &lt;- as.numeric(instance_4$LUtility)
+instance_4$Utility &lt;- as.numeric(instance_4$Utility)
+instance_4$GeneralExperience &lt;- as.numeric(instance_4$GeneralExperience)
+
+instance_5$RUtility &lt;- as.numeric(instance_5$RUtility)
+instance_5$LUtility &lt;- as.numeric(instance_5$LUtility)
+instance_5$Utility &lt;- as.numeric(instance_5$Utility)
+instance_5$GeneralExperience &lt;- as.numeric(instance_5$GeneralExperience)
+
+instance_6$RUtility &lt;- as.numeric(instance_6$RUtility)
+instance_6$LUtility &lt;- as.numeric(instance_6$LUtility)
+instance_6$Utility &lt;- as.numeric(instance_6$Utility)
+instance_6$GeneralExperience &lt;- as.numeric(instance_6$GeneralExperience)
+
+instance_7$RUtility &lt;- as.numeric(instance_7$RUtility)
+instance_7$LUtility &lt;- as.numeric(instance_7$LUtility)
+instance_7$Utility &lt;- as.numeric(instance_7$Utility)
+instance_7$GeneralExperience &lt;- as.numeric(instance_7$GeneralExperience)
+
+instance_8$RUtility &lt;- as.numeric(instance_8$RUtility)
+instance_8$LUtility &lt;- as.numeric(instance_8$LUtility)
+instance_8$Utility &lt;- as.numeric(instance_8$Utility)
+instance_8$GeneralExperience &lt;- as.numeric(instance_8$GeneralExperience)
+
+instance_9$RUtility &lt;- as.numeric(instance_9$RUtility)
+instance_9$LUtility &lt;- as.numeric(instance_9$LUtility)
+instance_9$Utility &lt;- as.numeric(instance_9$Utility)
+instance_9$GeneralExperience &lt;- as.numeric(instance_9$GeneralExperience)
+
+instance_10$RUtility &lt;- as.numeric(instance_10$RUtility)
+instance_10$LUtility &lt;- as.numeric(instance_10$LUtility)
+instance_10$Utility &lt;- as.numeric(instance_10$Utility)
+instance_10$GeneralExperience &lt;- as.numeric(instance_10$GeneralExperience)
+</code></pre>
+
+<p>Save it to a local sqlite database</p>
+
+<pre><code class="r">write.table(instance_1[selected_columns], &quot;data_ts_1.dat&quot;, sep = &quot;,&quot;, quote = FALSE, dec = &quot;.&quot;)
+data_1 &lt;- file(&quot;data_ts_1.dat&quot;)
+write.table(instance_2[selected_columns], &quot;data_ts_2.dat&quot;, sep = &quot;,&quot;, quote = FALSE, dec = &quot;.&quot;)
+data_2 &lt;- file(&quot;data_ts_2.dat&quot;)
+write.table(instance_3[selected_columns], &quot;data_ts_3.dat&quot;, sep = &quot;,&quot;, quote = FALSE, dec = &quot;.&quot;)
+data_3 &lt;- file(&quot;data_ts_3.dat&quot;)
+write.table(instance_4[selected_columns], &quot;data_ts_4.dat&quot;, sep = &quot;,&quot;, quote = FALSE, dec = &quot;.&quot;)
+data_4 &lt;- file(&quot;data_ts_4.dat&quot;)
+write.table(instance_5[selected_columns], &quot;data_ts_5.dat&quot;, sep = &quot;,&quot;, quote = FALSE, dec = &quot;.&quot;)
+data_5 &lt;- file(&quot;data_ts_5.dat&quot;)
+write.table(instance_6[selected_columns], &quot;data_ts_6.dat&quot;, sep = &quot;,&quot;, quote = FALSE, dec = &quot;.&quot;)
+data_6 &lt;- file(&quot;data_ts_6.dat&quot;)
+write.table(instance_7[selected_columns], &quot;data_ts_7.dat&quot;, sep = &quot;,&quot;, quote = FALSE, dec = &quot;.&quot;)
+data_7 &lt;- file(&quot;data_ts_7.dat&quot;)
+write.table(instance_8[selected_columns], &quot;data_ts_8.dat&quot;, sep = &quot;,&quot;, quote = FALSE, dec = &quot;.&quot;)
+data_8 &lt;- file(&quot;data_ts_8.dat&quot;)
+write.table(instance_9[selected_columns], &quot;data_ts_9.dat&quot;, sep = &quot;,&quot;, quote = FALSE, dec = &quot;.&quot;)
+data_9 &lt;- file(&quot;data_ts_9.dat&quot;)
+write.table(instance_10[selected_columns], &quot;data_ts_10.dat&quot;, sep = &quot;,&quot;, quote = FALSE, dec = &quot;.&quot;)
+data_10 &lt;- file(&quot;data_ts_10.dat&quot;)
+
+merged &lt;- sqldf(&quot;select * from data_1 union select * from data_2 union select * from data_3 union select * from data_4  
+                union select * from data_5 union select * from data_6 union select * from data_7 union select * from data_8 
+                union select * from data_9 union select * from data_10&quot;, 
+                dbname = tempfile(tmpdir = c(&quot;/mnt/data2/virtualteams/symulacje/&quot;)))
+</code></pre>
+
+<pre><code>## Error in sqliteFetch(rs, n = -1, ...): RSQLite driver: (RS_SQLite_fetch: failed first step: database or disk is full)
+</code></pre>
+
+<pre><code>## Warning in sqliteCloseConnection(conn, ...): RS-DBI driver warning:
+## (closing pending result sets before closing this connection)
+</code></pre>
+
+<pre><code class="r">sqldf(&quot;create index idx_merged_gen on merged(EvolutionGeneration)&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: main.merged)
+</code></pre>
+
+<pre><code class="r">sqldf(&quot;create index idx_merged_run on merged(run)&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: main.merged)
+</code></pre>
+
+<pre><code class="r">sqldf(&quot;create index idx_merged_runid on merged(run, Id)&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: main.merged)
+</code></pre>
+
+<pre><code class="r">sqldf(&quot;create index idx_merged_genrun on merged(EvolutionGeneration, run)&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: main.merged)
+</code></pre>
+
+<pre><code class="r">head(batch_1)
+</code></pre>
+
+<pre><code>##   INFO...Batch_Number Run_Number Tick_Count Agents_Count Tasks_Count
+## 1            INFO - 1          1       2781          120         100
+## 2            INFO - 1         11       6801          120         100
+## 3            INFO - 1         21       1561          120         100
+## 4            INFO - 1         31       2301           50         100
+## 5            INFO - 1         41       3101          120         100
+## 6            INFO - 1         51       5001          120         100
+##   Tasks_Left Experience_Decay Allow_Skill_Death Fll_Enabled Exp_cut_point
+## 1        100            false              true       false         false
+## 2        100            false              true       false         false
+## 3        100            false              true       false         false
+## 4        100            false              true       false         false
+## 5        100            false              true       false         false
+## 6        100            false              true       false         false
+##   Granularity Granularity_type Granularity_obstinancy Task_choice_strategy
+## 1       false              OFF                     20                 null
+## 2       false              OFF                     20                 null
+## 3       false              OFF                     20                 null
+## 4       false              OFF                     20                 null
+## 5       false              OFF                     20                 null
+## 6       false              OFF                     20                 null
+##   Skill_choice_strategy Is_Evolutionary Plan_Number   Utility_Type
+## 1                choice            true           7 LearningSkills
+## 2                choice            true           7 LearningSkills
+## 3                choice            true           7 LearningSkills
+## 4                choice            true           7 LearningSkills
+## 5                choice            true           7 LearningSkills
+## 6                choice            true           7 LearningSkills
+##   Generation GenerationLength Allways_Choose_Task Homophily_Count
+## 1        139               20                true               0
+## 2         68              100                true               0
+## 3         78               20                true               0
+## 4         23              100                true              50
+## 5         31              100                true               0
+## 6         50              100                true               0
+##   Heterophily_Count Preferential_Count
+## 1               120                  0
+## 2               120                  0
+## 3               120                  0
+## 4                 0                  0
+## 5                 0                120
+## 6                 0                120
+</code></pre>
+
+<pre><code class="r">names(batch_1)
+</code></pre>
+
+<pre><code>##  [1] &quot;INFO...Batch_Number&quot;    &quot;Run_Number&quot;            
+##  [3] &quot;Tick_Count&quot;             &quot;Agents_Count&quot;          
+##  [5] &quot;Tasks_Count&quot;            &quot;Tasks_Left&quot;            
+##  [7] &quot;Experience_Decay&quot;       &quot;Allow_Skill_Death&quot;     
+##  [9] &quot;Fll_Enabled&quot;            &quot;Exp_cut_point&quot;         
+## [11] &quot;Granularity&quot;            &quot;Granularity_type&quot;      
+## [13] &quot;Granularity_obstinancy&quot; &quot;Task_choice_strategy&quot;  
+## [15] &quot;Skill_choice_strategy&quot;  &quot;Is_Evolutionary&quot;       
+## [17] &quot;Plan_Number&quot;            &quot;Utility_Type&quot;          
+## [19] &quot;Generation&quot;             &quot;GenerationLength&quot;      
+## [21] &quot;Allways_Choose_Task&quot;    &quot;Homophily_Count&quot;       
+## [23] &quot;Heterophily_Count&quot;      &quot;Preferential_Count&quot;
+</code></pre>
+
+<pre><code class="r">head(merged)
+</code></pre>
+
+<pre><code>## Error in head(merged): object &#39;merged&#39; not found
+</code></pre>
+
+<pre><code class="r">names(merged)
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;merged&#39; not found
+</code></pre>
+
+<p>Wygeneruj vector kombinacji</p>
+
+<pre><code class="r">combination_of_param &lt;- expand.grid(
+  c(TRUE, FALSE),
+  c(50, 120),
+  c(20, 100))
+typeof(combination_of_param)
+</code></pre>
+
+<pre><code>## [1] &quot;list&quot;
+</code></pre>
+
+<pre><code class="r">combination_of_param
+</code></pre>
+
+<pre><code>##    Var1 Var2 Var3
+## 1  TRUE   50   20
+## 2 FALSE   50   20
+## 3  TRUE  120   20
+## 4 FALSE  120   20
+## 5  TRUE   50  100
+## 6 FALSE   50  100
+## 7  TRUE  120  100
+## 8 FALSE  120  100
+</code></pre>
+
+<p>Mamy zestaw 2 × 2 , co daje 4 kombinacje, ExpDecay jest tutaj stale</p>
+
+<pre><code class="r">my_col_names &lt;- c(
+  &#39;ExpDecay&#39;,
+  &#39;AgentCount&#39;, 
+  &#39;IterationLength&#39;)
+colnames(combination_of_param) &lt;- my_col_names
+typeof(combination_of_param)
+</code></pre>
+
+<pre><code>## [1] &quot;list&quot;
+</code></pre>
+
+<p>teraz majac liste kombinacji mozesz robic query o poszczegolne warunki</p>
+
+<p>otworz X obiektow multiplot, tyle ile jest kombinacji (combination_of_param)
+oraz X tabelek ze statystykami</p>
+
+<p>zlicz licznosc runow o danej konfiguracji
+1) iteruj po runach (runid), bedzie szybciej
+2) dla pojedynczego runu 
+   -oblicz wlasciwosci 
+   -dodaj dane do wlasciwej tabelki
+   -dodaj dane do wlasciwego plot (wg parametrow)</p>
+
+<p>narysuj multiplot z przebiegiem ewolucji x razy</p>
+
+<p>podstawowe analizy</p>
+
+<pre><code class="r">merged_stat_1 &lt;- sqldf(&quot;select run as RunId, Id as AgentId, min(Utility) as minUtility, 
+                        max(Utility) as maxUtility, avg(Utility) as avgUtility,
+                        min(LUtility) as minLUtility, max(LUtility) as maxLUtility, 
+                        avg(LUtility) as avgLUtility,
+                        min(RUtility) as minRUtility, max(RUtility) as maxRUtility, 
+                        avg(RUtility) as avgRUtility,
+                        min(GeneralExperience) as minGeneralExperience, max(GeneralExperience) as maxGeneralExperience, 
+                        avg(GeneralExperience) as avgGeneralExperience
+                        from instance_1 group by run, Id&quot;)
+</code></pre>
+
+<pre><code>## Error in paste(x, collapse = &quot;, &quot;): result would exceed 2^31-1 bytes
+</code></pre>
+
+<pre><code class="r">merged_stat_2 &lt;- sqldf(&quot;select run as RunId, Id as AgentId, min(Utility) as minUtility, 
+                        max(Utility) as maxUtility, avg(Utility) as avgUtility,
+                       min(LUtility) as minLUtility, max(LUtility) as maxLUtility, 
+                       avg(LUtility) as avgLUtility,
+                       min(RUtility) as minRUtility, max(RUtility) as maxRUtility, 
+                       avg(RUtility) as avgRUtility,
+                       min(GeneralExperience) as minGeneralExperience, max(GeneralExperience) as maxGeneralExperience, 
+                       avg(GeneralExperience) as avgGeneralExperience
+                       from instance_2 group by run, Id&quot;)
+
+merged_stat_3 &lt;- sqldf(&quot;select run as RunId, Id as AgentId, min(Utility) as minUtility, 
+                        max(Utility) as maxUtility, avg(Utility) as avgUtility,
+                       min(LUtility) as minLUtility, max(LUtility) as maxLUtility, 
+                       avg(LUtility) as avgLUtility,
+                       min(RUtility) as minRUtility, max(RUtility) as maxRUtility, 
+                       avg(RUtility) as avgRUtility,
+                       min(GeneralExperience) as minGeneralExperience, max(GeneralExperience) as maxGeneralExperience, 
+                       avg(GeneralExperience) as avgGeneralExperience
+                       from instance_3 group by run, Id&quot;)
+
+merged_stat_4 &lt;- sqldf(&quot;select run as RunId, Id as AgentId, min(Utility) as minUtility, 
+                       max(Utility) as maxUtility, avg(Utility) as avgUtility,
+                       min(LUtility) as minLUtility, max(LUtility) as maxLUtility, 
+                       avg(LUtility) as avgLUtility,
+                       min(RUtility) as minRUtility, max(RUtility) as maxRUtility, 
+                       avg(RUtility) as avgRUtility,
+                       min(GeneralExperience) as minGeneralExperience, max(GeneralExperience) as maxGeneralExperience, 
+                       avg(GeneralExperience) as avgGeneralExperience
+                       from instance_4 group by run, Id&quot;)
+
+merged_stat_5 &lt;- sqldf(&quot;select run as RunId, Id as AgentId, min(Utility) as minUtility, 
+                       max(Utility) as maxUtility, avg(Utility) as avgUtility,
+                       min(LUtility) as minLUtility, max(LUtility) as maxLUtility, 
+                       avg(LUtility) as avgLUtility,
+                       min(RUtility) as minRUtility, max(RUtility) as maxRUtility, 
+                       avg(RUtility) as avgRUtility,
+                       min(GeneralExperience) as minGeneralExperience, max(GeneralExperience) as maxGeneralExperience, 
+                       avg(GeneralExperience) as avgGeneralExperience
+                       from instance_5 group by run, Id&quot;)
+</code></pre>
+
+<pre><code>## Error in paste(x, collapse = &quot;, &quot;): result would exceed 2^31-1 bytes
+</code></pre>
+
+<pre><code class="r">merged_stat_6 &lt;- sqldf(&quot;select run as RunId, Id as AgentId, min(Utility) as minUtility, 
+                       max(Utility) as maxUtility, avg(Utility) as avgUtility,
+                       min(LUtility) as minLUtility, max(LUtility) as maxLUtility, 
+                       avg(LUtility) as avgLUtility,
+                       min(RUtility) as minRUtility, max(RUtility) as maxRUtility, 
+                       avg(RUtility) as avgRUtility,
+                       min(GeneralExperience) as minGeneralExperience, max(GeneralExperience) as maxGeneralExperience, 
+                       avg(GeneralExperience) as avgGeneralExperience
+                       from instance_6 group by run, Id&quot;)
+
+merged_stat_7 &lt;- sqldf(&quot;select run as RunId, Id as AgentId, min(Utility) as minUtility, 
+                       max(Utility) as maxUtility, avg(Utility) as avgUtility,
+                       min(LUtility) as minLUtility, max(LUtility) as maxLUtility, 
+                       avg(LUtility) as avgLUtility,
+                       min(RUtility) as minRUtility, max(RUtility) as maxRUtility, 
+                       avg(RUtility) as avgRUtility,
+                       min(GeneralExperience) as minGeneralExperience, max(GeneralExperience) as maxGeneralExperience, 
+                       avg(GeneralExperience) as avgGeneralExperience
+                       from instance_7 group by run, Id&quot;)
+</code></pre>
+
+<pre><code>## Error in paste(x, collapse = &quot;, &quot;): result would exceed 2^31-1 bytes
+</code></pre>
+
+<pre><code class="r">merged_stat_8 &lt;- sqldf(&quot;select run as RunId, Id as AgentId, min(Utility) as minUtility, 
+                       max(Utility) as maxUtility, avg(Utility) as avgUtility,
+                       min(LUtility) as minLUtility, max(LUtility) as maxLUtility, 
+                       avg(LUtility) as avgLUtility,
+                       min(RUtility) as minRUtility, max(RUtility) as maxRUtility, 
+                       avg(RUtility) as avgRUtility,
+                       min(GeneralExperience) as minGeneralExperience, max(GeneralExperience) as maxGeneralExperience, 
+                       avg(GeneralExperience) as avgGeneralExperience
+                       from instance_8 group by run, Id&quot;)
+</code></pre>
+
+<pre><code>## Error in paste(x, collapse = &quot;, &quot;): result would exceed 2^31-1 bytes
+</code></pre>
+
+<pre><code class="r">merged_stat_9 &lt;- sqldf(&quot;select run as RunId, Id as AgentId, min(Utility) as minUtility, 
+                       max(Utility) as maxUtility, avg(Utility) as avgUtility,
+                       min(LUtility) as minLUtility, max(LUtility) as maxLUtility, 
+                       avg(LUtility) as avgLUtility,
+                       min(RUtility) as minRUtility, max(RUtility) as maxRUtility, 
+                       avg(RUtility) as avgRUtility,
+                       min(GeneralExperience) as minGeneralExperience, max(GeneralExperience) as maxGeneralExperience, 
+                       avg(GeneralExperience) as avgGeneralExperience
+                       from instance_9 group by run, Id&quot;)
+</code></pre>
+
+<pre><code>## Error in grid.Call.graphics(L_upviewport, as.integer(n)) : 
+##   cannot pop the top-level viewport (&#39;grid&#39; and &#39;graphics&#39; output mixed?)
+</code></pre>
+
+<pre><code>## Error in paste(x, collapse = &quot;, &quot;): result would exceed 2^31-1 bytes
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-12"/> </p>
+
+<pre><code class="r">merged_stat_10 &lt;- sqldf(&quot;select run as RunId, Id as AgentId, min(Utility) as minUtility, 
+                       max(Utility) as maxUtility, avg(Utility) as avgUtility,
+                       min(LUtility) as minLUtility, max(LUtility) as maxLUtility, 
+                       avg(LUtility) as avgLUtility,
+                       min(RUtility) as minRUtility, max(RUtility) as maxRUtility, 
+                       avg(RUtility) as avgRUtility,
+                       min(GeneralExperience) as minGeneralExperience, max(GeneralExperience) as maxGeneralExperience, 
+                       avg(GeneralExperience) as avgGeneralExperience
+                       from instance_10 group by run, Id&quot;)
+</code></pre>
+
+<pre><code class="r">merged_stat_all &lt;- sqldf(&quot;select * from merged_stat_1 union 
+                          select * from merged_stat_2 union 
+                          select * from merged_stat_3 union
+                          select * from merged_stat_4 union 
+                          select * from merged_stat_5 union 
+                          select * from merged_stat_6 union
+                          select * from merged_stat_7 union 
+                          select * from merged_stat_8 union 
+                          select * from merged_stat_9 union
+                          select * from merged_stat_10 order by RunId asc&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: merged_stat_9)
+</code></pre>
+
+<pre><code class="r">merged_stat__all_aggr &lt;- sqldf(&quot;select RunId, avg(minUtility), avg(maxUtility), avg(avgUtility),
+                          avg(minLUtility), avg(maxLUtility), avg(avgLUtility), 
+                          avg(minRUtility), avg(maxRUtility), avg(avgRUtility) 
+                          from merged_stat_all group by RunId&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: merged_stat_all)
+</code></pre>
+
+<pre><code class="r">pokrycie &lt;- sqldf(&quot;select Experience_Decay, Agents_Count, Tasks_Count, 
+                  count(*) as licznosc from batch_merged group by Experience_Decay, Agents_Count, Tasks_Count&quot;)
+min(pokrycie$licznosc)
+</code></pre>
+
+<pre><code>## [1] 184
+</code></pre>
+
+<pre><code class="r">max(pokrycie$licznosc)
+</code></pre>
+
+<pre><code>## [1] 207
+</code></pre>
+
+<pre><code class="r">sd(pokrycie$licznosc)
+</code></pre>
+
+<pre><code>## [1] 16.26346
+</code></pre>
+
+<pre><code class="r">library(&quot;scales&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;reshape2&quot;)
+chosen_merged_stat__all_aggr &lt;- merged_stat__all_aggr[,-1]
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;merged_stat__all_aggr&#39; not found
+</code></pre>
+
+<pre><code class="r">head(chosen_merged_stat__all_aggr)
+</code></pre>
+
+<pre><code>## Error in head(chosen_merged_stat__all_aggr): object &#39;chosen_merged_stat__all_aggr&#39; not found
+</code></pre>
+
+<pre><code class="r">head(as.matrix(chosen_merged_stat__all_aggr))
+</code></pre>
+
+<pre><code>## Error in as.matrix(chosen_merged_stat__all_aggr): object &#39;chosen_merged_stat__all_aggr&#39; not found
+</code></pre>
+
+<pre><code class="r">melted &lt;- melt(chosen_merged_stat__all_aggr)
+</code></pre>
+
+<pre><code>## Error in melt(chosen_merged_stat__all_aggr): object &#39;chosen_merged_stat__all_aggr&#39; not found
+</code></pre>
+
+<pre><code class="r">head(melted)
+</code></pre>
+
+<pre><code>## Error in head(melted): object &#39;melted&#39; not found
+</code></pre>
+
+<pre><code class="r">head(as.matrix(melted))
+</code></pre>
+
+<pre><code>## Error in as.matrix(melted): object &#39;melted&#39; not found
+</code></pre>
+
+<pre><code class="r">melted_col_names &lt;- c(&#39;Obserwacja&#39;,&#39;Czestosc&#39;)
+colnames(melted) &lt;- melted_col_names
+</code></pre>
+
+<pre><code>## Error in colnames(melted) &lt;- melted_col_names: object &#39;melted&#39; not found
+</code></pre>
+
+<pre><code class="r">ggplot(melted, aes(x = Obserwacja, y = factor(Czestosc), fill = Obserwacja)) + 
+  geom_bar(stat=&quot;identity&quot;, position = &quot;dodge&quot;) + geom_point() + 
+  scale_fill_brewer(palette = &quot;Set1&quot;) +
+  scale_y_discrete(breaks = pretty_breaks()) +
+  theme(axis.text.y = element_text(), 
+        axis.text.x = element_text(angle = 90, hjust = 1))
+</code></pre>
+
+<pre><code>## Error in ggplot(melted, aes(x = Obserwacja, y = factor(Czestosc), fill = Obserwacja)): object &#39;melted&#39; not found
+</code></pre>
+
+<pre><code class="r">barplot(as.matrix(chosen_merged_stat__all_aggr), 
+  col = heat.colors(12), main=&quot;Utility aggr&quot;,ylab=&quot;value&quot;,las=2)
+</code></pre>
+
+<pre><code>## Error in as.matrix(chosen_merged_stat__all_aggr): object &#39;chosen_merged_stat__all_aggr&#39; not found
+</code></pre>
+
+<pre><code class="r"># variant 1 - TRUE ; A 100 ; T 20
+
+v1_id_runs &lt;- subset(batch_merged, 
+                     Experience_Decay == combination_of_param[1, c(1)] &amp; 
+                       Agents_Count == combination_of_param[1, c(2)] &amp; 
+                       Tasks_Count == combination_of_param[1, c(3)],
+                     select=c(&quot;Run_Number&quot;))
+nrow(v1_id_runs)
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<pre><code class="r">v1_id_runs[,]
+</code></pre>
+
+<pre><code>## integer(0)
+</code></pre>
+
+<pre><code class="r">length(v1_id_runs[,])
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<pre><code class="r">scenario_1_t &lt;- subset(merged, run %in% v1_id_runs[,], select=c(1,3,4,6))
+</code></pre>
+
+<pre><code>## Error in subset(merged, run %in% v1_id_runs[, ], select = c(1, 3, 4, 6)): object &#39;merged&#39; not found
+</code></pre>
+
+<pre><code class="r">nrow(scenario_1_t)
+</code></pre>
+
+<pre><code>## Error in nrow(scenario_1_t): object &#39;scenario_1_t&#39; not found
+</code></pre>
+
+<pre><code class="r">max(scenario_1_t$EvolutionIteration)
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;scenario_1_t&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_1 &lt;- sqldf(&quot;select run, EvolutionGeneration, TaskStrategy, 
+                    count(TaskStrategy) as licznosc 
+                    from scenario_1_t 
+                    where EvolutionIteration = 20
+                    group by 
+                    run, EvolutionGeneration, TaskStrategy&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: scenario_1_t)
+</code></pre>
+
+<pre><code class="r">p1_r &lt;- 
+  ggplot(scenario_1, 
+         aes(x=EvolutionGeneration, y=licznosc, colour=TaskStrategy, group=run)) +
+  geom_point(aes(group = run)) +
+  ggtitle(&quot;Set of strategies, grouped, through generations&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_1, aes(x = EvolutionGeneration, y = licznosc, : object &#39;scenario_1&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_1_u &lt;- subset(merged, run %in% v1_id_runs[,], select=c(1,3,4,10,11,12))
+</code></pre>
+
+<pre><code>## Error in subset(merged, run %in% v1_id_runs[, ], select = c(1, 3, 4, 10, : object &#39;merged&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_1_ut &lt;- sqldf(&quot;select run, EvolutionGeneration, EvolutionIteration, 
+                    avg(Utility) as avg_utility, avg(LUtility) as avg_lutility,
+                    avg(RUtility) as avg_rutility
+                    from scenario_1_u 
+                    group by 
+                    run, EvolutionGeneration, EvolutionIteration&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: scenario_1_u)
+</code></pre>
+
+<pre><code class="r">scenario_1_ut$grp &lt;- paste(scenario_1_ut[,1],scenario_1_ut[,2])
+</code></pre>
+
+<pre><code>## Error in paste(scenario_1_ut[, 1], scenario_1_ut[, 2]): object &#39;scenario_1_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p1_u &lt;- 
+  ggplot(scenario_1_ut, 
+         aes(x=EvolutionIteration, y=avg_utility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  ggtitle(&quot;Utility values through iterations (avg by all users)&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_1_ut, aes(x = EvolutionIteration, y = avg_utility, : object &#39;scenario_1_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p1_ul &lt;- 
+  ggplot(scenario_1_ut, 
+         aes(x=EvolutionIteration, y=avg_lutility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  ggtitle(&quot;LUtility values through iterations (avg by all users)&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_1_ut, aes(x = EvolutionIteration, y = avg_lutility, : object &#39;scenario_1_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p1_ur &lt;- 
+  ggplot(scenario_1_ut, 
+         aes(x=EvolutionIteration, y=avg_rutility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  ggtitle(&quot;RUtility values through iterations (avg by all users)&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_1_ut, aes(x = EvolutionIteration, y = avg_rutility, : object &#39;scenario_1_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p1_multiplot_u &lt;- multiplot(p1_u, p1_ul, p1_ur, cols=2)
+</code></pre>
+
+<pre><code>## Loading required package: grid
+</code></pre>
+
+<pre><code>## Error in multiplot(p1_u, p1_ul, p1_ur, cols = 2): object &#39;p1_u&#39; not found
+</code></pre>
+
+<pre><code class="r">p1_1 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[1, c(1)] &amp; 
+                  Agents_Count == combination_of_param[1, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[1, c(3)]), 
+         aes(x=Generation, fill=Heterophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Heterophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+# combination_of_param[1, c(1)]
+p1_2 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[1, c(1)] &amp; 
+                  Agents_Count == combination_of_param[1, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[1, c(3)]), 
+         aes(x=Generation, fill=Homophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Homophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p1_3 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[1, c(1)] &amp; 
+                  Agents_Count == combination_of_param[1, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[1, c(3)]), 
+         aes(x=Generation, fill=Preferential_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Preferential_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p1_multiplot2 &lt;- multiplot(p1_1, p1_2, p1_3, cols=1)
+</code></pre>
+
+<pre><code>## Error in `[.data.frame`(base, names(rows)): undefined columns selected
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAA1BMVEX///+nxBvIAAAACXBIWXMAAAsSAAALEgHS3X78AAABDUlEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBv4mUAASET0xEAAAAASUVORK5CYII=" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r">p1_h_pref &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[1, c(1)] &amp; 
+                  Agents_Count == combination_of_param[1, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[1, c(3)]), 
+         aes(x=Preferential_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Preferential_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p1_h_het &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[1, c(1)] &amp; 
+                  Agents_Count == combination_of_param[1, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[1, c(3)]), 
+         aes(x=Heterophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Heterophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p1_h_hom &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[1, c(1)] &amp; 
+                  Agents_Count == combination_of_param[1, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[1, c(3)]), 
+         aes(x=Homophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Homophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p1_multiplot &lt;- multiplot(p1_h_het, p1_h_hom, p1_h_pref, cols=1)
+</code></pre>
+
+<pre><code>## Error in exists(name, envir = env, mode = mode): argument &quot;env&quot; is missing, with no default
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAA1BMVEX///+nxBvIAAAACXBIWXMAAAsSAAALEgHS3X78AAABDUlEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBv4mUAASET0xEAAAAASUVORK5CYII=" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r">#############################################
+
+# variant 2 -  FALSE ; Agents 100 ; Tasks 20
+
+v2_id_runs &lt;- subset(batch_merged, 
+                     Experience_Decay == combination_of_param[2, c(1)] &amp; 
+                       Agents_Count == combination_of_param[2, c(2)] &amp; 
+                       Tasks_Count == combination_of_param[2, c(3)],
+                     select=c(&quot;Run_Number&quot;))
+nrow(v2_id_runs)
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<pre><code class="r">v2_id_runs[,]
+</code></pre>
+
+<pre><code>## integer(0)
+</code></pre>
+
+<pre><code class="r">length(v2_id_runs[,])
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<pre><code class="r">scenario_2_t &lt;- subset(merged, run %in% v2_id_runs[,], select=c(1,3,4,6))
+</code></pre>
+
+<pre><code>## Error in subset(merged, run %in% v2_id_runs[, ], select = c(1, 3, 4, 6)): object &#39;merged&#39; not found
+</code></pre>
+
+<pre><code class="r">nrow(scenario_2_t)
+</code></pre>
+
+<pre><code>## Error in nrow(scenario_2_t): object &#39;scenario_2_t&#39; not found
+</code></pre>
+
+<pre><code class="r">max(scenario_2_t$EvolutionIteration)
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;scenario_2_t&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_2 &lt;- sqldf(&quot;select run, EvolutionGeneration, TaskStrategy, 
+                    count(TaskStrategy) as licznosc 
+                    from scenario_2_t 
+                    where EvolutionIteration = 20
+                    group by 
+                    run, EvolutionGeneration, TaskStrategy&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: scenario_2_t)
+</code></pre>
+
+<pre><code class="r">p2_r &lt;- 
+  ggplot(scenario_2, 
+         aes(x=EvolutionGeneration, y=licznosc, colour=TaskStrategy, group=run)) +
+  geom_point(aes(group = run)) +
+  ggtitle(&quot;Set of strategies, grouped, through generations&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_2, aes(x = EvolutionGeneration, y = licznosc, : object &#39;scenario_2&#39; not found
+</code></pre>
+
+<pre><code class="r">p2_r
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;p2_r&#39; not found
+</code></pre>
+
+<pre><code class="r">p2_1 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[2, c(1)] &amp; 
+                  Agents_Count == combination_of_param[2, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[2, c(3)]), 
+         aes(x=Generation, fill=Heterophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Heterophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+# combination_of_param[1, c(1)]
+p2_2 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[2, c(1)] &amp; 
+                  Agents_Count == combination_of_param[2, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[2, c(3)]), 
+         aes(x=Generation, fill=Homophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Homophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p2_3 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[2, c(1)] &amp; 
+                  Agents_Count == combination_of_param[2, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[2, c(3)]), 
+         aes(x=Generation, fill=Preferential_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Preferential_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p2_multiplot2 &lt;- multiplot(p2_1, p2_2, p2_3, cols=1)
+</code></pre>
+
+<pre><code>## Error in `[.data.frame`(base, names(rows)): undefined columns selected
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAA1BMVEX///+nxBvIAAAACXBIWXMAAAsSAAALEgHS3X78AAABDUlEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBv4mUAASET0xEAAAAASUVORK5CYII=" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r">p2_h_pref &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[2, c(1)] &amp; 
+                  Agents_Count == combination_of_param[2, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[2, c(3)]), 
+         aes(x=Preferential_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Preferential_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p2_h_het &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[2, c(1)] &amp; 
+                  Agents_Count == combination_of_param[2, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[2, c(3)]), 
+         aes(x=Heterophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Heterophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p2_h_hom &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[2, c(1)] &amp; 
+                  Agents_Count == combination_of_param[2, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[2, c(3)]), 
+         aes(x=Homophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Homophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p2_multiplot &lt;- multiplot(p2_h_het, p2_h_hom, p2_h_pref, cols=1)
+</code></pre>
+
+<pre><code>## Error in exists(name, envir = env, mode = mode): argument &quot;env&quot; is missing, with no default
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAA1BMVEX///+nxBvIAAAACXBIWXMAAAsSAAALEgHS3X78AAABDUlEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBv4mUAASET0xEAAAAASUVORK5CYII=" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r"># variant 3 -  TRUE ; Agents 120 ; Tasks 20
+
+v3_id_runs &lt;- subset(batch_merged, 
+                     Experience_Decay == combination_of_param[3, c(1)] &amp; 
+                       Agents_Count == combination_of_param[3, c(2)] &amp; 
+                       Tasks_Count == combination_of_param[3, c(3)],
+                     select=c(&quot;Run_Number&quot;))
+nrow(v3_id_runs)
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<pre><code class="r">v3_id_runs[,]
+</code></pre>
+
+<pre><code>## integer(0)
+</code></pre>
+
+<pre><code class="r">length(v3_id_runs[,])
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<pre><code class="r">scenario_3_t &lt;- subset(merged, run %in% v3_id_runs[,], select=c(1,3,4,6))
+</code></pre>
+
+<pre><code>## Error in subset(merged, run %in% v3_id_runs[, ], select = c(1, 3, 4, 6)): object &#39;merged&#39; not found
+</code></pre>
+
+<pre><code class="r">nrow(scenario_3_t)
+</code></pre>
+
+<pre><code>## Error in nrow(scenario_3_t): object &#39;scenario_3_t&#39; not found
+</code></pre>
+
+<pre><code class="r">max(scenario_3_t$EvolutionIteration)
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;scenario_3_t&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_3 &lt;- sqldf(&quot;select run, EvolutionGeneration, TaskStrategy, 
+                    count(TaskStrategy) as licznosc 
+                    from scenario_3_t 
+                    where EvolutionIteration = 20
+                    group by 
+                    run, EvolutionGeneration, TaskStrategy&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: scenario_3_t)
+</code></pre>
+
+<pre><code class="r">p3_r &lt;- 
+  ggplot(scenario_3, 
+         aes(x=EvolutionGeneration, y=licznosc, colour=TaskStrategy, group=run)) +
+  geom_point(aes(group = run)) +
+  ggtitle(&quot;Set of strategies, grouped, through generations&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_3, aes(x = EvolutionGeneration, y = licznosc, : object &#39;scenario_3&#39; not found
+</code></pre>
+
+<pre><code class="r">p3_r
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;p3_r&#39; not found
+</code></pre>
+
+<pre><code class="r">p3_1 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[3, c(1)] &amp; 
+                  Agents_Count == combination_of_param[3, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[3, c(3)]), 
+         aes(x=Generation, fill=Heterophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Heterophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+# combination_of_param[1, c(1)]
+p3_2 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[3, c(1)] &amp; 
+                  Agents_Count == combination_of_param[3, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[3, c(3)]), 
+         aes(x=Generation, fill=Homophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Homophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p3_3 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[3, c(1)] &amp; 
+                  Agents_Count == combination_of_param[3, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[3, c(3)]), 
+         aes(x=Generation, fill=Preferential_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Preferential_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p3_multiplot2 &lt;- multiplot(p3_1, p3_2, p3_3, cols=1)
+</code></pre>
+
+<pre><code>## Error in `[.data.frame`(base, names(rows)): undefined columns selected
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAA1BMVEX///+nxBvIAAAACXBIWXMAAAsSAAALEgHS3X78AAABDUlEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBv4mUAASET0xEAAAAASUVORK5CYII=" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r">p3_h_pref &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[3, c(1)] &amp; 
+                  Agents_Count == combination_of_param[3, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[3, c(3)]), 
+         aes(x=Preferential_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Preferential_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p3_h_het &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[3, c(1)] &amp; 
+                  Agents_Count == combination_of_param[3, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[3, c(3)]), 
+         aes(x=Heterophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Heterophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p3_h_hom &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[3, c(1)] &amp; 
+                  Agents_Count == combination_of_param[3, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[3, c(3)]), 
+         aes(x=Homophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Homophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p3_multiplot &lt;- multiplot(p3_h_het, p3_h_hom, p3_h_pref, cols=1)
+</code></pre>
+
+<pre><code>## Error in exists(name, envir = env, mode = mode): argument &quot;env&quot; is missing, with no default
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAA1BMVEX///+nxBvIAAAACXBIWXMAAAsSAAALEgHS3X78AAABDUlEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBv4mUAASET0xEAAAAASUVORK5CYII=" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r"># variant 4 -  FALSE ; Agents 120 ; Tasks 20
+
+v4_id_runs &lt;- subset(batch_merged, 
+                     Experience_Decay == combination_of_param[4, c(1)] &amp; 
+                       Agents_Count == combination_of_param[4, c(2)] &amp; 
+                       Tasks_Count == combination_of_param[4, c(3)],
+                     select=c(&quot;Run_Number&quot;))
+nrow(v4_id_runs)
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<pre><code class="r">v4_id_runs[,]
+</code></pre>
+
+<pre><code>## integer(0)
+</code></pre>
+
+<pre><code class="r">length(v4_id_runs[,])
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<pre><code class="r">scenario_4_t &lt;- subset(merged, run %in% v4_id_runs[,], select=c(1,3,4,6))
+</code></pre>
+
+<pre><code>## Error in subset(merged, run %in% v4_id_runs[, ], select = c(1, 3, 4, 6)): object &#39;merged&#39; not found
+</code></pre>
+
+<pre><code class="r">nrow(scenario_4_t)
+</code></pre>
+
+<pre><code>## Error in nrow(scenario_4_t): object &#39;scenario_4_t&#39; not found
+</code></pre>
+
+<pre><code class="r">max(scenario_4_t$EvolutionIteration)
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;scenario_4_t&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_4 &lt;- sqldf(&quot;select run, EvolutionGeneration, TaskStrategy, 
+                    count(TaskStrategy) as licznosc 
+                    from scenario_4_t 
+                    where EvolutionIteration = 20
+                    group by 
+                    run, EvolutionGeneration, TaskStrategy&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: scenario_4_t)
+</code></pre>
+
+<pre><code class="r">p4_r &lt;- 
+  ggplot(scenario_4, 
+         aes(x=EvolutionGeneration, y=licznosc, colour=TaskStrategy, group=run)) +
+  geom_point(aes(group = run)) +
+  ggtitle(&quot;Set of strategies, grouped, through generations&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_4, aes(x = EvolutionGeneration, y = licznosc, : object &#39;scenario_4&#39; not found
+</code></pre>
+
+<pre><code class="r">p4_r
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;p4_r&#39; not found
+</code></pre>
+
+<pre><code class="r">p4_1 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[4, c(1)] &amp; 
+                  Agents_Count == combination_of_param[4, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[4, c(3)]), 
+         aes(x=Generation, fill=Heterophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Heterophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+# combination_of_param[1, c(1)]
+p4_2 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[4, c(1)] &amp; 
+                  Agents_Count == combination_of_param[4, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[4, c(3)]), 
+         aes(x=Generation, fill=Homophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Homophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p4_3 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[4, c(1)] &amp; 
+                  Agents_Count == combination_of_param[4, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[4, c(3)]), 
+         aes(x=Generation, fill=Preferential_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Preferential_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p4_multiplot2 &lt;- multiplot(p4_1, p4_2, p4_3, cols=1)
+</code></pre>
+
+<pre><code>## Error in `[.data.frame`(base, names(rows)): undefined columns selected
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAA1BMVEX///+nxBvIAAAACXBIWXMAAAsSAAALEgHS3X78AAABDUlEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBv4mUAASET0xEAAAAASUVORK5CYII=" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r">p4_h_pref &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[4, c(1)] &amp; 
+                  Agents_Count == combination_of_param[4, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[4, c(3)]), 
+         aes(x=Preferential_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Preferential_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p4_h_het &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[4, c(1)] &amp; 
+                  Agents_Count == combination_of_param[4, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[4, c(3)]), 
+         aes(x=Heterophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Heterophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p4_h_hom &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[4, c(1)] &amp; 
+                  Agents_Count == combination_of_param[4, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[4, c(3)]), 
+         aes(x=Homophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Homophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p4_multiplot &lt;- multiplot(p4_h_het, p4_h_hom, p4_h_pref, cols=1)
+</code></pre>
+
+<pre><code>## Error in exists(name, envir = env, mode = mode): argument &quot;env&quot; is missing, with no default
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAA1BMVEX///+nxBvIAAAACXBIWXMAAAsSAAALEgHS3X78AAABDUlEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBv4mUAASET0xEAAAAASUVORK5CYII=" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r"># variant 5 -  TRUE ; Agents 100 ; Tasks 50
+
+v5_id_runs &lt;- subset(batch_merged, 
+                     Experience_Decay == combination_of_param[5, c(1)] &amp; 
+                       Agents_Count == combination_of_param[5, c(2)] &amp; 
+                       Tasks_Count == combination_of_param[5, c(3)],
+                     select=c(&quot;Run_Number&quot;))
+nrow(v5_id_runs)
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<pre><code class="r">v5_id_runs[,]
+</code></pre>
+
+<pre><code>## integer(0)
+</code></pre>
+
+<pre><code class="r">length(v5_id_runs[,])
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<pre><code class="r">scenario_5_t &lt;- subset(merged, run %in% v5_id_runs[,], select=c(1,3,4,6))
+</code></pre>
+
+<pre><code>## Error in subset(merged, run %in% v5_id_runs[, ], select = c(1, 3, 4, 6)): object &#39;merged&#39; not found
+</code></pre>
+
+<pre><code class="r">nrow(scenario_5_t)
+</code></pre>
+
+<pre><code>## Error in nrow(scenario_5_t): object &#39;scenario_5_t&#39; not found
+</code></pre>
+
+<pre><code class="r">max(scenario_5_t$EvolutionIteration)
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;scenario_5_t&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_5 &lt;- sqldf(&quot;select run, EvolutionGeneration, TaskStrategy, 
+                    count(TaskStrategy) as licznosc 
+                    from scenario_5_t 
+                    where EvolutionIteration = 20
+                    group by 
+                    run, EvolutionGeneration, TaskStrategy&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: scenario_5_t)
+</code></pre>
+
+<pre><code class="r">p5_r &lt;- 
+  ggplot(scenario_5, 
+         aes(x=EvolutionGeneration, y=licznosc, colour=TaskStrategy, group=run)) +
+  geom_point(aes(group = run)) +
+  ggtitle(&quot;Set of strategies, grouped, through generations&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_5, aes(x = EvolutionGeneration, y = licznosc, : object &#39;scenario_5&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_5_u &lt;- subset(merged, run %in% v5_id_runs[,], select=c(1,3,4,10,11,12))
+</code></pre>
+
+<pre><code>## Error in subset(merged, run %in% v5_id_runs[, ], select = c(1, 3, 4, 10, : object &#39;merged&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_5_ut &lt;- sqldf(&quot;select run, EvolutionGeneration, EvolutionIteration, 
+                       avg(Utility) as avg_utility, avg(LUtility) as avg_lutility,
+                       avg(RUtility) as avg_rutility
+                       from scenario_5_u 
+                       group by 
+                       run, EvolutionGeneration, EvolutionIteration&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: scenario_5_u)
+</code></pre>
+
+<pre><code class="r">scenario_5_ut$grp &lt;- paste(scenario_5_ut[,1],scenario_5_ut[,2])
+</code></pre>
+
+<pre><code>## Error in paste(scenario_5_ut[, 1], scenario_5_ut[, 2]): object &#39;scenario_5_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p5_u &lt;- 
+  ggplot(scenario_5_ut, 
+         aes(x=EvolutionIteration, y=avg_utility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  geom_smooth(na.rm = TRUE, method = &#39;glm&#39;) +
+  ggtitle(&quot;Utility values through iterations (avg by all users)&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_5_ut, aes(x = EvolutionIteration, y = avg_utility, : object &#39;scenario_5_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p5_ul &lt;- 
+  ggplot(scenario_5_ut, 
+         aes(x=EvolutionIteration, y=avg_lutility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  geom_smooth(na.rm = TRUE, method = &#39;glm&#39;) +
+  ggtitle(&quot;LUtility values through iterations (avg by all users)&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_5_ut, aes(x = EvolutionIteration, y = avg_lutility, : object &#39;scenario_5_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p5_ur &lt;- 
+  ggplot(scenario_5_ut, 
+         aes(x=EvolutionIteration, y=avg_rutility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  geom_smooth(na.rm = TRUE, method = &#39;glm&#39;) +
+  ggtitle(&quot;RUtility values through iterations (avg by all users)&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_5_ut, aes(x = EvolutionIteration, y = avg_rutility, : object &#39;scenario_5_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p5_multiplot_u &lt;- multiplot(p5_u, p5_ul, p5_ur, cols=2)
+</code></pre>
+
+<pre><code>## Error in multiplot(p5_u, p5_ul, p5_ur, cols = 2): object &#39;p5_u&#39; not found
+</code></pre>
+
+<pre><code class="r">p5_1 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[5, c(1)] &amp; 
+                  Agents_Count == combination_of_param[5, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[5, c(3)]), 
+         aes(x=Generation, fill=Heterophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Heterophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+# combination_of_param[1, c(1)]
+p5_2 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[5, c(1)] &amp; 
+                  Agents_Count == combination_of_param[5, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[5, c(3)]), 
+         aes(x=Generation, fill=Homophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Homophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p5_3 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[5, c(1)] &amp; 
+                  Agents_Count == combination_of_param[5, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[5, c(3)]), 
+         aes(x=Generation, fill=Preferential_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Preferential_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p5_multiplot2 &lt;- multiplot(p5_1, p5_2, p5_3, cols=1)
+</code></pre>
+
+<pre><code>## Error in `[.data.frame`(base, names(rows)): undefined columns selected
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAA1BMVEX///+nxBvIAAAACXBIWXMAAAsSAAALEgHS3X78AAABDUlEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBv4mUAASET0xEAAAAASUVORK5CYII=" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r">p5_h_pref &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[5, c(1)] &amp; 
+                  Agents_Count == combination_of_param[5, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[5, c(3)]), 
+         aes(x=Preferential_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Preferential_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p5_h_het &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[5, c(1)] &amp; 
+                  Agents_Count == combination_of_param[5, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[5, c(3)]), 
+         aes(x=Heterophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Heterophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p5_h_hom &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[5, c(1)] &amp; 
+                  Agents_Count == combination_of_param[5, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[5, c(3)]), 
+         aes(x=Homophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Homophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p5_multiplot &lt;- multiplot(p5_h_het, p5_h_hom, p5_h_pref, cols=1)
+</code></pre>
+
+<pre><code>## Error in exists(name, envir = env, mode = mode): argument &quot;env&quot; is missing, with no default
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAA1BMVEX///+nxBvIAAAACXBIWXMAAAsSAAALEgHS3X78AAABDUlEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBv4mUAASET0xEAAAAASUVORK5CYII=" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r"># variant 6 -  FALSE ; Agents 100 ; Tasks 50
+
+v6_id_runs &lt;- subset(batch_merged, 
+                     Experience_Decay == combination_of_param[6, c(1)] &amp; 
+                       Agents_Count == combination_of_param[6, c(2)] &amp; 
+                       Tasks_Count == combination_of_param[6, c(3)],
+                     select=c(&quot;Run_Number&quot;))
+nrow(v6_id_runs)
+</code></pre>
+
+<pre><code>## [1] 184
+</code></pre>
+
+<pre><code class="r">v6_id_runs[,]
+</code></pre>
+
+<pre><code>##   [1]   2   3   5   8  13  20  24  25  26  27  30  31  32  34  35  36  39  42  44  46
+##  [21]  49  53  54  56  58  59  60  62  66  67  69  70  71  74  77  78  81  83  84  85
+##  [41]  86  87  89  90  91  92  93  94  96  98 100 102 104 107 109 111 113 116 117 119
+##  [61] 120 122 123 125 126 130 132 133 134 135 137 138 139 147 148 149 150 151 154 159
+##  [81] 161 165 166 167 170 171 173 177 178 182 184 187 188 190 191 192 193 194 198 199
+## [101] 201 208 209 215 218 220 221 223 225 226 227 230 231 235 236 237 238 242 244 245
+## [121] 246 250 251 252 253 254 257 258 260 261 262 265 268 271 274 275 284 286 288 292
+## [141] 294 295 297 300 307 309 310 312 314 315 318 319 321 326 328 330 331 332 333 334
+## [161] 340 346 347 348 350 351 354 355 356 361 363 366 368 373 378 379 381 384 385 387
+## [181] 390 392 396 397
+</code></pre>
+
+<pre><code class="r">length(v6_id_runs[,])
+</code></pre>
+
+<pre><code>## [1] 184
+</code></pre>
+
+<pre><code class="r">scenario_6_t &lt;- subset(merged, run %in% v6_id_runs[,], select=c(1,3,4,6))
+</code></pre>
+
+<pre><code>## Error in subset(merged, run %in% v6_id_runs[, ], select = c(1, 3, 4, 6)): object &#39;merged&#39; not found
+</code></pre>
+
+<pre><code class="r">nrow(scenario_6_t)
+</code></pre>
+
+<pre><code>## Error in nrow(scenario_6_t): object &#39;scenario_6_t&#39; not found
+</code></pre>
+
+<pre><code class="r">max(scenario_6_t$EvolutionIteration)
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;scenario_6_t&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_6 &lt;- sqldf(&quot;select run, EvolutionGeneration, TaskStrategy, 
+                    count(TaskStrategy) as licznosc 
+                    from scenario_6_t 
+                    where EvolutionIteration = 20
+                    group by 
+                    run, EvolutionGeneration, TaskStrategy&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: scenario_6_t)
+</code></pre>
+
+<pre><code class="r">p6_r &lt;- 
+  ggplot(scenario_6, 
+         aes(x=EvolutionGeneration, y=licznosc, colour=TaskStrategy, group=run)) +
+  geom_point(aes(group = run)) +
+  ggtitle(&quot;Set of strategies, grouped, through generations&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_6, aes(x = EvolutionGeneration, y = licznosc, : object &#39;scenario_6&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_6_u &lt;- subset(merged, run %in% v6_id_runs[,], select=c(1,3,4,10,11,12))
+</code></pre>
+
+<pre><code>## Error in subset(merged, run %in% v6_id_runs[, ], select = c(1, 3, 4, 10, : object &#39;merged&#39; not found
+</code></pre>
+
+<pre><code class="r">scenario_6_ut &lt;- sqldf(&quot;select run, EvolutionGeneration, EvolutionIteration, 
+                       avg(Utility) as avg_utility, avg(LUtility) as avg_lutility,
+                       avg(RUtility) as avg_rutility
+                       from scenario_6_u 
+                       group by 
+                       run, EvolutionGeneration, EvolutionIteration&quot;)
+</code></pre>
+
+<pre><code>## Error in sqliteExecStatement(con, statement, bind.data): RS-DBI driver: (error in statement: no such table: scenario_6_u)
+</code></pre>
+
+<pre><code class="r">scenario_6_ut$grp &lt;- paste(scenario_6_ut[,1],scenario_6_ut[,2])
+</code></pre>
+
+<pre><code>## Error in paste(scenario_6_ut[, 1], scenario_6_ut[, 2]): object &#39;scenario_6_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p6_u &lt;- 
+  ggplot(scenario_6_ut, 
+         aes(x=EvolutionIteration, y=avg_utility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  geom_smooth(na.rm = TRUE, method = &#39;glm&#39;) +
+  ggtitle(&quot;Utility values through iterations (avg by all users)&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_6_ut, aes(x = EvolutionIteration, y = avg_utility, : object &#39;scenario_6_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p6_ul &lt;- 
+  ggplot(scenario_6_ut, 
+         aes(x=EvolutionIteration, y=avg_lutility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  geom_smooth(na.rm = TRUE, method = &#39;glm&#39;) +
+  ggtitle(&quot;LUtility values through iterations (avg by all users)&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_6_ut, aes(x = EvolutionIteration, y = avg_lutility, : object &#39;scenario_6_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p6_ur &lt;- 
+  ggplot(scenario_6_ut, 
+         aes(x=EvolutionIteration, y=avg_rutility, group=grp)) +
+  geom_point(aes(group = grp)) +
+  geom_smooth(na.rm = TRUE, method = &#39;glm&#39;) +
+  ggtitle(&quot;RUtility values through iterations (avg by all users)&quot;)
+</code></pre>
+
+<pre><code>## Error in ggplot(scenario_6_ut, aes(x = EvolutionIteration, y = avg_rutility, : object &#39;scenario_6_ut&#39; not found
+</code></pre>
+
+<pre><code class="r">p6_multiplot_u &lt;- multiplot(p6_u, p6_ul, p6_ur, cols=2)
+</code></pre>
+
+<pre><code>## Error in multiplot(p6_u, p6_ul, p6_ur, cols = 2): object &#39;p6_u&#39; not found
+</code></pre>
+
+<pre><code class="r">p6_1 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] &amp; 
+                  Agents_Count == combination_of_param[6, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Generation, fill=Heterophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Heterophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+# combination_of_param[1, c(1)]
+p6_2 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] &amp; 
+                  Agents_Count == combination_of_param[6, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Generation, fill=Homophily_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Homophily_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p6_3 &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] &amp; 
+                  Agents_Count == combination_of_param[6, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Generation, fill=Preferential_Count)) +
+  geom_histogram(colour=&quot;black&quot;, binwidth=30) +
+  facet_grid(Preferential_Count ~ .) +
+  ggtitle(&quot;How many generations it took&quot;)
+p6_multiplot2 &lt;- multiplot(p6_1, p6_2, p6_3, cols=1)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<pre><code class="r">p6_h_pref &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] &amp; 
+                  Agents_Count == combination_of_param[6, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Preferential_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Preferential_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p6_h_het &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] &amp; 
+                  Agents_Count == combination_of_param[6, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Heterophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Heterophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p6_h_hom &lt;- 
+  ggplot(subset(batch_merged, 
+                Experience_Decay == combination_of_param[6, c(1)] &amp; 
+                  Agents_Count == combination_of_param[6, c(2)] &amp; 
+                  Tasks_Count == combination_of_param[6, c(3)]), 
+         aes(x=Homophily_Count)) + 
+  geom_histogram(binwidth=1, colour=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_vline(aes(xintercept=mean(Homophily_Count, na.rm=T)),
+             color=&quot;red&quot;, linetype=&quot;dashed&quot;, size=1) +
+  xlim(c(0,120))
+p6_multiplot &lt;- multiplot(p6_h_het, p6_h_hom, p6_h_pref, cols=1)
+</code></pre>
+
+<p><img src="data:image/png;base64,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PzU73Z86daq3t7e2tpau7CNHjhw9epQQ4na7VX8hSdJgp9oGcOnSJZvNJggCmWLrPS5pjU+pDWA8O/7kvmBKUZT33nvP5/PxPL9+/Xp6hy3Ve+eddy5cuKDX6wkh+fn5GzZs2LdvXzAYFEVx7dq19F6UahUMBhMHa7Vap9QGcPDgwcLCwltuuYVc9VGoe70fPHiwpKSE/uomcY0bDAbVbwDxsY9nx5/chR4AAK5rcp+6AQCA60KhBwBQORR6mCg4jnO73fHZ1157beXKlaO8XhRFWZYzmMCZM2fmzJmT9OCnn366aNEiQkhjY+NNN900pjdUFOXVV1+dP3++JEkzZ8589tlnM3WmNONjB3Wb3D+vBMi2ysrKX//61+kt+4c//OGll1568cUXb7nllqampgceeCAvL++RRx7JbIYA14UjepgE/vnPf956661Go3H16tX053SrVq2KRqOzZs0aGhq6+tmmpqavf/3rv/nNb26++WZCyNtvv+10Os1m88aNG7u7uwkhu3bt+uEPf/j973/fYrEsXbq0ubmZBlIU5Te/+U1xcfGMGTMOHjxICGltbf3Vr36VmMz999//+9//nk4/9dRTjz766DVz7u3tfeaZZ/bt27d27VqHw7F69epnn3320KFD9NmrU/r4449vu+02+mx8+syZM3fcccf27dunTZtWWVlJU0oce0Y/ZlAtFHqY6Hp6ejZs2PDrX//a7XbPnj373nvvJYTs379fEITz58+HQqGrnyWENDY2nj9//r/+679aW1vvv//+F198sbW1NT8//8c//jF9wRtvvHH77be3tLTccccdmzdvpidVWlpaBEFoa2v7wQ9+8NRTT10zn3Xr1sUvRNy7d++mTZuu+bLGxsby8nL6l4a655573nrrLULISCmN9D6yLLe0tHznO9954oknEseuyh5ekBUKwMRACDGZTOYr9Hr9N77xDUVR3njjjY0bN9LXBINBSZJkWVYURRCESCRyzWdPnjyp1WpDoZCiKM8//3xtbS19weXLlzUajSzLO3fuvPnmm+mD4XC4oKDg7Nmzp0+fzs/Pj0QiiqJ88cUXc+fOVRTl6NGjCxcuVBTl+PHj9JGBgQGj0djX13f+/Pni4mKazNVef/31VatWXfOpa6bU0NCwZMkS+mB8OjGlkydPOp1O+gI69rQ+ZpiKcI4eJpD6+nrao4oQ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Cdx///2///3v6fRTTz316KOPXjPP3t7eZ555Zt++fWvXrnU4HKtXr3722WcPHTo0Ukoff/zxbbfdRp+NT585c+aOO+7Yvn37tGnTKisraUqrVq2KRqOzZs0aGhrK4AcLqodCD5NDa2vr/fff/+KLL7a2tubn5//4xz+mj3/88ccLFiw4e/ZsKBSqqal5880333///f/4j//o7u4eaZE33njj9ttvb2lpueOOOzZv3kxPqrS0tAiC0NbW9oMf/OCpp566Zg7r1q2LX4K4d+/eTZs2XfNljY2N5eXlN998c/yRe+6556233hplFCO9jyzLLS0t3/nOd5544glCyP79+wVBOH/+vCq7d0EWKQATCSHEZDKZr9Dr9d/4xjcURXn++edra2vpay5fvqzRaGRZPn369LRp0+iD//Iv//KjH/2ITldUVLS0tFxzkZ07d9588830wXA4XFBQcPbs2dOnT+fn50ciEUVRvvjii7lz5yqKcvTo0YULFyqKcvz4cfrIwMCA0Wjs6+s7f/58cXGxLMvXHMLrr7++atWqaz51zZQaGhqWLFlCH4xPJ6Z08uRJp9NJXyAIAn0QIHU4Rw8TTn19Pe1URQipq6v74IMPCCGdnZ0zZsygDxYVFWm1WnreIy8vjz4oimL8unBRFEdZpLKykj6o0WhmzJjR0dFRUlJSUlJCl+L5Ef+bazKZli5d+v7777tcrrvuuoteoXq18vJyj8eT+MjQ0NCrr7764IMPjpRSnJLwnW08JfovQNpw6gYmHIfDMeMKm81GHywpKbl48SKd7u7uHh4ejj81kpEWaW1tpQ/KsuxyuUpLSwkh8dZRo1u3bt3f//73Uc7bEELmz59/4cKF48ePxx957733tm/frtPpRkop/kOaxF8cpZgSwHWh0MPk8K1vfevtt98+cOBAb2/vtm3bNmzYcN3j3JEW+fzzz1955RWv1/vkk0+WlZXdcMMNqaexbt26ffv2nT17dtmyZSO9xmazPfnkk+vXr9+3b5/L5XrnnXe2bt366KOPchx3zZTMZvOJEycaGxt7enpeeuml6+YwODiYesIABIUeJotZs2bt2LFj69atFRUVAwMDL774YtqLfPOb3/zggw9mzpz54Ycf1tXVjXKu5mqVlZVlZWXf/va3R/8z8/Of/3zbtm2//OUvnU7nY4899vjjjz/++OMjpTRnzpyH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" alt="plot of chunk unnamed-chunk-15"/> </p>
+
+<p>In this cases heterophily don&#39;t win:</p>
+
+<pre><code class="r">unusual_observations &lt;- subset(
+  batch_merged, Homophily_Count &gt; 0 | Preferential_Count &gt; 0)
+View(unusual_observations)
+</code></pre>
+
+</body>
+
+</html>
