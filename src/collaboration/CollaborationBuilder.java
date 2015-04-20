@@ -433,6 +433,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ SimulationParameters.planNumber + ","
 				+ SimulationParameters.utilityType + ","
 				+ gameController.getCurrentGeneration() + ","
+				+ SimulationParameters.iterationCount + ","
 				+ SimulationParameters.allwaysChooseTask + ","
 				+ gameController.countHomophilyDistribution(currentContext)
 				+ ","
@@ -464,6 +465,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ "," + "Task_choice_strategy" + "," + "Skill_choice_strategy"
 				+ "," + "Is_Evolutionary" + ","
 				+ "Plan_Number" + "," + "Utility_Type" + "," + "Generation" + ","
+				+ "GenerationLength" + ","
 				+ "Allways_Choose_Task" + "," + "Homophily_Count" + ","
 				+ "Heterophily_Count" + "," + "Preferential_Count";
 	}

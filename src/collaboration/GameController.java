@@ -70,6 +70,7 @@ public class GameController {
 	
 	public void randomizeGenerationLength(Integer[] set){
 		iterationNumber = ObjectsHelper.randomFrom(set);
+		SimulationParameters.iterationCount = iterationNumber;
 	}
 
 	/**
