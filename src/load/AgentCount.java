@@ -9,6 +9,15 @@ public enum AgentCount {
 	INSTANCE;
 	
 	private Set<Integer> counts = new HashSet<Integer>();
+	private Integer chosen;
+
+	public Integer getChosen() {
+		return chosen;
+	}
+
+	public void setChosen(Integer chosen) {
+		this.chosen = chosen;
+	}
 
 	public void addCount(Integer count){
 		counts.add(count);
