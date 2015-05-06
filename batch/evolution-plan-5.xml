@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sweep runs="800">
 	<parameter name="evolutionEnabled" type="constant" constant_type="int" value="1" />
-	<parameter name="planNumber" type="constant" constant_type="int" value="7" />
+	<parameter name="planNumber" type="constant" constant_type="int" value="5" />
 	<parameter name="utilityFunction" type="constant" constant_type="java.lang.String" value="LearningsSkills LeftLearningSkills RightLearningSkills" />
 	<parameter name="numTasks" type="constant" constant_type="int" value="100" />
 	<parameter name="iterationCount" type="constant" constant_type="int" value="20 100" />
