@@ -2,7 +2,7 @@ package collaboration;
 
 import java.text.DecimalFormat;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 import cern.jet.random.ChiSquare;
 
 /**
@@ -13,7 +13,7 @@ import cern.jet.random.ChiSquare;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.6
+ * @version 2.0.11
  * 
  */
 public class Experience {
@@ -51,7 +51,7 @@ public class Experience {
 
 	public Experience(double value, int top, boolean passionStub) {
 		if (passionStub) {
-			int maxx = SimulationParameters.agentSkillsMaximumExperience;
+			int maxx = SimulationAdvancedParameters.agentSkillsMaximumExperience;
 			this.value = maxx * expStub;
 			this.top = maxx;
 		} else {
@@ -152,11 +152,11 @@ public class Experience {
 	}
 
 	private void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 	private void sanity(String s) {
-		PjiitOutputter.sanity(s);
+		VerboseLogger.sanity(s);
 	}
 
 	/**
@@ -310,7 +310,7 @@ class ExperienceSanityCheck {
 	}
 
 	private void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 }
