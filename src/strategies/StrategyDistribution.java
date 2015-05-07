@@ -1,22 +1,19 @@
 package strategies;
 
-import collaboration.SimulationAdvancedParameters;
-import repast.simphony.random.RandomHelper;
 import strategies.Strategy.SkillChoice;
 import strategies.Strategy.TaskChoice;
-import constants.ModelFactory;
 
 /***
  * Tells whether evolutionary model is enabled and/or what kind of strategy
  * distribution there is currently set.
  * 
  * @author Oskar Jarczyk
- * @version 2.0.9
+ * @version 2.0.11
  */
 public class StrategyDistribution {
 
 	public static final int SINGULAR = 0;
-	public static final int MULTIPLE = 1;
+	public static final int EVOLUTIONARY = 1;
 
 	private static final String[] taskChoiceSet = { "homophyly", "heterophyly",
 			"preferential", "random", "central" };
@@ -34,7 +31,7 @@ public class StrategyDistribution {
 	}
 
 	public Boolean isMultiple() {
-		return this.type == MULTIPLE;
+		return this.type == EVOLUTIONARY;
 	}
 
 	public Boolean isDistributionLoaded() {
@@ -74,25 +71,8 @@ public class StrategyDistribution {
 	}
 
 	public void setSkillChoice(String skillChoice) {
+		assert skillChoice != null;
 		this.skillChoice = skillChoice;
-	}
-	
-	public void setSkillChoice(ModelFactory modelFactory, String skillChoice) {
-		if (SimulationAdvancedParameters.smallCartesianSet){
-			this.skillChoice = skillChoice;
-		} else
-		if (modelFactory.getFunctionality().isMultipleValidation()) {
-			// this is only important if you launch
-			// a "multiple validation" parameter set in modelType
-			// it chooses a random skill strategy
-			int intRandomized = RandomHelper.nextIntFromTo(0,
-					skillChoiceSet.length - 1);
-			this.skillChoice = skillChoiceSet[intRandomized];
-		} else
-			// otherwise assign to every agent the same strategy
-			// and make sure this is set from this later
-			this.skillChoice = skillChoice;
-		assert this.skillChoice != null;
 	}
 
 	public String getTaskChoice() {
@@ -100,21 +80,8 @@ public class StrategyDistribution {
 	}
 
 	public void setTaskChoice(String taskChoice) {
+		assert taskChoice != null;
 		this.taskChoice = taskChoice;
-	}
-
-	public void setTaskChoice(ModelFactory modelFactory, String taskChoice) {
-		if (modelFactory.getFunctionality().isMultipleValidation()) {
-			// this is only important if you
-			// launch a "multiple validation" model
-			int intRandomized = RandomHelper.nextIntFromTo(0,
-					taskChoiceSet.length - 1);
-			assert (intRandomized >= 0)
-					&& (intRandomized <= taskChoiceSet.length - 1);
-			this.taskChoice = taskChoiceSet[intRandomized];
-
-		} else
-			this.taskChoice = taskChoice;
 	}
 
 	public int getType() {
