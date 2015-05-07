@@ -27,7 +27,7 @@ public enum GenerationLength {
 		return lengths;
 	}
 
-	public void setCounts(Set<Integer> lengths) {
+	public void setLengths(Set<Integer> lengths) {
 		this.lengths = lengths;
 	}
 	
@@ -44,5 +44,9 @@ public enum GenerationLength {
 			returnString.append(" ");
 		}
 		return returnString.toString().trim();
+	}
+
+	public boolean isEmpty() {
+		return lengths.isEmpty();
 	}
 }

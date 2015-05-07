@@ -56,4 +56,8 @@ public enum FunctionSet {
 		}
 		return returnString.toString().trim();
 	}
+
+	public boolean isEmpty() {
+		return functions.isEmpty();
+	}
 }

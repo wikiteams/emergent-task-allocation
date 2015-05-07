@@ -45,4 +45,8 @@ public enum ExpDecayOption {
 		}
 		return returnString.toString().trim();
 	}
+
+	public boolean isEmpty() {
+		return options.isEmpty();
+	}
 }

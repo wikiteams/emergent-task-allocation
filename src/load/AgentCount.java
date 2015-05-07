@@ -45,4 +45,8 @@ public enum AgentCount {
 		}
 		return returnString.toString().trim();
 	}
+
+	public boolean isEmpty() {
+		return counts.isEmpty();
+	}
 }
