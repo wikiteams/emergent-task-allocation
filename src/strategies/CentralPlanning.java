@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 import repast.simphony.util.collections.IndexedIterable;
 import tasks.CentralAssignmentOrders;
 import utils.ObjectsHelper;
@@ -119,7 +119,7 @@ public class CentralPlanning {
 	}
 
 	private void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 	@Override
