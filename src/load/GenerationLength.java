@@ -9,6 +9,15 @@ public enum GenerationLength {
 	INSTANCE;
 	
 	private Set<Integer> lengths = new HashSet<Integer>();
+	private Integer chosen;
+
+	public Integer getChosen() {
+		return chosen;
+	}
+
+	public void setChosen(Integer chosen) {
+		this.chosen = chosen;
+	}
 
 	public void addLength(Integer length){
 		lengths.add(length);

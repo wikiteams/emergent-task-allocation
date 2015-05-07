@@ -13,6 +13,7 @@ public enum FunctionSet {
 
 	private Set<UtilityType> functions = new HashSet<UtilityType>();
 	private UtilityType chosen;
+	
 	public boolean isAgentOrientedUtility;
 	public boolean isTaskOrientedUtility;
 

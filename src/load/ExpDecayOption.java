@@ -9,6 +9,15 @@ public enum ExpDecayOption {
 	INSTANCE;
 	
 	private Set<Boolean> options = new HashSet<Boolean>();
+	private Boolean chosen;
+
+	public Boolean getChosen() {
+		return chosen;
+	}
+
+	public void setChosen(Boolean chosen) {
+		this.chosen = chosen;
+	}
 
 	public void addOption(Boolean option){
 		options.add(option);
