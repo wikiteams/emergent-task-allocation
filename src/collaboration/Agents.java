@@ -1,20 +1,17 @@
 package collaboration;
 
-import github.DataSet;
 import intelligence.AgentComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
 import repast.simphony.random.RandomHelper;
 import strategies.Strategy;
 import strategies.StrategyDistribution;
-import test.AgentTestUniverse;
-import utils.LaunchStatistics;
 import utils.NamesGenerator;
 
 /***
@@ -22,7 +19,7 @@ import utils.NamesGenerator;
  * structure. Context holds all simulation Agents.
  * 
  * @author Oskar Jarczyk
- * @version 2.0.9 'White fox' edition
+ * @version 2.0.11
  * @since ?
  */
 public class Agents extends DefaultContext<Agent> {
@@ -37,31 +34,20 @@ public class Agents extends DefaultContext<Agent> {
 	public static final long serialVersionUID = 2081015L;
 
 	private List<Agent> listAgents;
-	private DataSet dataSet;
 	private StrategyDistribution strategyDistribution;
-	private LaunchStatistics launchStatistics;
 	private Integer allowedLoad;
 
-	public Agents(DataSet dataSet, StrategyDistribution strategyDistribution,
-			LaunchStatistics launchStatistics, Integer allowedLoad) {
+	public Agents(StrategyDistribution strategyDistribution, Integer allowedLoad) {
 		super("Agents");
 
-		this.dataSet = dataSet;
 		this.strategyDistribution = strategyDistribution;
-		this.launchStatistics = launchStatistics;
 		this.allowedLoad = allowedLoad;
 
 		initializeAgents(this);
 	}
 
-	public Agents(StrategyDistribution strategyDistribution, Integer allowedLoad) {
-		this(DataSet.getInstance(), strategyDistribution, 
-				LaunchStatistics.getInstance(), allowedLoad);
-	}
-
 	private void addAgents(Context<Agent> context) {
-		Integer agentCnt = SimulationParameters.multipleAgentSets ? allowedLoad
-				: SimulationParameters.agentCount;
+		Integer agentCnt = allowedLoad;
 
 		listAgents = NamesGenerator.getnames(agentCnt);
 		for (int i = 0; i < agentCnt; i++) {
@@ -89,43 +75,15 @@ public class Agents extends DefaultContext<Agent> {
 			}
 			context.add(agent);
 		}
-		launchStatistics.agentCount = agentCnt;
+
 	}
 
 	private void initializeAgents(Context<Agent> context) {
-		if (dataSet.isContinuus()) {
-			// OSRC is used here
-			// TODO: add later brainjar
-			addAgents(context);
-		} else if (dataSet.isMockup()) {
-			addAgents(context);
-		} else if (dataSet.isTest()) {
-			listAgents = new ArrayList<Agent>();
-			AgentTestUniverse.init();
-			initializeValidationAgents(context);
-		} else {
-			assert false;
-		}
-	}
-
-	private void initializeValidationAgents(Context<Agent> context) {
-		for (Agent agent : AgentTestUniverse.DATASET) {
-			say("Adding validation agent to pool..");
-			Strategy strategy = new Strategy(
-					strategyDistribution.getTaskStrategy(),
-					strategyDistribution.getSkillStrategy());
-			agent.setStrategy(strategy);
-			listAgents.add(agent);
-			say(agent.toString() + " added to pool.");
-
-			// Required adding agent to context
-			context.add(agent);
-			launchStatistics.agentCount++;
-		}
+		addAgents(context);
 	}
 
 	private void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 	/***
