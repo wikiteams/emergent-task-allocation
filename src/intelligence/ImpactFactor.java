@@ -6,7 +6,7 @@ import java.util.Map;
 
 import utils.MathHelper;
 import collaboration.Agent;
-import collaboration.SimulationParameters;
+import collaboration.SimulationAdvancedParameters;
 
 public class ImpactFactor {
 
@@ -20,7 +20,7 @@ public class ImpactFactor {
 			queue.add(newImpactFactor);
 		} else {
 			CircularFifoQueue<Double> newQueue = new CircularFifoQueue<Double>(
-					SimulationParameters.IMPACT_MEMORY); // it is size - e.i. 3
+					SimulationAdvancedParameters.IMPACT_MEMORY); // it is size - e.i. 3
 			newQueue.add(newImpactFactor);
 			assert MathHelper.isBetweenInc(newImpactFactor, 0.0, 1.0);
 			impacts.put(agent, newQueue);
@@ -44,7 +44,7 @@ public class ImpactFactor {
 			}
 		} else {
 			CircularFifoQueue<Double> newQueue = new CircularFifoQueue<Double>(
-					SimulationParameters.IMPACT_MEMORY);
+					SimulationAdvancedParameters.IMPACT_MEMORY);
 			newQueue.add(newImpactFactor);
 			highestImpacts.put(agent, newQueue);
 		}

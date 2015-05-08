@@ -2,7 +2,7 @@ package collaboration;
 
 import java.io.Serializable;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 
 public class Category implements Serializable{
 	
@@ -53,7 +53,7 @@ public class Category implements Serializable{
 	}
 
 	private void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 	
 	@Override
