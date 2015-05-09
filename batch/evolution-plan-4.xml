@@ -3,7 +3,8 @@
 	<parameter name="sweepRuns" type="constant" constant_type="int" value="800" />
 	<parameter name="evolutionEnabled" type="constant" constant_type="int" value="1" />
 	<parameter name="planNumber" type="constant" constant_type="int" value="4" />
-	<parameter name="utilityFunction" type="constant" constant_type="java.lang.String" value="LearningsSkills" />
+	<parameter name="utilityFunction" type="constant" constant_type="java.lang.String" value="LearningSkills" />
+	<parameter name="utilityLeftEval" type="constant" constant_type="java.lang.String" value="max" />
 	<parameter name="numTasks" type="constant" constant_type="int" value="100" />
 	<parameter name="iterationCount" type="constant" constant_type="java.lang.String" value="20 100" />
 	<parameter name="equilibriumDetectionSensitivity" type="constant" constant_type="int" value="7" />

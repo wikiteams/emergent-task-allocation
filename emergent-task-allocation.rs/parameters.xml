@@ -29,6 +29,11 @@
 		values="20 100"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 		
+	<parameter name="utilityLeftEval" displayName="Min or max? (in learningsSkills u.fun)"
+		type="java.lang.String" defaultValue="max" 
+		isReadOnly="false" values="min max"
+		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
+		
 	<!-- Mechanism for automatic stop -->
 		
 	<parameter name="equilibriumDetectionSensitivity" 

@@ -81,5 +81,7 @@ public class SimulationParameters {
 		granularityObstinacy = (Integer) param.getValue("granularityObstinacy");
 		granularityType = (String) param.getValue("granularityType");
 
+		SimulationAdvancedParameters.minimum = ((String) param.getValue(
+				"utilityLeftEval")).equals("min") ? true : false;
 	}
 }
