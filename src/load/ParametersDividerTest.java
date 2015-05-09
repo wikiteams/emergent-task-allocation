@@ -61,5 +61,29 @@ public class ParametersDividerTest {
 		assertEquals("Count of permutations", Integer.valueOf(8),
 				ParametersDivider.countSettings());
 	}
+	
+	@Test
+	public void testForExactValues(){
+		ParametersDivider.findMatch(1, 800);
+		System.out.println( AgentCount.INSTANCE.getChosen() );
+		System.out.println( GenerationLength.INSTANCE.getChosen() );
+		System.out.println( ExpDecayOption.INSTANCE.getChosen() );
+		System.out.println( FunctionSet.INSTANCE.getChosen() );
+		ParametersDivider.findMatch(50, 800);
+		System.out.println( AgentCount.INSTANCE.getChosen() );
+		System.out.println( GenerationLength.INSTANCE.getChosen() );
+		System.out.println( ExpDecayOption.INSTANCE.getChosen() );
+		System.out.println( FunctionSet.INSTANCE.getChosen() );
+		ParametersDivider.findMatch(150, 800);
+		System.out.println( AgentCount.INSTANCE.getChosen() );
+		System.out.println( GenerationLength.INSTANCE.getChosen() );
+		System.out.println( ExpDecayOption.INSTANCE.getChosen() );
+		System.out.println( FunctionSet.INSTANCE.getChosen() );
+		ParametersDivider.findMatch(800, 800);
+		System.out.println( AgentCount.INSTANCE.getChosen() );
+		System.out.println( GenerationLength.INSTANCE.getChosen() );
+		System.out.println( ExpDecayOption.INSTANCE.getChosen() );
+		System.out.println( FunctionSet.INSTANCE.getChosen() );
+	}
 
 }
