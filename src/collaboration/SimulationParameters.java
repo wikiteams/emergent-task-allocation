@@ -26,7 +26,6 @@ public class SimulationParameters {
 	public static int equilibriumDetectionSensitivity;
 
 	public static int taskCount;
-	public static int numSteps;
 	public static boolean allwaysChooseTask;
 
 	public static String taskChoiceAlgorithm;
@@ -63,7 +62,6 @@ public class SimulationParameters {
 		mutateChances = ((Integer) param.getValue("mutateChances")) * 0.01;
 
 		taskCount = (Integer) param.getValue("numTasks");
-		numSteps = (Integer) param.getValue("numSteps");
 		allwaysChooseTask = (Boolean) param.getValue("allwaysChooseTask");
 
 		taskChoiceAlgorithm = (String) param.getValue("taskChoiceAlgorithm");
