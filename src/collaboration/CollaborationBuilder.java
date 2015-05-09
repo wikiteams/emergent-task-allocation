@@ -251,13 +251,13 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		return context;
 	}
 
-	private IndexedIterable<Object> getTasks() {
-		Context<Object> context = getCurrentContext();
+	private IndexedIterable<Task> getTasks() {
+		Context<Task> context = tasks;
 		return context.getObjects(Task.class);
 	}
 
-	private IndexedIterable<Object> getAgents() {
-		Context<Object> context = getCurrentContext();
+	private IndexedIterable<Agent> getAgents() {
+		Context<Agent> context = agents;
 		return context.getObjects(Agent.class);
 	}
 
