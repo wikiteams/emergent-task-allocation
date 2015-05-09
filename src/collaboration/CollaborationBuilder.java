@@ -213,6 +213,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			ValidationOutputter.error(e.toString());
 			e.printStackTrace();
 		}
+		
+		ParametersDivider.findMatch(runNumber, SimulationParameters.sweepRuns);
 
 		tasks = new Tasks(SimulationParameters.taskCount);
 		context.addSubContext(tasks);
@@ -220,7 +222,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				AgentCount.INSTANCE.getChosen());
 		context.addSubContext(agents);
 
-		ParametersDivider.findMatch(runNumber, SimulationParameters.sweepRuns);
 		prepareGameController(context);
 
 		assert context.getObjects(GameController.class).size() > 0;
