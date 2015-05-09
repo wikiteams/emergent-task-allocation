@@ -17,7 +17,6 @@ import logger.VerboseLogger;
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
 import strategies.Strategy;
-import test.TaskTestUniverse;
 
 import com.google.common.collect.Lists;
 

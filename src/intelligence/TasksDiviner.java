@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 import repast.simphony.random.RandomHelper;
 import strategies.Strategy;
 import tasks.CentralAssignment;
@@ -131,11 +131,11 @@ public class TasksDiviner {
 	}
 
 	private static void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 	private static void sanity(String s) {
-		PjiitOutputter.sanity(s);
+		VerboseLogger.sanity(s);
 	}
 
 }

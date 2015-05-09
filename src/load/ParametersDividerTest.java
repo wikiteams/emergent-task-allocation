@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import collaboration.Utility.UtilityType;
+
 public class ParametersDividerTest {
 
 	ParametersDivider parametersDivider;
@@ -40,6 +42,7 @@ public class ParametersDividerTest {
 		// parametersDivider = new ParametersDivider();
 	}
 
+	@SuppressWarnings("serial")
 	@Test
 	public void test() {
 		assertEquals(2, AgentCount.INSTANCE.getCounts().size());
@@ -47,6 +50,16 @@ public class ParametersDividerTest {
 		assertEquals("Count of permutations", Integer.valueOf(8),
 				ParametersDivider.countSettings());
 		// fail("Not yet implemented");
+		assertEquals(2, AgentCount.INSTANCE.getCounts().size());
+		assertEquals(2, GenerationLength.INSTANCE.getLengths().size());
+		FunctionSet.INSTANCE.setFunctions(new HashSet<UtilityType>() {
+			{
+				add(UtilityType.LearningSkills);
+			}
+		});
+		assertEquals(1, FunctionSet.INSTANCE.getFunctions().size());
+		assertEquals("Count of permutations", Integer.valueOf(8),
+				ParametersDivider.countSettings());
 	}
 
 }

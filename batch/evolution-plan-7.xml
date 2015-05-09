@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <sweep runs="800">
+	<parameter name="sweepRuns" type="constant" constant_type="int" value="800" />
 	<parameter name="evolutionEnabled" type="constant" constant_type="int" value="1" />
 	<parameter name="planNumber" type="constant" constant_type="int" value="7" />
 	<parameter name="utilityFunction" type="constant" constant_type="java.lang.String" value="LearningsSkills LeftLearningSkills RightLearningSkills" />
@@ -14,7 +15,7 @@
 	<parameter name="experienceDecay" type="constant" constant_type="java.lang.Boolean" value="true false" />
 	<parameter name="granularity" type="constant" constant_type="java.lang.Boolean" value="false" />
 	<parameter name="granularityObstinacy" type="constant" constant_type="int" value="20" />
-	<parameter name="granularityType" type="constant" constant_type="java.lang.String" value="DISTRIBUTED" />
+	<parameter name="granularityType" type="constant" constant_type="java.lang.String" value="TASKONLY" />
 	<parameter name="allowSkillDeath" type="constant" constant_type="java.lang.Boolean" value="true" />
 	<parameter name="allwaysChooseTask" type="constant" constant_type="java.lang.Boolean" value="true" />
 </sweep>

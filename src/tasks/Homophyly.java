@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 import collaboration.Agent;
 import collaboration.Skill;
 import collaboration.Task;
@@ -111,7 +111,7 @@ public class Homophyly {
 	}
 
 	private static void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 }

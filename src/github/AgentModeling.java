@@ -6,12 +6,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.math3.analysis.function.Sigmoid;
 
-import constants.Constraints;
 import au.com.bytecode.opencsv.CSVReader;
 import collaboration.Agent;
 import collaboration.AgentInternals;
@@ -28,16 +27,6 @@ public class AgentModeling {
 	private final static String filename = SystemUtils.IS_OS_LINUX ? 
 			"data/agents-model/results.csv"
 			: "data\\agents-model\\results.csv";
-
-	public static void instantiate(String method) {
-		if (method.toUpperCase().equals("OSRC")) {
-			say("Reading data and creating [Agent's Skill Pool]...");
-			instantiate();
-		} else {
-			throw new UnsupportedOperationException(
-					Constraints.WRONG_AGENT_DATASET);
-		}
-	}
 
 	public static void clear() {
 		skillSet.clear();
@@ -114,7 +103,7 @@ public class AgentModeling {
 	}
 
 	private static void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 }

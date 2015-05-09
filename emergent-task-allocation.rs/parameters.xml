@@ -89,5 +89,9 @@
 	<parameter name="randomSeed" displayName="Default Random Seed"
 		type="int" defaultValue="__NULL__" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="sweepRuns" 
+		displayName="sweepRuns (for batch control)" 
+		type="java.lang.Integer" defaultValue="800" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 
 </parameters>

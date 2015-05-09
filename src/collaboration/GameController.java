@@ -91,13 +91,12 @@ public class GameController {
 				say("Execute generation end protocols");
 				// start evolution of Agents
 				AgentEvolve.evolve(this);
-				// resetAllTasks();
 				// reset experience state in Agents
 				resetAllAgents();
 			}
 		} else {
-			// do nothing
-			// TODO: maybe unschedule method manually?
+			// TODO: implement stage of GameController
+			// which happens after evolution is finished
 		}
 	}
 
@@ -124,7 +123,6 @@ public class GameController {
 	public void step() {
 		if (isEvolutionary()) {
 			// benchmark();
-
 			// check whether this is the last generation/iteration
 			if (currentIteration == (iterationNumber - 2)) {
 				if (currentGeneration == (generationNumber - 1)) {
@@ -132,7 +130,6 @@ public class GameController {
 					RunEnvironment.getInstance().endRun();
 				}
 			}
-
 			if (currentIteration == (iterationNumber - 1)) {
 				say("[This is the last iteration in this generation]");
 				currentIteration = 0;
@@ -184,7 +181,7 @@ public class GameController {
 	}
 
 	/**
-	 * TODO: check if this works on good context
+	 * Chooses all agents from proper Repast context
 	 * 
 	 * @param contextBeing
 	 * @return
