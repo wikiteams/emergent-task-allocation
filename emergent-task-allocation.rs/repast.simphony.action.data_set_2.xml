@@ -1,18 +1,17 @@
 <repast.simphony.data2.engine.DataSetDescriptor>
-  <name>Tasks_state_nonaggr</name>
-  <type>NON_AGGREGATE</type>
-  <sourceType>collaboration.Task</sourceType>
+  <name>Agents_aggregate</name>
+  <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>true</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>20.0</interval>
-    <priority>-1000.0</priority>
+    <interval>1.0</interval>
+    <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1004304550</hashCode>
+    <hashCode>1730432379</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
@@ -20,72 +19,54 @@
       <string>EvolutionGeneration</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>EvolutionGeneration</id>
-        <className>collaboration.Task</className>
+        <className>collaboration.Agent</className>
         <methodName>getGeneration</methodName>
+        <aggType>MAX</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
       <string>EvolutionIteration</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>EvolutionIteration</id>
-        <className>collaboration.Task</className>
+        <className>collaboration.Agent</className>
         <methodName>getIteration</methodName>
+        <aggType>MAX</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Id</string>
+      <string>GeneralExperience</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Id</id>
-        <className>collaboration.Task</className>
-        <methodName>getId</methodName>
+        <id>GeneralExperience</id>
+        <className>collaboration.Agent</className>
+        <methodName>getGeneralExperience</methodName>
+        <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Name</string>
+      <string>Utility</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Name</id>
-        <className>collaboration.Task</className>
-        <methodName>getName</methodName>
+        <id>Utility</id>
+        <className>collaboration.Agent</className>
+        <methodName>getDecimalFormatUtility</methodName>
+        <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>HasUnfinishedSkills</string>
+      <string>LUtility</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>HasUnfinishedTasks</id>
-        <className>collaboration.Task</className>
-        <methodName>isClosed</methodName>
+        <id>LUtility</id>
+        <className>collaboration.Agent</className>
+        <methodName>getDecimalFormatLeftUtility</methodName>
+        <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>SkillsCount</string>
+      <string>RUtility</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>SkillsCount</id>
-        <className>collaboration.Task</className>
-        <methodName>countTaskInternals</methodName>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>UnfinishedSkillsCount</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>UnfinishedSkillsCount</id>
-        <className>collaboration.Task</className>
-        <methodName>countUnfinishedTaskInternals</methodName>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>GeneralAdvance</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>GeneralAdvance</id>
-        <className>collaboration.Task</className>
-        <methodName>getGeneralAdvance</methodName>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>NoOfVisits</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>NoOfVisits</id>
-        <className>collaboration.Task</className>
-        <methodName>getNumberOfVisits</methodName>
+        <id>RUtility</id>
+        <className>collaboration.Agent</className>
+        <methodName>getDecimalFormatRightUtility</methodName>
+        <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

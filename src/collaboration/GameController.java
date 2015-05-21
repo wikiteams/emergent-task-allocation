@@ -54,7 +54,7 @@ public class GameController {
 
 	private boolean secondStage;
 
-	//private DateTime previous = new DateTime();
+	// private DateTime previous = new DateTime();
 
 	public GameController(StrategyDistribution strategyDistribution) {
 		secondStage = false;
@@ -101,13 +101,10 @@ public class GameController {
 	}
 
 	/**
-	 * Resets states in all Agents.
-	 * This is very important method;
+	 * Resets states in all Agents. This is very important method;
 	 * 
-	 * Make sure that every new generation will
-	 * have fresh state of agents, also reset
-	 * impact factors and any hidden attributes
-	 * of agents !
+	 * Make sure that every new generation will have fresh state of agents, also
+	 * reset impact factors and any hidden attributes of agents !
 	 */
 	private void resetAllAgents() {
 		List<Agent> allAgents = chooseAllAgents(this);
@@ -126,8 +123,10 @@ public class GameController {
 			// check whether this is the last generation/iteration
 			if (currentIteration == (iterationNumber - 2)) {
 				if (currentGeneration == (generationNumber - 1)) {
-					say("[Ending instance run]");
-					RunEnvironment.getInstance().endRun();
+					// say("[Ending instance run]");
+					// RunEnvironment.getInstance().endRun();
+					say("Waiting for an equilibrium already for "
+							+ generationNumber + " generations");
 				}
 			}
 			if (currentIteration == (iterationNumber - 1)) {
@@ -142,19 +141,19 @@ public class GameController {
 						+ (currentIteration + 1));
 				currentIteration++;
 			}
-			//previous = new DateTime();
+			// previous = new DateTime();
 		} else {
 			currentIteration++;
 		}
 	}
 
-/*	private void benchmark() {
-		DateTime dateTime = new DateTime();
-		Seconds seconds = Seconds.secondsBetween(this.previous, dateTime);
-		Minutes minutes = Minutes.minutesBetween(this.previous, dateTime);
-		say("It took " + minutes.getMinutes() + " minutes and "
-				+ seconds.getSeconds() + " seconds between ticks.");
-	}*/
+	/*
+	 * private void benchmark() { DateTime dateTime = new DateTime(); Seconds
+	 * seconds = Seconds.secondsBetween(this.previous, dateTime); Minutes
+	 * minutes = Minutes.minutesBetween(this.previous, dateTime); say("It took "
+	 * + minutes.getMinutes() + " minutes and " + seconds.getSeconds() +
+	 * " seconds between ticks."); }
+	 */
 
 	public int getCurrentGeneration() {
 		if (isEvolutionary()) {
@@ -198,37 +197,37 @@ public class GameController {
 		assert (result.size() == AgentCount.INSTANCE.getChosen());
 		return result;
 	}
-	
-	public Integer countHomophilyDistribution(Context<Object> context){
+
+	public Integer countHomophilyDistribution(Context<Object> context) {
 		Integer result = 0;
 		Iterable<Object> it = context.getObjects(Agent.class);
 		Iterator<Object> iterator = it.iterator();
 		while (iterator.hasNext()) {
-			if ( ((Agent) iterator.next()).usesHomophyly() > 0 ){
+			if (((Agent) iterator.next()).usesHomophyly() > 0) {
 				result++;
 			}
 		}
 		return result;
 	}
-	
-	public Integer countHeterophilyDistribution(Context<Object> context){
+
+	public Integer countHeterophilyDistribution(Context<Object> context) {
 		Integer result = 0;
 		Iterable<Object> it = context.getObjects(Agent.class);
 		Iterator<Object> iterator = it.iterator();
 		while (iterator.hasNext()) {
-			if ( ((Agent) iterator.next()).usesHeterophyly() > 0 ){
+			if (((Agent) iterator.next()).usesHeterophyly() > 0) {
 				result++;
 			}
 		}
 		return result;
 	}
-	
-	public Integer countPreferentialDistribution(Context<Object> context){
+
+	public Integer countPreferentialDistribution(Context<Object> context) {
 		Integer result = 0;
 		Iterable<Object> it = context.getObjects(Agent.class);
 		Iterator<Object> iterator = it.iterator();
 		while (iterator.hasNext()) {
-			if ( ((Agent) iterator.next()).usesPreferential() > 0 ){
+			if (((Agent) iterator.next()).usesPreferential() > 0) {
 				result++;
 			}
 		}
