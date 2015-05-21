@@ -471,13 +471,17 @@ public class Agent implements NodeCreator<Agent> {
 		return deltaE.entrySet().toString();
 	}
 
-	public String getGeneralExperience() {
+	public String getDecimalFormatGeneralExperience() {
+		return new DecimalFormat("#.######").format(getGeneralExperience());
+	}
+	
+	public Double getGeneralExperience() {
 		Collection<AgentInternals> internals = this.getAgentInternals();
 		double sum = 0.0;
 		for (AgentInternals ai : internals) {
 			sum += ai.getExperience().getDelta();
 		}
-		return new DecimalFormat("#.######").format((sum / internals.size()));
+		return (sum / internals.size());
 	}
 
 	public Double getFilteredExperience(Collection<Skill> common) {

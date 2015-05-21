@@ -47,7 +47,7 @@
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>Utility</id>
         <className>collaboration.Agent</className>
-        <methodName>getDecimalFormatUtility</methodName>
+        <methodName>getUtility</methodName>
         <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
@@ -56,7 +56,7 @@
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>LUtility</id>
         <className>collaboration.Agent</className>
-        <methodName>getDecimalFormatLeftUtility</methodName>
+        <methodName>getLeftAgentUtility</methodName>
         <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
@@ -65,7 +65,7 @@
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>RUtility</id>
         <className>collaboration.Agent</className>
-        <methodName>getDecimalFormatRightUtility</methodName>
+        <methodName>getRightAgentUtility</methodName>
         <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
