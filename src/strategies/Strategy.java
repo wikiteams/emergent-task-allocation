@@ -79,7 +79,7 @@ public class Strategy implements StrategyInterface {
 		 * use an algorithm for assigning tasks which are most (mis)matched to
 		 * an agent
 		 */
-		HOMOPHYLY, HETEROPHYLY, HOMOPHYLY_EXP, HETEROPHYLY_EXP,
+		HOMOPHYLY, HETEROPHYLY,
 		/**
 		 * *Central strategy* - We also call it a 'strategy of central
 		 * assignment', or a 'central planner' or 'central task allocation'

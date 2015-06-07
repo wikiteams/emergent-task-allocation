@@ -6,12 +6,12 @@
 	<parameter name="utilityFunction" type="constant" constant_type="java.lang.String" value="LearningSkills" />
 	<parameter name="utilityLeftEval" type="constant" constant_type="java.lang.String" value="max" />
 	<parameter name="numTasks" type="constant" constant_type="int" value="100" />
-	<parameter name="iterationCount" type="constant" constant_type="java.lang.String" value="20 100" />
+	<parameter name="iterationCount" type="constant" constant_type="java.lang.String" value="100" />
 	<parameter name="equilibriumDetectionSensitivity" type="constant" constant_type="int" value="7" />
 	<parameter name="mutateChances" type="constant" constant_type="int" value="1" />
 	<parameter name="taskChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="heterophyly" />
 	<parameter name="skillChoiceAlgorithm" type="constant" constant_type="java.lang.String" value="choice" />
-	<parameter name="agentCount" type="constant" constant_type="java.lang.String" value="50 120" />
+	<parameter name="agentCount" type="constant" constant_type="java.lang.String" value="100" />
 	<parameter name="experienceCutPoint" type="constant" constant_type="java.lang.Boolean" value="false" />
 	<parameter name="experienceDecay" type="constant" constant_type="java.lang.String" value="true false" />
 	<parameter name="granularity" type="constant" constant_type="java.lang.Boolean" value="false" />

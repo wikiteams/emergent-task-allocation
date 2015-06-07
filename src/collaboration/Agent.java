@@ -116,14 +116,14 @@ public class Agent implements NodeCreator<Agent> {
 		return new DecimalFormat("#.######").format(getRightAgentUtility());
 	}
 
-	private Double getLeftAgentUtility() {
+	public Double getLeftAgentUtility() {
 		if (FunctionSet.INSTANCE.isAgentOrientedUtility) {
 			return Utility.getLeftLearningUtility(getAgentInternals());
 		} else
 			return ObjectsHelper.notApplicable;
 	}
 
-	private Double getRightAgentUtility() {
+	public Double getRightAgentUtility() {
 		if (FunctionSet.INSTANCE.isAgentOrientedUtility) {
 			return Utility.getRightLearningUtility(getAgentInternals());
 		} else
@@ -546,15 +546,11 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public int usesHomophyly() {
-		return this.strategy.getTaskChoice().equals(TaskChoice.HOMOPHYLY)
-				|| this.strategy.getTaskChoice().equals(
-						TaskChoice.HOMOPHYLY_EXP) ? 1 : 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.HOMOPHYLY) ? 1 : 0;
 	}
 
 	public int usesHeterophyly() {
-		return this.strategy.getTaskChoice().equals(TaskChoice.HETEROPHYLY)
-				|| this.strategy.getTaskChoice().equals(
-						TaskChoice.HETEROPHYLY_EXP) ? 1 : 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.HETEROPHYLY) ? 1 : 0;
 	}
 
 	public int usesPreferential() {

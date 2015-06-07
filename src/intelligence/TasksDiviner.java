@@ -10,9 +10,7 @@ import logger.VerboseLogger;
 import repast.simphony.random.RandomHelper;
 import strategies.Strategy;
 import tasks.CentralAssignment;
-import tasks.Heterophyly;
 import tasks.HeterophylyExpBased;
-import tasks.Homophyly;
 import tasks.HomophylyExpBased;
 import tasks.Preferential;
 import collaboration.Agent;
@@ -37,18 +35,10 @@ public class TasksDiviner {
 
 		switch (strategy) {
 		case HOMOPHYLY:
-			Homophyly homophyly = new Homophyly();
-			chosen = homophyly.concludeMath(agent);
-			break;
-		case HOMOPHYLY_EXP:
 			HomophylyExpBased homophylyExp = new HomophylyExpBased(tasks);
 			chosen = homophylyExp.concludeMath(agent);
 			break;
 		case HETEROPHYLY:
-			Heterophyly heterophyly = new Heterophyly(tasks);
-			chosen = heterophyly.concludeMath(agent);
-			break;
-		case HETEROPHYLY_EXP:
 			HeterophylyExpBased heterophylyExp = new HeterophylyExpBased(tasks);
 			chosen = heterophylyExp.concludeMath(agent);
 			break;
