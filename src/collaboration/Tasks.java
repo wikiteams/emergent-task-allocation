@@ -1,6 +1,5 @@
 package collaboration;
 
-import github.DataSet;
 import github.MyDatabaseConnector;
 import intelligence.TasksDiviner;
 
@@ -14,12 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
 import strategies.Strategy;
-import test.TaskTestUniverse;
-import utils.LaunchStatistics;
 
 import com.google.common.collect.Lists;
 
@@ -28,7 +25,7 @@ import com.google.common.collect.Lists;
  * 
  * @author Oskar Jarczyk
  * @since 2.0
- * @version 2.0.9
+ * @version 2.0.11
  */
 public class Tasks extends DefaultContext<Task> {
 
@@ -43,8 +40,6 @@ public class Tasks extends DefaultContext<Task> {
 	 */
 	public static final long serialVersionUID = 31415926535897L;
 
-	private DataSet dataSet;
-	private LaunchStatistics launchStatistics;
 	private Integer allowedLoad;
 
 	private static Map<String, Task> getMappedTasks() {
@@ -136,7 +131,7 @@ public class Tasks extends DefaultContext<Task> {
 	}
 
 	private static void sanity(String s) {
-		PjiitOutputter.sanity(s);
+		VerboseLogger.sanity(s);
 	}
 
 	public static boolean stillNonEmptyTasks() {
@@ -156,20 +151,13 @@ public class Tasks extends DefaultContext<Task> {
 	}
 
 	private static void say(String s) {
-		PjiitOutputter.say(s);
-	}
-
-	public Tasks(DataSet dataSet, LaunchStatistics launchStatistics,
-			Integer allowedLoad) {
-		super("Tasks");
-		this.dataSet = dataSet;
-		this.launchStatistics = launchStatistics;
-		this.allowedLoad = allowedLoad;
-		initializeTasks(this);
+		VerboseLogger.say(s);
 	}
 
 	public Tasks(Integer allowedLoad) {
-		this(DataSet.getInstance(), LaunchStatistics.getInstance(), allowedLoad);
+		super("Tasks");
+		this.allowedLoad = allowedLoad;
+		initializeTasks(this);
 	}
 
 	/**
@@ -223,16 +211,8 @@ public class Tasks extends DefaultContext<Task> {
 	}
 
 	private void initializeTasks(Context<Task> context) {
-		if (dataSet.isDb()) {
-			initFirstTasks(context);
-		} else if (dataSet.isMockup()) {
-			initializeTasksNormally(context);
-		} else if (dataSet.isTest()) {
-			TaskTestUniverse.init();
-			initalizeValidationTasks(context);
-		} else {
-			assert false; // should never happen
-		}
+		assert context != null;
+		initFirstTasks(context);
 	}
 
 	private void initFirstTasks(Context<Task> context) {
@@ -241,33 +221,11 @@ public class Tasks extends DefaultContext<Task> {
 			for (Task task : firstTasks) {
 				context.add(task);
 			}
-			launchStatistics.taskCount = firstTasks.size();
+			//launchStatistics.taskCount = firstTasks.size();
 		} catch (SQLException e) {
 			say("Error during init of first " + this.allowedLoad + " [Tasks]");
 			e.printStackTrace();
 		}
-	}
-
-	private void initializeTasksNormally(Context<Task> context) {
-		Integer howMany = allowedLoad;
-		for (int i = 0; i < howMany; i++) {
-			Task task = new Task();
-			say("Creating Task " + task.getId());
-			// addTask(task);
-			say("Initializing Task " + task.getId() + " " + task.getName());
-			task.initialize(howMany);
-			context.add(task);
-		}
-		launchStatistics.taskCount = getCount();
-	}
-
-	private void initalizeValidationTasks(Context<Task> context) {
-		for (Task task : TaskTestUniverse.DATASET) {
-			say("Adding validation task to pool..");
-			// addTask(task);
-			context.add(task);
-		}
-		launchStatistics.taskCount = getCount();
 	}
 
 }

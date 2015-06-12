@@ -1,7 +1,6 @@
 package collaboration;
 
 import github.AgentModeling;
-import github.DataSet;
 import intelligence.ImpactFactor;
 
 import java.text.DecimalFormat;
@@ -10,7 +9,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import logger.PjiitOutputter;
+import load.FunctionSet;
+import logger.VerboseLogger;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
@@ -39,7 +39,7 @@ import argonauts.PersistRewiring;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.9 'White fox' edition
+ * @version 2.0.11
  */
 @AgentAnnot(displayName = "Agent")
 public class Agent implements NodeCreator<Agent> {
@@ -70,20 +70,9 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public Agent(String firstName, String lastName, String nick) {
-		this(firstName, lastName, nick, DataSet.getInstance().isMockup());
-	}
-
-	public Agent(String firstName, String lastName, String nick,
-			Boolean fillWithOldSkills) {
 		this.agentSkills = new AgentSkills();
 		say("[Agent] constructor called");
-		if (fillWithOldSkills) {
-			AgentSkillsPool.fillWithSkills(this);
-		} else {
-			// calls for filling data got from OSRC
-			// TODO: add BrainJar or OpenHUB (Ohloh) mechanism
-			AgentModeling.fillWithSkills(this);
-		}
+		AgentModeling.fillWithSkills(this);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.nick = nick + this.id;
@@ -100,20 +89,20 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public Double getUtility() {
-		if (SimulationParameters.isAgentOrientedUtility) {
-			if (SimulationParameters.utilityType.equals(UtilityType.LearningSkills))
+		if (FunctionSet.INSTANCE.isAgentOrientedUtility) {
+			if (FunctionSet.INSTANCE.getChosen().equals(UtilityType.LearningSkills))
 				return getLearningUtility();
-			else if (SimulationParameters.utilityType.equals(UtilityType.LeftLearningSkills))
+			else if (FunctionSet.INSTANCE.getChosen().equals(UtilityType.LeftLearningSkills))
 				return getLeftAgentUtility();
 			else {
-				assert (SimulationParameters.utilityType.equals(UtilityType.RightLearningSkills));
+				assert (FunctionSet.INSTANCE.getChosen().equals(UtilityType.RightLearningSkills));
 				return getRightAgentUtility();
 			}
 		} else {
-			if (SimulationParameters.utilityType.equals(UtilityType.ImpactFactor))
+			if (FunctionSet.INSTANCE.getChosen().equals(UtilityType.ImpactFactor))
 				return getImpactUtility();
 			else {
-				assert (SimulationParameters.utilityType.equals(UtilityType.ImpactFactorMax));
+				assert (FunctionSet.INSTANCE.getChosen().equals(UtilityType.ImpactFactorMax));
 				return getImpactHUtility();
 			}
 		}
@@ -127,15 +116,15 @@ public class Agent implements NodeCreator<Agent> {
 		return new DecimalFormat("#.######").format(getRightAgentUtility());
 	}
 
-	private Double getLeftAgentUtility() {
-		if (SimulationParameters.isAgentOrientedUtility) {
+	public Double getLeftAgentUtility() {
+		if (FunctionSet.INSTANCE.isAgentOrientedUtility) {
 			return Utility.getLeftLearningUtility(getAgentInternals());
 		} else
 			return ObjectsHelper.notApplicable;
 	}
 
-	private Double getRightAgentUtility() {
-		if (SimulationParameters.isAgentOrientedUtility) {
+	public Double getRightAgentUtility() {
+		if (FunctionSet.INSTANCE.isAgentOrientedUtility) {
 			return Utility.getRightLearningUtility(getAgentInternals());
 		} else
 			return ObjectsHelper.notApplicable;
@@ -482,13 +471,17 @@ public class Agent implements NodeCreator<Agent> {
 		return deltaE.entrySet().toString();
 	}
 
-	public String getGeneralExperience() {
+	public String getDecimalFormatGeneralExperience() {
+		return new DecimalFormat("#.######").format(getGeneralExperience());
+	}
+	
+	public Double getGeneralExperience() {
 		Collection<AgentInternals> internals = this.getAgentInternals();
 		double sum = 0.0;
 		for (AgentInternals ai : internals) {
 			sum += ai.getExperience().getDelta();
 		}
-		return new DecimalFormat("#.######").format((sum / internals.size()));
+		return (sum / internals.size());
 	}
 
 	public Double getFilteredExperience(Collection<Skill> common) {
@@ -553,15 +546,11 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public int usesHomophyly() {
-		return this.strategy.getTaskChoice().equals(TaskChoice.HOMOPHYLY)
-				|| this.strategy.getTaskChoice().equals(
-						TaskChoice.HOMOPHYLY_EXP) ? 1 : 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.HOMOPHYLY) ? 1 : 0;
 	}
 
 	public int usesHeterophyly() {
-		return this.strategy.getTaskChoice().equals(TaskChoice.HETEROPHYLY)
-				|| this.strategy.getTaskChoice().equals(
-						TaskChoice.HETEROPHYLY_EXP) ? 1 : 0;
+		return this.strategy.getTaskChoice().equals(TaskChoice.HETEROPHYLY) ? 1 : 0;
 	}
 
 	public int usesPreferential() {
@@ -603,11 +592,11 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	private void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 	private void sanity(String s) {
-		PjiitOutputter.sanity(s);
+		VerboseLogger.sanity(s);
 	}
 }
 

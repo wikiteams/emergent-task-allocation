@@ -6,14 +6,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import logger.PjiitOutputter;
+import load.AgentCount;
+import load.GenerationLength;
+import logger.VerboseLogger;
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.util.ContextUtils;
 import strategies.StrategyDistribution;
 import utils.AgentEvolve;
-import utils.ObjectsHelper;
 import constants.Constraints;
 
 /**
@@ -21,7 +22,7 @@ import constants.Constraints;
  * 
  * @author Oskar Jarczyk, inspired by code from Paulina Adamska
  * @since 2.0
- * @version 2.0.9 'White fox' release
+ * @version 2.0.11
  */
 public class GameController {
 
@@ -53,11 +54,11 @@ public class GameController {
 
 	private boolean secondStage;
 
-	//private DateTime previous = new DateTime();
+	// private DateTime previous = new DateTime();
 
 	public GameController(StrategyDistribution strategyDistribution) {
 		secondStage = false;
-		iterationNumber = SimulationParameters.iterationCount;
+		iterationNumber = GenerationLength.INSTANCE.getChosen();
 		// variable iterationNumber states how many ticks long
 		// is a single generation, we use mostly value of 200
 		generationNumber = Constraints.generationNumber;
@@ -66,11 +67,6 @@ public class GameController {
 		say("generationNumber: " + generationNumber);
 		say("iterationNumber: " + iterationNumber);
 		this.strategyDistribution = strategyDistribution;
-	}
-	
-	public void randomizeGenerationLength(Integer[] set){
-		iterationNumber = ObjectsHelper.randomFrom(set);
-		SimulationParameters.iterationCount = iterationNumber;
 	}
 
 	/**
@@ -95,24 +91,20 @@ public class GameController {
 				say("Execute generation end protocols");
 				// start evolution of Agents
 				AgentEvolve.evolve(this);
-				// resetAllTasks();
 				// reset experience state in Agents
 				resetAllAgents();
 			}
 		} else {
-			// do nothing
-			// TODO: maybe unschedule method manually?
+			// TODO: implement stage of GameController
+			// which happens after evolution is finished
 		}
 	}
 
 	/**
-	 * Resets states in all Agents.
-	 * This is very important method;
+	 * Resets states in all Agents. This is very important method;
 	 * 
-	 * Make sure that every new generation will
-	 * have fresh state of agents, also reset
-	 * impact factors and any hidden attributes
-	 * of agents !
+	 * Make sure that every new generation will have fresh state of agents, also
+	 * reset impact factors and any hidden attributes of agents !
 	 */
 	private void resetAllAgents() {
 		List<Agent> allAgents = chooseAllAgents(this);
@@ -128,15 +120,15 @@ public class GameController {
 	public void step() {
 		if (isEvolutionary()) {
 			// benchmark();
-
 			// check whether this is the last generation/iteration
 			if (currentIteration == (iterationNumber - 2)) {
 				if (currentGeneration == (generationNumber - 1)) {
-					say("[Ending instance run]");
-					RunEnvironment.getInstance().endRun();
+					// say("[Ending instance run]");
+					// RunEnvironment.getInstance().endRun();
+					say("Waiting for an equilibrium already for "
+							+ generationNumber + " generations");
 				}
 			}
-
 			if (currentIteration == (iterationNumber - 1)) {
 				say("[This is the last iteration in this generation]");
 				currentIteration = 0;
@@ -149,19 +141,19 @@ public class GameController {
 						+ (currentIteration + 1));
 				currentIteration++;
 			}
-			//previous = new DateTime();
+			// previous = new DateTime();
 		} else {
 			currentIteration++;
 		}
 	}
 
-/*	private void benchmark() {
-		DateTime dateTime = new DateTime();
-		Seconds seconds = Seconds.secondsBetween(this.previous, dateTime);
-		Minutes minutes = Minutes.minutesBetween(this.previous, dateTime);
-		say("It took " + minutes.getMinutes() + " minutes and "
-				+ seconds.getSeconds() + " seconds between ticks.");
-	}*/
+	/*
+	 * private void benchmark() { DateTime dateTime = new DateTime(); Seconds
+	 * seconds = Seconds.secondsBetween(this.previous, dateTime); Minutes
+	 * minutes = Minutes.minutesBetween(this.previous, dateTime); say("It took "
+	 * + minutes.getMinutes() + " minutes and " + seconds.getSeconds() +
+	 * " seconds between ticks."); }
+	 */
 
 	public int getCurrentGeneration() {
 		if (isEvolutionary()) {
@@ -179,10 +171,6 @@ public class GameController {
 		return RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 	}
 
-/*	public boolean isWarmedUp() {
-		return currentIteration >= (iterationNumber * 0.05);
-	}*/
-
 	public boolean isSecondStage() {
 		return secondStage;
 	}
@@ -192,7 +180,7 @@ public class GameController {
 	}
 
 	/**
-	 * TODO: check if this works on good context
+	 * Chooses all agents from proper Repast context
 	 * 
 	 * @param contextBeing
 	 * @return
@@ -206,41 +194,40 @@ public class GameController {
 		while (iterator.hasNext()) {
 			result.add((Agent) iterator.next());
 		}
-		assert (result.size() == SimulationParameters.agentCount)
-				|| (SimulationParameters.fullyLearnedAgentsLeave);
+		assert (result.size() == AgentCount.INSTANCE.getChosen());
 		return result;
 	}
-	
-	public Integer countHomophilyDistribution(Context<Object> context){
+
+	public Integer countHomophilyDistribution(Context<Object> context) {
 		Integer result = 0;
 		Iterable<Object> it = context.getObjects(Agent.class);
 		Iterator<Object> iterator = it.iterator();
 		while (iterator.hasNext()) {
-			if ( ((Agent) iterator.next()).usesHomophyly() > 0 ){
+			if (((Agent) iterator.next()).usesHomophyly() > 0) {
 				result++;
 			}
 		}
 		return result;
 	}
-	
-	public Integer countHeterophilyDistribution(Context<Object> context){
+
+	public Integer countHeterophilyDistribution(Context<Object> context) {
 		Integer result = 0;
 		Iterable<Object> it = context.getObjects(Agent.class);
 		Iterator<Object> iterator = it.iterator();
 		while (iterator.hasNext()) {
-			if ( ((Agent) iterator.next()).usesHeterophyly() > 0 ){
+			if (((Agent) iterator.next()).usesHeterophyly() > 0) {
 				result++;
 			}
 		}
 		return result;
 	}
-	
-	public Integer countPreferentialDistribution(Context<Object> context){
+
+	public Integer countPreferentialDistribution(Context<Object> context) {
 		Integer result = 0;
 		Iterable<Object> it = context.getObjects(Agent.class);
 		Iterator<Object> iterator = it.iterator();
 		while (iterator.hasNext()) {
-			if ( ((Agent) iterator.next()).usesPreferential() > 0 ){
+			if (((Agent) iterator.next()).usesPreferential() > 0) {
 				result++;
 			}
 		}
@@ -271,7 +258,7 @@ public class GameController {
 	}
 
 	private static void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 }

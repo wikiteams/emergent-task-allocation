@@ -1,6 +1,6 @@
 <repast.simphony.data2.engine.FileSinkDescriptor>
   <name>Agents state output</name>
-  <dataSet>Agents_state_nonaggr</dataSet>
+  <dataSet>Agents_aggregate</dataSet>
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
@@ -8,18 +8,11 @@
     <string>tick</string>
     <string>EvolutionGeneration</string>
     <string>EvolutionIteration</string>
-    <string>Name</string>
-    <string>Id</string>
-    <string>Strategy</string>
-    <string>TaskStrategy</string>
-    <string>SkillStrategy</string>
-    <string>WasWorkingOnAnything</string>
-    <string>Experience</string>
     <string>GeneralExperience</string>
     <string>Utility</string>
     <string>LUtility</string>
     <string>RUtility</string>
   </sourceIds>
-  <fileName>agents_nonaggr_state.csv</fileName>
+  <fileName>agents_aggr_state.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

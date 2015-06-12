@@ -5,39 +5,27 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.math3.analysis.function.Sigmoid;
 
-import constants.Constraints;
 import au.com.bytecode.opencsv.CSVReader;
 import collaboration.Agent;
 import collaboration.AgentInternals;
 import collaboration.Experience;
+import collaboration.SimulationAdvancedParameters;
 import collaboration.Skill;
 import collaboration.SkillFactory;
 
 public class AgentModeling {
 
-	private static LinkedHashMap<String, HashMap<Skill, Experience>> skillSet = 
-			new LinkedHashMap<String, HashMap<Skill, Experience>>();
+	private static LinkedHashMap<String, HashMap<Skill, Experience>> skillSet = new LinkedHashMap<String, HashMap<Skill, Experience>>();
 	private static SkillFactory skillFactory = SkillFactory.getInstance();
 
-	private final static String filename = SystemUtils.IS_OS_LINUX ? 
-			"data/agents-model/results.csv"
+	private final static String filename = SystemUtils.IS_OS_LINUX ? "data/agents-model/results.csv"
 			: "data\\agents-model\\results.csv";
-
-	public static void instantiate(String method) {
-		if (method.toUpperCase().equals("OSRC")) {
-			say("Reading data and creating [Agent's Skill Pool]...");
-			instantiate();
-		} else {
-			throw new UnsupportedOperationException(
-					Constraints.WRONG_AGENT_DATASET);
-		}
-	}
 
 	public static void clear() {
 		skillSet.clear();
@@ -59,6 +47,7 @@ public class AgentModeling {
 	private static void parseCsvTopUsers() throws IOException,
 			FileNotFoundException {
 		Integer counter = 0;
+		Map<Skill, Integer> maximums = calculateMaximums(filename);
 		CSVReader reader = new CSVReader(new FileReader(filename), ';', '\"');
 		String[] nextLine;
 		String previousId = "-1";
@@ -67,13 +56,15 @@ public class AgentModeling {
 			String nick = nextLine[1] + counter;
 			String language = nextLine[2];
 			int workDone = Integer.parseInt(nextLine[3]);
-			int cluster = Integer.parseInt(nextLine[4]);
+			//int cluster = Integer.parseInt(nextLine[4]);
 			if (previousId.equals(id)) {
 				HashMap<Skill, Experience> l = skillSet.get(nick);
 				say("Parsed from CSV new language to existing person: " + nick
 						+ " - " + language);
-				Experience experience = calculateExperience(workDone, cluster);
-				l.put(skillFactory.getSkill(language), experience);
+				Skill skill = skillFactory.getSkill(language);
+				Experience experience = calculateExperience(workDone,
+						maximums.get(skill));
+				l.put(skill, experience);
 				// skillSet.put(nick, l);
 			} else {
 				// add new user
@@ -81,8 +72,10 @@ public class AgentModeling {
 				nick = nextLine[1] + counter;
 				HashMap<Skill, Experience> l = new HashMap<Skill, Experience>();
 				say("Parsed from CSV new person: " + nick + " - " + language);
-				Experience experience = calculateExperience(workDone, cluster);
-				l.put(skillFactory.getSkill(language), experience);
+				Skill skill = skillFactory.getSkill(language);
+				Experience experience = calculateExperience(workDone,
+						maximums.get(skill));
+				l.put(skill, experience);
 				skillSet.put(nick, l);
 			}
 			previousId = id;
@@ -91,16 +84,33 @@ public class AgentModeling {
 		reader.close();
 	}
 
-	private static Experience calculateExperience(int experience, int cluster) {
-		if (experience / cluster > 0.99) {
-			return new Experience(experience, experience + 1);
-		} else if (experience / cluster > 0.9) {
-			double part = new Sigmoid().value(6.0 * (experience / cluster));
-			assert part <= 1.0;
-			return new Experience(experience * part, experience);
-		} else {
-			return new Experience(experience, cluster);
+	private static Map<Skill, Integer> calculateMaximums(String filename)
+			throws NumberFormatException, IOException {
+		Map<Skill, Integer> result = new HashMap<Skill, Integer>();
+
+		CSVReader reader = new CSVReader(new FileReader(filename), ';', '\"');
+		String[] nextLine;
+		while ((nextLine = reader.readNext()) != null) {
+			String language = nextLine[2];
+			int workDone = Integer.parseInt(nextLine[3]);
+			Skill skill = SkillFactory.getInstance().getSkill(language);
+			if (result.containsKey(skill)) {
+				if (result.get(skill) < workDone) {
+					result.put(skill, workDone);
+				}
+			} else {
+				result.put(skill, workDone);
+			}
 		}
+		reader.close();
+		return result;
+	}
+
+	private static Experience calculateExperience(int experience, int maximum) {
+		return new Experience(
+				experience,
+				maximum < SimulationAdvancedParameters.lowestTop ? SimulationAdvancedParameters.lowestTop
+						: maximum);
 	}
 
 	public static void fillWithSkills(Agent agent) {
@@ -114,7 +124,7 @@ public class AgentModeling {
 	}
 
 	private static void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 }

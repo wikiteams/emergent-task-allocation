@@ -2,7 +2,7 @@
 <sweep runs="800">
 	<parameter name="sweepRuns" type="constant" constant_type="int" value="800" />
 	<parameter name="evolutionEnabled" type="constant" constant_type="int" value="1" />
-	<parameter name="planNumber" type="constant" constant_type="int" value="7" />
+	<parameter name="planNumber" type="constant" constant_type="int" value="3" />
 	<parameter name="utilityFunction" type="constant" constant_type="java.lang.String" value="LearningSkills" />
 	<parameter name="utilityLeftEval" type="constant" constant_type="java.lang.String" value="max" />
 	<parameter name="numTasks" type="constant" constant_type="int" value="100" />

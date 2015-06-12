@@ -1,12 +1,8 @@
 package collaboration;
 
 import github.AgentModeling;
-import github.DataSet;
 import github.MyDatabaseConnector;
-import github.TaskSkillFrequency;
-import github.TaskSkillsPool;
 import intelligence.EquilibriumDetector;
-import intelligence.ImpactFactor;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,18 +12,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import load.AgentCount;
+import load.ExpDecayOption;
+import load.FunctionSet;
+import load.GenerationLength;
+import load.ParametersDivider;
 import logger.EndRunLogger;
 import logger.PjiitLogger;
-import logger.PjiitOutputter;
 import logger.SanityLogger;
-import logger.ValidationLogger;
 import logger.ValidationOutputter;
+import logger.VerboseLogger;
 import networking.CollaborationNetwork;
 import networking.DynamicGexfGraph;
+
+import org.ini4j.InvalidFileFormatException;
+
 import repast.simphony.context.Context;
 import repast.simphony.context.space.graph.NetworkBuilder;
 import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.engine.environment.RunInfo;
 import repast.simphony.engine.environment.RunState;
 import repast.simphony.engine.schedule.ISchedulableAction;
 import repast.simphony.engine.schedule.ISchedule;
@@ -35,21 +39,13 @@ import repast.simphony.engine.schedule.Schedule;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
+import repast.simphony.util.ContextUtils;
 import repast.simphony.util.collections.IndexedIterable;
 import strategies.CentralPlanning;
 import strategies.StrategyDistribution;
-import test.Model;
-import utils.DescribeUniverseBulkLoad;
-import utils.LaunchStatistics;
-import utils.NamesGenerator;
 import utils.ObjectsHelper;
-import utils.UtilityFactory;
 import argonauts.PersistJobDone;
-import argonauts.PersistRewiring;
-import collaboration.Utility.UtilityType;
 import constants.Constraints;
-import constants.LoadSet;
-import constants.ModelFactory;
 
 /**
  * COIN network emergence simulator, a Repast Simphony 2.2 multi-agent social
@@ -71,7 +67,7 @@ import constants.ModelFactory;
  * 
  * Project uses ini4j library which is licensed under Apache License.
  * 
- * @version 2.0.10 'Angry Rat' edition
+ * @version 2.0.11 'Turanga Leela'
  * @category Agent-organised Social Simulations
  * @since 1.0
  * @author Oskar Jarczyk, Blazej Gruszka et al.
@@ -95,144 +91,82 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public static Context<Task> tasks;
 	public static Context<Agent> agents;
 
-	private Context<Object> currentContext;
-
 	private StrategyDistribution strategyDistribution;
-	private ModelFactory modelFactory;
 	private SkillFactory skillFactory;
-	private LaunchStatistics launchStatistics;
 	private Schedule schedule = new Schedule();
 
-	private LoadSet loadSet;
-	private DataSet dataSet;
 	private GameController gameController;
-
+	private RunInfo runInfo;
 	private CentralPlanning centralPlanner;
 
 	public CollaborationBuilder() {
 		try {
 			initializeLoggers();
-			say("[Loggers] initialized...");
+			VerboseLogger.say("[Loggers] initialized...");
 		} catch (IOException e) {
 			e.printStackTrace();
-			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
+			VerboseLogger.say(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
 		} catch (Exception exc) {
-			say(exc.toString());
+			VerboseLogger.say(exc.toString());
 			exc.printStackTrace();
-			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS);
+			VerboseLogger
+					.say(Constraints.ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS);
 		} finally {
-			say("[CollaborationBuilder constructor] finished execution");
-			// this is where Repast waits for scenario lunch (context builds up)
+			VerboseLogger
+					.say("[CollaborationBuilder constructor] finished execution");
+			// this is where Repast waits for scenario lunch
+			// (context builds up and build() method executes)
 		}
 	}
 
-	private void prepareDataControllers() {
-		try {
-			/***
-			 * LoadSet.EMPTY singleton is here filled with values LoadSet holds
-			 * information about task numbers and agent numbers those values are
-			 * used later for load control
-			 */
-			loadSet = LoadSet.EMPTY;
+	private void prepareDataControllers() throws InvalidFileFormatException,
+			IOException {
+		VerboseLogger.say(Constraints.LOADING_PARAMETERS);
+		SimulationParameters.init();
+		// getting parameters of a simulation from current scenario
 
-			say(Constraints.LOADING_PARAMETERS);
-			SimulationParameters.init();
-			// getting parameters of a simulation from current scenario
+		RandomHelper.setSeed(SimulationParameters.randomSeed);
+		RandomHelper.init();
+		VerboseLogger.say("[RandomHelper] initialized...");
 
-			RandomHelper.setSeed(SimulationParameters.randomSeed);
-			RandomHelper.init();
-			say("[RandomHelper] initialized...");
+		/***
+		 * StrategyDistribution holds information on currently tested Task
+		 * assignment strategy and Skill choice strategy Single distribution
+		 * means evolution disabled, while multiple distribution enables
+		 * evolutionary model
+		 */
+		strategyDistribution = new StrategyDistribution();
 
-			dataSet = DataSet.getInstance(SimulationParameters.dataSource);
-
-			/***
-			 * LaunchStatistics hold data for outputting results i.e. tick
-			 * numbers, result strategy set, tasks left etc. they are all used
-			 * later for outputting to batch.log at the very end of a simulation
-			 */
-			launchStatistics = LaunchStatistics.getInstance();
-
-			/***
-			 * ModelFactory tells whether we want to maximise verbose message
-			 * and/or test all Task assignment STRATEGIES at once. Normal model
-			 * means a typical execution, while i.e. validation means e.g.
-			 * maximum message output to console etc.
-			 */
-			modelFactory = new ModelFactory(SimulationParameters.modelType);
-			Model model = modelFactory.getFunctionality();
-
-			say("Starting simulation with model: " + modelFactory.toString());
-			if (model.isValidation())
-				initializeValidationLogger();
-			if (SimulationParameters.multipleAgentSets) {
-				loadSet = DescribeUniverseBulkLoad.init();
-			} else {
-				loadSet.AGENT_COUNT = SimulationParameters.agentCount;
-				loadSet.TASK_COUNT = SimulationParameters.taskCount;
-			}
-
-			/***
-			 * StrategyDistribution holds information on currently tested Task
-			 * assignment strategy and Skill choice strategy Single distribution
-			 * means evolution disabled, while multiple distribution enables
-			 * evolutionary model
-			 */
-			strategyDistribution = new StrategyDistribution();
-
-			// initialise skill pools - information on all known languages
-			say("[SkillFactory] parsing skills (programing languages) from file");
-			skillFactory = SkillFactory.getInstance();
-			skillFactory.buildSkillsLibrary(model.isValidation());
-			say("[SkillFactory] parsed all known [programming languages].");
-		} catch (IOException e) {
-			e.printStackTrace();
-			say(Constraints.ERROR_INITIALIZING_PARAMETERS);
-		} catch (Exception exc) {
-			say(exc.toString());
-			exc.printStackTrace();
-			say(Constraints.ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS);
-		}
+		// initialise skill pools - information on all known languages
+		VerboseLogger.say("[SkillFactory] parsing skills"
+				+ " (programing languages) from file");
+		skillFactory = SkillFactory.getInstance();
+		skillFactory.buildSkillsLibrary(false);
+		VerboseLogger.say("[SkillFactory] parsed all known"
+				+ " [programming languages].");
 	}
 
-	@SuppressWarnings("deprecation")
 	private void prepareWorkLoadData() {
 
-		if (dataSet.isMockup()) {
-			/***
-			 * This is previous version of the dataset, already tested and
-			 * described in our publication hence the deprecated flag
-			 */
-			AgentSkillsPool
-					.instantiate(SimulationParameters.agentSkillPoolDataset);
-			say("[Instatiated AgentSkillsPool]");
-			TaskSkillsPool.instantiate(SimulationParameters.tasksDataset);
-			say("[Instatied TaskSkillsPool]");
-		} else if (dataSet.isDb()) {
-			/***
-			 * This is new dataset parsed from our GitHub MongoDB database and
-			 * specially created for the sake of evolutionary model
-			 */
-			AgentModeling
-					.instantiate(SimulationParameters.agentSkillPoolDataset);
-			say("[Sqlite engine] and resultset initialized, may take some time..");
-			MyDatabaseConnector.init();
-		} else if (dataSet.isContinuus()) {
-			// TODO: Implement the rest (e.g. SocketListener etc.)
-		}
+		/***
+		 * This is new dataset parsed from our GitHub MongoDB database and
+		 * specially created for the sake of evolutionary model
+		 */
+		AgentModeling.instantiate();
+		VerboseLogger.say("[Sqlite engine] and resultset"
+				+ " initialized, may take some time..");
+		MyDatabaseConnector.init();
 
-		strategyDistribution.setType(SimulationParameters.strategyDistribution);
-
-		assert ((strategyDistribution.getType() == StrategyDistribution.SINGULAR) || (strategyDistribution
-				.getType() == StrategyDistribution.MULTIPLE));
+		strategyDistribution.setType(SimulationParameters.evolutionEnabled);
 
 		if (strategyDistribution.isSingle()) {
-			strategyDistribution.setSkillChoice(modelFactory,
-					SimulationParameters.skillChoiceAlgorithm);
-			strategyDistribution.setTaskChoice(modelFactory,
-					SimulationParameters.taskChoiceAlgorithm);
+			strategyDistribution
+					.setSkillChoice(SimulationParameters.skillChoiceAlgorithm);
+			strategyDistribution
+					.setTaskChoice(SimulationParameters.taskChoiceAlgorithm);
 		} else if (strategyDistribution.isMultiple()) {
-			strategyDistribution.setSkillChoice(modelFactory,
-					SimulationParameters.skillChoiceAlgorithm);
+			strategyDistribution
+					.setSkillChoice(SimulationParameters.skillChoiceAlgorithm);
 			strategyDistribution
 					.setTaskChoiceSet(SimulationParameters.planNumber);
 		}
@@ -240,37 +174,27 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	public void prepareGameController(Context<Object> context) {
 		gameController = new GameController(strategyDistribution);
-		if (SimulationAdvancedParameters.smallCartesianSet){
-			// Testing [2x2x2] or [2x2] set of params
-			gameController.randomizeGenerationLength( new Integer[] { 20, 100 } );
-			UtilityFactory.setUtility( UtilityType.LearningSkills );
-		} else if (modelFactory.getFunctionality().isMultipleValidation()) {
-			gameController.randomizeGenerationLength(new Integer[] { 20, 50,
-					100 });
-			UtilityFactory.randomizeUtility(new UtilityType[] {UtilityType.LearningSkills, 
-					UtilityType.LeftLearningSkills, UtilityType.RightLearningSkills});
-		}
-		if (!SimulationParameters.forceStop){
-			EquilibriumDetector.init();
-		}
+		EquilibriumDetector.init();
 		context.add(gameController);
 	}
 
 	@Override
 	public Context<Object> build(Context<Object> context) {
-		Integer strBatchNumber = RunState.getInstance().getRunInfo()
-				.getBatchNumber();
-		Integer strRunNumber = RunState.getInstance().getRunInfo()
-				.getRunNumber();
+		runInfo = RunState.getInstance().getRunInfo();
+		Integer batchNumber = runInfo.getBatchNumber();
+		Integer runNumber = RunState.getInstance().getRunInfo().getRunNumber();
 		System.out
-				.println("CollaborationBuilder is building context, sweep run no: "
-						+ strBatchNumber + "," + strRunNumber);
+				.println("CollaborationBuilder is building [context], sweep run no: "
+						+ batchNumber
+						+ ","
+						+ runNumber
+						+ " is_batch: "
+						+ runInfo.isBatch());
 
 		context.setId("emergent-task-allocation");
-		currentContext = context;
 
-		clearStaticHeap();
-		say("[Static heap] cleared..");
+		Preprocess.clearStaticHeap();
+		VerboseLogger.say("[Static heap] cleared..");
 
 		if (SimulationAdvancedParameters.enableNetwork) {
 			NetworkBuilder<Object> builder = new NetworkBuilder<Object>(
@@ -279,90 +203,71 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			CollaborationNetwork.gephiEngine = new DynamicGexfGraph().init();
 		}
 
-		prepareDataControllers();
-		prepareWorkLoadData();
+		try {
+			prepareDataControllers();
+			prepareWorkLoadData();
+		} catch (InvalidFileFormatException e) {
+			ValidationOutputter.error(e.toString());
+			e.printStackTrace();
+		} catch (IOException e) {
+			ValidationOutputter.error(e.toString());
+			e.printStackTrace();
+		}
+		
+		ParametersDivider.findMatch(runNumber, SimulationParameters.sweepRuns);
 
-		tasks = new Tasks(loadSet.TASK_COUNT);
+		tasks = new Tasks(SimulationParameters.taskCount);
 		context.addSubContext(tasks);
-		agents = new Agents(strategyDistribution, loadSet.AGENT_COUNT);
+		agents = new Agents(strategyDistribution,
+				AgentCount.INSTANCE.getChosen());
 		context.addSubContext(agents);
 
 		prepareGameController(context);
-		assert context.getObjects(GameController.class).size() > 0;
-		say("[Game Controller] initialized and added to context.");
 
-		say("Task choice [Strategy] is "
-				+ (strategyDistribution.isDistributionLoaded() ? strategyDistribution
-						.getStrategySet().describe()
-						: SimulationParameters.taskChoiceAlgorithm));
+		assert context.getObjects(GameController.class).size() > 0;
+		VerboseLogger
+				.say("[Game Controller] initialized and added to context.");
+
+		VerboseLogger
+				.say("Task choice [Strategy] is "
+						+ (strategyDistribution.isDistributionLoaded() ? strategyDistribution
+								.getStrategySet().describe()
+								: SimulationParameters.taskChoiceAlgorithm));
 		sanity("Number of [Tasks] created " + getTasks().size());
 		sanity("Number of [Agents] created " + getAgents().size());
 		sanity("[Algorithm] tested: "
 				+ (strategyDistribution.isDistributionLoaded() ? "Distributed"
 						: SimulationParameters.taskChoiceAlgorithm));
 
-		if (SimulationParameters.forceStop)
-			RunEnvironment.getInstance().endAt(SimulationParameters.numSteps);
-
 		buildCentralPlanner();
 		buildContinousTaskFlow();
 		buildExperienceReassessment();
-		buildAgentsWithdrawns();
-		decideAboutGranularity();
-		decideAboutCutPoint();
 
 		List<ISchedulableAction> actions = schedule.schedule(this);
-		say(actions.toString());
+		VerboseLogger.say(actions.toString());
 
 		context.add(this); // it will make sure ScheduledMethods are run
 
 		return context;
 	}
 
-	private IndexedIterable<Object> getTasks() {
-		Context<Object> context = getCurrentContext();
+	private IndexedIterable<Task> getTasks() {
+		Context<Task> context = tasks;
 		return context.getObjects(Task.class);
 	}
 
-	private IndexedIterable<Object> getAgents() {
-		Context<Object> context = getCurrentContext();
+	private IndexedIterable<Agent> getAgents() {
+		Context<Agent> context = agents;
 		return context.getObjects(Agent.class);
 	}
 
 	private void initializeLoggers() throws IOException {
 		PjiitLogger.init();
-		say(Constraints.LOGGER_INITIALIZED);
+		VerboseLogger.say(Constraints.LOGGER_INITIALIZED);
 		SanityLogger.init();
 		sanity(Constraints.LOGGER_INITIALIZED);
 		EndRunLogger.init();
 		EndRunLogger.buildHeaders(buildFinalMessageHeader());
-	}
-
-	private void initializeValidationLogger() {
-		ValidationLogger.init();
-		say(Constraints.VALIDATION_LOGGER_INITIALIZED);
-		validation(Constraints.SEPERATOR);
-	}
-
-	@SuppressWarnings("deprecation")
-	public void clearStaticHeap() {
-		say("Clearing [static data] from previous simulation");
-		sanity("Hence despite the fact there is a seperate JVM "
-				+ "for every instance, a new run should clear previous results");
-		PersistJobDone.clear();
-		PersistRewiring.clear();
-		TaskSkillsPool.clear();
-		SkillFactory.skills.clear();
-		NamesGenerator.clear();
-		Tasks.clearTasks();
-		AgentSkillsPool.clear();
-		Agent.totalAgents = 0;
-		TaskSkillsPool.static_frequency_counter = 0;
-		TaskSkillFrequency.clear();
-		AgentSkillsFrequency.clear();
-		AgentModeling.clear();
-		ImpactFactor.clear();
-		EquilibriumDetector.clear();
 	}
 
 	@ScheduledMethod(start = 2, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
@@ -373,18 +278,21 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * strategies
 	 */
 	public void finishSimulation() {
-		say("[finishSimulation() check launched] Checking if simulation can be ended...");
+		VerboseLogger
+				.say("[finishSimulation() check launched] Checking if simulation can be ended...");
 		EnvironmentEquilibrium.setActivity(false);
 		if (gameController.isEvolutionary()) {
 			if (EquilibriumDetector.evaluate(gameController)) {
-				say("[Stable set of Strategies] detected, finishing simulation");
-				finalMessage(buildFinalMessage());
+				VerboseLogger
+						.say("[Stable set of Strategies] detected, finishing simulation");
+				EndRunLogger.finalMessage((buildFinalMessage()));
 				RunEnvironment.getInstance().endRun();
 				// cleanAfter();
 			}
 		} else if (((Tasks) tasks).getCount() < 1) {
-			say("Count of [Task Pool] is < 1, finishing simulation");
-			finalMessage(buildFinalMessage());
+			VerboseLogger
+					.say("Count of [Task Pool] is < 1, finishing simulation");
+			EndRunLogger.finalMessage((buildFinalMessage()));
 			RunEnvironment.getInstance().endRun();
 			// cleanAfter();
 		}
@@ -398,10 +306,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * strategies
 	 */
 	public void checkForActivity() {
-		say("[checkForActivity() check launched] Checking if there was any work at all in current Tick");
+		VerboseLogger
+				.say("[checkForActivity() check launched] Checking if there was any work at all in current Tick");
 		if (EnvironmentEquilibrium.getActivity() == false) {
-			say("EnvironmentEquilibrium.getActivity() returns false!");
-			finalMessage(buildFinalMessage());
+			VerboseLogger
+					.say("EnvironmentEquilibrium.getActivity() returns false!");
+			EndRunLogger.finalMessage((buildFinalMessage()));
 			RunEnvironment.getInstance().endRun();
 			// cleanAfter();
 		}
@@ -418,28 +328,50 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ RunState.getInstance().getRunInfo().getRunNumber()
 				+ ","
 				+ RunEnvironment.getInstance().getCurrentSchedule()
-						.getTickCount() + "," + launchStatistics.agentCount
-				+ "," + launchStatistics.taskCount + "," + getTaskLeft() + ","
-				+ launchStatistics.expDecay + ","
-				+ SimulationParameters.allowSkillDeath + ","
-				+ launchStatistics.fullyLearnedAgentsLeave + ","
-				+ launchStatistics.experienceCutPoint + ","
-				+ launchStatistics.granularity + ","
-				+ launchStatistics.granularityType + ","
-				+ SimulationParameters.granularityObstinacy + ","
-				+ strategyDistribution.getTaskChoice() + ","
-				+ strategyDistribution.getSkillChoice() + ","
-				+ gameController.isEvolutionary() + ","
-				+ SimulationParameters.planNumber + ","
-				+ SimulationParameters.utilityType + ","
-				+ gameController.getCurrentGeneration() + ","
-				+ SimulationParameters.iterationCount + ","
-				+ SimulationParameters.allwaysChooseTask + ","
-				+ gameController.countHomophilyDistribution(currentContext)
+						.getTickCount()
 				+ ","
-				+ gameController.countHeterophilyDistribution(currentContext)
+				+ AgentCount.INSTANCE.getChosen()
 				+ ","
-				+ gameController.countPreferentialDistribution(currentContext);
+				+ SimulationParameters.taskCount
+				+ ","
+				+ getTaskLeft()
+				+ ","
+				+ ExpDecayOption.INSTANCE.getChosen()
+				+ ","
+				+ SimulationParameters.allowSkillDeath
+				+ ","
+				+ SimulationParameters.experienceCutPoint
+				+ ","
+				+ SimulationParameters.granularity
+				+ ","
+				+ SimulationParameters.granularityType
+				+ ","
+				+ SimulationParameters.granularityObstinacy
+				+ ","
+				+ strategyDistribution.getTaskChoice()
+				+ ","
+				+ strategyDistribution.getSkillChoice()
+				+ ","
+				+ gameController.isEvolutionary()
+				+ ","
+				+ SimulationParameters.planNumber
+				+ ","
+				+ FunctionSet.INSTANCE.getChosen()
+				+ ","
+				+ gameController.getCurrentGeneration()
+				+ ","
+				+ GenerationLength.INSTANCE.getChosen()
+				+ ","
+				+ SimulationParameters.allwaysChooseTask
+				+ ","
+				+ gameController
+						.countHomophilyDistribution(getCurrentContext())
+				+ ","
+				+ gameController
+						.countHeterophilyDistribution(getCurrentContext())
+				+ ","
+				+ gameController
+						.countPreferentialDistribution(getCurrentContext());
 	}
 
 	private int getTaskLeft() {
@@ -460,26 +392,14 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		return "Batch_Number" + "," + "Run_Number" + "," + "Tick_Count" + ","
 				+ "Agents_Count" + "," + "Tasks_Count" + "," + "Tasks_Left"
 				+ "," + "Experience_Decay" + "," + "Allow_Skill_Death" + ","
-				+ "Fll_Enabled" + "," + "Exp_cut_point" + "," + "Granularity"
-				+ "," + "Granularity_type" + "," + "Granularity_obstinancy"
-				+ "," + "Task_choice_strategy" + "," + "Skill_choice_strategy"
-				+ "," + "Is_Evolutionary" + ","
-				+ "Plan_Number" + "," + "Utility_Type" + "," + "Generation" + ","
-				+ "GenerationLength" + ","
-				+ "Allways_Choose_Task" + "," + "Homophily_Count" + ","
-				+ "Heterophily_Count" + "," + "Preferential_Count";
-	}
-
-	private void say(String s) {
-		PjiitOutputter.say(s);
-	}
-
-	private void forcesay(String s) {
-		System.out.println(s);
-	}
-
-	private void validation(String s) {
-		ValidationOutputter.say(s);
+				+ "Exp_cut_point" + "," + "Granularity" + ","
+				+ "Granularity_type" + "," + "Granularity_obstinancy" + ","
+				+ "Task_choice_strategy" + "," + "Skill_choice_strategy" + ","
+				+ "Is_Evolutionary" + "," + "Plan_Number" + ","
+				+ "Utility_Type" + "," + "Generation" + ","
+				+ "GenerationLength" + "," + "Allways_Choose_Task" + ","
+				+ "Homophily_Count" + "," + "Heterophily_Count" + ","
+				+ "Preferential_Count";
 	}
 
 	private void validationError(String s) {
@@ -491,14 +411,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	}
 
 	private void sanity(String s) {
-		PjiitOutputter.sanity(s);
-	}
-
-	private void finalMessage(String s) {
-		if (modelFactory.getFunctionality().isValidation()) {
-			validation(s);
-		}
-		EndRunLogger.finalMessage(s);
+		VerboseLogger.sanity(s);
 	}
 
 	/**
@@ -507,10 +420,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * first (clearing previous orders) and than making the math
 	 */
 	public void centralPlanning() {
-		say("CentralPlanning scheduled method launched, listAgent.size(): "
-				+ getAgents().size() + " taskPool.size(): "
-				+ ((Tasks) tasks).getCount());
-		say("Zeroing agents' orders");
+		VerboseLogger
+				.say("CentralPlanning scheduled method launched, listAgent.size(): "
+						+ getAgents().size()
+						+ " taskPool.size(): "
+						+ ((Tasks) tasks).getCount());
+		VerboseLogger.say("Zeroing agents' orders");
 		centralPlanner.zeroAgentsOrders(getAgents());
 		centralPlanner.centralPlanningCalc(getAgents(), (Tasks) tasks);
 	}
@@ -521,18 +436,19 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * hybrid model it can take work for a subset of Agents as well.
 	 */
 	public void buildCentralPlanner() {
-		say("Method buildCentralPlanner lunched."
+		VerboseLogger.say("Method buildCentralPlanner lunched."
 				+ "Checking now if central planer is needed at all.");
 		if (strategyDistribution.isCentralPlannerEnabled()) {
-			say("Creating a central planner instance.");
+			VerboseLogger.say("Creating a central planner instance.");
 			centralPlanner = CentralPlanning.getSingletonInstance();
-			say("Central planner is initiating schedule.");
+			VerboseLogger.say("Central planner is initiating schedule.");
 			ISchedule schedule = RunEnvironment.getInstance()
 					.getCurrentSchedule();
 			ScheduleParameters params = ScheduleParameters.createRepeating(1,
 					1, ScheduleParameters.FIRST_PRIORITY);
 			schedule.schedule(params, this, "centralPlanning");
-			say("Central planner initiated and awaiting for call.");
+			VerboseLogger
+					.say("Central planner initiated and awaiting for call.");
 		}
 	}
 
@@ -543,23 +459,26 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			ScheduleParameters params = ScheduleParameters.createRepeating(1,
 					1, ScheduleParameters.LAST_PRIORITY);
 			schedule.schedule(params, this, "provideSimulatorWithWork");
-			say("[Continous Task Flow] initiated");
+			VerboseLogger.say("[Continous Task Flow] initiated");
 		}
 	}
 
 	public synchronized void provideSimulatorWithWork() {
-		if (tasks.size() < loadSet.TASK_COUNT) {
-			int minus = loadSet.TASK_COUNT - ((Tasks) tasks).getCount();
+		if (tasks.size() < SimulationParameters.taskCount) {
+			int minus = SimulationParameters.taskCount - ((Tasks) tasks).getCount();
 			int difference = Math.abs(minus);
-			forcesay("Adding more " + difference + " [Tasks] to simulator");
+			VerboseLogger.say("Adding more " + difference
+					+ " [Tasks] to simulator");
 			try {
 				List<Task> newTasks = MyDatabaseConnector.get(difference);
 				for (Task newTask : newTasks) {
-					say("[Continous Task Flow] adding a new task to context!");
+					VerboseLogger
+							.say("[Continous Task Flow] adding a new task to context!");
 					tasks.add(newTask);
 				}
 			} catch (SQLException e) {
-				say("Error during providing simulator with a new [Task(s)]");
+				VerboseLogger
+						.say("Error during providing simulator with a new [Task(s)]");
 				e.printStackTrace();
 			}
 		}
@@ -575,7 +494,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			IndexedIterable<Agent> agentObjects = agents
 					.getObjects(Agent.class);
 			for (Agent agent : agentObjects) {
-				say("Checking if I may have to [decrease exp] of " + agent);
+				VerboseLogger
+						.say("Checking if I may have to [decrease exp] of "
+								+ agent);
 				if (!agent.getAgentSkills().hasAny()) {
 					continue;
 				}
@@ -606,11 +527,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 						} else {
 							double value = ai.decayExperience();
 							if (value == -1) {
-								say("[Experience] of [Agent] "
-										+ (agent.getNick())
-										+ " wasn't decreased because it's already low");
+								VerboseLogger
+										.say("[Experience] of [Agent] "
+												+ (agent.getNick())
+												+ " wasn't decreased because it's already low");
 							} else
-								say("[Experience] of [Agent] "
+								VerboseLogger.say("[Experience] of [Agent] "
 										+ (agent.getNick())
 										+ " decreased and is now " + value);
 						}
@@ -622,7 +544,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			validationError(exc.getMessage());
 			exc.printStackTrace();
 		} finally {
-			say("Regular method run for [expDecay] finished for this step.");
+			VerboseLogger
+					.say("Regular method run for [expDecay] finished for this step.");
 		}
 	}
 
@@ -631,171 +554,28 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * is enabled for the simulation whether not.
 	 */
 	public void buildExperienceReassessment() {
-		say("buildExperienceReassessment() lunched !");
-		if (SimulationParameters.experienceDecay) {
-			int reassess = RandomHelper.nextIntFromTo(0, 1);
-			// I want to randomise whether turn expDecay off or on
-			if ((reassess == 0) && SimulationParameters.multipleAgentSets) {
-				SimulationParameters.experienceDecay = false;
-				launchStatistics.expDecay = false;
-				say("[Exp decay] is disabled for this run");
-			} else {
-				SimulationParameters.experienceDecay = true;
-				launchStatistics.expDecay = true;
-				int allowSkillDeath = RandomHelper.nextIntFromTo(0, 1);
-				if ((allowSkillDeath == 0)
-						&& SimulationParameters.allowSkillDeath) {
-					SimulationParameters.allowSkillDeath = true;
-					say("[Allow skill abandon] is enabled for this run");
-				}
-				say("[Exp decay] is enabled for this run");
-				ISchedule schedule = RunEnvironment.getInstance()
-						.getCurrentSchedule();
-				ScheduleParameters params = ScheduleParameters.createRepeating(
-						1, 1, ScheduleParameters.LAST_PRIORITY);
-				schedule.schedule(params, this, "experienceReassess");
-				say("Experience decay initiated and awaiting for call !");
+		VerboseLogger.say("buildExperienceReassessment() lunched !");
+		if (ExpDecayOption.INSTANCE.getChosen()) {
+			if (SimulationParameters.allowSkillDeath == true) {
+				VerboseLogger
+						.say("[Allow skill abandon] is enabled for this run");
 			}
-		}
-	}
-
-	/***
-	 * Scheduled methods which checks for fully learned agents - only when 'fll'
-	 * parameter set as true in scenario parameters
-	 * 
-	 * @since 1.3
-	 */
-	public synchronized void agentsWithdrawns() {
-		Context<Object> context = getCurrentContext();
-		try {
-			IndexedIterable<Object> agentObjects = context
-					.getObjects(Agent.class);
-			CopyOnWriteArrayList<Agent> acconcurrent = new CopyOnWriteArrayList<Agent>();
-			for (Object object : agentObjects) {
-				acconcurrent.add((Agent) object);
-			}
-			for (Object agent : acconcurrent) {
-				if (agent.getClass().getName().equals("collaboration.Agent")) {
-					say("Checking if I may have to force "
-							+ (((Agent) agent).getNick()) + " to leave");
-					Collection<AgentInternals> aic = ((Agent) agent)
-							.getAgentInternals();
-
-					CopyOnWriteArrayList<AgentInternals> aicconcurrent = new CopyOnWriteArrayList<AgentInternals>(
-							aic);
-					boolean removal = true;
-					for (Object ai : aicconcurrent) {
-						if (((AgentInternals) ai).getExperience().getDelta() < 1.) {
-							say("Agent " + (((Agent) agent).getNick())
-									+ " didn't reach maximum in skill "
-									+ ((AgentInternals) ai).getSkill());
-							removal = false;
-						}
-					}
-					if (removal) {
-						say("Agent " + (((Agent) agent).getNick())
-								+ " don't have any more skills. Removing agent");
-						context.remove(agent);
-					}
-				}
-			}
-		} catch (Exception exc) {
-			validationFatal(exc.toString());
-			validationError(exc.getMessage());
-			exc.printStackTrace();
-		} finally {
-			say("Eventual forcing agents to leave check finished!");
+			VerboseLogger.say("[Exp decay] is enabled for this run");
+			ISchedule schedule = RunEnvironment.getInstance()
+					.getCurrentSchedule();
+			ScheduleParameters params = ScheduleParameters.createRepeating(1,
+					1, ScheduleParameters.LAST_PRIORITY);
+			schedule.schedule(params, this, "experienceReassess");
+			VerboseLogger
+					.say("Experience decay initiated and awaiting for call !");
+		} else {
+			VerboseLogger.say("[Exp decay] is disabled for this run");
 		}
 	}
 
 	private Context<Object> getCurrentContext() {
-		return currentContext;
+		return ContextUtils.getContext(this);
 	}
 
-	/**
-	 * Here I need to schedule method manually because I don't know if
-	 * fullyLearnedAgentsLeave is enabled for the simulation whether not.
-	 */
-	public void buildAgentsWithdrawns() {
-		say("buildAgentsWithdrawns lunched !");
-		if (SimulationParameters.fullyLearnedAgentsLeave) {
-			int reassess = RandomHelper.nextIntFromTo(0, 1);
-			// I want in results both expDecay off and on!
-			// thats why randomise to use both
-			if (reassess == 0) {
-				SimulationParameters.fullyLearnedAgentsLeave = false;
-				launchStatistics.fullyLearnedAgentsLeave = false;
-			} else if (reassess == 1) {
-				SimulationParameters.fullyLearnedAgentsLeave = true;
-				launchStatistics.fullyLearnedAgentsLeave = true;
-				say("Agents withdrawns initiating.....");
-				ISchedule schedule = RunEnvironment.getInstance()
-						.getCurrentSchedule();
-				ScheduleParameters params = ScheduleParameters.createRepeating(
-						1, 1, ScheduleParameters.LAST_PRIORITY + 1);
-				schedule.schedule(params, this, "agentsWithdrawns");
-				say("Agents withdrawns initiated and awaiting for call !");
-			} else
-				assert false; // reassess is always 0 or 1
-		}
-	}
-
-	private void decideAboutGranularity() {
-		if (SimulationParameters.granularity) {
-			if (SimulationParameters.granularityType.equals("DISTRIBUTED")) {
-				int threePossibilities = RandomHelper.nextIntFromTo(1, 2);
-				switch (threePossibilities) {
-				case 1:
-					SimulationParameters.granularity = false;
-					launchStatistics.granularity = false;
-					launchStatistics.granularityType = "OFF";
-					break;
-				// case 2:
-				// SimulationParameters.granularity = true;
-				// launchStatistics.granularity = true;
-				// SimulationParameters.granularityType = "TASKANDSKILL";
-				// launchStatistics.granularityType = "TASKANDSKILL";
-				// TODO: i need to think it over more
-				case 2:
-					SimulationParameters.granularity = true;
-					launchStatistics.granularity = true;
-					SimulationParameters.granularityType = "TASKONLY";
-					launchStatistics.granularityType = "TASKONLY";
-					break;
-				// case 3:
-				// SimulationParameters.granularity = true;
-				// launchStatistics.granularity = true;
-				// SimulationParameters.granularityType = "TASKONLY";
-				// launchStatistics.granularityType = "TASKONLY";
-				// break;
-				default:
-					break;
-				}
-			}
-		} else {
-			launchStatistics.granularity = false;
-			launchStatistics.granularityType = "OFF";
-		}
-	}
-
-	private void decideAboutCutPoint() {
-		if (SimulationParameters.experienceCutPoint) {
-			int twoPossibilities = RandomHelper.nextIntFromTo(0, 1);
-			switch (twoPossibilities) {
-			case 0:
-				SimulationParameters.experienceCutPoint = false;
-				launchStatistics.experienceCutPoint = false;
-				break;
-			case 1:
-				SimulationParameters.experienceCutPoint = true;
-				launchStatistics.experienceCutPoint = true;
-				break;
-			default:
-				break;
-			}
-		} else {
-			launchStatistics.experienceCutPoint = false;
-		}
-	}
 
 }

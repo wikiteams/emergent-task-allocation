@@ -7,7 +7,7 @@ import collaboration.TaskInternals;
 import collaboration.WorkUnit;
 
 import java.util.ArrayList;
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 
 public class TaskTestUniverse {
 	
@@ -92,7 +92,7 @@ public class TaskTestUniverse {
 	}
 	
 	private static void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 }

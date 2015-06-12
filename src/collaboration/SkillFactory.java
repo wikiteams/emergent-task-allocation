@@ -6,26 +6,22 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 
 import org.apache.commons.lang3.SystemUtils;
 
-import repast.simphony.random.RandomHelper;
 import au.com.bytecode.opencsv.CSVReader;
-import cern.jet.random.BreitWigner;
-import cern.jet.random.Normal;
-import cern.jet.random.Poisson;
-import constants.RandomMethod;
 
 /***
  * Here are all skills known to GitHub read and hold in ArrayList for more info,
  * please visit:
- * https://github.com/github/linguist/blob/master/lib/linguist/languages.yml In
- * other words, this class loads all know programming languages.
+ * https://github.com/github/linguist/blob/master/lib/linguist/languages.yml 
+ * In other words, this class loads all know programming languages,
+ * and it includes deleted language definitions as well (compability backwards)
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.6
+ * @version 2.0.11
  */
 public class SkillFactory {
 
@@ -37,7 +33,7 @@ public class SkillFactory {
 	 * ... 
 	 * langauage{i},type
 	 * 
-	 * circa 305 entries
+	 * around 305 entries
 	 */
 	private static String filename = SystemUtils.IS_OS_LINUX ? "data/all-languages.csv"
 			: "data\\all-languages.csv";
@@ -65,7 +61,7 @@ public class SkillFactory {
 		return null;
 	}
 
-	public Skill getRandomSkill() {
+/*	public Skill getRandomSkill() {
 		if (SimulationParameters.skillFactoryRandomMethod
 				.equals("normal_distribution")) {
 			return getRandomSkill(RandomMethod.NORMAL_DISTRIBUTION);
@@ -77,9 +73,9 @@ public class SkillFactory {
 			return getRandomSkill(RandomMethod.POISSON_DISTRIBUTION);
 		}
 		return getRandomSkill(RandomMethod.RANDOM_GENERATOR);
-	}
+	}*/
 
-	public Skill getRandomSkill(RandomMethod method) {
+/*	public Skill getRandomSkill(RandomMethod method) {
 		double randomized;
 		switch (method) {
 		case POISSON_DISTRIBUTION:
@@ -107,10 +103,10 @@ public class SkillFactory {
 			break;
 		}
 		return null;
-	}
+	}*/
 
 	public void buildSkillsLibrary(boolean verbose) throws IOException, FileNotFoundException {
-		say("Searching for file in: " + new File(".").getAbsolutePath());
+		say("Searching for [file] in path: " + new File(".").getAbsolutePath());
 		CSVReader reader = new CSVReader(new FileReader(filename));
 		String[] nextLine;
 		while ((nextLine = reader.readNext()) != null) {
@@ -124,7 +120,7 @@ public class SkillFactory {
 	}
 
 	private static void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 }

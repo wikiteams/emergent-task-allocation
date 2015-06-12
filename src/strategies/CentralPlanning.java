@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 import repast.simphony.util.collections.IndexedIterable;
 import tasks.CentralAssignmentOrders;
 import utils.ObjectsHelper;
@@ -50,11 +50,11 @@ public class CentralPlanning {
 		return singletonInstance;
 	}
 
-	public void zeroAgentsOrders(IndexedIterable<Object> listAgent) {
+	public void zeroAgentsOrders(IndexedIterable<Agent> listAgent) {
 		say("Zeroing central planer orders for " + listAgent.size() + "agents");
-		for (Object agent : listAgent) {
-			say("Zeroing orders for " + ((Agent) agent).getName());
-			((Agent) agent).setCentralAssignmentOrders(null);
+		for (Agent agent : listAgent) {
+			say("Zeroing orders for " + agent.getName());
+			agent.setCentralAssignmentOrders(null);
 		}
 	}
 
@@ -73,8 +73,8 @@ public class CentralPlanning {
 	 * @param Tasks
 	 *            taskPool - a pool of tasks
 	 */
-	public void centralPlanningCalc(Iterable<Object> agents, Tasks taskPool) {
-		say("Central planning working !");
+	public void centralPlanningCalc(Iterable<Agent> agents, Tasks taskPool) {
+		say("[Central planning] working !");
 
 		Map<Agent, Double> measurements = new HashMap<Agent, Double>();
 		Map<Agent, TaskInternals> results = new HashMap<Agent, TaskInternals>();
@@ -119,7 +119,7 @@ public class CentralPlanning {
 	}
 
 	private void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ public class Utility {
 	}
 
 	public static final int LEFT_MIN = 1;
-	public static final int LEFT_AVG = 2;
+	// public static final int LEFT_AVG = 2;
 	public static final int LEFT_MAX = 3;
 
 	private static final double epsilon = 0.05;
@@ -22,10 +22,13 @@ public class Utility {
 				+ getRightLearningUtility(agentInternals);
 	}
 
-	public static Double getLeftLearningUtility(Collection<AgentInternals> agentInternals) {
-		return getLeftLearningUtility(LEFT_MIN, agentInternals);
+	public static Double getLeftLearningUtility(
+			Collection<AgentInternals> agentInternals) {
+		return getLeftLearningUtility(
+				SimulationAdvancedParameters.minimum ? LEFT_MIN : LEFT_MAX,
+				agentInternals);
 	}
-	
+
 	public static Double getLeftLearningUtility(int type,
 			Collection<AgentInternals> agentInternals) {
 		Double result = null;
@@ -45,10 +48,11 @@ public class Utility {
 		return result;
 	}
 
-	public static Double getRightLearningUtility(Collection<AgentInternals> agentInternals) {
+	public static Double getRightLearningUtility(
+			Collection<AgentInternals> agentInternals) {
 		return getRightLearningUtility(true, agentInternals);
 	}
-	
+
 	public static Double getRightLearningUtility(boolean useEpsilon,
 			Collection<AgentInternals> agentInternals) {
 		double result = 0;

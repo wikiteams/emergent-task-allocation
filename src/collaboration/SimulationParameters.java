@@ -1,11 +1,11 @@
 package collaboration;
 
-import intelligence.UtilityTypes;
+import load.AgentCountConverter;
+import load.ExpDecayOptionConverter;
+import load.FunctionSetConverter;
+import load.GenerationLengthConverter;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
-import test.Model;
-import test.ModelConverter;
-import collaboration.Utility.UtilityType;
 
 /**
  * Basically stores parameters from repast file to a holder Simulation
@@ -14,163 +14,72 @@ import collaboration.Utility.UtilityType;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.9 'White fox' edition
+ * @version 2.0.11
  */
 public class SimulationParameters {
 
-	public static final String tasksDataset = "ALL_REPOSITORIES";
-	public static final int IMPACT_MEMORY = 3;
-	public static final double mutateChances = 0.01;
-	public static boolean multipleAgentSets = true;
-	public static boolean allowSkillDeath = false;
+	public static double mutateChances;
+	public static boolean allowSkillDeath;
 
-	/**
-	 * Parameters - modelType (optional plan number) and dataSource
-	 * 
-	 * This sets the type of data and model we want to operate on so it can be
-	 * either a mock data or a real data from files/socket plus model type tells
-	 * whether these are proper calculations or a stress test to test simulator
-	 * robustness
-	 */
-	public static Model modelType = null;
-	public static String dataSource = "";
-	public static int planNumber = 0;
-	public static int iterationCount = 0;
-	
-	private static String utilityFunction = "";
-	public static UtilityType utilityType = null;
-	public static boolean complexStrategies;
-	
-	public static boolean isAgentOrientedUtility;
-	public static boolean isTaskOrientedUtility;
+	public static int evolutionEnabled;
+	public static int planNumber;
+	public static int equilibriumDetectionSensitivity;
 
-	public static int agentCount = 0;
-	public static int taskCount = 0;
-	public static int numSteps = 0;
-	public static boolean allwaysChooseTask = true;
+	public static int taskCount;
+	public static boolean allwaysChooseTask;
 
-	public static String taskChoiceAlgorithm = "";
-	public static String skillChoiceAlgorithm = "";
-	public static String taskMinMaxChoiceAlgorithm = "";
+	public static String taskChoiceAlgorithm;
+	public static String skillChoiceAlgorithm;
 
-	public static int strategyDistribution = 0;
-	public static int equilibriumDetectionSensitivity = 0;
-	public static int randomSeed = 0;
-	public static boolean granularity = false;
-	public static int granularityObstinacy = 0;
-	public static String granularityType = "";
+	public static boolean granularity;
+	public static int granularityObstinacy;
+	public static String granularityType;
+	public static boolean experienceCutPoint;
 
-	public static String taskSkillPoolDataset = "";
-	public static String agentSkillPoolDataset = "";
-	public static int staticFrequencyTableSc = 0;
-	public static String fillAgentSkillsMethod = "";
-	public static String skillFactoryRandomMethod = "";
-
-	public static String gitHubClusterizedDistribution = "";
-
-	public static int agentSkillsPoolRandomize1 = 0;
-	public static int agentSkillsMaximumExperience = 0;
-	public static boolean experienceDecay = false;
-	public static boolean experienceCutPoint = false;
-
-	public static boolean deployedTasksLeave = false;
-	public static boolean deployedTaskInternalsLeave = false;
-	public static boolean fullyLearnedAgentsLeave = false;
-	public static boolean forceStop = false;
-
-	public static int maxWorkRequired = 0;
-	public static double probableWorkDone = 8;
+	public static int randomSeed;
+	public static int sweepRuns;
 
 	public static void init() {
 		Parameters param = RunEnvironment.getInstance().getParameters();
 
-		ModelConverter modelConverter = new ModelConverter();
-		
-		multipleAgentSets = (Boolean) param.getValue("multipleAgentSets");
-		
-		complexStrategies = (Boolean) param.getValue("complexStrategies");
+		AgentCountConverter agentCountConverter = new AgentCountConverter();
+		GenerationLengthConverter generationLengthConverter = new GenerationLengthConverter();
+		ExpDecayOptionConverter expDecayOptionConverter = new ExpDecayOptionConverter();
+		FunctionSetConverter functionSetConverter = new FunctionSetConverter();
 
-		modelType = (Model) modelConverter.fromString((String) param
-				.getValue("modelType"));
-		dataSource = (String) param.getValue("dataSource");
-		
-		utilityFunction = (String) param.getValue("utilityFunction");
-		if (utilityFunction.equals(UtilityTypes.LearningSkills)){
-			isAgentOrientedUtility = true;
-			isTaskOrientedUtility = false;
-			utilityType = UtilityType.LearningSkills;
-		} else if (utilityFunction.equals(UtilityTypes.LeftLearningSkills)){
-			isAgentOrientedUtility = true;
-			isTaskOrientedUtility = false;
-			utilityType = UtilityType.LeftLearningSkills;
-		} else if (utilityFunction.equals(UtilityTypes.RightLearningSkills)){
-			isAgentOrientedUtility = true;
-			isTaskOrientedUtility = false;
-			utilityType = UtilityType.RightLearningSkills;
-		} else if (utilityFunction.equals(UtilityTypes.ImpactFactor)){
-			isAgentOrientedUtility = false;
-			isTaskOrientedUtility = true;
-			utilityType = UtilityType.ImpactFactor;
-		} else if (utilityFunction.equals(UtilityTypes.ImpactFactorMax)){
-			isAgentOrientedUtility = false;
-			isTaskOrientedUtility = true;
-			utilityType = UtilityType.ImpactFactorMax;
-		}
-		
-		if (isAgentOrientedUtility){
-			deployedTaskInternalsLeave = true;
-		}
-		
 		planNumber = (Integer) param.getValue("planNumber");
-		iterationCount = (Integer) param.getValue("iterationCount");
-		equilibriumDetectionSensitivity = (Integer) param.getValue("equilibriumDetectionSensitivity");
-		
-		agentCount = (Integer) param.getValue("agentCount");
+
+		generationLengthConverter.fromString((String) param
+				.getValue("iterationCount"));
+		agentCountConverter.fromString((String) param.getValue("agentCount"));
+		expDecayOptionConverter.fromString((String) param
+				.getValue("experienceDecay"));
+		functionSetConverter.fromString((String) param
+				.getValue("utilityFunction"));
+
+		equilibriumDetectionSensitivity = (Integer) param
+				.getValue("equilibriumDetectionSensitivity");
+		mutateChances = ((Integer) param.getValue("mutateChances")) * 0.01;
+
 		taskCount = (Integer) param.getValue("numTasks");
-		numSteps = (Integer) param.getValue("numSteps");
 		allwaysChooseTask = (Boolean) param.getValue("allwaysChooseTask");
 
 		taskChoiceAlgorithm = (String) param.getValue("taskChoiceAlgorithm");
 		skillChoiceAlgorithm = (String) param.getValue("skillChoiceAlgorithm");
-		taskMinMaxChoiceAlgorithm = (String) param
-				.getValue("taskMinMaxChoiceAlgorithm");
-		strategyDistribution = (Integer) param.getValue("strategyDistribution");
 
-		taskSkillPoolDataset = (String) param.getValue("taskSkillPoolDataset");
-		agentSkillPoolDataset = (String) param
-				.getValue("agentSkillPoolDataset");
-		staticFrequencyTableSc = (Integer) param
-				.getValue("staticFrequencyTableSc");
-
-		fillAgentSkillsMethod = (String) param
-				.getValue("fillAgentSkillsMethod");
-		skillFactoryRandomMethod = (String) param
-				.getValue("skillFactoryRandomMethod");
-
-		gitHubClusterizedDistribution = (String) param
-				.getValue("gitHubClusterizedDistribution");
+		evolutionEnabled = (Integer) param.getValue("evolutionEnabled");
 
 		randomSeed = (Integer) param.getValue("randomSeed");
+		sweepRuns = (Integer) param.getValue("sweepRuns");
 
-		agentSkillsPoolRandomize1 = (Integer) param
-				.getValue("agentSkillsPoolRandomize1");
-		agentSkillsMaximumExperience = (Integer) param
-				.getValue("agentSkillsMaximumExperience");
-
-		maxWorkRequired = (Integer) param.getValue("maxWorkRequired");
-
-		experienceDecay = (Boolean) param.getValue("experienceDecay");
 		allowSkillDeath = (Boolean) param.getValue("allowSkillDeath");
 		experienceCutPoint = (Boolean) param.getValue("experienceCutPoint");
+
 		granularity = (Boolean) param.getValue("granularity");
 		granularityObstinacy = (Integer) param.getValue("granularityObstinacy");
 		granularityType = (String) param.getValue("granularityType");
 
-		deployedTasksLeave = (Boolean) param.getValue("deployedTasksLeave");
-		fullyLearnedAgentsLeave = (Boolean) param
-				.getValue("fullyLearnedAgentsLeave");
-		forceStop = (Boolean) param.getValue("forceStop");
-
-		//dataSetAll = (Boolean) param.getValue("dataSetAll");
+		SimulationAdvancedParameters.minimum = ((String) param.getValue(
+				"utilityLeftEval")).equals("min") ? true : false;
 	}
 }

@@ -3,19 +3,19 @@ package logger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PjiitOutputter {
+public class VerboseLogger {
 
 	/**
 	 * Lets avoid in the normal situations outputting all the debug messages
 	 * to a log file, it can grow enormous big, so we want to disable it
 	 * for every day use..
 	 * 
-	 * __DONT__FORCE__SKIP__ = true; will enable diagnostic messages
+	 * FORCE_NO_DEBUG = true; will enable diagnostic messages
 	 */
-	private static boolean __DONT__FORCE__SKIP__ = false;
+	private static boolean FORCE_NO_DEBUG = false;
 
 	public static void say(String s) {
-		if (__DONT__FORCE__SKIP__) {
+		if (FORCE_NO_DEBUG) {
 			String dateStringRepresentation = getDateLogs();
 			System.out.println(dateStringRepresentation + ": " + s);
 			PjiitLogger.info(dateStringRepresentation + ": " + s);
@@ -23,7 +23,7 @@ public class PjiitOutputter {
 	}
 
 	public static void sanity(String s) {
-		if (__DONT__FORCE__SKIP__) {
+		if (FORCE_NO_DEBUG) {
 			String dateStringRepresentation = getDateLogs();
 			System.out.println(dateStringRepresentation + ": " + s);
 			SanityLogger.sanity(dateStringRepresentation + ": " + s);

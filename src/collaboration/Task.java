@@ -1,6 +1,5 @@
 package collaboration;
 
-import github.TaskSkillsPool;
 import intelligence.ImpactFactor;
 
 import java.util.ArrayList;
@@ -11,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import logger.PjiitOutputter;
+import load.FunctionSet;
+import logger.VerboseLogger;
 import networking.CollaborationNetwork;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
@@ -100,11 +100,6 @@ public class Task {
 	public TaskInternals getRandomTaskInternals() {
 		return (TaskInternals) skills.values().toArray()[RandomHelper
 				.nextIntFromTo(0, skills.size() - 1)];
-	}
-
-	public synchronized void initialize(int countAll) {
-		TaskSkillsPool.fillWithSkills(this, countAll);
-		say("[Task] object initialized with Id: " + this.id);
 	}
 
 	public Map<String, TaskInternals> getTaskInternals() {
@@ -225,8 +220,9 @@ public class Task {
 		centralAssignmentTask.increment(this, taskInternal, 1, delta);
 		experience.increment(1);
 
-		if (SimulationParameters.deployedTasksLeave)
-			Tasks.considerEnding(this);
+		// if (SimulationParameters.deployedTasksLeave)
+		// actually they always leave after all job in the task is done
+		Tasks.considerEnding(this);
 		skillsImprovedList.add(taskInternal.getSkill());
 
 		PersistJobDone.addContribution(agent, this, skillsImprovedList);
@@ -240,10 +236,10 @@ public class Task {
 	public Boolean workOnTask(Agent agent, Strategy.SkillChoice strategy) {
 		if (SimulationAdvancedParameters.enableNetwork)
 			CollaborationNetwork.addEdge(agent, this);
-		
+
 		Double impactFactor = null;
-		
-		if (!SimulationParameters.isAgentOrientedUtility) {
+
+		if (!FunctionSet.INSTANCE.isAgentOrientedUtility) {
 			impactFactor = this.getGeneralAdvance();
 		}
 
@@ -259,7 +255,8 @@ public class Task {
 		assert intersection != null;
 
 		if (intersection.size() < 1) {
-			intersection = skills.values(); // experience - genesis action needed!
+			intersection = skills.values(); // experience - genesis action
+											// needed!
 			if (intersection.size() < 1)
 				return false;
 		}
@@ -394,13 +391,13 @@ public class Task {
 			break;
 		}
 
-		if (!SimulationParameters.isAgentOrientedUtility) {
+		if (!FunctionSet.INSTANCE.isAgentOrientedUtility) {
 			double newImpactFactor = this.getGeneralAdvance() - impactFactor;
 			ImpactFactor.update(agent, newImpactFactor);
 		}
 
-		if (SimulationParameters.deployedTasksLeave)
-			Tasks.considerEnding(this);
+		// if (SimulationParameters.deployedTasksLeave)
+		Tasks.considerEnding(this);
 
 		if (skillsImprovedList.size() > 0) {
 			PersistJobDone.addContribution(agent, this, skillsImprovedList);
@@ -459,11 +456,11 @@ public class Task {
 	}
 
 	private void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 	private void sanity(String s) {
-		PjiitOutputter.sanity(s);
+		VerboseLogger.sanity(s);
 	}
 
 	public GameController getGameController() {

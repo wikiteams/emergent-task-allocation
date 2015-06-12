@@ -2,7 +2,7 @@ package collaboration;
 
 import java.io.Serializable;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 
 /***
  * Represents a "skill" - a GitHub language
@@ -44,7 +44,7 @@ public class Skill implements Serializable{
 	}
 
 	private void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 	public Skill(String name, String type, int id) {

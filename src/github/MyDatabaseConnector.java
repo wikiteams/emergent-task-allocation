@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import logger.PjiitOutputter;
+import logger.VerboseLogger;
 
 import org.apache.commons.lang3.SystemUtils;
 
@@ -90,7 +90,7 @@ public class MyDatabaseConnector {
 	//private static Queue<Entry> results = new LinkedList<Entry>();
 
 	private static void say(String s) {
-		PjiitOutputter.say(s);
+		VerboseLogger.say(s);
 	}
 
 }
