@@ -262,7 +262,7 @@ public class Task {
 		}
 
 		switch (strategy) {
-		case PROPORTIONAL_TIME_DIVISION:
+		case PROPORTIONAL:
 			say(Constraints.INSIDE_PROPORTIONAL_TIME_DIVISION);
 			ProportionalTimeDivision proportionalTimeDivision = new ProportionalTimeDivision();
 			for (TaskInternals singleTaskInternalFromIntersect : new CopyOnWriteArrayList<TaskInternals>(
@@ -284,7 +284,7 @@ public class Task {
 						.getSkill());
 			}
 			break;
-		case GREEDY_ASSIGNMENT:
+		case GREEDY:
 			say(Constraints.INSIDE_GREEDY_ASSIGNMENT_BY_TASK);
 			CopyOnWriteArrayList<TaskInternals> copyIntersection = new CopyOnWriteArrayList<TaskInternals>(
 					intersection);
@@ -323,7 +323,7 @@ public class Task {
 				skillsImprovedList.add(singleTaskInternal.getSkill());
 			}
 			break;
-		case CHOICE_OF_AGENT:
+		case CHOICE:
 			say(Constraints.INSIDE_CHOICE_OF_AGENT);
 
 			/**

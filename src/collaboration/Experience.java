@@ -2,6 +2,8 @@ package collaboration;
 
 import java.text.DecimalFormat;
 
+import load.ParametrizedSigmoidOption;
+import load.SigmoidParameter;
 import logger.VerboseLogger;
 import cern.jet.random.ChiSquare;
 
@@ -24,9 +26,11 @@ public class Experience {
 	private double value; // plain experience
 	private int top; // hipothetical overlearning
 
-	private static final double expStub = 0.03; // as it is 0.03
+	private static final double expStub = 0.03; // initial knowledge is 3%
 	private static final double decayLevel = 0.0005; // 0,05%
 	private static final double stupidityLevel = 0.03; // 3%
+	
+	private double learningParameter;
 
 	private static final double sigmaBorderValue = 1 - calculateCutPoint(6.0);
 
@@ -34,7 +38,7 @@ public class Experience {
 	public static final double epsilon = 0.00000000001;
 
 	private enum ApproximationMethod {
-		SIGMOID, CHI_SQUARE
+		SIGMOID, PARAMETRIZED_SIGMOID, CHI_SQUARE
 	};
 
 	public Experience() {
@@ -58,6 +62,7 @@ public class Experience {
 			this.value = value;
 			this.top = top;
 		}
+		this.learningParameter = SigmoidParameter.INSTANCE.getChosen();
 		createMathematicalCurves();
 		say("Creating Experience object with value: " + this.value
 				+ " and top: " + this.top);
@@ -73,14 +78,18 @@ public class Experience {
 	}
 
 	public double getDelta() {
-		return getDelta(ApproximationMethod.SIGMOID);
+		if (ParametrizedSigmoidOption.INSTANCE.getChosen()) {
+			return getDelta(ApproximationMethod.PARAMETRIZED_SIGMOID);
+		} else {
+			return getDelta(ApproximationMethod.SIGMOID);
+		}
 	}
 
 	/***
-	 * Decays experience by going back on sigmoig function Hence that despite
+	 * Decays experience by going back on sigmoid function Hence that despite
 	 * the fact that only double this.value is modified, it does changes the
 	 * result of sigmoid(this.value) that's why it is possible that we do
-	 * decrease the experience by going back on sigmoig function
+	 * decrease the experience by going back on sigmoid function
 	 * 
 	 * Experience is always used together with sigmoid(this.value)
 	 * 
@@ -115,12 +124,14 @@ public class Experience {
 
 	public double getDelta(ApproximationMethod method) {
 		switch (method) {
-		case SIGMOID:
-			return sc.getDelta((value / top) > 1. ? 1. : (value / top));
-		case CHI_SQUARE:
-			return lc.getDelta((value / top) > 1. ? 1. : (value / top));
-		default:
-			break;
+			case SIGMOID:
+				return sc.getDelta((value / top) > 1. ? 1. : (value / top));
+			case PARAMETRIZED_SIGMOID:
+				return sc.getCustomDelta((value / top) > 1. ? 1. : (value / top), learningParameter);
+			case CHI_SQUARE:
+				return lc.getDelta((value / top) > 1. ? 1. : (value / top));
+			default:
+				break;
 		}
 		return lc.getDelta((value / top));
 	}
@@ -214,7 +225,48 @@ public class Experience {
 
 			return result;
 		}
+		
+		protected double getCustomDelta(double k, double parameterD) {
+			double result = 0;
+			if (!SimulationParameters.experienceCutPoint) {
+				double base = 0;
+				if (k == 1) {
+					result = 1;
+				} else if ((k < 0.5) && (k >= 0)) {
+					base = (-limes) + (k * (2 * limes));
+					result = 1d / (1d + parameterD*Math.pow(Math.E, -base));
+					result = result
+							- (Experience.sigmaBorderValue * (Math.abs(1 - (2 * k))));
+					if (result < 0)
+						result = 0;
+				} else if ((k < (1 + epsilon)) && (k > 0.5)) {
+					base = (-limes) + (k * (2 * limes));
+					result = 1d / (1d + parameterD*Math.pow(Math.E, -base));
+					result = result
+							+ (Experience.sigmaBorderValue * (Math.abs(1 - (2 * k))));
+					if (result > 1)
+						result = 1;
+				} else if (k == 0.5) {
+					base = (-limes) + (k * (2 * limes));
+					result = 1d / (1d + parameterD*Math.pow(Math.E, -base));
+				} else {
+					assert false;
+					// if not, smth would be wrong
+				}
+			} else {
+				throw new UnsupportedOperationException();
+				// TODO: finish implementation
+			}
+
+			assert result >= 0.0;
+			assert result <= 1.0;
+
+			return result;
+		}
 	}
+	
+
+
 
 	/**
 	 * 

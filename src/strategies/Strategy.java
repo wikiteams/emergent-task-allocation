@@ -91,7 +91,7 @@ public class Strategy implements StrategyInterface {
 		 * tasks is smaller than the number of agents, then we can simply say
 		 * that every task have an agent assigned to it).
 		 */
-		CENTRAL_ASSIGNMENT
+		CENTRAL
 	}
 
 	public enum SkillChoice {
@@ -100,20 +100,20 @@ public class Strategy implements StrategyInterface {
 		 * diving time into particles, which makes for incrementing work done
 		 * and experience by fractions of 1.
 		 */
-		PROPORTIONAL_TIME_DIVISION,
+		PROPORTIONAL,
 		/**
 		 * Most advanced method: this module selects a single most done skill
 		 * inside a task. If there is no such skill (i.e. all skills have 'work
 		 * done' at zero point), then it select randomly a single skill.
 		 */
-		GREEDY_ASSIGNMENT,
+		GREEDY,
 		/**
 		 * Greatest experience method: method selects only one skill in which an
 		 * agent is most experienced. If the agent is equally well-experienced
 		 * in more than one skill, then selects randomly one skill from this.
 		 * set.
 		 */
-		CHOICE_OF_AGENT,
+		CHOICE,
 		/**
 		 * Random method: this module selects one single random skill to work
 		 * on. Firstly, the strategy evaluates the intersection of agents skills

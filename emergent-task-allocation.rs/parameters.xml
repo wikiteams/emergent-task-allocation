@@ -7,6 +7,17 @@
 		values="0 1"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 		
+	<!-- Learning function -->
+	
+	<parameter name="parametrizedSigmoid" displayName="Force faster/slower learning curve?"
+		type="java.lang.String" defaultValue="false" isReadOnly="false"
+		values="false true"
+		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
+	<parameter name="sigmoidParameter" displayName="d parameter for sigmoid curve"
+		type="java.lang.String" defaultValue="1" isReadOnly="false"
+		values="1 100"
+		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
+		
 	<!-- General -->
 
 	<parameter name="planNumber" displayName="Evolutionary plan no."
@@ -22,8 +33,8 @@
 		isReadOnly="false" values="1 5"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="numTasks" displayName="Number of tasks"
-		type="java.lang.Integer" defaultValue="20" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+		type="string" defaultValue="50" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 	<parameter name="generationLength" displayName="Number of iterations in generation"
 		type="string" defaultValue="20" isReadOnly="false"
 		values="20 100"
@@ -78,9 +89,9 @@
 
 	<!-- Granularity of work -->
 	
-	<parameter name="granularity" displayName="granularity" type="java.lang.Boolean"
+	<parameter name="granularity" displayName="granularity" type="java.lang.String"
 		defaultValue="false" isReadOnly="false" values="false true"
-		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
+		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 	<parameter name="granularityObstinacy" displayName="granularityObstinacy"
 		type="java.lang.Integer" defaultValue="75" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />

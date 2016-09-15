@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import strategies.Strategy;
 import utils.Combinatorics;
 import collaboration.Utility.UtilityType;
 
@@ -22,6 +23,22 @@ public class ParametersDivider {
 			parameters.add(ExpDecayOption.INSTANCE.getOptions());
 		if (!FunctionSet.INSTANCE.isEmpty())
 			parameters.add(FunctionSet.INSTANCE.getFunctions());
+		if (!LeftFunctionSet.INSTANCE.isEmpty())
+			parameters.add(LeftFunctionSet.INSTANCE.getLeftParts());
+		if (!GranularityOption.INSTANCE.isEmpty())
+			parameters.add(GranularityOption.INSTANCE.getOptions());
+		if (!SkillStrategySet.INSTANCE.isEmpty())
+			parameters.add(SkillStrategySet.INSTANCE.getStrategies());
+		if (!TaskStrategySet.INSTANCE.isEmpty())
+			parameters.add(TaskStrategySet.INSTANCE.getStrategies());
+		if (!TaskCount.INSTANCE.isEmpty())
+			parameters.add(TaskCount.INSTANCE.getCounts());
+		
+		if (!ParametrizedSigmoidOption.INSTANCE.isEmpty())
+			parameters.add(ParametrizedSigmoidOption.INSTANCE.getOptions());
+		if (!SigmoidParameter.INSTANCE.isEmpty())
+			parameters.add(SigmoidParameter.INSTANCE.getDParameters());
+		
 		return Combinatorics.permutations(parameters);
 	}
 	
@@ -38,6 +55,13 @@ public class ParametersDivider {
 				GenerationLength.INSTANCE.setChosen((Integer) optionsSet.get(1));
 				ExpDecayOption.INSTANCE.setChosen((Boolean) optionsSet.get(2));
 				FunctionSet.INSTANCE.setChosen((UtilityType) optionsSet.get(3));
+				LeftFunctionSet.INSTANCE.setChosen((String) optionsSet.get(4));
+				GranularityOption.INSTANCE.setChosen((Boolean) optionsSet.get(5));
+				SkillStrategySet.INSTANCE.setChosen((Strategy.SkillChoice) optionsSet.get(6));
+				TaskStrategySet.INSTANCE.setChosen((Strategy.TaskChoice) optionsSet.get(7));
+				TaskCount.INSTANCE.setChosen((Integer) optionsSet.get(8));
+				ParametrizedSigmoidOption.INSTANCE.setChosen((Boolean) optionsSet.get(9));
+				SigmoidParameter.INSTANCE.setChosen((Integer) optionsSet.get(10));
 				break;
 			}
 		}

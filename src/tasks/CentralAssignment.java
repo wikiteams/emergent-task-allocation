@@ -29,7 +29,7 @@ public class CentralAssignment {
 		List<Agent> list = new ArrayList<Agent>();
 		for (Agent agent : agents) {
 			if (agent.getStrategy().getTaskChoice()
-					.equals(TaskChoice.CENTRAL_ASSIGNMENT)) {
+					.equals(TaskChoice.CENTRAL)) {
 				if (!busy.contains(agent)){
 					CentralAssignmentOrders cao = agent
 							.getCentralAssignmentOrders();
