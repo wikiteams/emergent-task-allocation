@@ -4,6 +4,13 @@ import load.AgentCountConverter;
 import load.ExpDecayOptionConverter;
 import load.FunctionSetConverter;
 import load.GenerationLengthConverter;
+import load.GranularityOptionConverter;
+import load.LeftFunctionSetConverter;
+import load.ParametrizedSigmoidOptionConverter;
+import load.SigmoidParameterConverter;
+import load.SkillStrategySetConverter;
+import load.TaskCountConverter;
+import load.TaskStrategySetConverter;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 
@@ -25,19 +32,17 @@ public class SimulationParameters {
 	public static int planNumber;
 	public static int equilibriumDetectionSensitivity;
 
-	public static int taskCount;
 	public static boolean allwaysChooseTask;
 
-	public static String taskChoiceAlgorithm;
-	public static String skillChoiceAlgorithm;
-
-	public static boolean granularity;
 	public static int granularityObstinacy;
 	public static String granularityType;
 	public static boolean experienceCutPoint;
 
 	public static int randomSeed;
 	public static int sweepRuns;
+	
+	//public static boolean parametrizedSigmoid;
+	//public static double sigmoidParameter;
 
 	public static void init() {
 		Parameters param = RunEnvironment.getInstance().getParameters();
@@ -46,6 +51,16 @@ public class SimulationParameters {
 		GenerationLengthConverter generationLengthConverter = new GenerationLengthConverter();
 		ExpDecayOptionConverter expDecayOptionConverter = new ExpDecayOptionConverter();
 		FunctionSetConverter functionSetConverter = new FunctionSetConverter();
+		LeftFunctionSetConverter leftFunctionSetConverter = new LeftFunctionSetConverter();
+		
+		GranularityOptionConverter granularityOptionConverter = new GranularityOptionConverter();
+		SkillStrategySetConverter skillStrategySetConverter = new SkillStrategySetConverter();
+		TaskStrategySetConverter taskStrategySetConverter = new TaskStrategySetConverter();
+		
+		ParametrizedSigmoidOptionConverter parametrizedSigmoidOptionConverter = new ParametrizedSigmoidOptionConverter();
+		SigmoidParameterConverter sigmoidParameterConverter = new SigmoidParameterConverter();
+		
+		TaskCountConverter taskCountConverter = new TaskCountConverter();
 
 		planNumber = (Integer) param.getValue("planNumber");
 
@@ -56,16 +71,29 @@ public class SimulationParameters {
 				.getValue("experienceDecay"));
 		functionSetConverter.fromString((String) param
 				.getValue("utilityFunction"));
+		leftFunctionSetConverter.fromString((String) param
+				.getValue("utilityLeftEval"));
+		
+		granularityOptionConverter.fromString((String) param
+				.getValue("granularity"));
+		skillStrategySetConverter.fromString(((String) param
+				.getValue("skillChoiceAlgorithm")).toUpperCase());
+		taskStrategySetConverter.fromString(((String) param
+				.getValue("taskChoiceAlgorithm")).toUpperCase());
+		
+		parametrizedSigmoidOptionConverter.fromString((String) param
+				.getValue("parametrizedSigmoid"));
+		sigmoidParameterConverter.fromString((String) param
+				.getValue("sigmoidParameter"));
+		
+		taskCountConverter.fromString(((String) param
+				.getValue("numTasks")).toUpperCase());
 
 		equilibriumDetectionSensitivity = (Integer) param
 				.getValue("equilibriumDetectionSensitivity");
 		mutateChances = ((Integer) param.getValue("mutateChances")) * 0.01;
 
-		taskCount = (Integer) param.getValue("numTasks");
 		allwaysChooseTask = (Boolean) param.getValue("allwaysChooseTask");
-
-		taskChoiceAlgorithm = (String) param.getValue("taskChoiceAlgorithm");
-		skillChoiceAlgorithm = (String) param.getValue("skillChoiceAlgorithm");
 
 		evolutionEnabled = (Integer) param.getValue("evolutionEnabled");
 
@@ -75,11 +103,10 @@ public class SimulationParameters {
 		allowSkillDeath = (Boolean) param.getValue("allowSkillDeath");
 		experienceCutPoint = (Boolean) param.getValue("experienceCutPoint");
 
-		granularity = (Boolean) param.getValue("granularity");
 		granularityObstinacy = (Integer) param.getValue("granularityObstinacy");
 		granularityType = (String) param.getValue("granularityType");
-
-		SimulationAdvancedParameters.minimum = ((String) param.getValue(
-				"utilityLeftEval")).equals("min") ? true : false;
+		
+		//parametrizedSigmoid = (Boolean) param.getValue("parametrizedSigmoid");
+		//sigmoidParameter = (Integer) param.getValue("sigmoidParameter") * 0.1;
 	}
 }

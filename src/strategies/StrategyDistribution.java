@@ -15,10 +15,10 @@ public class StrategyDistribution {
 	public static final int SINGULAR = 0;
 	public static final int EVOLUTIONARY = 1;
 
-	private static final String[] taskChoiceSet = { "homophyly", "heterophyly",
-			"preferential", "random", "central" };
-	private static final String[] skillChoiceSet = { "proportional", "greedy",
-			"choice", "random" };
+	private static final String[] taskChoiceSet = { "HOMOPHYLY", "HETEROPHYLY",
+			"PREFERENTIAL", "RANDOM", "CENTRAL" };
+	private static final String[] skillChoiceSet = { "PROPORTIONAL", "GREEDY",
+			"CHOICE", "RANDOM" };
 
 	private int type;
 
@@ -48,18 +48,18 @@ public class StrategyDistribution {
 		} else if (taskChoice.equals(taskChoiceSet[3])) {
 			return Strategy.TaskChoice.RANDOM;
 		} else if (taskChoice.equals(taskChoiceSet[4])) {
-			return Strategy.TaskChoice.CENTRAL_ASSIGNMENT;
+			return Strategy.TaskChoice.CENTRAL;
 		}
 		return null;
 	}
 
 	public SkillChoice getSkillStrategy() {
 		if (skillChoice.equals(skillChoiceSet[0])) {
-			return Strategy.SkillChoice.PROPORTIONAL_TIME_DIVISION;
+			return Strategy.SkillChoice.PROPORTIONAL;
 		} else if (skillChoice.equals(skillChoiceSet[1])) {
-			return Strategy.SkillChoice.GREEDY_ASSIGNMENT;
+			return Strategy.SkillChoice.GREEDY;
 		} else if (skillChoice.equals(skillChoiceSet[2])) {
-			return Strategy.SkillChoice.CHOICE_OF_AGENT;
+			return Strategy.SkillChoice.CHOICE;
 		} else if (skillChoice.equals(skillChoiceSet[3])) {
 			return Strategy.SkillChoice.RANDOM;
 		}
@@ -93,7 +93,7 @@ public class StrategyDistribution {
 	}
 
 	public Boolean isCentralPlannerEnabled() {
-		return (this.taskChoice != null) && (this.taskChoice.equals("central"));
+		return (this.taskChoice != null) && (this.taskChoice.equals("CENTRAL"));
 	}
 
 	public StrategySet getStrategySet() {

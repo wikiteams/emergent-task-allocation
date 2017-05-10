@@ -16,7 +16,12 @@ import load.AgentCount;
 import load.ExpDecayOption;
 import load.FunctionSet;
 import load.GenerationLength;
+import load.GranularityOption;
+import load.LeftFunctionSet;
 import load.ParametersDivider;
+import load.SkillStrategySet;
+import load.TaskCount;
+import load.TaskStrategySet;
 import logger.EndRunLogger;
 import logger.PjiitLogger;
 import logger.SanityLogger;
@@ -161,20 +166,25 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 		if (strategyDistribution.isSingle()) {
 			strategyDistribution
-					.setSkillChoice(SimulationParameters.skillChoiceAlgorithm);
+					.setSkillChoice(SkillStrategySet.INSTANCE.getChosenName());
 			strategyDistribution
-					.setTaskChoice(SimulationParameters.taskChoiceAlgorithm);
+					.setTaskChoice(TaskStrategySet.INSTANCE.getChosenName());
 		} else if (strategyDistribution.isMultiple()) {
 			strategyDistribution
-					.setSkillChoice(SimulationParameters.skillChoiceAlgorithm);
+					.setSkillChoice(SkillStrategySet.INSTANCE.getChosenName());
 			strategyDistribution
 					.setTaskChoiceSet(SimulationParameters.planNumber);
 		}
 	}
 
 	public void prepareGameController(Context<Object> context) {
-		gameController = new GameController(strategyDistribution);
-		EquilibriumDetector.init();
+		if (SimulationParameters.evolutionEnabled < 1){
+			gameController = new GameController(strategyDistribution, true);
+		} else {
+			// Sir, evolution is enabled, enable game controller
+			gameController = new GameController(strategyDistribution, false);
+			EquilibriumDetector.init();
+		}
 		context.add(gameController);
 	}
 
@@ -204,7 +214,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 
 		try {
+			// prepare e.g. skill factory
 			prepareDataControllers();
+			// divide set of parameters into subscenarios
+			ParametersDivider.findMatch(runNumber, SimulationParameters.sweepRuns);
+			// prepare sqlite and other factories
 			prepareWorkLoadData();
 		} catch (InvalidFileFormatException e) {
 			ValidationOutputter.error(e.toString());
@@ -213,10 +227,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			ValidationOutputter.error(e.toString());
 			e.printStackTrace();
 		}
-		
-		ParametersDivider.findMatch(runNumber, SimulationParameters.sweepRuns);
 
-		tasks = new Tasks(SimulationParameters.taskCount);
+		tasks = new Tasks(TaskCount.INSTANCE.getChosen());
 		context.addSubContext(tasks);
 		agents = new Agents(strategyDistribution,
 				AgentCount.INSTANCE.getChosen());
@@ -232,12 +244,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				.say("Task choice [Strategy] is "
 						+ (strategyDistribution.isDistributionLoaded() ? strategyDistribution
 								.getStrategySet().describe()
-								: SimulationParameters.taskChoiceAlgorithm));
+								: TaskStrategySet.INSTANCE.getChosenName()));
 		sanity("Number of [Tasks] created " + getTasks().size());
 		sanity("Number of [Agents] created " + getAgents().size());
 		sanity("[Algorithm] tested: "
 				+ (strategyDistribution.isDistributionLoaded() ? "Distributed"
-						: SimulationParameters.taskChoiceAlgorithm));
+						: TaskStrategySet.INSTANCE.getChosenName()));
 
 		buildCentralPlanner();
 		buildContinousTaskFlow();
@@ -268,6 +280,13 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		sanity(Constraints.LOGGER_INITIALIZED);
 		EndRunLogger.init();
 		EndRunLogger.buildHeaders(buildFinalMessageHeader());
+	}
+	
+	@ScheduledMethod(start = 25000, interval = 25000, priority = ScheduleParameters.LAST_PRIORITY)
+	public void makeMoreMemory() {
+		System.gc(); // I realise there is no guarantee of vacuum cleaning,
+		// but I want to make a try...
+		// Memory is sometimes a problem when tick count > 200k
 	}
 
 	@ScheduledMethod(start = 2, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
@@ -332,7 +351,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ ","
 				+ AgentCount.INSTANCE.getChosen()
 				+ ","
-				+ SimulationParameters.taskCount
+				+ TaskCount.INSTANCE.getChosen()
 				+ ","
 				+ getTaskLeft()
 				+ ","
@@ -342,7 +361,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ ","
 				+ SimulationParameters.experienceCutPoint
 				+ ","
-				+ SimulationParameters.granularity
+				+ GranularityOption.INSTANCE.getChosen()
 				+ ","
 				+ SimulationParameters.granularityType
 				+ ","
@@ -357,6 +376,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ SimulationParameters.planNumber
 				+ ","
 				+ FunctionSet.INSTANCE.getChosen()
+				+ ","
+				+ LeftFunctionSet.INSTANCE.getChosen()
 				+ ","
 				+ gameController.getCurrentGeneration()
 				+ ","
@@ -396,7 +417,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ "Granularity_type" + "," + "Granularity_obstinancy" + ","
 				+ "Task_choice_strategy" + "," + "Skill_choice_strategy" + ","
 				+ "Is_Evolutionary" + "," + "Plan_Number" + ","
-				+ "Utility_Type" + "," + "Generation" + ","
+				+ "Utility_Type" + "," + "UtilityLeftValue" + ","
+				+ "Generation" + ","
 				+ "GenerationLength" + "," + "Allways_Choose_Task" + ","
 				+ "Homophily_Count" + "," + "Heterophily_Count" + ","
 				+ "Preferential_Count";
@@ -460,12 +482,19 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 					1, ScheduleParameters.LAST_PRIORITY);
 			schedule.schedule(params, this, "provideSimulatorWithWork");
 			VerboseLogger.say("[Continous Task Flow] initiated");
+		} else {
+			VerboseLogger.say("Task number is static, task flow builder skipped");
 		}
 	}
 
+	/***
+	 * In case of non-evolutionary simulation, launched once at start
+	 * Otherwise, method simply checks whether we should add more work
+	 * (new task) to the simulator or not
+	 */
 	public synchronized void provideSimulatorWithWork() {
-		if (tasks.size() < SimulationParameters.taskCount) {
-			int minus = SimulationParameters.taskCount - ((Tasks) tasks).getCount();
+		if (tasks.size() < TaskCount.INSTANCE.getChosen()) {
+			int minus = TaskCount.INSTANCE.getChosen() - ((Tasks) tasks).getCount();
 			int difference = Math.abs(minus);
 			VerboseLogger.say("Adding more " + difference
 					+ " [Tasks] to simulator");
@@ -512,7 +541,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				}
 
 				Collection<AgentInternals> aic = (agent).getAgentInternals();
-				CopyOnWriteArrayList<AgentInternals> aicconcurrent = new CopyOnWriteArrayList<AgentInternals>(
+				CopyOnWriteArrayList<AgentInternals> aicconcurrent = 
+						new CopyOnWriteArrayList<AgentInternals>(
 						aic);
 				for (AgentInternals ai : aicconcurrent) {
 					if (persistedJob.contains(ai.getSkill())) {
@@ -576,6 +606,5 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private Context<Object> getCurrentContext() {
 		return ContextUtils.getContext(this);
 	}
-
 
 }

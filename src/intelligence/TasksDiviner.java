@@ -82,7 +82,7 @@ public class TasksDiviner {
 				}
 			}
 			break;
-		case CENTRAL_ASSIGNMENT:
+		case CENTRAL:
 			CentralAssignment centralAssignment = new CentralAssignment();
 			chosen = centralAssignment.concludeMath(agent);
 			break;

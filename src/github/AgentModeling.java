@@ -21,10 +21,12 @@ import collaboration.SkillFactory;
 
 public class AgentModeling {
 
-	private static LinkedHashMap<String, HashMap<Skill, Experience>> skillSet = new LinkedHashMap<String, HashMap<Skill, Experience>>();
+	private static LinkedHashMap<String, HashMap<Skill, Experience>> skillSet = 
+			new LinkedHashMap<String, HashMap<Skill, Experience>>();
 	private static SkillFactory skillFactory = SkillFactory.getInstance();
 
-	private final static String filename = SystemUtils.IS_OS_LINUX ? "data/agents-model/results.csv"
+	private final static String filename = SystemUtils.IS_OS_LINUX ? 
+			"data/agents-model/results.csv"
 			: "data\\agents-model\\results.csv";
 
 	public static void clear() {
@@ -56,7 +58,6 @@ public class AgentModeling {
 			String nick = nextLine[1] + counter;
 			String language = nextLine[2];
 			int workDone = Integer.parseInt(nextLine[3]);
-			//int cluster = Integer.parseInt(nextLine[4]);
 			if (previousId.equals(id)) {
 				HashMap<Skill, Experience> l = skillSet.get(nick);
 				say("Parsed from CSV new language to existing person: " + nick
@@ -65,7 +66,6 @@ public class AgentModeling {
 				Experience experience = calculateExperience(workDone,
 						maximums.get(skill));
 				l.put(skill, experience);
-				// skillSet.put(nick, l);
 			} else {
 				// add new user
 				counter++;
@@ -109,7 +109,8 @@ public class AgentModeling {
 	private static Experience calculateExperience(int experience, int maximum) {
 		return new Experience(
 				experience,
-				maximum < SimulationAdvancedParameters.lowestTop ? SimulationAdvancedParameters.lowestTop
+				maximum < SimulationAdvancedParameters.lowestTop ? 
+						SimulationAdvancedParameters.lowestTop
 						: maximum);
 	}
 

@@ -2,6 +2,7 @@ package collaboration;
 
 import java.util.Collection;
 
+import load.LeftFunctionSet;
 import utils.ObjectsHelper;
 
 public class Utility {
@@ -11,7 +12,7 @@ public class Utility {
 	}
 
 	public static final int LEFT_MIN = 1;
-	// public static final int LEFT_AVG = 2;
+	public static final int LEFT_AVG = 2;
 	public static final int LEFT_MAX = 3;
 
 	private static final double epsilon = 0.05;
@@ -24,9 +25,33 @@ public class Utility {
 
 	public static Double getLeftLearningUtility(
 			Collection<AgentInternals> agentInternals) {
-		return getLeftLearningUtility(
-				SimulationAdvancedParameters.minimum ? LEFT_MIN : LEFT_MAX,
-				agentInternals);
+		if (LeftFunctionSet.INSTANCE.isChosenAverageAll()) {
+			return getLearningUtilityFromAllMeans(agentInternals);
+		} else if (LeftFunctionSet.INSTANCE.isChosenAverage()) {
+			return getLearningUtilityFromMeans(agentInternals);
+		} else {
+			return getLeftLearningUtility(
+					LeftFunctionSet.INSTANCE.isChosenMinimum() ? LEFT_MIN
+							: LEFT_MAX, agentInternals);
+		}
+	}
+
+	public static Double getLearningUtilityFromAllMeans(
+			Collection<AgentInternals> agentInternals) {
+		Double sum = 0d;
+		for (AgentInternals currentSkill : agentInternals) {
+			sum += currentSkill.getExperience().getDelta();
+		}
+		return sum / SkillFactory.getInstance().countAllSkills();
+	}
+
+	public static Double getLearningUtilityFromMeans(
+			Collection<AgentInternals> agentInternals) {
+		Double sum = 0d;
+		for (AgentInternals currentSkill : agentInternals) {
+			sum += currentSkill.getExperience().getDelta();
+		}
+		return sum / agentInternals.size();
 	}
 
 	public static Double getLeftLearningUtility(int type,
@@ -50,7 +75,7 @@ public class Utility {
 
 	public static Double getRightLearningUtility(
 			Collection<AgentInternals> agentInternals) {
-		return getRightLearningUtility(true, agentInternals);
+		return getRightLearningUtility(false, agentInternals);
 	}
 
 	public static Double getRightLearningUtility(boolean useEpsilon,
@@ -59,7 +84,8 @@ public class Utility {
 		for (AgentInternals currentSkill : agentInternals) {
 			result += currentSkill.getExperience().getDelta();
 		}
-		return (useEpsilon ? epsilon : 1) * result;
+		return (useEpsilon ? epsilon : (1 / SkillFactory.getInstance()
+				.countAllSkills())) * result;
 	}
 
 }

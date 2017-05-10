@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import load.FunctionSet;
+import load.GranularityOption;
 import logger.VerboseLogger;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -260,7 +261,7 @@ public class Agent implements NodeCreator<Agent> {
 		say("Step(" + getTick() + ") of Agent " + this.id
 				+ " scheduled method launched.");
 
-		if (SimulationParameters.granularity) {
+		if (GranularityOption.INSTANCE.getChosen()) {
 			GranulatedChoice granulated = PersistRewiring
 					.getGranulatedChoice(this);
 

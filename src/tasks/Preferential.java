@@ -52,8 +52,6 @@ public class Preferential {
 					mostVisitedCount = task.getNumberOfVisits();
 					mostPopularTask = task;
 				}
-			} else {
-				// do nothing
 			}
 		}
 		

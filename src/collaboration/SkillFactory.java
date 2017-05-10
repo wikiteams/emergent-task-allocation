@@ -60,50 +60,10 @@ public class SkillFactory {
 		}
 		return null;
 	}
-
-/*	public Skill getRandomSkill() {
-		if (SimulationParameters.skillFactoryRandomMethod
-				.equals("normal_distribution")) {
-			return getRandomSkill(RandomMethod.NORMAL_DISTRIBUTION);
-		} else if (SimulationParameters.skillFactoryRandomMethod
-				.equals("breit_wigner")) {
-			return getRandomSkill(RandomMethod.BREIT_WIGNER);
-		} else if (SimulationParameters.skillFactoryRandomMethod
-				.equals("normal_distribution")) {
-			return getRandomSkill(RandomMethod.POISSON_DISTRIBUTION);
-		}
-		return getRandomSkill(RandomMethod.RANDOM_GENERATOR);
-	}*/
-
-/*	public Skill getRandomSkill(RandomMethod method) {
-		double randomized;
-		switch (method) {
-		case POISSON_DISTRIBUTION:
-			Poisson poisson = new Poisson(0.0,
-					cern.jet.random.Poisson.makeDefaultGenerator());
-			randomized = poisson.nextDouble();
-			assert (randomized >= 0.) && (randomized <= 1.);
-			return skills.get((int) (randomized * skills.size()));
-		case RANDOM_GENERATOR:
-			int i = RandomHelper.nextIntFromTo(0, skills.size() - 1);
-			return skills.get(i);
-		case NORMAL_DISTRIBUTION:
-			Normal normal = new Normal(0.0, 1.0,
-					cern.jet.random.Normal.makeDefaultGenerator());
-			randomized = normal.nextDouble();
-			assert (randomized >= 0.) && (randomized <= 1.);
-			return skills.get((int) (randomized * skills.size()));
-		case BREIT_WIGNER:
-			BreitWigner bw = new BreitWigner(1.0, 1.0, 1.0,
-					cern.jet.random.BreitWigner.makeDefaultGenerator());
-			randomized = bw.nextDouble();
-			assert (randomized >= 0.) && (randomized <= 1.);
-			return skills.get((int) (randomized * skills.size()));
-		default:
-			break;
-		}
-		return null;
-	}*/
+	
+	public int countAllSkills(){
+		return skills.size();
+	}
 
 	public void buildSkillsLibrary(boolean verbose) throws IOException, FileNotFoundException {
 		say("Searching for [file] in path: " + new File(".").getAbsolutePath());

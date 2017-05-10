@@ -52,12 +52,10 @@ public class GameController {
 	// TODO: make sure to implement a 2nd part of Collaboration Game, which is
 	// checking efficiency of a static strategy set and a central planner
 
-	private boolean secondStage;
+	private boolean firstStage;
 
-	// private DateTime previous = new DateTime();
-
-	public GameController(StrategyDistribution strategyDistribution) {
-		secondStage = false;
+	public GameController(StrategyDistribution strategyDistribution, Boolean forceOff) {
+		firstStage = !forceOff;
 		iterationNumber = GenerationLength.INSTANCE.getChosen();
 		// variable iterationNumber states how many ticks long
 		// is a single generation, we use mostly value of 200
@@ -82,7 +80,7 @@ public class GameController {
 	@ScheduledMethod(start = 1.0, interval = 1.0, priority = -2000)
 	public void firstStep() {
 		// 1-generation scenarios don't need evolution
-		if (isEvolutionary()) {
+		if (isFirstStage()) {
 			// hence there is no distinction between
 			// first generation and any other generations
 			// which you can find e.g. in hyip game or credibility game
@@ -118,13 +116,9 @@ public class GameController {
 
 	@ScheduledMethod(start = 1.0, interval = 1.0, priority = -3000)
 	public void step() {
-		if (isEvolutionary()) {
-			// benchmark();
-			// check whether this is the last generation/iteration
+		if (isFirstStage()) {
 			if (currentIteration == (iterationNumber - 2)) {
 				if (currentGeneration == (generationNumber - 1)) {
-					// say("[Ending instance run]");
-					// RunEnvironment.getInstance().endRun();
 					say("Waiting for an equilibrium already for "
 							+ generationNumber + " generations");
 				}
@@ -141,19 +135,10 @@ public class GameController {
 						+ (currentIteration + 1));
 				currentIteration++;
 			}
-			// previous = new DateTime();
 		} else {
 			currentIteration++;
 		}
 	}
-
-	/*
-	 * private void benchmark() { DateTime dateTime = new DateTime(); Seconds
-	 * seconds = Seconds.secondsBetween(this.previous, dateTime); Minutes
-	 * minutes = Minutes.minutesBetween(this.previous, dateTime); say("It took "
-	 * + minutes.getMinutes() + " minutes and " + seconds.getSeconds() +
-	 * " seconds between ticks."); }
-	 */
 
 	public int getCurrentGeneration() {
 		if (isEvolutionary()) {
@@ -170,13 +155,13 @@ public class GameController {
 	public Double getCurrentTick() {
 		return RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 	}
-
-	public boolean isSecondStage() {
-		return secondStage;
+	
+	public boolean isFirstStage(){
+		return firstStage;
 	}
 
-	public void setSecondStage(boolean secondStage) {
-		this.secondStage = secondStage;
+	public boolean isSecondStage() {
+		return !firstStage;
 	}
 
 	/**
@@ -248,7 +233,7 @@ public class GameController {
 	 * 
 	 * @return
 	 */
-	public Boolean isEvolutionary() {
+	public boolean isEvolutionary() {
 		boolean result = true;
 		if ((SimulationParameters.planNumber == 0)
 				|| (strategyDistribution.isSingle())) {
