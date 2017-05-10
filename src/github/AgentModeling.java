@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import logger.VerboseLogger;
-
 import org.apache.commons.lang3.SystemUtils;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -43,7 +41,7 @@ public class AgentModeling {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		say("Initialized Agent Skills Matrix");
+		System.out.println("Initialized Agent Skills Matrix");
 	}
 
 	private static void parseCsvTopUsers() throws IOException,
@@ -60,7 +58,7 @@ public class AgentModeling {
 			int workDone = Integer.parseInt(nextLine[3]);
 			if (previousId.equals(id)) {
 				HashMap<Skill, Experience> l = skillSet.get(nick);
-				say("Parsed from CSV new language to existing person: " + nick
+				System.out.println("Parsed from CSV new language to existing person: " + nick
 						+ " - " + language);
 				Skill skill = skillFactory.getSkill(language);
 				Experience experience = calculateExperience(workDone,
@@ -71,7 +69,7 @@ public class AgentModeling {
 				counter++;
 				nick = nextLine[1] + counter;
 				HashMap<Skill, Experience> l = new HashMap<Skill, Experience>();
-				say("Parsed from CSV new person: " + nick + " - " + language);
+				System.out.println("Parsed from CSV new person: " + nick + " - " + language);
 				Skill skill = skillFactory.getSkill(language);
 				Experience experience = calculateExperience(workDone,
 						maximums.get(skill));
@@ -122,10 +120,6 @@ public class AgentModeling {
 					iterationSkill, iterationSkills.get(iterationSkill));
 			agent.addSkill(iterationSkill.getName(), builtAgentInternals);
 		}
-	}
-
-	private static void say(String s) {
-		VerboseLogger.say(s);
 	}
 
 }

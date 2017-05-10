@@ -1,14 +1,12 @@
 package test;
 
+import java.util.ArrayList;
+
 import collaboration.Agent;
 import collaboration.AgentInternals;
 import collaboration.Experience;
 import collaboration.Skill;
 import collaboration.SkillFactory;
-
-import java.util.ArrayList;
-
-import logger.VerboseLogger;
 
 public class AgentTestUniverse {
 
@@ -19,7 +17,7 @@ public class AgentTestUniverse {
 		DATASET.clear();
 		
 		Agent agent1 = new Agent("Joe", "Smith", "Java newbie-1");
-		say("Initializing agent 1..");
+		System.out.println("Initializing agent 1..");
 		Skill skill11 = skillFactory.getSkill("Java");
 		Experience experience11 = new Experience(3, 18);
 		Skill skill12 = skillFactory.getSkill("C");
@@ -31,7 +29,7 @@ public class AgentTestUniverse {
 		agent1.addSkill("XML", new AgentInternals(skill13, experience13));
 		
 		Agent agent2 = new Agent("John", "Dereck", "C expert-1");
-		say("Initializing agent 2..");
+		System.out.println("Initializing agent 2..");
 		Skill skill21 = skillFactory.getSkill("Java");
 		Experience experience21 = new Experience(2, 18);
 		Skill skill22 = skillFactory.getSkill("C");
@@ -43,7 +41,7 @@ public class AgentTestUniverse {
 		agent2.addSkill("XML", new AgentInternals(skill23, experience23));
 		
 		Agent agent3 = new Agent("Adam", "Smith", "Newbie");
-		say("Initializing agent 3..");
+		System.out.println("Initializing agent 3..");
 		Skill skill31 = skillFactory.getSkill("Java");
 		Experience experience31 = new Experience(0, 10);
 		Skill skill32 = skillFactory.getSkill("C");
@@ -58,9 +56,6 @@ public class AgentTestUniverse {
 		DATASET.add(agent2);
 		DATASET.add(agent3);
 	}
-	
-	private static void say(String s) {
-		VerboseLogger.say(s);
-	}
+
 	
 }

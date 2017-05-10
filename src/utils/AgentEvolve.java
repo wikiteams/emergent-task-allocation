@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import load.AgentCount;
-import logger.VerboseLogger;
 import repast.simphony.random.RandomHelper;
 import strategies.Strategy.TaskChoice;
 import collaboration.Agent;
@@ -24,34 +23,34 @@ import collaboration.GameController;
 public class AgentEvolve {
 
 	private static ArrayList<Agent> chooseAgents(Object context) {
-		say("Choosing all Agents to participate in evolution");
+		System.out.println("Choosing all Agents to participate in evolution");
 		return GameController.chooseAllAgents(context);
 	}
 
 	public static void evolve(Object context) {
-		say("Executing stochasting universal sampling (SUS)");
+		System.out.println("Executing stochasting universal sampling (SUS)");
 		ArrayList<Agent> agents = chooseAgents(context);
-		say("There are " + agents.size() + " agents ");
+		System.out.println("There are " + agents.size() + " agents ");
 		assert agents.size() == AgentCount.INSTANCE.getChosen();
 		Agent testAgent = agents.get(0);
 		Agent randomAgent = agents.get(RandomHelper.nextIntFromTo(0,
 				agents.size() - 1));
-		say("Strategy of 1st [Agent] before evolution: "
+		System.out.println("Strategy of 1st [Agent] before evolution: "
 				+ testAgent.getStrategy().toString());
-		say("Experience of 1st [Agent] before evolution: "
+		System.out.println("Experience of 1st [Agent] before evolution: "
 				+ testAgent.describeExperience());
-		say("Strategy of random [Agent] before evolution: "
+		System.out.println("Strategy of random [Agent] before evolution: "
 				+ randomAgent.getStrategy().toString());
-		say("Experience of random [Agent] before evolution: "
+		System.out.println("Experience of random [Agent] before evolution: "
 				+ randomAgent.describeExperience());
 		Agents.stochasticSampling(agents);
-		say("Strategy of 1st [Agent] after evolution: "
+		System.out.println("Strategy of 1st [Agent] after evolution: "
 				+ testAgent.getStrategy().toString());
-		say("Experience of 1st [Agent] after evolution: "
+		System.out.println("Experience of 1st [Agent] after evolution: "
 				+ testAgent.describeExperience());
-		say("Strategy of random [Agent] after evolution: "
+		System.out.println("Strategy of random [Agent] after evolution: "
 				+ testAgent.getStrategy().toString());
-		say("Experience of random [Agent] after evolution: "
+		System.out.println("Experience of random [Agent] after evolution: "
 				+ testAgent.describeExperience());
 		EquilibriumDetector.report(buildStrategySet(agents));
 	}
@@ -69,10 +68,6 @@ public class AgentEvolve {
 			}
 		}
 		return result;
-	}
-
-	private static void say(String s) {
-		VerboseLogger.say(s);
 	}
 
 }

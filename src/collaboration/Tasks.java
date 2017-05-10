@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import logger.VerboseLogger;
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
 import strategies.Strategy;
@@ -73,7 +72,7 @@ public class Tasks extends DefaultContext<Task> {
 		}
 		if (!notfinished) {
 			CollaborationBuilder.tasks.remove(task);
-			sanity("[Task] id:" + task.getId() + " name:" + task.getName()
+			System.out.println("[Task] id:" + task.getId() + " name:" + task.getName()
 					+ " is depleted and leaving the environment");
 		}
 	}
@@ -130,10 +129,6 @@ public class Tasks extends DefaultContext<Task> {
 		return result;
 	}
 
-	private static void sanity(String s) {
-		VerboseLogger.sanity(s);
-	}
-
 	public static boolean stillNonEmptyTasks() {
 		boolean result = false;
 		if (CollaborationBuilder.tasks.size() < 1)
@@ -148,10 +143,6 @@ public class Tasks extends DefaultContext<Task> {
 	public static void clearTasks() {
 		if (CollaborationBuilder.tasks != null)
 			CollaborationBuilder.tasks.clear();
-	}
-
-	private static void say(String s) {
-		VerboseLogger.say(s);
 	}
 
 	public Tasks(Integer allowedLoad) {
@@ -223,7 +214,7 @@ public class Tasks extends DefaultContext<Task> {
 			}
 			//launchStatistics.taskCount = firstTasks.size();
 		} catch (SQLException e) {
-			say("Error during init of first " + this.allowedLoad + " [Tasks]");
+			System.out.println("Error during init of first " + this.allowedLoad + " [Tasks]");
 			e.printStackTrace();
 		}
 	}

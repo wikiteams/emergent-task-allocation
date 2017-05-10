@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import logger.VerboseLogger;
 import collaboration.Agent;
 import collaboration.Skill;
 import collaboration.Task;
@@ -48,7 +47,7 @@ public class Homophyly {
 		// there are no tasks left with such experience ?
 		// there is nothing to do
 		if (intersection.size() < 1) {
-			say(Constraints.DIDNT_FOUND_TASK);
+			System.out.println(Constraints.DIDNT_FOUND_TASK);
 			return chosen;
 		}
 		Double lowest = Double.MAX_VALUE;
@@ -110,9 +109,6 @@ public class Homophyly {
 		return chosen;
 	}
 
-	private static void say(String s) {
-		VerboseLogger.say(s);
-	}
 
 }
 

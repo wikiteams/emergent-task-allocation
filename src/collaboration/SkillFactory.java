@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import logger.VerboseLogger;
-
 import org.apache.commons.lang3.SystemUtils;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -42,7 +40,7 @@ public class SkillFactory {
 	private static SkillFactory instance = null;
 
 	private SkillFactory() {
-		say("[SkillFactory] object created");
+		System.out.println("[SkillFactory] object created");
 	}
 
 	public static SkillFactory getInstance() {
@@ -66,21 +64,16 @@ public class SkillFactory {
 	}
 
 	public void buildSkillsLibrary(boolean verbose) throws IOException, FileNotFoundException {
-		say("Searching for [file] in path: " + new File(".").getAbsolutePath());
+		System.out.println("Searching for [file] in path: " + new File(".").getAbsolutePath());
 		CSVReader reader = new CSVReader(new FileReader(filename));
 		String[] nextLine;
 		while ((nextLine = reader.readNext()) != null) {
 			Skill skill = new Skill(nextLine[0], nextLine[1], skills.size() + 1);
 			skills.add(skill);
 			if (verbose)
-				say("[Skill] " + skill.getId() + ": " + skill.getName()
-					+ " added to [Skill Factory]");
+				System.out.println("[Skill] " + skill.getId() + ": " + skill.getName() + " added to [Skill Factory]");
 		}
 		reader.close();
-	}
-
-	private static void say(String s) {
-		VerboseLogger.say(s);
 	}
 
 }

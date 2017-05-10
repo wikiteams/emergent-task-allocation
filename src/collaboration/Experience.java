@@ -4,8 +4,6 @@ import java.text.DecimalFormat;
 
 import load.ParametrizedSigmoidOption;
 import load.SigmoidParameter;
-import logger.VerboseLogger;
-import cern.jet.random.ChiSquare;
 
 /**
  * Class describing the learning process of a human for simulation purpose. Uses
@@ -20,7 +18,6 @@ import cern.jet.random.ChiSquare;
  */
 public class Experience {
 
-	private LearningCurve lc = null;
 	private SigmoidCurve sc = null;
 
 	private double value; // plain experience
@@ -64,12 +61,11 @@ public class Experience {
 		}
 		this.learningParameter = SigmoidParameter.INSTANCE.getChosen();
 		createMathematicalCurves();
-		say("Creating Experience object with value: " + this.value
+		System.out.println("Creating Experience object with value: " + this.value
 				+ " and top: " + this.top);
 	}
 
 	private void createMathematicalCurves() {
-		this.lc = new LearningCurve();
 		this.sc = new SigmoidCurve();
 	}
 
@@ -128,12 +124,9 @@ public class Experience {
 				return sc.getDelta((value / top) > 1. ? 1. : (value / top));
 			case PARAMETRIZED_SIGMOID:
 				return sc.getCustomDelta((value / top) > 1. ? 1. : (value / top), learningParameter);
-			case CHI_SQUARE:
-				return lc.getDelta((value / top) > 1. ? 1. : (value / top));
 			default:
-				break;
+				return sc.getDelta((value / top) > 1. ? 1. : (value / top)); // use standard sigmoid
 		}
-		return lc.getDelta((value / top));
 	}
 
 	public double getValue() {
@@ -150,7 +143,7 @@ public class Experience {
 
 	public void increment(double how_much) {
 		this.value += how_much;
-		sanity("Experience incremented by: "
+		System.out.println("Experience incremented by: "
 				+ new DecimalFormat("#.######").format(how_much));
 	}
 	
@@ -158,16 +151,8 @@ public class Experience {
 		assert how_much >= 0.0;
 		assert how_much <= 1.0;
 		this.value += this.top * how_much;
-		sanity("Experience incremented by: "
+		System.out.println("Experience incremented by: "
 				+ new DecimalFormat("#.######").format(how_much));
-	}
-
-	private void say(String s) {
-		VerboseLogger.say(s);
-	}
-
-	private void sanity(String s) {
-		VerboseLogger.sanity(s);
 	}
 
 	/**
@@ -183,7 +168,7 @@ public class Experience {
 		private final double limes = 6;
 
 		SigmoidCurve() {
-			say("Object SigmoidCurve created, ref: " + this);
+			System.out.println("Object SigmoidCurve created, ref: " + this);
 		}
 
 		// stackoverflow.com/questions/3599579/
@@ -264,105 +249,35 @@ public class Experience {
 			return result;
 		}
 	}
-	
 
-
-
-	/**
-	 * 
-	 * To jest nasza funkcja delty! delta(E) Ta klasa nie ma nic wspolnego ze
-	 * zmienna E (doswiadczenia) a sluzy jedyni otrzymaniu wartosci delta z E
-	 * 
-	 * @author Oskar
-	 * @since 1.1
-	 */
-	class LearningCurve {
-
-		cern.jet.random.ChiSquare chi = null;
-
-		double xLearningAxis = 15; // osi x
-		int freedom = 6;
-
-		LearningCurve() {
-			say("Object LearningCurve created, with ref: " + this);
-			chi = new ChiSquare(freedom,
-					cern.jet.random.ChiSquare.makeDefaultGenerator());
-		}
-
-		private double getDelta(double k) {
-			double x = chi.cdf(k * xLearningAxis);
-			DecimalFormat df = new DecimalFormat("#.######");
-			// NOTE: freedom (x axis of CDF) should be between 0 and 4
-			say("getDelta for k: " + df.format(k) + " returned x:"
-					+ df.format(x));
-			return x;
-		}
-
-	}
 }
 
 class ExperienceSanityCheck {
 
-	private ChiSquare chi;
-	private int freedom;
-	private int k;
-	// private SigmoidCurve sigmoidCurve;
 	public static double EpsilonCutValue;
 
 	ExperienceSanityCheck() {
-		freedom = 6; // osi x
-		k = 15;
-
-		chi = new ChiSquare(freedom,
-				cern.jet.random.ChiSquare.makeDefaultGenerator());
-		// sigmoidCurve = new SigmoidCurve();
-
-		checkChi();
 		checkSigmoid();
-
-		EpsilonCutValue = checkEpsilonFromChi();
-	}
-
-	public void checkChi() {
-		say("chi.cdf(0.1): " + chi.cdf(0.1 * k));
-		say("chi.cdf(0.2): " + chi.cdf(0.2 * k));
-		say("chi.cdf(0.3): " + chi.cdf(0.3 * k));
-		say("chi.cdf(0.6): " + chi.cdf(0.6 * k));
-		say("chi.cdf(0.8): " + chi.cdf(0.8 * k));
-		say("chi.cdf(0.9): " + chi.cdf(0.9 * k));
-		say("chi.cdf(0.95): " + chi.cdf(0.95 * k));
-		say("chi.cdf(0.9): " + chi.cdf(0.999 * k));
-		say("chi.nextDouble(): " + chi.nextDouble());
 	}
 
 	public void checkSigmoid() {
-		say("sigmoid(-10.000): " + sigmoidGetDelta(-10d));
-		say("sigmoid(-8.000): " + sigmoidGetDelta(-8d));
-		say("sigmoid(-6.000): " + sigmoidGetDelta(-6d));
-		say("sigmoid(-3.000): " + sigmoidGetDelta(-3d));
-		say("sigmoid(0.000): " + sigmoidGetDelta(0d));
-		say("sigmoid(0.005): " + sigmoidGetDelta(0.005d));
-		say("sigmoid(0.505): " + sigmoidGetDelta(0.505d));
-		say("sigmoid(0.995): " + sigmoidGetDelta(0.995d));
-		say("sigmoid(1.000): " + sigmoidGetDelta(1d));
-		say("sigmoid(3.000): " + sigmoidGetDelta(3d));
-		say("sigmoid(6.000): " + sigmoidGetDelta(6d));
-		say("sigmoid(8.000): " + sigmoidGetDelta(8d));
-		say("sigmoid(10.000): " + sigmoidGetDelta(10d));
-	}
-
-	public double checkEpsilonFromChi() {
-		double e = chi.cdf(1 * k);
-		say("chi.cdf(1): " + e);
-		return 1 - e;
+		System.out.println("sigmoid(-10.000): " + sigmoidGetDelta(-10d));
+		System.out.println("sigmoid(-8.000): " + sigmoidGetDelta(-8d));
+		System.out.println("sigmoid(-6.000): " + sigmoidGetDelta(-6d));
+		System.out.println("sigmoid(-3.000): " + sigmoidGetDelta(-3d));
+		System.out.println("sigmoid(0.000): " + sigmoidGetDelta(0d));
+		System.out.println("sigmoid(0.005): " + sigmoidGetDelta(0.005d));
+		System.out.println("sigmoid(0.505): " + sigmoidGetDelta(0.505d));
+		System.out.println("sigmoid(0.995): " + sigmoidGetDelta(0.995d));
+		System.out.println("sigmoid(1.000): " + sigmoidGetDelta(1d));
+		System.out.println("sigmoid(3.000): " + sigmoidGetDelta(3d));
+		System.out.println("sigmoid(6.000): " + sigmoidGetDelta(6d));
+		System.out.println("sigmoid(8.000): " + sigmoidGetDelta(8d));
+		System.out.println("sigmoid(10.000): " + sigmoidGetDelta(10d));
 	}
 
 	private double sigmoidGetDelta(double k) {
 		return 1d / (1d + Math.pow(Math.E, -k));
-	}
-
-	private void say(String s) {
-		VerboseLogger.say(s);
 	}
 
 }

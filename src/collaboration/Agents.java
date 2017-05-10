@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import logger.VerboseLogger;
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
 import repast.simphony.random.RandomHelper;
@@ -57,20 +56,20 @@ public class Agents extends DefaultContext<Agent> {
 					.getInstance(strategyDistribution, i, agentCnt)
 					: new Strategy(strategyDistribution.getTaskStrategy(),
 							strategyDistribution.getSkillStrategy());
-			say("[Strategy] prepared for agent is: " + strategy.toString());
+			System.out.println("[Strategy] prepared for agent is: " + strategy.toString());
 
 			agent.setStrategy(strategy);
-			say(agent.toString());
-			say("In add [agent] i: " + i);
+			System.out.println(agent.toString());
+			System.out.println("In add [agent] i: " + i);
 			// Required adding agent to context
 
 			for (AgentInternals ai : agent.getAgentInternals()) {
 				assert ai.getExperience().getValue() > 0;
-				say("For a=" + agent.toString() + " delta is "
+				System.out.println("For a=" + agent.toString() + " delta is "
 						+ ai.getExperience().getDelta());
-				say("For a=" + agent.toString() + " value is "
+				System.out.println("For a=" + agent.toString() + " value is "
 						+ ai.getExperience().getValue());
-				say("For a=" + agent.toString() + " top is "
+				System.out.println("For a=" + agent.toString() + " top is "
 						+ ai.getExperience().getTop());
 			}
 			context.add(agent);
@@ -80,10 +79,6 @@ public class Agents extends DefaultContext<Agent> {
 
 	private void initializeAgents(Context<Agent> context) {
 		addAgents(context);
-	}
-
-	private void say(String s) {
-		VerboseLogger.say(s);
 	}
 
 	/***

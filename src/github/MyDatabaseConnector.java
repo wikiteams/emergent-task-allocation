@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import logger.VerboseLogger;
-
 import org.apache.commons.lang3.SystemUtils;
 
 import collaboration.Task;
@@ -64,7 +62,7 @@ public class MyDatabaseConnector {
 					resultSet.getInt(4), resultSet.getInt(5));
 			//results.add(entry);
 			Task task = new Task();
-			say("Creating [Task] " + task.getId());
+			System.out.println("Creating [Task] " + task.getId());
 			TaskReconstruction.giveWork(task,
 					entry.getSkillName(),
 					entry.getWorkDone(),
@@ -85,12 +83,6 @@ public class MyDatabaseConnector {
 		}
 		assert count == result.size();
 		return result;
-	}
-	
-	//private static Queue<Entry> results = new LinkedList<Entry>();
-
-	private static void say(String s) {
-		VerboseLogger.say(s);
 	}
 
 }

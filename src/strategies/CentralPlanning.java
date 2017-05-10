@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import logger.VerboseLogger;
 import repast.simphony.util.collections.IndexedIterable;
 import tasks.CentralAssignmentOrders;
 import utils.ObjectsHelper;
@@ -40,7 +39,7 @@ public class CentralPlanning {
 	private static CentralPlanning singletonInstance;
 
 	private CentralPlanning() {
-		say("getSingletonInstance() prevents any other class from instantiating");
+		System.out.println("getSingletonInstance() prevents any other class from instantiating");
 	}
 
 	public static CentralPlanning getSingletonInstance() {
@@ -51,9 +50,9 @@ public class CentralPlanning {
 	}
 
 	public void zeroAgentsOrders(IndexedIterable<Agent> listAgent) {
-		say("Zeroing central planer orders for " + listAgent.size() + "agents");
+		System.out.println("Zeroing central planer orders for " + listAgent.size() + "agents");
 		for (Agent agent : listAgent) {
-			say("Zeroing orders for " + agent.getName());
+			System.out.println("Zeroing orders for " + agent.getName());
 			agent.setCentralAssignmentOrders(null);
 		}
 	}
@@ -74,7 +73,7 @@ public class CentralPlanning {
 	 *            taskPool - a pool of tasks
 	 */
 	public void centralPlanningCalc(Iterable<Agent> agents, Tasks taskPool) {
-		say("[Central planning] working !");
+		System.out.println("[Central planning] working !");
 
 		Map<Agent, Double> measurements = new HashMap<Agent, Double>();
 		Map<Agent, TaskInternals> results = new HashMap<Agent, TaskInternals>();
@@ -116,10 +115,6 @@ public class CentralPlanning {
 						task, taskInternal));
 			}
 		}
-	}
-
-	private void say(String s) {
-		VerboseLogger.say(s);
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import logger.VerboseLogger;
 import repast.simphony.random.RandomHelper;
 import strategies.Strategy;
 import tasks.CentralAssignment;
@@ -63,7 +62,7 @@ public class TasksDiviner {
 							.nextIntFromTo(0,
 									tasksWithMatchingSkills.size() - 1));
 				} else {
-					say("Didn't found task with such skills which agent have!");
+					System.out.println("Didn't found task with such skills which agent have!");
 				}
 			} else {
 				List<Task> internalRandomList;
@@ -91,15 +90,15 @@ public class TasksDiviner {
 			break;
 		}
 		if (chosen != null) {
-			sanity("Agent " + agent.toString() + " uses strategy "
+			System.out.println("Agent " + agent.toString() + " uses strategy "
 					+ agent.getStrategy() + " and chooses task "
 					+ chosen.getId() + " by " + strategy + " to work on.");
 		} else {
-			sanity("Agent (" + agent.getId() + ") " + agent.toString()
+			System.out.println("Agent (" + agent.getId() + ") " + agent.toString()
 					+ " uses strategy " + agent.getStrategy() + " by "
 					+ strategy + " but didn't found any task to work on.");
 			if (SimulationParameters.allwaysChooseTask) {
-				sanity("Choosing any task left because of param allwaysChooseTask");
+				System.out.println("Choosing any task left because of param allwaysChooseTask");
 				List<Task> internalRandomList;
 				Collection<Task> coll = tasks.values();
 				if (coll instanceof List)
@@ -114,18 +113,12 @@ public class TasksDiviner {
 							break;
 						}
 				}
-				assert chosen != null;
+				//assert chosen != null;
+				System.out.println("Tick" + agent.getIteration());
+				System.out.println("WARNING - No task has been choosen!");
 			}
 		}
 		return chosen;
-	}
-
-	private static void say(String s) {
-		VerboseLogger.say(s);
-	}
-
-	private static void sanity(String s) {
-		VerboseLogger.sanity(s);
 	}
 
 }

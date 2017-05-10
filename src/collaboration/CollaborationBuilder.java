@@ -19,14 +19,12 @@ import load.GenerationLength;
 import load.GranularityOption;
 import load.LeftFunctionSet;
 import load.ParametersDivider;
+import load.ParametrizedSigmoidOption;
+import load.SigmoidParameter;
 import load.SkillStrategySet;
 import load.TaskCount;
 import load.TaskStrategySet;
 import logger.EndRunLogger;
-import logger.PjiitLogger;
-import logger.SanityLogger;
-import logger.ValidationOutputter;
-import logger.VerboseLogger;
 import networking.CollaborationNetwork;
 import networking.DynamicGexfGraph;
 
@@ -54,7 +52,7 @@ import constants.Constraints;
 
 /**
  * COIN network emergence simulator, a Repast Simphony 2.2 multi-agent social
- * simulation for modelling task allocation techniques and behaviour of
+ * simulation for modeling task allocation techniques and behavior of
  * collaborators in websites like GitHub and Wikipedia. Works on both Windows
  * and Linux environments.
  * 
@@ -72,10 +70,10 @@ import constants.Constraints;
  * 
  * Project uses ini4j library which is licensed under Apache License.
  * 
- * @version 2.0.11 'Turanga Leela'
- * @category Agent-organised Social Simulations
+ * @version 3.0
+ * @category Agent-organized social simulations
  * @since 1.0
- * @author Oskar Jarczyk, Blazej Gruszka et al.
+ * @author Oskar Jarczyk
  * @see 1) GitHub markdown 2) "On The Effectiveness of Emergent Task Allocation"
  */
 public class CollaborationBuilder implements ContextBuilder<Object> {
@@ -107,18 +105,16 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public CollaborationBuilder() {
 		try {
 			initializeLoggers();
-			VerboseLogger.say("[Loggers] initialized...");
+			System.out.println("[Loggers] initialized...");
 		} catch (IOException e) {
 			e.printStackTrace();
-			VerboseLogger.say(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
+			System.err.println(Constraints.ERROR_INITIALIZING_PJIITLOGGER);
 		} catch (Exception exc) {
-			VerboseLogger.say(exc.toString());
+			System.err.println(exc.toString());
 			exc.printStackTrace();
-			VerboseLogger
-					.say(Constraints.ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS);
+			System.err.println(Constraints.ERROR_INITIALIZING_PJIITLOGGER_AO_PARAMETERS);
 		} finally {
-			VerboseLogger
-					.say("[CollaborationBuilder constructor] finished execution");
+			System.out.println("[CollaborationBuilder constructor] finished execution");
 			// this is where Repast waits for scenario lunch
 			// (context builds up and build() method executes)
 		}
@@ -126,13 +122,13 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 	private void prepareDataControllers() throws InvalidFileFormatException,
 			IOException {
-		VerboseLogger.say(Constraints.LOADING_PARAMETERS);
+		System.out.println(Constraints.LOADING_PARAMETERS);
 		SimulationParameters.init();
 		// getting parameters of a simulation from current scenario
 
 		RandomHelper.setSeed(SimulationParameters.randomSeed);
 		RandomHelper.init();
-		VerboseLogger.say("[RandomHelper] initialized...");
+		System.out.println("[RandomHelper] initialized...");
 
 		/***
 		 * StrategyDistribution holds information on currently tested Task
@@ -142,12 +138,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		 */
 		strategyDistribution = new StrategyDistribution();
 
-		// initialise skill pools - information on all known languages
-		VerboseLogger.say("[SkillFactory] parsing skills"
+		// initialize skill pools - information on all known languages
+		System.out.println("[SkillFactory] parsing skills"
 				+ " (programing languages) from file");
 		skillFactory = SkillFactory.getInstance();
 		skillFactory.buildSkillsLibrary(false);
-		VerboseLogger.say("[SkillFactory] parsed all known"
+		System.out.println("[SkillFactory] parsed all known"
 				+ " [programming languages].");
 	}
 
@@ -158,7 +154,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		 * specially created for the sake of evolutionary model
 		 */
 		AgentModeling.instantiate();
-		VerboseLogger.say("[Sqlite engine] and resultset"
+		System.out.println("[Sqlite engine] and resultset"
 				+ " initialized, may take some time..");
 		MyDatabaseConnector.init();
 
@@ -204,7 +200,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		context.setId("emergent-task-allocation");
 
 		Preprocess.clearStaticHeap();
-		VerboseLogger.say("[Static heap] cleared..");
+		System.out.println("[Static heap] cleared..");
 
 		if (SimulationAdvancedParameters.enableNetwork) {
 			NetworkBuilder<Object> builder = new NetworkBuilder<Object>(
@@ -221,10 +217,10 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			// prepare sqlite and other factories
 			prepareWorkLoadData();
 		} catch (InvalidFileFormatException e) {
-			ValidationOutputter.error(e.toString());
+			System.err.println(e.toString());
 			e.printStackTrace();
 		} catch (IOException e) {
-			ValidationOutputter.error(e.toString());
+			System.err.println(e.toString());
 			e.printStackTrace();
 		}
 
@@ -237,17 +233,15 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		prepareGameController(context);
 
 		assert context.getObjects(GameController.class).size() > 0;
-		VerboseLogger
-				.say("[Game Controller] initialized and added to context.");
+		System.out.println("[Game Controller] initialized and added to context.");
 
-		VerboseLogger
-				.say("Task choice [Strategy] is "
+		System.out.println("Task choice [Strategy] is "
 						+ (strategyDistribution.isDistributionLoaded() ? strategyDistribution
 								.getStrategySet().describe()
 								: TaskStrategySet.INSTANCE.getChosenName()));
-		sanity("Number of [Tasks] created " + getTasks().size());
-		sanity("Number of [Agents] created " + getAgents().size());
-		sanity("[Algorithm] tested: "
+		System.out.println("Number of [Tasks] created " + getTasks().size());
+		System.out.println("Number of [Agents] created " + getAgents().size());
+		System.out.println("[Algorithm] tested: "
 				+ (strategyDistribution.isDistributionLoaded() ? "Distributed"
 						: TaskStrategySet.INSTANCE.getChosenName()));
 
@@ -256,7 +250,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		buildExperienceReassessment();
 
 		List<ISchedulableAction> actions = schedule.schedule(this);
-		VerboseLogger.say(actions.toString());
+		System.out.println(actions.toString());
 
 		context.add(this); // it will make sure ScheduledMethods are run
 
@@ -274,12 +268,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	}
 
 	private void initializeLoggers() throws IOException {
-		PjiitLogger.init();
-		VerboseLogger.say(Constraints.LOGGER_INITIALIZED);
-		SanityLogger.init();
-		sanity(Constraints.LOGGER_INITIALIZED);
 		EndRunLogger.init();
 		EndRunLogger.buildHeaders(buildFinalMessageHeader());
+		System.out.println(Constraints.LOGGER_INITIALIZED);
 	}
 	
 	@ScheduledMethod(start = 25000, interval = 25000, priority = ScheduleParameters.LAST_PRIORITY)
@@ -297,20 +288,17 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * strategies
 	 */
 	public void finishSimulation() {
-		VerboseLogger
-				.say("[finishSimulation() check launched] Checking if simulation can be ended...");
+		System.out.println("[finishSimulation() check launched] Checking if simulation can be ended...");
 		EnvironmentEquilibrium.setActivity(false);
 		if (gameController.isEvolutionary()) {
 			if (EquilibriumDetector.evaluate(gameController)) {
-				VerboseLogger
-						.say("[Stable set of Strategies] detected, finishing simulation");
+				System.out.println("[Stable set of Strategies] detected, finishing simulation");
 				EndRunLogger.finalMessage((buildFinalMessage()));
 				RunEnvironment.getInstance().endRun();
 				// cleanAfter();
 			}
 		} else if (((Tasks) tasks).getCount() < 1) {
-			VerboseLogger
-					.say("Count of [Task Pool] is < 1, finishing simulation");
+			System.out.println("Count of [Task Pool] is < 1, finishing simulation");
 			EndRunLogger.finalMessage((buildFinalMessage()));
 			RunEnvironment.getInstance().endRun();
 			// cleanAfter();
@@ -325,11 +313,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * strategies
 	 */
 	public void checkForActivity() {
-		VerboseLogger
-				.say("[checkForActivity() check launched] Checking if there was any work at all in current Tick");
+		System.out.println("[checkForActivity() check launched] Checking if there was any work at all in current Tick");
 		if (EnvironmentEquilibrium.getActivity() == false) {
-			VerboseLogger
-					.say("EnvironmentEquilibrium.getActivity() returns false!");
+			System.out.println("EnvironmentEquilibrium.getActivity() returns false!");
 			EndRunLogger.finalMessage((buildFinalMessage()));
 			RunEnvironment.getInstance().endRun();
 			// cleanAfter();
@@ -392,7 +378,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 						.countHeterophilyDistribution(getCurrentContext())
 				+ ","
 				+ gameController
-						.countPreferentialDistribution(getCurrentContext());
+						.countPreferentialDistribution(getCurrentContext())
+				+ ","
+				+ ParametrizedSigmoidOption.INSTANCE.getChosen()
+				+ ","
+				+ SigmoidParameter.INSTANCE.getChosen();
 	}
 
 	private int getTaskLeft() {
@@ -421,19 +411,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ "Generation" + ","
 				+ "GenerationLength" + "," + "Allways_Choose_Task" + ","
 				+ "Homophily_Count" + "," + "Heterophily_Count" + ","
-				+ "Preferential_Count";
-	}
-
-	private void validationError(String s) {
-		ValidationOutputter.error(s);
-	}
-
-	private void validationFatal(String s) {
-		ValidationOutputter.fatal(s);
-	}
-
-	private void sanity(String s) {
-		VerboseLogger.sanity(s);
+				+ "Preferential_Count" + "Parametrized_Sigmoid" + "Sigmoid_Parameter";
 	}
 
 	/**
@@ -442,12 +420,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * first (clearing previous orders) and than making the math
 	 */
 	public void centralPlanning() {
-		VerboseLogger
-				.say("CentralPlanning scheduled method launched, listAgent.size(): "
+		System.out.println("CentralPlanning scheduled method launched, listAgent.size(): "
 						+ getAgents().size()
 						+ " taskPool.size(): "
 						+ ((Tasks) tasks).getCount());
-		VerboseLogger.say("Zeroing agents' orders");
+		System.out.println("Zeroing agents' orders");
 		centralPlanner.zeroAgentsOrders(getAgents());
 		centralPlanner.centralPlanningCalc(getAgents(), (Tasks) tasks);
 	}
@@ -458,19 +435,18 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * hybrid model it can take work for a subset of Agents as well.
 	 */
 	public void buildCentralPlanner() {
-		VerboseLogger.say("Method buildCentralPlanner lunched."
+		System.out.println("Method buildCentralPlanner lunched."
 				+ "Checking now if central planer is needed at all.");
 		if (strategyDistribution.isCentralPlannerEnabled()) {
-			VerboseLogger.say("Creating a central planner instance.");
+			System.out.println("Creating a central planner instance.");
 			centralPlanner = CentralPlanning.getSingletonInstance();
-			VerboseLogger.say("Central planner is initiating schedule.");
+			System.out.println("Central planner is initiating schedule.");
 			ISchedule schedule = RunEnvironment.getInstance()
 					.getCurrentSchedule();
 			ScheduleParameters params = ScheduleParameters.createRepeating(1,
 					1, ScheduleParameters.FIRST_PRIORITY);
 			schedule.schedule(params, this, "centralPlanning");
-			VerboseLogger
-					.say("Central planner initiated and awaiting for call.");
+			System.out.println("Central planner initiated and awaiting for call.");
 		}
 	}
 
@@ -481,9 +457,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			ScheduleParameters params = ScheduleParameters.createRepeating(1,
 					1, ScheduleParameters.LAST_PRIORITY);
 			schedule.schedule(params, this, "provideSimulatorWithWork");
-			VerboseLogger.say("[Continous Task Flow] initiated");
+			System.out.println("[Continous Task Flow] initiated");
 		} else {
-			VerboseLogger.say("Task number is static, task flow builder skipped");
+			System.out.println("Task number is static, task flow builder skipped");
 		}
 	}
 
@@ -496,18 +472,16 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		if (tasks.size() < TaskCount.INSTANCE.getChosen()) {
 			int minus = TaskCount.INSTANCE.getChosen() - ((Tasks) tasks).getCount();
 			int difference = Math.abs(minus);
-			VerboseLogger.say("Adding more " + difference
+			System.out.println("Adding more " + difference
 					+ " [Tasks] to simulator");
 			try {
 				List<Task> newTasks = MyDatabaseConnector.get(difference);
 				for (Task newTask : newTasks) {
-					VerboseLogger
-							.say("[Continous Task Flow] adding a new task to context!");
+					System.out.println("[Continous Task Flow] adding a new task to context!");
 					tasks.add(newTask);
 				}
 			} catch (SQLException e) {
-				VerboseLogger
-						.say("Error during providing simulator with a new [Task(s)]");
+				System.err.println("Error during providing simulator with a new [Task(s)]");
 				e.printStackTrace();
 			}
 		}
@@ -523,8 +497,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 			IndexedIterable<Agent> agentObjects = agents
 					.getObjects(Agent.class);
 			for (Agent agent : agentObjects) {
-				VerboseLogger
-						.say("Checking if I may have to [decrease exp] of "
+				System.out.println("Checking if I may have to [decrease exp] of "
 								+ agent);
 				if (!agent.getAgentSkills().hasAny()) {
 					continue;
@@ -557,12 +530,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 						} else {
 							double value = ai.decayExperience();
 							if (value == -1) {
-								VerboseLogger
-										.say("[Experience] of [Agent] "
+								System.out.println("[Experience] of [Agent] "
 												+ (agent.getNick())
 												+ " wasn't decreased because it's already low");
 							} else
-								VerboseLogger.say("[Experience] of [Agent] "
+								System.out.println("[Experience] of [Agent] "
 										+ (agent.getNick())
 										+ " decreased and is now " + value);
 						}
@@ -570,12 +542,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				}
 			}
 		} catch (Exception exc) {
-			validationFatal(exc.toString());
-			validationError(exc.getMessage());
+			System.err.println(exc.toString());
+			System.err.println(exc.getMessage());
 			exc.printStackTrace();
 		} finally {
-			VerboseLogger
-					.say("Regular method run for [expDecay] finished for this step.");
+			System.out.println("Regular method run for [expDecay] finished for this step.");
 		}
 	}
 
@@ -584,22 +555,20 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * is enabled for the simulation whether not.
 	 */
 	public void buildExperienceReassessment() {
-		VerboseLogger.say("buildExperienceReassessment() lunched !");
+		System.out.println("buildExperienceReassessment() lunched !");
 		if (ExpDecayOption.INSTANCE.getChosen()) {
 			if (SimulationParameters.allowSkillDeath == true) {
-				VerboseLogger
-						.say("[Allow skill abandon] is enabled for this run");
+				System.out.println("[Allow skill abandon] is enabled for this run");
 			}
-			VerboseLogger.say("[Exp decay] is enabled for this run");
+			System.out.println("[Exp decay] is enabled for this run");
 			ISchedule schedule = RunEnvironment.getInstance()
 					.getCurrentSchedule();
 			ScheduleParameters params = ScheduleParameters.createRepeating(1,
 					1, ScheduleParameters.LAST_PRIORITY);
 			schedule.schedule(params, this, "experienceReassess");
-			VerboseLogger
-					.say("Experience decay initiated and awaiting for call !");
+			System.out.println("Experience decay initiated and awaiting for call !");
 		} else {
-			VerboseLogger.say("[Exp decay] is disabled for this run");
+			System.out.println("[Exp decay] is disabled for this run");
 		}
 	}
 

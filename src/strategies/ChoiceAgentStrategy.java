@@ -16,7 +16,7 @@ public class ChoiceAgentStrategy extends EmergenceStrategy {
 	@Override
 	protected void doAftearmath(Task task, TaskInternals singleTaskInternal) {
 		if (singleTaskInternal.isWorkDone()) {
-			super.say("Work in [TaskInternal]:" + singleTaskInternal
+			System.out.println("Work in [TaskInternal]:" + singleTaskInternal
 					+ " is done.");
 			task.removeSkill(singleTaskInternal.getSkill().getName());
 		}

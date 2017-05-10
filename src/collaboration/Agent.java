@@ -11,12 +11,10 @@ import java.util.Map;
 
 import load.FunctionSet;
 import load.GranularityOption;
-import logger.VerboseLogger;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 
-import collaboration.Utility.UtilityType;
 import repast.simphony.annotate.AgentAnnot;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.graph.NodeCreator;
@@ -33,6 +31,7 @@ import argonauts.GranularityType;
 import argonauts.GranulatedChoice;
 import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
+import collaboration.Utility.UtilityType;
 
 /***
  * Simulation agent - a GitHub programmer as restored from data on users
@@ -72,7 +71,7 @@ public class Agent implements NodeCreator<Agent> {
 
 	public Agent(String firstName, String lastName, String nick) {
 		this.agentSkills = new AgentSkills();
-		say("[Agent] constructor called");
+		System.out.println("[Agent] constructor called");
 		AgentModeling.fillWithSkills(this);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -258,7 +257,7 @@ public class Agent implements NodeCreator<Agent> {
 
 	@ScheduledMethod(start = 1, interval = 1, priority = 100)
 	public void step() {
-		say("Step(" + getTick() + ") of Agent " + this.id
+		System.out.println("Step(" + getTick() + ") of Agent " + this.id
 				+ " scheduled method launched.");
 
 		if (GranularityOption.INSTANCE.getChosen()) {
@@ -270,7 +269,7 @@ public class Agent implements NodeCreator<Agent> {
 				double leavingCurrentChance = RandomHelper.nextDoubleFromTo(0,
 						100);
 				if (leavingCurrentChance <= (double) (SimulationParameters.granularityObstinacy)) {
-					say("Step(" + getTick() + ") of Agent " + this.id
+					System.out.println("Step(" + getTick() + ") of Agent " + this.id
 							+ " continuuing granularity");
 					// continue work on the same skill
 					// but check if the is any work left in this particular task
@@ -299,7 +298,7 @@ public class Agent implements NodeCreator<Agent> {
 					}
 					// EnvironmentEquilibrium.setActivity(true);
 				} else {
-					say("Step(" + getTick() + ") of Agent " + this.id
+					System.out.println("Step(" + getTick() + ") of Agent " + this.id
 							+ " choosing new task for granulated choice");
 					// chose new task for granulated choice !
 					Task taskToWork = Tasks.chooseTask(this,
@@ -321,7 +320,7 @@ public class Agent implements NodeCreator<Agent> {
 					}
 				}
 			} else {
-				say("Step("
+				System.out.println("Step("
 						+ getTick()
 						+ ") of Agent "
 						+ this.id
@@ -363,7 +362,7 @@ public class Agent implements NodeCreator<Agent> {
 		if ((taskToWork != null) && (taskToWork.getTaskInternals().size() > 0)) {
 
 			assert taskToWork.getTaskInternals().size() > 0;
-			say("Agent " + this.id + " will work on task " + taskToWork.getId());
+			System.out.println("Agent " + this.id + " will work on task " + taskToWork.getId());
 			if ((this.getCentralAssignmentOrders() != null)
 					&& (this.getCentralAssignmentOrders()
 							.getChosenTask()
@@ -383,7 +382,7 @@ public class Agent implements NodeCreator<Agent> {
 				Task randomTaskToWork = Tasks.chooseTask(this,
 						Strategy.TaskChoice.RANDOM);
 				assert randomTaskToWork.getTaskInternals().size() > 0;
-				say("Agent " + this.id + " will work on task "
+				System.out.println("Agent " + this.id + " will work on task "
 						+ randomTaskToWork.getId());
 				if ((this.getCentralAssignmentOrders() != null)
 						&& (this.getCentralAssignmentOrders()
@@ -396,8 +395,8 @@ public class Agent implements NodeCreator<Agent> {
 					randomTaskToWork.workOnTask(this, SkillChoice.RANDOM);
 				EnvironmentEquilibrium.setActivity(true);
 			} else {
-				say("Agent " + this.id + " didn't work on anything");
-				sanity("Agent " + this.id
+				System.out.println("Agent " + this.id + " didn't work on anything");
+				System.out.println("Agent " + this.id
 						+ " don't have a task to work on in step " + getTick());
 			}
 		}
@@ -409,7 +408,7 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public void setNick(String nick) {
-		say("Agent's login set to: " + nick);
+		System.out.println("Agent's login set to: " + nick);
 		this.nick = nick;
 	}
 
@@ -456,7 +455,7 @@ public class Agent implements NodeCreator<Agent> {
 	public void setCentralAssignmentOrders(
 			CentralAssignmentOrders centralAssignmentOrders) {
 		if (centralAssignmentOrders != null) {
-			say("Agent " + this.nick + " got an order to work on "
+			System.out.println("Agent " + this.nick + " got an order to work on "
 					+ centralAssignmentOrders);
 		}
 		this.centralAssignmentOrders = centralAssignmentOrders;
@@ -590,14 +589,6 @@ public class Agent implements NodeCreator<Agent> {
 
 	public boolean wasWorkingOnAnything() {
 		return PersistJobDone.getJobDone().containsKey(this.getNick());
-	}
-
-	private void say(String s) {
-		VerboseLogger.say(s);
-	}
-
-	private void sanity(String s) {
-		VerboseLogger.sanity(s);
 	}
 }
 

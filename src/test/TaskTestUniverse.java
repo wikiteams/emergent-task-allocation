@@ -1,13 +1,12 @@
 package test;
 
+import java.util.ArrayList;
+
 import collaboration.Skill;
 import collaboration.SkillFactory;
 import collaboration.Task;
 import collaboration.TaskInternals;
 import collaboration.WorkUnit;
-
-import java.util.ArrayList;
-import logger.VerboseLogger;
 
 public class TaskTestUniverse {
 	
@@ -18,7 +17,7 @@ public class TaskTestUniverse {
 		DATASET.clear();
 		
 		Task task1 = new Task();
-		say("Initializing task 1..");
+		System.out.println("Initializing task 1..");
 		Skill skill11 = skillFactory.getSkill("Java");
 		WorkUnit workDone11 = new WorkUnit(3);
 		WorkUnit workRequired11 = new WorkUnit(18);
@@ -33,7 +32,7 @@ public class TaskTestUniverse {
 		task1.addSkill("XML", new TaskInternals(skill13, workRequired13, workDone13, task1));
 		
 		Task task2 = new Task();
-		say("Initializing task 2..");
+		System.out.println("Initializing task 2..");
 		Skill skill21 = skillFactory.getSkill("Java");
 		WorkUnit workDone21 = new WorkUnit(0);
 		WorkUnit workRequired21 = new WorkUnit(10);
@@ -48,7 +47,7 @@ public class TaskTestUniverse {
 		task2.addSkill("XML", new TaskInternals(skill23, workRequired23, workDone23, task2));
 		
 		Task task3 = new Task();
-		say("Initializing task 3..");
+		System.out.println("Initializing task 3..");
 		Skill skill31 = skillFactory.getSkill("Java");
 		WorkUnit workDone31 = new WorkUnit(11);
 		WorkUnit workRequired31 = new WorkUnit(18);
@@ -63,7 +62,7 @@ public class TaskTestUniverse {
 		task3.addSkill("XML", new TaskInternals(skill33, workRequired33, workDone33, task3));
 		
 		Task task4 = new Task();
-		say("Initializing task 4..");
+		System.out.println("Initializing task 4..");
 		Skill skill41 = skillFactory.getSkill("C");
 		WorkUnit workDone41 = new WorkUnit(0);
 		WorkUnit workRequired41 = new WorkUnit(12);
@@ -74,7 +73,7 @@ public class TaskTestUniverse {
 		task4.addSkill("XML", new TaskInternals(skill42, workRequired42, workDone42, task4));
 		
 		Task task5 = new Task();
-		say("Initializing task 5..");
+		System.out.println("Initializing task 5..");
 		Skill skill51 = skillFactory.getSkill("C");
 		WorkUnit workDone51 = new WorkUnit(11);
 		WorkUnit workRequired51 = new WorkUnit(12);
@@ -89,10 +88,6 @@ public class TaskTestUniverse {
 		DATASET.add(task3);
 		DATASET.add(task4);
 		DATASET.add(task5);
-	}
-	
-	private static void say(String s) {
-		VerboseLogger.say(s);
 	}
 
 }

@@ -8,7 +8,6 @@ import java.util.List;
 
 import load.AgentCount;
 import load.GenerationLength;
-import logger.VerboseLogger;
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
@@ -62,8 +61,8 @@ public class GameController {
 		generationNumber = Constraints.generationNumber;
 		// how many generations we want to simulate
 		// mostly it is 10 generations in our batch files
-		say("generationNumber: " + generationNumber);
-		say("iterationNumber: " + iterationNumber);
+		System.out.println("generationNumber: " + generationNumber);
+		System.out.println("iterationNumber: " + iterationNumber);
 		this.strategyDistribution = strategyDistribution;
 	}
 
@@ -85,8 +84,8 @@ public class GameController {
 			// first generation and any other generations
 			// which you can find e.g. in hyip game or credibility game
 			if (currentIteration == (iterationNumber - 1)) {
-				say("counterIteration: " + currentIteration);
-				say("Execute generation end protocols");
+				System.out.println("counterIteration: " + currentIteration);
+				System.out.println("Execute generation end protocols");
 				// start evolution of Agents
 				AgentEvolve.evolve(this);
 				// reset experience state in Agents
@@ -106,7 +105,7 @@ public class GameController {
 	 */
 	private void resetAllAgents() {
 		List<Agent> allAgents = chooseAllAgents(this);
-		say("Resetting all Agents, all together " + allAgents.size()
+		System.out.println("Resetting all Agents, all together " + allAgents.size()
 				+ " of them.");
 		for (Agent agent : allAgents) {
 			agent.resetMe();
@@ -119,19 +118,19 @@ public class GameController {
 		if (isFirstStage()) {
 			if (currentIteration == (iterationNumber - 2)) {
 				if (currentGeneration == (generationNumber - 1)) {
-					say("Waiting for an equilibrium already for "
+					System.out.println("Waiting for an equilibrium already for "
 							+ generationNumber + " generations");
 				}
 			}
 			if (currentIteration == (iterationNumber - 1)) {
-				say("[This is the last iteration in this generation]");
+				System.out.println("[This is the last iteration in this generation]");
 				currentIteration = 0;
 				System.out.println("Current generation is: "
 						+ currentGeneration);
-				say("[Ending current generation]");
+				System.out.println("[Ending current generation]");
 				currentGeneration++;
 			} else {
-				say("Incrementing current iterationNumber to: "
+				System.out.println("Incrementing current iterationNumber to: "
 						+ (currentIteration + 1));
 				currentIteration++;
 			}
@@ -240,10 +239,6 @@ public class GameController {
 			result = false;
 		}
 		return result;
-	}
-
-	private static void say(String s) {
-		VerboseLogger.say(s);
 	}
 
 }

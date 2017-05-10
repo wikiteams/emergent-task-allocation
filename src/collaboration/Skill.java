@@ -2,8 +2,6 @@ package collaboration;
 
 import java.io.Serializable;
 
-import logger.VerboseLogger;
-
 /***
  * Represents a "skill" - a GitHub language
  * 
@@ -28,30 +26,26 @@ public class Skill implements Serializable{
 	private int cardinalProbability;
 
 	public Skill() {
-		say("Empty-constructor Skill initialized");
+		System.out.println("Empty-constructor Skill initialized");
 	}
 
 	public Skill(String name, short id, int strength) {
 		this.name = name;
 		this.id = id;
 		this.strength = strength;
-		say("Skill created");
+		System.out.println("Skill created");
 	}
 
 	public Skill(String name) {
 		this.name = name;
-		say("Skill created with minimum data");
-	}
-
-	private void say(String s) {
-		VerboseLogger.say(s);
+		System.out.println("Skill created with minimum data");
 	}
 
 	public Skill(String name, String type, int id) {
 		this.name = name;
 		this.id = id;
 		this.category = new Category(type);
-		say("Skill created with name=" + name + " type=" + type);
+		System.out.println("Skill created with name=" + name + " type=" + type);
 	}
 
 	public String getName() {

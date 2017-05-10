@@ -2,8 +2,6 @@ package collaboration;
 
 import java.io.Serializable;
 
-import logger.VerboseLogger;
-
 public class Category implements Serializable{
 	
 	/**
@@ -14,16 +12,16 @@ public class Category implements Serializable{
 	private int hash;
 	
 	public Category(){
-		say("Category initialized");
+		System.out.println("Category initialized");
 	}
 	
 	public Category(CategoryType type){
-		say("Category initialized with type: " + type);
+		System.out.println("Category initialized with type: " + type);
 		this.type = type;
 	}
 	
 	public Category(String name){
-		say("Category initialized with name: " + name);
+		System.out.println("Category initialized with name: " + name);
 		hash = name.hashCode();
 		this.type = parseType(name);
 	}
@@ -50,10 +48,6 @@ public class Category implements Serializable{
 
 	public void setType(CategoryType type) {
 		this.type = type;
-	}
-
-	private void say(String s) {
-		VerboseLogger.say(s);
 	}
 	
 	@Override

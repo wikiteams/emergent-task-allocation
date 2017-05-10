@@ -65,7 +65,7 @@ public class SimulationParameters {
 		planNumber = (Integer) param.getValue("planNumber");
 
 		generationLengthConverter.fromString((String) param
-				.getValue("iterationCount"));
+				.getValue("generationLength"));
 		agentCountConverter.fromString((String) param.getValue("agentCount"));
 		expDecayOptionConverter.fromString((String) param
 				.getValue("experienceDecay"));

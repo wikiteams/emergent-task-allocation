@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import load.FunctionSet;
-import logger.VerboseLogger;
 import networking.CollaborationNetwork;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
@@ -69,7 +68,7 @@ public class Task {
 	public Task() {
 		this.name = "Task_" + this.id;
 		this.numberOfVisits = 0L;
-		say("[Task] object " + this + " created");
+		System.out.println("[Task] object " + this + " created");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -163,13 +162,13 @@ public class Task {
 		double count = 0;
 		for (TaskInternals skill : skills.values()) {
 			double progress = skill.getProgress();
-			say("Skill " + skill.getSkill().getName() + " progress " + progress);
+			System.out.println("Skill " + skill.getSkill().getName() + " progress " + progress);
 			result += progress > 1.0 ? 1.0 : progress;
-			say("Result GA(T) is: " + result);
+			System.out.println("Result GA(T) is: " + result);
 			persistAdvance.put(skill.getSkill(), progress);
 			count++;
 		}
-		say("Skills count " + count);
+		System.out.println("Skills count " + count);
 		if (count == 0) {
 			// all TaskInternals are gone, thus the Task is finished 100% !
 			return 1;
@@ -211,7 +210,7 @@ public class Task {
 
 		assert taskInternal != null;
 
-		sanity("Choosing Si:{" + taskInternal.getSkill().getName()
+		System.out.println("Choosing Si:{" + taskInternal.getSkill().getName()
 				+ "} inside Ti:{" + this.toString() + "}");
 
 		Experience experience = agent.getAgentInternalsOrCreate(
@@ -263,11 +262,11 @@ public class Task {
 
 		switch (strategy) {
 		case PROPORTIONAL:
-			say(Constraints.INSIDE_PROPORTIONAL_TIME_DIVISION);
+			System.out.println(Constraints.INSIDE_PROPORTIONAL_TIME_DIVISION);
 			ProportionalTimeDivision proportionalTimeDivision = new ProportionalTimeDivision();
 			for (TaskInternals singleTaskInternalFromIntersect : new CopyOnWriteArrayList<TaskInternals>(
 					intersection)) {
-				sanity("Choosing Si:{"
+				System.out.println("Choosing Si:{"
 						+ singleTaskInternalFromIntersect.getSkill().getName()
 						+ "} inside Ti:{"
 						+ singleTaskInternalFromIntersect.toString() + "}");
@@ -285,7 +284,7 @@ public class Task {
 			}
 			break;
 		case GREEDY:
-			say(Constraints.INSIDE_GREEDY_ASSIGNMENT_BY_TASK);
+			System.out.println(Constraints.INSIDE_GREEDY_ASSIGNMENT_BY_TASK);
 			CopyOnWriteArrayList<TaskInternals> copyIntersection = new CopyOnWriteArrayList<TaskInternals>(
 					intersection);
 			/**
@@ -310,7 +309,7 @@ public class Task {
 			assert singleTaskInternal != null;
 
 			{
-				sanity("Choosing Si:{"
+				System.out.println("Choosing Si:{"
 						+ singleTaskInternal.getSkill().getName()
 						+ "} inside Ti:{" + singleTaskInternal.toString() + "}");
 				Experience experience = agent.getAgentInternalsOrCreate(
@@ -324,7 +323,7 @@ public class Task {
 			}
 			break;
 		case CHOICE:
-			say(Constraints.INSIDE_CHOICE_OF_AGENT);
+			System.out.println(Constraints.INSIDE_CHOICE_OF_AGENT);
 
 			/**
 			 * Pracuj wylacznie nad tym skillem, w ktorym agent ma najwiecej
@@ -349,7 +348,7 @@ public class Task {
 			 */
 			assert singleTaskInternal != null;
 			{
-				sanity("Choosing Si:{"
+				System.out.println("Choosing Si:{"
 						+ singleTaskInternal.getSkill().getName()
 						+ "} inside Ti:{" + singleTaskInternal.toString() + "}");
 				Experience experience = agent.getAgentInternalsOrCreate(
@@ -363,7 +362,7 @@ public class Task {
 			}
 			break;
 		case RANDOM:
-			say(Constraints.INSIDE_RANDOM);
+			System.out.println(Constraints.INSIDE_RANDOM);
 			List<TaskInternals> intersectionToShuffle = new ArrayList<TaskInternals>();
 			for (TaskInternals taskInternalsR : intersection) {
 				intersectionToShuffle.add(taskInternalsR);
@@ -373,7 +372,7 @@ public class Task {
 					.get(RandomHelper.nextIntFromTo(0,
 							intersectionToShuffle.size() - 1));
 			{
-				sanity("Choosing Si:{"
+				System.out.println("Choosing Si:{"
 						+ randomTaskInternal.getSkill().getName()
 						+ "} inside Ti:{" + randomTaskInternal.toString() + "}");
 				Experience experience = agent.getAgentInternalsOrCreate(
@@ -453,14 +452,6 @@ public class Task {
 			return true;
 		else
 			return false;
-	}
-
-	private void say(String s) {
-		VerboseLogger.say(s);
-	}
-
-	private void sanity(String s) {
-		VerboseLogger.sanity(s);
 	}
 
 	public GameController getGameController() {
