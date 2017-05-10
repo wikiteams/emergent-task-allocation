@@ -37,7 +37,7 @@ public class ParametersDivider {
 		if (!ParametrizedSigmoidOption.INSTANCE.isEmpty())
 			parameters.add(ParametrizedSigmoidOption.INSTANCE.getOptions());
 		if (!SigmoidParameter.INSTANCE.isEmpty())
-			parameters.add(SigmoidParameter.INSTANCE.getDParameters());
+			parameters.add(SigmoidParameter.INSTANCE.getParameters());
 		
 		return Combinatorics.permutations(parameters);
 	}
