@@ -26,8 +26,8 @@
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="utilityFunction" displayName="Utility function"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		type="string" defaultValue="LearningSkills"
-		values="LearningSkills LeftLearningSkills RightLearningSkills ImpactFactor ImpactFactorMax" />
+		type="string" defaultValue="NormalizedSum"
+		values="NormalizedSum MaxSkill WorstSkill" />
 	<parameter name="mutateChances" displayName="Probability of mutation (in %)" 
 		type="java.lang.Integer" defaultValue="1" 
 		isReadOnly="false" values="1 5"
@@ -38,11 +38,6 @@
 	<parameter name="generationLength" displayName="Number of iterations in generation"
 		type="string" defaultValue="20" isReadOnly="false"
 		values="20 100"
-		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
-		
-	<parameter name="utilityLeftEval" displayName="Min or max? (in learningsSkills u.fun)"
-		type="java.lang.String" defaultValue="max" 
-		isReadOnly="false" values="min max"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 		
 	<!-- Mechanism for automatic stop -->

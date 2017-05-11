@@ -1,17 +1,18 @@
 <repast.simphony.data2.engine.DataSetDescriptor>
-  <name>Agents_aggregate</name>
-  <type>AGGREGATE</type>
+  <name>Tasks_state_nonaggr</name>
+  <type>NON_AGGREGATE</type>
+  <sourceType>collaboration.Task</sourceType>
   <inclTick>true</inclTick>
   <inclBatchRun>true</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>1.0</interval>
-    <priority>-Infinity</priority>
+    <interval>20.0</interval>
+    <priority>-1000.0</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1730432379</hashCode>
+    <hashCode>1004304550</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
@@ -19,63 +20,72 @@
       <string>EvolutionGeneration</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>EvolutionGeneration</id>
-        <className>collaboration.Agent</className>
+        <className>collaboration.Task</className>
         <methodName>getGeneration</methodName>
-        <aggType>MAX</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
       <string>EvolutionIteration</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>EvolutionIteration</id>
-        <className>collaboration.Agent</className>
+        <className>collaboration.Task</className>
         <methodName>getIteration</methodName>
-        <aggType>MAX</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>GeneralExperience</string>
+      <string>Id</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>GeneralExperience</id>
-        <className>collaboration.Agent</className>
-        <methodName>getGeneralExperience</methodName>
-        <aggType>MEAN</aggType>
+        <id>Id</id>
+        <className>collaboration.Task</className>
+        <methodName>getId</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Utility</string>
+      <string>Name</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Utility</id>
-        <className>collaboration.Agent</className>
-        <methodName>getUtility</methodName>
-        <aggType>MEAN</aggType>
+        <id>Name</id>
+        <className>collaboration.Task</className>
+        <methodName>getName</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>NormalizedSumUtility</string>
+      <string>HasUnfinishedSkills</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>NormalizedSumUtility</id>
-        <className>collaboration.Agent</className>
-        <methodName>getNormalizedSumUtility</methodName>
-        <aggType>MEAN</aggType>
+        <id>HasUnfinishedTasks</id>
+        <className>collaboration.Task</className>
+        <methodName>isClosed</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>BestSkillUtility</string>
+      <string>SkillsCount</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>BestSkillUtility</id>
-        <className>collaboration.Agent</className>
-        <methodName>getBestSkillUtility</methodName>
-        <aggType>MEAN</aggType>
+        <id>SkillsCount</id>
+        <className>collaboration.Task</className>
+        <methodName>countTaskInternals</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>WorstSkillUtility</string>
+      <string>UnfinishedSkillsCount</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>WorstSkillUtility</id>
-        <className>collaboration.Agent</className>
-        <methodName>getWorstSkillUtility</methodName>
-        <aggType>MEAN</aggType>
+        <id>UnfinishedSkillsCount</id>
+        <className>collaboration.Task</className>
+        <methodName>countUnfinishedTaskInternals</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>GeneralAdvance</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>GeneralAdvance</id>
+        <className>collaboration.Task</className>
+        <methodName>getGeneralAdvance</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>NoOfVisits</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>NoOfVisits</id>
+        <className>collaboration.Task</className>
+        <methodName>getNumberOfVisits</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

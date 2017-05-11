@@ -1,0 +1,55 @@
+<repast.simphony.data2.engine.DataSetDescriptor>
+  <name>TaskInternals_beginning_nonaggr</name>
+  <type>NON_AGGREGATE</type>
+  <sourceType>collaboration.TaskInternals</sourceType>
+  <inclTick>true</inclTick>
+  <inclBatchRun>false</inclBatchRun>
+  <inclRandomSeed>false</inclRandomSeed>
+  <scheduleParams>
+    <start>1.0</start>
+    <interval>10.0</interval>
+    <priority>Infinity</priority>
+    <pType>FIRST</pType>
+    <duration>-1.0</duration>
+    <frequency>REPEAT</frequency>
+    <hashCode>-1840229317</hashCode>
+  </scheduleParams>
+  <atEnd>false</atEnd>
+  <methodDataSources class="linked-hash-map">
+    <entry>
+      <string>SkillName</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>SkillName</id>
+        <className>collaboration.TaskInternals</className>
+        <methodName>getSkillName</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Progress</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Progress</id>
+        <className>collaboration.TaskInternals</className>
+        <methodName>getProgress</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>WorkLeftInPerc</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>WorkLeftInPerc</id>
+        <className>collaboration.TaskInternals</className>
+        <methodName>getWorkLeftInPerc</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>WorkDone</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>WorkDone</id>
+        <className>collaboration.TaskInternals</className>
+        <methodName>isWorkDone</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+  </methodDataSources>
+  <countSources class="linked-hash-map"/>
+  <customNADataSources class="linked-hash-map"/>
+  <customAggDataSources class="linked-hash-map"/>
+</repast.simphony.data2.engine.DataSetDescriptor>

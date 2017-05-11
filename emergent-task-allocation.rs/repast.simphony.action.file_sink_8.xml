@@ -1,6 +1,6 @@
 <repast.simphony.data2.engine.FileSinkDescriptor>
-  <name>TaskInternals_beginning_output</name>
-  <dataSet>TaskInternals_beginning_nonaggr</dataSet>
+  <name>TaskInternals_ending_output</name>
+  <dataSet>TaskInternals_ending_nonaggr</dataSet>
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
@@ -10,6 +10,6 @@
     <string>Progress</string>
     <string>WorkLeftInPerc</string>
   </sourceIds>
-  <fileName>skills_begin.csv</fileName>
+  <fileName>skills_ending.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

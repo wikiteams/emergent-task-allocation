@@ -1,8 +1,9 @@
 <repast.simphony.data2.engine.DataSetDescriptor>
-  <name>Agents_aggregate</name>
-  <type>AGGREGATE</type>
+  <name>Strategy_set</name>
+  <type>NON_AGGREGATE</type>
+  <sourceType>collaboration.Agent</sourceType>
   <inclTick>true</inclTick>
-  <inclBatchRun>true</inclBatchRun>
+  <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
@@ -11,62 +12,16 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1730432379</hashCode>
+    <hashCode>1296655351</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>EvolutionGeneration</string>
+      <string>TaskStrategy</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>EvolutionGeneration</id>
+        <id>TaskStrategy</id>
         <className>collaboration.Agent</className>
-        <methodName>getGeneration</methodName>
-        <aggType>MAX</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>EvolutionIteration</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>EvolutionIteration</id>
-        <className>collaboration.Agent</className>
-        <methodName>getIteration</methodName>
-        <aggType>MAX</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>GeneralExperience</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>GeneralExperience</id>
-        <className>collaboration.Agent</className>
-        <methodName>getGeneralExperience</methodName>
-        <aggType>MEAN</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>Utility</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Utility</id>
-        <className>collaboration.Agent</className>
-        <methodName>getUtility</methodName>
-        <aggType>MEAN</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>LUtility</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>LUtility</id>
-        <className>collaboration.Agent</className>
-        <methodName>getLeftAgentUtility</methodName>
-        <aggType>MEAN</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>RUtility</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>RUtility</id>
-        <className>collaboration.Agent</className>
-        <methodName>getRightAgentUtility</methodName>
-        <aggType>MEAN</aggType>
+        <methodName>getTaskStrategy</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>
