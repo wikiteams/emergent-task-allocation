@@ -85,7 +85,7 @@ public class TaskInternals {
 	 * Get advancement (work done between 0 and 1) of this Skill (TaskInternal).
 	 * In rare cases the task can be overworked (returns > 100%)
 	 * 
-	 * @return double - always returns a progress value between [0,1]+c
+	 * @return double - always returns a progress value between [0, 1+c]
 	 */
 	public double getProgress() {
 		return Math.abs(this.workDone.d / this.workRequired.d);
@@ -94,10 +94,18 @@ public class TaskInternals {
 	/**
 	 * Get a work left for this particular skill (TaskInternal) of a Task
 	 * 
-	 * @return double - work left, always a value between [0, 1]
+	 * @return double - work left
 	 */
 	public double getWorkLeft() {
-		return Math.abs(this.workRequired.d - this.workDone.d);
+		double workLeft = this.workRequired.d - this.workDone.d;
+		if (workLeft < 0) {
+			return 0;
+		}
+		return workLeft;
+	}
+	
+	public double getWorkLeftInPerc() {
+		return 1 - this.getProgress();
 	}
 
 	@Override

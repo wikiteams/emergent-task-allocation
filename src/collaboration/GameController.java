@@ -1,7 +1,5 @@
 package collaboration;
 
-import intelligence.ImpactFactor;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -110,7 +108,6 @@ public class GameController {
 		for (Agent agent : allAgents) {
 			agent.resetMe();
 		}
-		ImpactFactor.clear();
 	}
 
 	@ScheduledMethod(start = 1.0, interval = 1.0, priority = -3000)

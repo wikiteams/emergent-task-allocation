@@ -2,7 +2,6 @@ package collaboration;
 
 import github.AgentModeling;
 import intelligence.EquilibriumDetector;
-import intelligence.ImpactFactor;
 import utils.NamesGenerator;
 import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
@@ -23,7 +22,6 @@ public enum Preprocess {
 		Agent.totalAgents = 0;
 		AgentSkillsFrequency.clear();
 		AgentModeling.clear();
-		ImpactFactor.clear();
 		EquilibriumDetector.clear();
 	}
 

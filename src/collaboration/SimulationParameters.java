@@ -5,7 +5,6 @@ import load.ExpDecayOptionConverter;
 import load.FunctionSetConverter;
 import load.GenerationLengthConverter;
 import load.GranularityOptionConverter;
-import load.LeftFunctionSetConverter;
 import load.ParametrizedSigmoidOptionConverter;
 import load.SigmoidParameterConverter;
 import load.SkillStrategySetConverter;
@@ -51,7 +50,6 @@ public class SimulationParameters {
 		GenerationLengthConverter generationLengthConverter = new GenerationLengthConverter();
 		ExpDecayOptionConverter expDecayOptionConverter = new ExpDecayOptionConverter();
 		FunctionSetConverter functionSetConverter = new FunctionSetConverter();
-		LeftFunctionSetConverter leftFunctionSetConverter = new LeftFunctionSetConverter();
 		
 		GranularityOptionConverter granularityOptionConverter = new GranularityOptionConverter();
 		SkillStrategySetConverter skillStrategySetConverter = new SkillStrategySetConverter();
@@ -71,8 +69,6 @@ public class SimulationParameters {
 				.getValue("experienceDecay"));
 		functionSetConverter.fromString((String) param
 				.getValue("utilityFunction"));
-		leftFunctionSetConverter.fromString((String) param
-				.getValue("utilityLeftEval"));
 		
 		granularityOptionConverter.fromString((String) param
 				.getValue("granularity"));

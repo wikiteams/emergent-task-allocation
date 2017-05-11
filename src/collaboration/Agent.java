@@ -1,7 +1,6 @@
 package collaboration;
 
 import github.AgentModeling;
-import intelligence.ImpactFactor;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -11,10 +10,6 @@ import java.util.Map;
 
 import load.FunctionSet;
 import load.GranularityOption;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.math3.stat.descriptive.moment.Mean;
-
 import repast.simphony.annotate.AgentAnnot;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.graph.NodeCreator;
@@ -26,7 +21,6 @@ import strategies.Strategy;
 import strategies.Strategy.SkillChoice;
 import strategies.Strategy.TaskChoice;
 import tasks.CentralAssignmentOrders;
-import utils.ObjectsHelper;
 import argonauts.GranularityType;
 import argonauts.GranulatedChoice;
 import argonauts.PersistJobDone;
@@ -89,76 +83,25 @@ public class Agent implements NodeCreator<Agent> {
 	}
 
 	public Double getUtility() {
-		if (FunctionSet.INSTANCE.isAgentOrientedUtility) {
-			if (FunctionSet.INSTANCE.getChosen().equals(UtilityType.LearningSkills))
-				return getLearningUtility();
-			else if (FunctionSet.INSTANCE.getChosen().equals(UtilityType.LeftLearningSkills))
-				return getLeftAgentUtility();
-			else {
-				assert (FunctionSet.INSTANCE.getChosen().equals(UtilityType.RightLearningSkills));
-				return getRightAgentUtility();
-			}
+		if (FunctionSet.INSTANCE.getChosen().equals(UtilityType.NormalizedSum)) {
+			return getNormalizedSumUtility();
+		} else if (FunctionSet.INSTANCE.getChosen().equals(UtilityType.MaxSkill)) {
+			return getBestSkillUtility();
 		} else {
-			if (FunctionSet.INSTANCE.getChosen().equals(UtilityType.ImpactFactor))
-				return getImpactUtility();
-			else {
-				assert (FunctionSet.INSTANCE.getChosen().equals(UtilityType.ImpactFactorMax));
-				return getImpactHUtility();
-			}
+			return getWorstSkillUtility();
 		}
 	}
 
-	public String getDecimalFormatLeftUtility() {
-		return new DecimalFormat("#.######").format(getLeftAgentUtility());
+	public Double getNormalizedSumUtility() {
+		return Utility.getNormalizedSum(getAgentInternals());
 	}
-
-	public String getDecimalFormatRightUtility() {
-		return new DecimalFormat("#.######").format(getRightAgentUtility());
+	
+	public Double getBestSkillUtility() {
+		return Utility.getBestSkill(getAgentInternals());
 	}
-
-	public Double getLeftAgentUtility() {
-		if (FunctionSet.INSTANCE.isAgentOrientedUtility) {
-			return Utility.getLeftLearningUtility(getAgentInternals());
-		} else
-			return ObjectsHelper.notApplicable;
-	}
-
-	public Double getRightAgentUtility() {
-		if (FunctionSet.INSTANCE.isAgentOrientedUtility) {
-			return Utility.getRightLearningUtility(getAgentInternals());
-		} else
-			return ObjectsHelper.notApplicable;
-	}
-
-	/***
-	 * "Impact Factor"
-	 * 
-	 * @since 2.0.7
-	 * @return Double - Avg Impact Factor
-	 */
-	public Double getImpactUtility() {
-		Mean mean = new Mean();
-		// below I return average from 3 last impact factors
-		// registered for exactly this agent
-		return mean.evaluate(ArrayUtils.toPrimitive(ImpactFactor.get(this)));
-	}
-
-	/***
-	 * "H" factor
-	 * 
-	 * @since 2.0.7
-	 * @return Double - Avg Highest Impact Factor
-	 */
-	public Double getImpactHUtility() {
-		Mean mean = new Mean();
-		// below I return average from 3 highest impact factors
-		// registered for exactly this agent
-		return mean.evaluate(ArrayUtils.toPrimitive(ImpactFactor
-				.getHighest(this)));
-	}
-
-	public Double getLearningUtility() {
-		return Utility.getLearningUtility(getAgentInternals());
+	
+	public Double getWorstSkillUtility() {
+		return Utility.getWorstSkill(getAgentInternals());
 	}
 
 	public String getDecimalFormatUtility() {

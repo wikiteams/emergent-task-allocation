@@ -1,7 +1,5 @@
 package collaboration;
 
-import intelligence.ImpactFactor;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import load.FunctionSet;
 import networking.CollaborationNetwork;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
@@ -236,12 +233,6 @@ public class Task {
 		if (SimulationAdvancedParameters.enableNetwork)
 			CollaborationNetwork.addEdge(agent, this);
 
-		Double impactFactor = null;
-
-		if (!FunctionSet.INSTANCE.isAgentOrientedUtility) {
-			impactFactor = this.getGeneralAdvance();
-		}
-
 		Collection<TaskInternals> intersection;
 		List<Skill> skillsImprovedList = new ArrayList<Skill>();
 
@@ -388,11 +379,6 @@ public class Task {
 		default:
 			assert false; // there is no default method, so please never happen
 			break;
-		}
-
-		if (!FunctionSet.INSTANCE.isAgentOrientedUtility) {
-			double newImpactFactor = this.getGeneralAdvance() - impactFactor;
-			ImpactFactor.update(agent, newImpactFactor);
 		}
 
 		// if (SimulationParameters.deployedTasksLeave)

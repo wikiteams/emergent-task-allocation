@@ -17,7 +17,6 @@ import load.ExpDecayOption;
 import load.FunctionSet;
 import load.GenerationLength;
 import load.GranularityOption;
-import load.LeftFunctionSet;
 import load.ParametersDivider;
 import load.ParametrizedSigmoidOption;
 import load.SigmoidParameter;
@@ -362,8 +361,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ SimulationParameters.planNumber
 				+ ","
 				+ FunctionSet.INSTANCE.getChosen()
-				+ ","
-				+ LeftFunctionSet.INSTANCE.getChosen()
 				+ ","
 				+ gameController.getCurrentGeneration()
 				+ ","

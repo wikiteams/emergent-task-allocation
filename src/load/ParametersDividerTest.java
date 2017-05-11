@@ -54,7 +54,7 @@ public class ParametersDividerTest {
 		assertEquals(2, GenerationLength.INSTANCE.getLengths().size());
 		FunctionSet.INSTANCE.setFunctions(new HashSet<UtilityType>() {
 			{
-				add(UtilityType.LearningSkills);
+				add(UtilityType.NormalizedSum);
 			}
 		});
 		assertEquals(1, FunctionSet.INSTANCE.getFunctions().size());

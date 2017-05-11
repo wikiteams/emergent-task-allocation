@@ -23,8 +23,6 @@ public class ParametersDivider {
 			parameters.add(ExpDecayOption.INSTANCE.getOptions());
 		if (!FunctionSet.INSTANCE.isEmpty())
 			parameters.add(FunctionSet.INSTANCE.getFunctions());
-		if (!LeftFunctionSet.INSTANCE.isEmpty())
-			parameters.add(LeftFunctionSet.INSTANCE.getLeftParts());
 		if (!GranularityOption.INSTANCE.isEmpty())
 			parameters.add(GranularityOption.INSTANCE.getOptions());
 		if (!SkillStrategySet.INSTANCE.isEmpty())
@@ -55,13 +53,12 @@ public class ParametersDivider {
 				GenerationLength.INSTANCE.setChosen((Integer) optionsSet.get(1));
 				ExpDecayOption.INSTANCE.setChosen((Boolean) optionsSet.get(2));
 				FunctionSet.INSTANCE.setChosen((UtilityType) optionsSet.get(3));
-				LeftFunctionSet.INSTANCE.setChosen((String) optionsSet.get(4));
-				GranularityOption.INSTANCE.setChosen((Boolean) optionsSet.get(5));
-				SkillStrategySet.INSTANCE.setChosen((Strategy.SkillChoice) optionsSet.get(6));
-				TaskStrategySet.INSTANCE.setChosen((Strategy.TaskChoice) optionsSet.get(7));
-				TaskCount.INSTANCE.setChosen((Integer) optionsSet.get(8));
-				ParametrizedSigmoidOption.INSTANCE.setChosen((Boolean) optionsSet.get(9));
-				SigmoidParameter.INSTANCE.setChosen((Integer) optionsSet.get(10));
+				GranularityOption.INSTANCE.setChosen((Boolean) optionsSet.get(4));
+				SkillStrategySet.INSTANCE.setChosen((Strategy.SkillChoice) optionsSet.get(5));
+				TaskStrategySet.INSTANCE.setChosen((Strategy.TaskChoice) optionsSet.get(6));
+				TaskCount.INSTANCE.setChosen((Integer) optionsSet.get(7));
+				ParametrizedSigmoidOption.INSTANCE.setChosen((Boolean) optionsSet.get(8));
+				SigmoidParameter.INSTANCE.setChosen((Integer) optionsSet.get(9));
 				break;
 			}
 		}

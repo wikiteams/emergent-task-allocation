@@ -1,6 +1,5 @@
 package load;
 
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -13,17 +12,9 @@ public enum FunctionSet {
 
 	private Set<UtilityType> functions = new HashSet<UtilityType>();
 	private UtilityType chosen;
-	
-	public boolean isAgentOrientedUtility;
-	public boolean isTaskOrientedUtility;
 
 	public void setChosen(UtilityType utilityType) {
 		chosen = utilityType;
-		EnumSet<UtilityType> agentOriented = EnumSet.of(
-				UtilityType.LearningSkills, UtilityType.LearningSkills,
-				UtilityType.RightLearningSkills);
-		isAgentOrientedUtility = agentOriented.contains(chosen) ? true : false;
-		isTaskOrientedUtility = agentOriented.contains(chosen) ? false : true;
 	}
 
 	public UtilityType getChosen() {
