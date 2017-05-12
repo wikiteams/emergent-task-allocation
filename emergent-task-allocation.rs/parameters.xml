@@ -68,10 +68,6 @@
 		type="string" defaultValue="false" isReadOnly="false"
 		values="false true"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
-	<parameter name="allowSkillDeath" displayName="Allow skill death in exp decay ?"
-		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
-		values="false true"
-		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	
 	<parameter name="allwaysChooseTask" displayName="Agent will always choose a Task?"
 		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
