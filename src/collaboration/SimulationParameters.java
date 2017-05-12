@@ -24,7 +24,6 @@ import repast.simphony.parameter.Parameters;
  */
 public class SimulationParameters {
 
-	public static double mutateChances;
 	public static boolean allowSkillDeath;
 
 	public static int evolutionEnabled;
@@ -87,7 +86,6 @@ public class SimulationParameters {
 
 		equilibriumDetectionSensitivity = (Integer) param
 				.getValue("equilibriumDetectionSensitivity");
-		mutateChances = ((Integer) param.getValue("mutateChances")) * 0.01;
 
 		allwaysChooseTask = (Boolean) param.getValue("allwaysChooseTask");
 

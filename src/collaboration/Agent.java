@@ -110,16 +110,10 @@ public class Agent implements NodeCreator<Agent> {
 
 	public void mutate() {
 		// 1% chances for deleting (abandoning) skill
-		if (RandomHelper.nextDoubleFromTo(0, 1) <= SimulationParameters.mutateChances) {
+		if (RandomHelper.nextDoubleFromTo(0, 1) <= 0.01) {
 			Object[] allSkills = agentSkills.getSkills().keySet().toArray();
 			agentSkills.removeSkill((String) allSkills[RandomHelper
 					.nextIntFromTo(0, allSkills.length - 1)]);
-		}
-		for (AgentInternals a : agentSkills.getSkills().values()) {
-			// 2% chances for self-improvement in a skill, Bernoulli trial
-			if (RandomHelper.nextDoubleFromTo(0, 1) <= 0.02) {
-				a.getExperience().incrementAbsolutly(0.05);
-			}
 		}
 	}
 
