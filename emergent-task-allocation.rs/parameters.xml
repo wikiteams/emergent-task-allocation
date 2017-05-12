@@ -28,10 +28,6 @@
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		type="string" defaultValue="NormalizedSum"
 		values="NormalizedSum MaxSkill WorstSkill" />
-	<parameter name="mutateChances" displayName="Probability of mutation (in %)" 
-		type="java.lang.Integer" defaultValue="1" 
-		isReadOnly="false" values="1 5"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="numTasks" displayName="Number of tasks"
 		type="string" defaultValue="50" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
