@@ -21,7 +21,6 @@ import strategies.Strategy;
 import strategies.Strategy.SkillChoice;
 import strategies.Strategy.TaskChoice;
 import tasks.CentralAssignmentOrders;
-import argonauts.GranularityType;
 import argonauts.GranulatedChoice;
 import argonauts.PersistJobDone;
 import argonauts.PersistRewiring;
@@ -219,18 +218,7 @@ public class Agent implements NodeCreator<Agent> {
 								this.strategy.getTaskChoice());
 						executeJob(taskToWork);
 						if (taskToWork != null) {
-							switch (GranularityType
-									.desc(SimulationParameters.granularityType)) {
-							case TASKANDSKILL:
-								// PersistRewiring.setOccupation(this,
-								// taskToWork, PersistJobDone.);
-								break;
-							case TASKONLY:
-								PersistRewiring.setOccupation(this, taskToWork);
-								break;
-							default:
-								break;
-							}
+							PersistRewiring.setOccupation(this, taskToWork);
 						}
 					}
 					// EnvironmentEquilibrium.setActivity(true);
@@ -242,18 +230,7 @@ public class Agent implements NodeCreator<Agent> {
 							this.strategy.getTaskChoice());
 					executeJob(taskToWork);
 					if (taskToWork != null) {
-						switch (GranularityType
-								.desc(SimulationParameters.granularityType)) {
-						case TASKANDSKILL:
-							// PersistRewiring.setOccupation(this, taskToWork,
-							// PersistJobDone.);
-							break;
-						case TASKONLY:
-							PersistRewiring.setOccupation(this, taskToWork);
-							break;
-						default:
-							break;
-						}
+						PersistRewiring.setOccupation(this, taskToWork);
 					}
 				}
 			} else {
@@ -268,18 +245,7 @@ public class Agent implements NodeCreator<Agent> {
 						this.strategy.getTaskChoice());
 				executeJob(taskToWork);
 				if (taskToWork != null) {
-					switch (GranularityType
-							.desc(SimulationParameters.granularityType)) {
-					case TASKANDSKILL:
-						// PersistRewiring.setOccupation(this, taskToWork,
-						// PersistJobDone.);
-						break;
-					case TASKONLY:
-						PersistRewiring.setOccupation(this, taskToWork);
-						break;
-					default:
-						break;
-					}
+					PersistRewiring.setOccupation(this, taskToWork);
 				}
 			}
 			/*****************************

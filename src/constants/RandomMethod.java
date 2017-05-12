@@ -1,5 +1,0 @@
-package constants;
-
-public enum RandomMethod {
-	RANDOM_GENERATOR, NORMAL_DISTRIBUTION, BREIT_WIGNER, POISSON_DISTRIBUTION
-}

@@ -342,8 +342,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ ","
 				+ ExpDecayOption.INSTANCE.getChosen()
 				+ ","
-				+ SimulationParameters.allowSkillDeath
-				+ ","
 				+ SimulationParameters.experienceCutPoint
 				+ ","
 				+ GranularityOption.INSTANCE.getChosen()
@@ -519,12 +517,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 						// was working on a task, don't decay this skill
 					} else {
 						// decay this experience by beta < 1
-						if (SimulationParameters.allowSkillDeath) {
-							boolean result = ai.decayExperienceWithDeath();
-							if (result) {
-								(agent).removeSkill(ai.getSkill(), false);
-							}
-						} else {
 							double value = ai.decayExperience();
 							if (value == -1) {
 								System.out.println("[Experience] of [Agent] "
@@ -534,7 +526,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 								System.out.println("[Experience] of [Agent] "
 										+ (agent.getNick())
 										+ " decreased and is now " + value);
-						}
 					}
 				}
 			}
@@ -554,9 +545,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	public void buildExperienceReassessment() {
 		System.out.println("buildExperienceReassessment() lunched !");
 		if (ExpDecayOption.INSTANCE.getChosen()) {
-			if (SimulationParameters.allowSkillDeath == true) {
-				System.out.println("[Allow skill abandon] is enabled for this run");
-			}
 			System.out.println("[Exp decay] is enabled for this run");
 			ISchedule schedule = RunEnvironment.getInstance()
 					.getCurrentSchedule();

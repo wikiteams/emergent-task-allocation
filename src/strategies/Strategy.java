@@ -102,18 +102,19 @@ public class Strategy implements StrategyInterface {
 		 */
 		PROPORTIONAL,
 		/**
-		 * Most advanced method: this module selects a single most done skill
-		 * inside a task. If there is no such skill (i.e. all skills have 'work
-		 * done' at zero point), then it select randomly a single skill.
+		 * This method selects a single skill in which the least amount 
+		 * of work is left within the task. 
+		 * If there is no such skill (i.e., all skills have "work done" at zero),
+		 * the method selects a single skill randomly.
 		 */
-		GREEDY,
+		LEAST_WORK_LEFT,
 		/**
 		 * Greatest experience method: method selects only one skill in which an
 		 * agent is most experienced. If the agent is equally well-experienced
 		 * in more than one skill, then selects randomly one skill from this.
 		 * set.
 		 */
-		CHOICE,
+		GREATEST_EXPERIENCE,
 		/**
 		 * Random method: this module selects one single random skill to work
 		 * on. Firstly, the strategy evaluates the intersection of agents skills

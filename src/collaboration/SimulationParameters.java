@@ -24,8 +24,6 @@ import repast.simphony.parameter.Parameters;
  */
 public class SimulationParameters {
 
-	public static boolean allowSkillDeath;
-
 	public static int evolutionEnabled;
 	public static int planNumber;
 	public static int equilibriumDetectionSensitivity;
@@ -38,9 +36,6 @@ public class SimulationParameters {
 
 	public static int randomSeed;
 	public static int sweepRuns;
-	
-	//public static boolean parametrizedSigmoid;
-	//public static double sigmoidParameter;
 
 	public static void init() {
 		Parameters param = RunEnvironment.getInstance().getParameters();
@@ -94,13 +89,9 @@ public class SimulationParameters {
 		randomSeed = (Integer) param.getValue("randomSeed");
 		sweepRuns = (Integer) param.getValue("sweepRuns");
 
-		allowSkillDeath = (Boolean) param.getValue("allowSkillDeath");
 		experienceCutPoint = (Boolean) param.getValue("experienceCutPoint");
 
 		granularityObstinacy = (Integer) param.getValue("granularityObstinacy");
 		granularityType = (String) param.getValue("granularityType");
-		
-		//parametrizedSigmoid = (Boolean) param.getValue("parametrizedSigmoid");
-		//sigmoidParameter = (Integer) param.getValue("sigmoidParameter") * 0.1;
 	}
 }

@@ -274,7 +274,7 @@ public class Task {
 						.getSkill());
 			}
 			break;
-		case GREEDY:
+		case LEAST_WORK_LEFT:
 			System.out.println(Constraints.INSIDE_GREEDY_ASSIGNMENT_BY_TASK);
 			CopyOnWriteArrayList<TaskInternals> copyIntersection = new CopyOnWriteArrayList<TaskInternals>(
 					intersection);
@@ -313,7 +313,7 @@ public class Task {
 				skillsImprovedList.add(singleTaskInternal.getSkill());
 			}
 			break;
-		case CHOICE:
+		case GREATEST_EXPERIENCE:
 			System.out.println(Constraints.INSIDE_CHOICE_OF_AGENT);
 
 			/**
