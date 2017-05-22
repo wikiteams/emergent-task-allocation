@@ -25,22 +25,6 @@ public class Skill implements Serializable{
 	private double probability;
 	private int cardinalProbability;
 
-	public Skill() {
-		System.out.println("Empty-constructor Skill initialized");
-	}
-
-	public Skill(String name, short id, int strength) {
-		this.name = name;
-		this.id = id;
-		this.strength = strength;
-		System.out.println("Skill created");
-	}
-
-	public Skill(String name) {
-		this.name = name;
-		System.out.println("Skill created with minimum data");
-	}
-
 	public Skill(String name, String type, int id) {
 		this.name = name;
 		this.id = id;

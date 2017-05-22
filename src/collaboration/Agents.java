@@ -23,13 +23,6 @@ import utils.NamesGenerator;
  */
 public class Agents extends DefaultContext<Agent> {
 
-	/**
-	 * This value is used to automatically generate agent identifiers.
-	 * 
-	 * Schwarzschild radius of Milky Way is 2.08*1015 (~0.2 ly)
-	 * 
-	 * @field serialVersionUID
-	 */
 	public static final long serialVersionUID = 2081015L;
 
 	private List<Agent> listAgents;

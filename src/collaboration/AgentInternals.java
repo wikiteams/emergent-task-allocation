@@ -29,13 +29,13 @@ public class AgentInternals {
 		return experience;
 	}
 
-	public double decayExperience() {
-		return experience.decay();
+	public void decayExperience() {
+		experience.decay();
 	}
 
-	public Boolean decayExperienceWithDeath() {
-		return experience.decayWithDeath();
-	}
+//	public Boolean decayExperienceWithDeath() {
+//		return experience.decayWithDeath();
+//	}
 
 	public AgentInternals deepCopy() {
 		return new AgentInternals(getSkill(), new Experience(getExperience()

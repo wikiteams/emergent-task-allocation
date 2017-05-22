@@ -46,40 +46,21 @@ public class TasksDiviner {
 			chosen = preferential.concludeMath(agent);
 			break;
 		case RANDOM:
-			if (!SimulationParameters.allwaysChooseTask) {
-				ArrayList<Task> tasksWithMatchingSkills = new ArrayList<Task>();
-				Collection<Skill> allAgentSkills = agent.getSkills();
-				for (Task singleTaskFromPool : tasks.values()) {
-					for (Skill singleSkill : allAgentSkills) {
-						if (singleTaskFromPool.getTaskInternals().containsKey(
-								singleSkill.toString())) {
-							tasksWithMatchingSkills.add(singleTaskFromPool);
-						}
+			List<Task> internalRandomList;
+			Collection<Task> coll = tasks.values();
+			if (coll instanceof List)
+				internalRandomList = (List<Task>) coll;
+			else
+				internalRandomList = new ArrayList<Task>(coll);
+			Collections.shuffle(internalRandomList);
+			for (Task singleTaskFromPool : internalRandomList) {
+				if (singleTaskFromPool.getTaskInternals().size() > 0)
+					if (singleTaskFromPool.getGeneralAdvance() < 1.) {
+						chosen = singleTaskFromPool;
+						break;
 					}
-				}
-				if (tasksWithMatchingSkills.size() > 0) {
-					chosen = tasksWithMatchingSkills.get(RandomHelper
-							.nextIntFromTo(0,
-									tasksWithMatchingSkills.size() - 1));
-				} else {
-					System.out.println("Didn't found task with such skills which agent have!");
-				}
-			} else {
-				List<Task> internalRandomList;
-				Collection<Task> coll = tasks.values();
-				if (coll instanceof List)
-					internalRandomList = (List<Task>) coll;
-				else
-					internalRandomList = new ArrayList<Task>(coll);
-				Collections.shuffle(internalRandomList);
-				for (Task singleTaskFromPool : internalRandomList) {
-					if (singleTaskFromPool.getTaskInternals().size() > 0)
-						if (singleTaskFromPool.getGeneralAdvance() < 1.) {
-							chosen = singleTaskFromPool;
-							break;
-						}
-				}
 			}
+
 			break;
 		case CENTRAL:
 			CentralAssignment centralAssignment = new CentralAssignment();
@@ -94,29 +75,30 @@ public class TasksDiviner {
 					+ agent.getStrategy() + " and chooses task "
 					+ chosen.getId() + " by " + strategy + " to work on.");
 		} else {
-			System.out.println("Agent (" + agent.getId() + ") " + agent.toString()
-					+ " uses strategy " + agent.getStrategy() + " by "
-					+ strategy + " but didn't found any task to work on.");
-			if (SimulationParameters.allwaysChooseTask) {
-				System.out.println("Choosing any task left because of param allwaysChooseTask");
-				List<Task> internalRandomList;
-				Collection<Task> coll = tasks.values();
-				if (coll instanceof List)
-					internalRandomList = (List<Task>) coll;
-				else
-					internalRandomList = new ArrayList<Task>(coll);
-				Collections.shuffle(internalRandomList);
-				for (Task singleTaskFromPool : internalRandomList) {
-					if (singleTaskFromPool.getTaskInternals().size() > 0)
-						if (singleTaskFromPool.getGeneralAdvance() < 1.) {
-							chosen = singleTaskFromPool;
-							break;
-						}
-				}
-				//assert chosen != null;
-				System.out.println("Tick" + agent.getIteration());
-				System.out.println("WARNING - No task has been choosen!");
+			System.out.println("Agent (" + agent.getId() + ") "
+					+ agent.toString() + " uses strategy "
+					+ agent.getStrategy() + " by " + strategy
+					+ " but didn't found any task to work on.");
+			System.out
+					.println("Choosing any task left because of param allwaysChooseTask");
+			List<Task> internalRandomList;
+			Collection<Task> coll = tasks.values();
+			if (coll instanceof List)
+				internalRandomList = (List<Task>) coll;
+			else
+				internalRandomList = new ArrayList<Task>(coll);
+			Collections.shuffle(internalRandomList);
+			for (Task singleTaskFromPool : internalRandomList) {
+				if (singleTaskFromPool.getTaskInternals().size() > 0)
+					if (singleTaskFromPool.getGeneralAdvance() < 1.) {
+						chosen = singleTaskFromPool;
+						break;
+					}
 			}
+			// assert chosen != null;
+			System.out.println("Tick" + agent.getIteration());
+			System.out.println("WARNING - No task has been choosen!");
+
 		}
 		return chosen;
 	}

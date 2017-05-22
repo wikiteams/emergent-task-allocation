@@ -204,7 +204,7 @@ public class Agent implements NodeCreator<Agent> {
 				// randomize decision
 				double leavingCurrentChance = RandomHelper.nextDoubleFromTo(0,
 						100);
-				if (leavingCurrentChance <= (double) (SimulationParameters.granularityObstinacy)) {
+				if (leavingCurrentChance <= 75) {
 					System.out.println("Step(" + getTick() + ") of Agent " + this.id
 							+ " continuuing granularity");
 					// continue work on the same skill
@@ -280,8 +280,7 @@ public class Agent implements NodeCreator<Agent> {
 			}
 		} else {
 
-			if (SimulationParameters.allwaysChooseTask
-					&& Tasks.stillNonEmptyTasks()) {
+			if (Tasks.stillNonEmptyTasks()) {
 				Task randomTaskToWork = Tasks.chooseTask(this,
 						Strategy.TaskChoice.RANDOM);
 				assert randomTaskToWork.getTaskInternals().size() > 0;
@@ -297,10 +296,6 @@ public class Agent implements NodeCreator<Agent> {
 				} else
 					randomTaskToWork.workOnTask(this, SkillChoice.RANDOM);
 				EnvironmentEquilibrium.setActivity(true);
-			} else {
-				System.out.println("Agent " + this.id + " didn't work on anything");
-				System.out.println("Agent " + this.id
-						+ " don't have a task to work on in step " + getTick());
 			}
 		}
 

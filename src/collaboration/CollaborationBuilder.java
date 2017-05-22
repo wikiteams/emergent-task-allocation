@@ -269,7 +269,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	private void initializeLoggers() throws IOException {
 		EndRunLogger.init();
 		EndRunLogger.buildHeaders(buildFinalMessageHeader());
-		System.out.println(Constraints.LOGGER_INITIALIZED);
 	}
 	
 	@ScheduledMethod(start = 25000, interval = 25000, priority = ScheduleParameters.LAST_PRIORITY)
@@ -342,13 +341,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ ","
 				+ ExpDecayOption.INSTANCE.getChosen()
 				+ ","
-				+ SimulationParameters.experienceCutPoint
-				+ ","
 				+ GranularityOption.INSTANCE.getChosen()
-				+ ","
-				+ SimulationParameters.granularityType
-				+ ","
-				+ SimulationParameters.granularityObstinacy
 				+ ","
 				+ strategyDistribution.getTaskChoice()
 				+ ","
@@ -363,8 +356,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 				+ gameController.getCurrentGeneration()
 				+ ","
 				+ GenerationLength.INSTANCE.getChosen()
-				+ ","
-				+ SimulationParameters.allwaysChooseTask
 				+ ","
 				+ gameController
 						.countHomophilyDistribution(getCurrentContext())
@@ -516,16 +507,8 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 					if (persistedJob.contains(ai.getSkill())) {
 						// was working on a task, don't decay this skill
 					} else {
-						// decay this experience by beta < 1
-							double value = ai.decayExperience();
-							if (value == -1) {
-								System.out.println("[Experience] of [Agent] "
-												+ (agent.getNick())
-												+ " wasn't decreased because it's already low");
-							} else
-								System.out.println("[Experience] of [Agent] "
-										+ (agent.getNick())
-										+ " decreased and is now " + value);
+						// decay this experience
+							ai.decayExperience();
 					}
 				}
 			}

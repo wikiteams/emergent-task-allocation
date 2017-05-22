@@ -28,12 +28,6 @@ public class SimulationParameters {
 	public static int planNumber;
 	public static int equilibriumDetectionSensitivity;
 
-	public static boolean allwaysChooseTask;
-
-	public static int granularityObstinacy;
-	public static String granularityType;
-	public static boolean experienceCutPoint;
-
 	public static int randomSeed;
 	public static int sweepRuns;
 
@@ -82,16 +76,9 @@ public class SimulationParameters {
 		equilibriumDetectionSensitivity = (Integer) param
 				.getValue("equilibriumDetectionSensitivity");
 
-		allwaysChooseTask = (Boolean) param.getValue("allwaysChooseTask");
-
 		evolutionEnabled = (Integer) param.getValue("evolutionEnabled");
 
 		randomSeed = (Integer) param.getValue("randomSeed");
 		sweepRuns = (Integer) param.getValue("sweepRuns");
-
-		experienceCutPoint = (Boolean) param.getValue("experienceCutPoint");
-
-		granularityObstinacy = (Integer) param.getValue("granularityObstinacy");
-		granularityType = (String) param.getValue("granularityType");
 	}
 }
