@@ -48,6 +48,14 @@
         <methodName>getWorkRemainingAbsolute</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
+    <entry>
+      <string>AverageAgentProductivity</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>AverageAgentProductivity</id>
+        <className>collaboration.Skill</className>
+        <methodName>getAverageAgentProductivity</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
   </methodDataSources>
   <countSources class="linked-hash-map"/>
   <customNADataSources class="linked-hash-map"/>

@@ -9,6 +9,7 @@
     <string>CategoryName</string>
     <string>WorkRemaining</string>
     <string>WorkRemainingAbsolute</string>
+    <string>AverageAgentProductivity</string>
   </sourceIds>
   <fileName>skills_beginning.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
