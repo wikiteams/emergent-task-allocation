@@ -148,7 +148,7 @@ public class Agent implements NodeCreator<Agent> {
 	public AgentInternals getAgentInternalsOrCreate(String key) {
 		AgentInternals result = null;
 		if (getCurrentSkills().get(key) == null) {
-			result = (new AgentInternals(SkillFactory.getInstance().getSkill(
+			result = (new AgentInternals(((Skills) CollaborationBuilder.skills).getSkill(
 					key), new Experience(true)));
 			getCurrentSkills().put(key, result);
 			result = getCurrentSkills().get(key);
@@ -415,8 +415,7 @@ public class Agent implements NodeCreator<Agent> {
 			Boolean forceCreate) {
 		if (getCurrentSkills().get(skill.getName()) == null) {
 			if (forceCreate) {
-				AgentInternals result = (new AgentInternals(SkillFactory
-						.getInstance().getSkill(skill.getName()),
+				AgentInternals result = (new AgentInternals(((Skills) CollaborationBuilder.skills).getSkill(skill.getName()),
 						new Experience(true)));
 				getCurrentSkills().put(skill.getName(), result);
 			} else {

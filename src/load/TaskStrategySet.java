@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import strategies.Strategy;
-import collaboration.SimulationParameters;
 
 public enum TaskStrategySet {
 	

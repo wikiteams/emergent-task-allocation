@@ -16,7 +16,6 @@ public enum Preprocess {
 				+ "for every instance, a new run need to reset static fields in classes");
 		PersistJobDone.clear();
 		PersistRewiring.clear();
-		SkillFactory.skills.clear();
 		NamesGenerator.clear();
 		Tasks.clearTasks();
 		Agent.totalAgents = 0;

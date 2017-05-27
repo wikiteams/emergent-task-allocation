@@ -26,6 +26,7 @@ public class TaskInternals {
 		this.workDone = workDone;
 		this.workRequired = workRequired;
 		this.owner = owner;
+		((Skills) CollaborationBuilder.skills).addTaskInternals(this);
 	}
 
 	public Skill getSkill() {

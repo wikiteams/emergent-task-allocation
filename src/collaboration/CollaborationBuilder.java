@@ -28,7 +28,6 @@ import logger.EndRunLogger;
 import org.ini4j.InvalidFileFormatException;
 
 import repast.simphony.context.Context;
-import repast.simphony.context.space.graph.NetworkBuilder;
 import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.environment.RunInfo;
@@ -75,24 +74,11 @@ import constants.Constraints;
  */
 public class CollaborationBuilder implements ContextBuilder<Object> {
 
-	/**
-	 * This value is used to automatically generate agent identifiers.
-	 * 
-	 * The number 9,223,372,036,854,775,807 is an integer equal to 2^63 - 1.
-	 * Although of the form 2^n - 1, it is not a Mersenne prime. It has a
-	 * factorization of 72 ; 73 ; 127 ; 337 ; 92737 ; 649657, which is equal to
-	 * fi_1(2) ; fi_3(2) ; fi_7(2) ; fi_9(2) ; fi_21(2) ; fi_63(2). Equivalent
-	 * to the hexadecimal value 7FFF,FFFF,FFFF,FFFF16, is the maximum value for
-	 * a 64-bit signed integer in computing.
-	 * 
-	 * @field serialVersionUID
-	 */
-	public static final long serialVersionUID = 9223372036854775807L;
 	public static Context<Task> tasks;
 	public static Context<Agent> agents;
+	public static Context<Skill> skills;
 
 	private StrategyDistribution strategyDistribution;
-	private SkillFactory skillFactory;
 	private Schedule schedule = new Schedule();
 
 	private GameController gameController;
@@ -117,7 +103,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		}
 	}
 
-	private void prepareDataControllers() throws InvalidFileFormatException,
+	private void prepareDataControllers(Context<Object> context) throws InvalidFileFormatException,
 			IOException {
 		System.out.println(Constraints.LOADING_PARAMETERS);
 		SimulationParameters.init();
@@ -134,14 +120,9 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		 * evolutionary model
 		 */
 		strategyDistribution = new StrategyDistribution();
-
-		// initialize skill pools - information on all known languages
-		System.out.println("[SkillFactory] parsing skills"
-				+ " (programing languages) from file");
-		skillFactory = SkillFactory.getInstance();
-		skillFactory.buildSkillsLibrary(false);
-		System.out.println("[SkillFactory] parsed all known"
-				+ " [programming languages].");
+		
+		skills = new Skills();
+		context.addSubContext(skills);
 	}
 
 	private void prepareWorkLoadData() {
@@ -174,7 +155,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		if (SimulationParameters.evolutionEnabled < 1){
 			gameController = new GameController(strategyDistribution, true);
 		} else {
-			// Sir, evolution is enabled, enable game controller
 			gameController = new GameController(strategyDistribution, false);
 			EquilibriumDetector.init();
 		}
@@ -201,7 +181,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 
 		try {
 			// prepare e.g. skill factory
-			prepareDataControllers();
+			prepareDataControllers(context);
 			// divide set of parameters into subscenarios
 			ParametersDivider.findMatch(runNumber, SimulationParameters.sweepRuns);
 			// prepare sqlite and other factories
@@ -219,7 +199,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		agents = new Agents(strategyDistribution,
 				AgentCount.INSTANCE.getChosen());
 		context.addSubContext(agents);
-
+		
 		prepareGameController(context);
 
 		assert context.getObjects(GameController.class).size() > 0;
@@ -256,17 +236,15 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		Context<Agent> context = agents;
 		return context.getObjects(Agent.class);
 	}
+	
+	private IndexedIterable<Skill> getSkills() {
+		Context<Skill> context = skills;
+		return context.getObjects(Skill.class);
+	}
 
 	private void initializeLoggers() throws IOException {
 		EndRunLogger.init();
 		EndRunLogger.buildHeaders(buildFinalMessageHeader());
-	}
-	
-	@ScheduledMethod(start = 25000, interval = 25000, priority = ScheduleParameters.LAST_PRIORITY)
-	public void makeMoreMemory() {
-		System.gc(); // I realise there is no guarantee of vacuum cleaning,
-		// but I want to make a try...
-		// Memory is sometimes a problem when tick count > 200k
 	}
 
 	@ScheduledMethod(start = 2, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)

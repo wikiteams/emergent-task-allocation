@@ -2,8 +2,9 @@ package test;
 
 import java.util.ArrayList;
 
+import collaboration.CollaborationBuilder;
 import collaboration.Skill;
-import collaboration.SkillFactory;
+import collaboration.Skills;
 import collaboration.Task;
 import collaboration.TaskInternals;
 import collaboration.WorkUnit;
@@ -11,20 +12,19 @@ import collaboration.WorkUnit;
 public class TaskTestUniverse {
 	
 	public static ArrayList<Task> DATASET = new ArrayList<Task>();
-	private static SkillFactory skillFactory = SkillFactory.getInstance();
 	
 	public static void init(){
 		DATASET.clear();
 		
 		Task task1 = new Task();
 		System.out.println("Initializing task 1..");
-		Skill skill11 = skillFactory.getSkill("Java");
+		Skill skill11 = ((Skills) CollaborationBuilder.skills).getSkill("Java");
 		WorkUnit workDone11 = new WorkUnit(3);
 		WorkUnit workRequired11 = new WorkUnit(18);
-		Skill skill12 = skillFactory.getSkill("C");
+		Skill skill12 = ((Skills) CollaborationBuilder.skills).getSkill("C");
 		WorkUnit workDone12 = new WorkUnit(1);
 		WorkUnit workRequired12 = new WorkUnit(10);
-		Skill skill13 = skillFactory.getSkill("XML");
+		Skill skill13 = ((Skills) CollaborationBuilder.skills).getSkill("XML");
 		WorkUnit workDone13 = new WorkUnit(0);
 		WorkUnit workRequired13 = new WorkUnit(10);
 		task1.addSkill("Java", new TaskInternals(skill11, workRequired11, workDone11, task1));
@@ -33,13 +33,13 @@ public class TaskTestUniverse {
 		
 		Task task2 = new Task();
 		System.out.println("Initializing task 2..");
-		Skill skill21 = skillFactory.getSkill("Java");
+		Skill skill21 = ((Skills) CollaborationBuilder.skills).getSkill("Java");
 		WorkUnit workDone21 = new WorkUnit(0);
 		WorkUnit workRequired21 = new WorkUnit(10);
-		Skill skill22 = skillFactory.getSkill("C");
+		Skill skill22 = ((Skills) CollaborationBuilder.skills).getSkill("C");
 		WorkUnit workDone22 = new WorkUnit(6);
 		WorkUnit workRequired22 = new WorkUnit(10);
-		Skill skill23 = skillFactory.getSkill("XML");
+		Skill skill23 = ((Skills) CollaborationBuilder.skills).getSkill("XML");
 		WorkUnit workDone23 = new WorkUnit(2);
 		WorkUnit workRequired23 = new WorkUnit(10);
 		task2.addSkill("Java", new TaskInternals(skill21, workRequired21, workDone21, task2));
@@ -48,13 +48,13 @@ public class TaskTestUniverse {
 		
 		Task task3 = new Task();
 		System.out.println("Initializing task 3..");
-		Skill skill31 = skillFactory.getSkill("Java");
+		Skill skill31 = ((Skills) CollaborationBuilder.skills).getSkill("Java");
 		WorkUnit workDone31 = new WorkUnit(11);
 		WorkUnit workRequired31 = new WorkUnit(18);
-		Skill skill32 = skillFactory.getSkill("C");
+		Skill skill32 = ((Skills) CollaborationBuilder.skills).getSkill("C");
 		WorkUnit workDone32 = new WorkUnit(0);
 		WorkUnit workRequired32 = new WorkUnit(10);
-		Skill skill33 = skillFactory.getSkill("XML");
+		Skill skill33 = ((Skills) CollaborationBuilder.skills).getSkill("XML");
 		WorkUnit workDone33 = new WorkUnit(6);
 		WorkUnit workRequired33 = new WorkUnit(10);
 		task3.addSkill("Java", new TaskInternals(skill31, workRequired31, workDone31, task3));
@@ -63,10 +63,10 @@ public class TaskTestUniverse {
 		
 		Task task4 = new Task();
 		System.out.println("Initializing task 4..");
-		Skill skill41 = skillFactory.getSkill("C");
+		Skill skill41 = ((Skills) CollaborationBuilder.skills).getSkill("C");
 		WorkUnit workDone41 = new WorkUnit(0);
 		WorkUnit workRequired41 = new WorkUnit(12);
-		Skill skill42 = skillFactory.getSkill("XML");
+		Skill skill42 = ((Skills) CollaborationBuilder.skills).getSkill("XML");
 		WorkUnit workDone42 = new WorkUnit(1);
 		WorkUnit workRequired42 = new WorkUnit(10);
 		task4.addSkill("C", new TaskInternals(skill41, workRequired41, workDone41, task4));
@@ -74,10 +74,10 @@ public class TaskTestUniverse {
 		
 		Task task5 = new Task();
 		System.out.println("Initializing task 5..");
-		Skill skill51 = skillFactory.getSkill("C");
+		Skill skill51 = ((Skills) CollaborationBuilder.skills).getSkill("C");
 		WorkUnit workDone51 = new WorkUnit(11);
 		WorkUnit workRequired51 = new WorkUnit(12);
-		Skill skill52 = skillFactory.getSkill("XML");
+		Skill skill52 = ((Skills) CollaborationBuilder.skills).getSkill("XML");
 		WorkUnit workDone52 = new WorkUnit(9);
 		WorkUnit workRequired52 = new WorkUnit(10);
 		task5.addSkill("C", new TaskInternals(skill51, workRequired51, workDone51, task5));

@@ -28,15 +28,6 @@ import com.google.common.collect.Lists;
  */
 public class Tasks extends DefaultContext<Task> {
 
-	/**
-	 * This value is used to automatically generate agent identifiers.
-	 * 
-	 * If you want to see 1 million digits of Pi, then visit index2.html at the
-	 * root of domain http://
-	 * 3.141592653589793238462643383279502884197169399375105820974944592.com/
-	 * 
-	 * @field serialVersionUID
-	 */
 	public static final long serialVersionUID = 31415926535897L;
 
 	private Integer allowedLoad;
@@ -96,7 +87,7 @@ public class Tasks extends DefaultContext<Task> {
 		return result;
 	}*/
 
-	public HashMap<Skill, ArrayList<Task>> getTasksWithoutSkills(
+/*	public HashMap<Skill, ArrayList<Task>> getTasksWithoutSkills(
 			Collection<Skill> c) {
 		HashMap<Skill, ArrayList<Task>> result = new HashMap<Skill, ArrayList<Task>>();
 		for (Skill skill : c) {
@@ -114,7 +105,7 @@ public class Tasks extends DefaultContext<Task> {
 			}
 		}
 		return result;
-	}
+	}*/
 
 	public static Set<Task> getTasksHavingSkills(Collection<Skill> c) {
 		Set<Task> result = new HashSet<Task>();

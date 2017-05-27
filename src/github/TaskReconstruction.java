@@ -1,7 +1,8 @@
 package github;
 
+import collaboration.CollaborationBuilder;
 import collaboration.Skill;
-import collaboration.SkillFactory;
+import collaboration.Skills;
 import collaboration.Task;
 import collaboration.TaskInternals;
 import collaboration.WorkUnit;
@@ -11,8 +12,7 @@ public class TaskReconstruction {
 	public static void giveWork(Task task, String skillName,
 			Integer workDoneInt, Integer workRequiredInt) {
 		try {
-			SkillFactory skillFactory = SkillFactory.getInstance();
-			Skill skill = skillFactory.getSkill(skillName);
+			Skill skill = ((Skills) CollaborationBuilder.skills).getSkill(skillName);
 			
 			assert skill != null;
 

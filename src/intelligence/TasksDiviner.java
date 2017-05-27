@@ -6,15 +6,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import repast.simphony.random.RandomHelper;
 import strategies.Strategy;
 import tasks.CentralAssignment;
 import tasks.HeterophylyExpBased;
 import tasks.HomophylyExpBased;
 import tasks.Preferential;
 import collaboration.Agent;
-import collaboration.SimulationParameters;
-import collaboration.Skill;
 import collaboration.Task;
 
 /***
@@ -22,7 +19,7 @@ import collaboration.Task;
  * 
  * @author Oskar Jarczyk
  * @since 2.0
- * @version 2.0.8
+ * @version 3.0
  */
 public class TasksDiviner {
 

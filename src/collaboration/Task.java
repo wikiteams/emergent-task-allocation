@@ -242,8 +242,7 @@ public class Task {
 		assert intersection != null;
 
 		if (intersection.size() < 1) {
-			intersection = skills.values(); // experience - genesis action
-											// needed!
+			intersection = skills.values(); // experience - genesis action needed!
 			if (intersection.size() < 1)
 				return false;
 		}

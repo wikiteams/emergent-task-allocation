@@ -46,6 +46,8 @@ public abstract class Constraints {
 			"Choose random task left! Agents are in a desire of job even if they rookie!";
 
 	public static final int generationNumber = 200;
+	
+	public static final double statisticEmpty = -99.0;
 
 	public static final String SEPERATOR = "---------------------------------------------------------";
 

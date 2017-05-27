@@ -1,15 +1,19 @@
 package collaboration;
 
 import java.io.Serializable;
+import java.util.List;
+
+import constants.Constraints;
+import repast.simphony.context.DefaultContext;
 
 /***
  * Represents a "skill" - a GitHub language
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 1.1
+ * @version 3.0
  */
-public class Skill implements Serializable{
+public class Skill extends DefaultContext<Skill> implements Serializable{
 
 	/**
 	 * Generated serialVersionUID for serialization
@@ -40,14 +44,6 @@ public class Skill implements Serializable{
 		this.name = name;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public int getStrength() {
 		return strength;
 	}
@@ -58,6 +54,10 @@ public class Skill implements Serializable{
 
 	public Category getCategory() {
 		return category;
+	}
+	
+	public String getCategoryName() {
+		return category.toString();
 	}
 
 	public void setCategory(Category category) {
@@ -78,6 +78,85 @@ public class Skill implements Serializable{
 
 	public void setCardinalProbability(int cardinalProbability) {
 		this.cardinalProbability = cardinalProbability;
+	}
+	
+	public double getWorkRemainingAbsolute(){
+		double result = 0;
+		long size = 0;
+		
+		try{
+			List<TaskInternals> allTaskInternals = ((Skills) CollaborationBuilder.skills).getSkillsUsed().get(this);
+			for(TaskInternals taskInternal: allTaskInternals) {
+				if(!taskInternal.isWorkDone()) {
+					result += taskInternal.getWorkLeftInPerc();
+					size += 1;
+				}
+			}
+		} catch (NullPointerException nexc) {
+			return Constraints.statisticEmpty;
+		}
+		
+		return result / size;
+	}
+
+	public double getWorkRemaining(){
+		double result = 0;
+		long size = 0;
+		
+		try{
+			List<TaskInternals> allTaskInternals = ((Skills) CollaborationBuilder.skills).getSkillsUsed().get(this);
+			
+			for(TaskInternals taskInternal: allTaskInternals) {
+				if(!taskInternal.isWorkDone()) {
+					result += taskInternal.getWorkLeft();
+					size += 1;
+				}
+			}
+		} catch (NullPointerException nexc) {
+			return Constraints.statisticEmpty;
+		}
+		
+		return result / size;
+	}
+	
+	public double getWorkDone(){
+		double result = 0;
+		long size = 0;
+		
+		try{
+			List<TaskInternals> allTaskInternals = ((Skills) CollaborationBuilder.skills).getSkillsUsed().get(this);
+			
+			for(TaskInternals taskInternal: allTaskInternals) {
+				if(!taskInternal.isWorkDone()) {
+					result += taskInternal.getWorkDone().d;
+					size += 1;
+				}
+			}
+		} catch (NullPointerException nexc) {
+			return Constraints.statisticEmpty;
+		}
+		
+		return result / size;
+	}
+	
+	public double getWorkDoneAbsolute(){
+		double result = 0;
+		long size = 0;
+		
+		try{
+			List<TaskInternals> allTaskInternals = ((Skills) CollaborationBuilder.skills).getSkillsUsed().get(this);
+			
+			for(TaskInternals taskInternal: allTaskInternals) {
+				if(!taskInternal.isWorkDone()) {
+					result += taskInternal.getProgress();
+					size += 1;
+				}
+			}
+		} catch (NullPointerException nexc) {
+			return Constraints.statisticEmpty;
+		}
+		
+		return result / size;
 	}
 
 	@Override

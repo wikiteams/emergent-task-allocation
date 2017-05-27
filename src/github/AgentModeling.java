@@ -12,16 +12,16 @@ import org.apache.commons.lang3.SystemUtils;
 import au.com.bytecode.opencsv.CSVReader;
 import collaboration.Agent;
 import collaboration.AgentInternals;
+import collaboration.CollaborationBuilder;
 import collaboration.Experience;
 import collaboration.SimulationAdvancedParameters;
 import collaboration.Skill;
-import collaboration.SkillFactory;
+import collaboration.Skills;
 
 public class AgentModeling {
 
 	private static LinkedHashMap<String, HashMap<Skill, Experience>> skillSet = 
 			new LinkedHashMap<String, HashMap<Skill, Experience>>();
-	private static SkillFactory skillFactory = SkillFactory.getInstance();
 
 	private final static String filename = SystemUtils.IS_OS_LINUX ? 
 			"data/agents-model/results.csv"
@@ -60,7 +60,7 @@ public class AgentModeling {
 				HashMap<Skill, Experience> l = skillSet.get(nick);
 				System.out.println("Parsed from CSV new language to existing person: " + nick
 						+ " - " + language);
-				Skill skill = skillFactory.getSkill(language);
+				Skill skill = ((Skills) CollaborationBuilder.skills).getSkill(language);
 				Experience experience = calculateExperience(workDone,
 						maximums.get(skill));
 				l.put(skill, experience);
@@ -70,7 +70,7 @@ public class AgentModeling {
 				nick = nextLine[1] + counter;
 				HashMap<Skill, Experience> l = new HashMap<Skill, Experience>();
 				System.out.println("Parsed from CSV new person: " + nick + " - " + language);
-				Skill skill = skillFactory.getSkill(language);
+				Skill skill = ((Skills) CollaborationBuilder.skills).getSkill(language);
 				Experience experience = calculateExperience(workDone,
 						maximums.get(skill));
 				l.put(skill, experience);
@@ -91,7 +91,7 @@ public class AgentModeling {
 		while ((nextLine = reader.readNext()) != null) {
 			String language = nextLine[2];
 			int workDone = Integer.parseInt(nextLine[3]);
-			Skill skill = SkillFactory.getInstance().getSkill(language);
+			Skill skill = ((Skills) CollaborationBuilder.skills).getSkill(language);
 			if (result.containsKey(skill)) {
 				if (result.get(skill) < workDone) {
 					result.put(skill, workDone);

@@ -1,7 +1,5 @@
 package collaboration;
 
-import java.text.DecimalFormat;
-
 import load.ParametrizedSigmoidOption;
 import load.SigmoidParameter;
 
@@ -13,7 +11,7 @@ import load.SigmoidParameter;
  * 
  * @author Oskar Jarczyk
  * @since 1.0
- * @version 2.0.11
+ * @version 3.0
  * 
  */
 public class Experience {

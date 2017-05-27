@@ -3,17 +3,11 @@ package collaboration;
 import java.io.Serializable;
 
 public class Category implements Serializable{
+
+	private static final long serialVersionUID = 3706760011333654857L;
 	
-	/**
-	 * Generated serialVersionUID for serialisation
-	 */
-	private static final long serialVersionUID = 4085149617945605852L;
 	private CategoryType type;
 	private int hash;
-	
-	public Category(){
-		System.out.println("Category initialized");
-	}
 	
 	public Category(CategoryType type){
 		System.out.println("Category initialized with type: " + type);

@@ -12,26 +12,22 @@ public class SigmoidCurveTest {
 
 	@Test
 	public void testMin() {
-		SigmoidCurve sc = new SigmoidCurve();
-		assertEquals(0.0, sc.getDelta(0.0), delta);
+		assertEquals(0.0, SigmoidCurve.getDelta(0.0), delta);
 	}
 	
 	@Test
 	public void testMax() {
-		SigmoidCurve sc = new SigmoidCurve();
-		assertEquals(1.0, sc.getDelta(1.0), delta);
+		assertEquals(1.0, SigmoidCurve.getDelta(1.0), delta);
 	}
 	
 	@Test
 	public void testMiddle() {
-		SigmoidCurve sc = new SigmoidCurve();
-		assertEquals(0.5, sc.getDelta(0.5), 0.00000001);
+		assertEquals(0.5, SigmoidCurve.getDelta(0.5), 0.00000001);
 	}
 	
 	@Test
 	public void testOverLearning() {
-		SigmoidCurve sc = new SigmoidCurve();
-		assertEquals(1.0, sc.getDelta(1.3), 0.00000001);
+		assertEquals(1.0, SigmoidCurve.getDelta(1.3), 0.00000001);
 	}
 
 }

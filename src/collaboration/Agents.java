@@ -18,12 +18,10 @@ import utils.NamesGenerator;
  * structure. Context holds all simulation Agents.
  * 
  * @author Oskar Jarczyk
- * @version 2.0.11
- * @since ?
+ * @version 3.0
+ * @since 1.0
  */
 public class Agents extends DefaultContext<Agent> {
-
-	public static final long serialVersionUID = 2081015L;
 
 	private List<Agent> listAgents;
 	private StrategyDistribution strategyDistribution;

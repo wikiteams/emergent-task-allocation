@@ -16,7 +16,7 @@ public class Utility {
 		for (AgentInternals currentSkill : agentInternals) {
 			sum += currentSkill.getExperience().getDelta();
 		}
-		return sum / SkillFactory.getInstance().countAllSkills();
+		return sum / ((Skills) CollaborationBuilder.skills).countAllSkills();
 	}
 
 	public static Double getBestSkill(Collection<AgentInternals> agentInternals) {
