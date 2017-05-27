@@ -26,7 +26,6 @@ public class SimulationParameters {
 
 	public static int evolutionEnabled;
 	public static int planNumber;
-	public static int equilibriumDetectionSensitivity;
 
 	public static int randomSeed;
 	public static int sweepRuns;
@@ -72,9 +71,6 @@ public class SimulationParameters {
 		
 		taskCountConverter.fromString(((String) param
 				.getValue("numTasks")).toUpperCase());
-
-		equilibriumDetectionSensitivity = (Integer) param
-				.getValue("equilibriumDetectionSensitivity");
 
 		evolutionEnabled = (Integer) param.getValue("evolutionEnabled");
 

@@ -70,17 +70,17 @@ public class TasksDiviner {
 			assert false; // there is no default method, so please never happen
 			break;
 		}
-		if (chosen != null) {
+/*		if (chosen != null) {
 			System.out.println("Agent " + agent.toString() + " uses strategy "
 					+ agent.getStrategy() + " and chooses task "
 					+ chosen.getId() + " by " + strategy + " to work on.");
-		} else {
-			System.out.println("Agent (" + agent.getId() + ") "
+		}*/
+		if (chosen == null) {
+/*			System.out.println("Agent (" + agent.getId() + ") "
 					+ agent.toString() + " uses strategy "
 					+ agent.getStrategy() + " by " + strategy
-					+ " but didn't found any task to work on.");
-			System.out
-					.println("Choosing any task left because of param allwaysChooseTask");
+					+ " but didn't found any task to work on.");*/
+			// Choosing any task left
 			List<Task> internalRandomList;
 			Collection<Task> coll = tasks.values();
 			if (coll instanceof List)
@@ -96,8 +96,8 @@ public class TasksDiviner {
 					}
 			}
 			// assert chosen != null;
-			System.out.println("Tick" + agent.getIteration());
-			System.out.println("WARNING - No task has been choosen!");
+			//System.out.println("Tick" + agent.getIteration());
+			//System.out.println("WARNING - No task has been choosen!");
 
 		}
 		return chosen;

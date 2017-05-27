@@ -193,8 +193,8 @@ public class Agent implements NodeCreator<Agent> {
 
 	@ScheduledMethod(start = 1, interval = 1, priority = 100)
 	public void step() {
-		System.out.println("Step(" + getTick() + ") of Agent " + this.id
-				+ " scheduled method launched.");
+		/*System.out.println("Step(" + getTick() + ") of Agent " + this.id
+				+ " scheduled method launched.");*/
 
 		if (GranularityOption.INSTANCE.getChosen()) {
 			GranulatedChoice granulated = PersistRewiring
@@ -205,8 +205,8 @@ public class Agent implements NodeCreator<Agent> {
 				double leavingCurrentChance = RandomHelper.nextDoubleFromTo(0,
 						100);
 				if (leavingCurrentChance <= 75) {
-					System.out.println("Step(" + getTick() + ") of Agent " + this.id
-							+ " continuuing granularity");
+					/*System.out.println("Step(" + getTick() + ") of Agent " + this.id
+							+ " continuuing granularity");*/
 					// continue work on the same skill
 					// but check if the is any work left in this particular task
 					Boolean workDone = granulated.getTaskChosen()
@@ -265,7 +265,7 @@ public class Agent implements NodeCreator<Agent> {
 		if ((taskToWork != null) && (taskToWork.getTaskInternals().size() > 0)) {
 
 			assert taskToWork.getTaskInternals().size() > 0;
-			System.out.println("Agent " + this.id + " will work on task " + taskToWork.getId());
+			//System.out.println("Agent " + this.id + " will work on task " + taskToWork.getId());
 			if ((this.getCentralAssignmentOrders() != null)
 					&& (this.getCentralAssignmentOrders()
 							.getChosenTask()
@@ -284,8 +284,8 @@ public class Agent implements NodeCreator<Agent> {
 				Task randomTaskToWork = Tasks.chooseTask(this,
 						Strategy.TaskChoice.RANDOM);
 				assert randomTaskToWork.getTaskInternals().size() > 0;
-				System.out.println("Agent " + this.id + " will work on task "
-						+ randomTaskToWork.getId());
+				/*System.out.println("Agent " + this.id + " will work on task "
+						+ randomTaskToWork.getId());*/
 				if ((this.getCentralAssignmentOrders() != null)
 						&& (this.getCentralAssignmentOrders()
 								.getChosenTask()

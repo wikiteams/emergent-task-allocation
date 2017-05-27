@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import networking.CollaborationNetwork;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.util.ContextUtils;
@@ -207,8 +206,8 @@ public class Task {
 
 		assert taskInternal != null;
 
-		System.out.println("Choosing Si:{" + taskInternal.getSkill().getName()
-				+ "} inside Ti:{" + this.toString() + "}");
+		/*System.out.println("Choosing Si:{" + taskInternal.getSkill().getName()
+				+ "} inside Ti:{" + this.toString() + "}");*/
 
 		Experience experience = agent.getAgentInternalsOrCreate(
 				cao.getChosenSkillName()).getExperience();
@@ -230,8 +229,6 @@ public class Task {
 	}
 
 	public Boolean workOnTask(Agent agent, Strategy.SkillChoice strategy) {
-		if (SimulationAdvancedParameters.enableNetwork)
-			CollaborationNetwork.addEdge(agent, this);
 
 		Collection<TaskInternals> intersection;
 		List<Skill> skillsImprovedList = new ArrayList<Skill>();
@@ -253,14 +250,14 @@ public class Task {
 
 		switch (strategy) {
 		case PROPORTIONAL:
-			System.out.println(Constraints.INSIDE_PROPORTIONAL_TIME_DIVISION);
+			//System.out.println(Constraints.INSIDE_PROPORTIONAL_TIME_DIVISION);
 			ProportionalTimeDivision proportionalTimeDivision = new ProportionalTimeDivision();
 			for (TaskInternals singleTaskInternalFromIntersect : new CopyOnWriteArrayList<TaskInternals>(
 					intersection)) {
-				System.out.println("Choosing Si:{"
+				/*System.out.println("Choosing Si:{"
 						+ singleTaskInternalFromIntersect.getSkill().getName()
 						+ "} inside Ti:{"
-						+ singleTaskInternalFromIntersect.toString() + "}");
+						+ singleTaskInternalFromIntersect.toString() + "}");*/
 				double n = intersection.size();
 				double alpha = 1d / n;
 				Experience experience = agent.getAgentInternalsOrCreate(
@@ -275,7 +272,7 @@ public class Task {
 			}
 			break;
 		case LEAST_WORK_LEFT:
-			System.out.println(Constraints.INSIDE_GREEDY_ASSIGNMENT_BY_TASK);
+			//System.out.println(Constraints.INSIDE_GREEDY_ASSIGNMENT_BY_TASK);
 			CopyOnWriteArrayList<TaskInternals> copyIntersection = new CopyOnWriteArrayList<TaskInternals>(
 					intersection);
 			/**
@@ -300,9 +297,9 @@ public class Task {
 			assert singleTaskInternal != null;
 
 			{
-				System.out.println("Choosing Si:{"
+				/*System.out.println("Choosing Si:{"
 						+ singleTaskInternal.getSkill().getName()
-						+ "} inside Ti:{" + singleTaskInternal.toString() + "}");
+						+ "} inside Ti:{" + singleTaskInternal.toString() + "}");*/
 				Experience experience = agent.getAgentInternalsOrCreate(
 						singleTaskInternal.getSkill().getName())
 						.getExperience();
@@ -314,7 +311,7 @@ public class Task {
 			}
 			break;
 		case GREATEST_EXPERIENCE:
-			System.out.println(Constraints.INSIDE_CHOICE_OF_AGENT);
+			//System.out.println(Constraints.INSIDE_CHOICE_OF_AGENT);
 
 			/**
 			 * Pracuj wylacznie nad tym skillem, w ktorym agent ma najwiecej
@@ -339,9 +336,9 @@ public class Task {
 			 */
 			assert singleTaskInternal != null;
 			{
-				System.out.println("Choosing Si:{"
+				/*System.out.println("Choosing Si:{"
 						+ singleTaskInternal.getSkill().getName()
-						+ "} inside Ti:{" + singleTaskInternal.toString() + "}");
+						+ "} inside Ti:{" + singleTaskInternal.toString() + "}");*/
 				Experience experience = agent.getAgentInternalsOrCreate(
 						singleTaskInternal.getSkill().getName())
 						.getExperience();
@@ -353,7 +350,7 @@ public class Task {
 			}
 			break;
 		case RANDOM:
-			System.out.println(Constraints.INSIDE_RANDOM);
+			//System.out.println(Constraints.INSIDE_RANDOM);
 			List<TaskInternals> intersectionToShuffle = new ArrayList<TaskInternals>();
 			for (TaskInternals taskInternalsR : intersection) {
 				intersectionToShuffle.add(taskInternalsR);
@@ -363,9 +360,9 @@ public class Task {
 					.get(RandomHelper.nextIntFromTo(0,
 							intersectionToShuffle.size() - 1));
 			{
-				System.out.println("Choosing Si:{"
+				/*System.out.println("Choosing Si:{"
 						+ randomTaskInternal.getSkill().getName()
-						+ "} inside Ti:{" + randomTaskInternal.toString() + "}");
+						+ "} inside Ti:{" + randomTaskInternal.toString() + "}");*/
 				Experience experience = agent.getAgentInternalsOrCreate(
 						randomTaskInternal.getSkill().getName())
 						.getExperience();

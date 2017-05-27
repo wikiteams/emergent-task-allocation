@@ -6,7 +6,7 @@ import java.util.Map;
 import strategies.Strategy.TaskChoice;
 import utils.ObjectsHelper;
 import collaboration.GameController;
-import collaboration.SimulationParameters;
+import collaboration.SimulationAdvancedParameters;
 
 /**
  * Class responsible for finding a stable set of strategies
@@ -20,7 +20,7 @@ public class EquilibriumDetector {
 
 	public static void init() {
 		possiblyStableSet = new CircularFifoQueue<Map<TaskChoice, Integer>>(
-				SimulationParameters.equilibriumDetectionSensitivity);
+				SimulationAdvancedParameters.equilibriumDetectionSensitivity);
 	}
 	
 	public static void clear(){

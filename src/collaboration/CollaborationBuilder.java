@@ -24,8 +24,6 @@ import load.SkillStrategySet;
 import load.TaskCount;
 import load.TaskStrategySet;
 import logger.EndRunLogger;
-import networking.CollaborationNetwork;
-import networking.DynamicGexfGraph;
 
 import org.ini4j.InvalidFileFormatException;
 
@@ -201,13 +199,6 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		Preprocess.clearStaticHeap();
 		System.out.println("[Static heap] cleared..");
 
-		if (SimulationAdvancedParameters.enableNetwork) {
-			NetworkBuilder<Object> builder = new NetworkBuilder<Object>(
-					"TasksAndWorkers", context, false);
-			CollaborationNetwork.collaborationNetwork = builder.buildNetwork();
-			CollaborationNetwork.gephiEngine = new DynamicGexfGraph().init();
-		}
-
 		try {
 			// prepare e.g. skill factory
 			prepareDataControllers();
@@ -286,17 +277,17 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * strategies
 	 */
 	public void finishSimulation() {
-		System.out.println("[finishSimulation() check launched] Checking if simulation can be ended...");
+		//System.out.println("[finishSimulation() check launched] Checking if simulation can be ended...");
 		EnvironmentEquilibrium.setActivity(false);
 		if (gameController.isEvolutionary()) {
 			if (EquilibriumDetector.evaluate(gameController)) {
-				System.out.println("[Stable set of Strategies] detected, finishing simulation");
+				//System.out.println("[Stable set of Strategies] detected, finishing simulation");
 				EndRunLogger.finalMessage((buildFinalMessage()));
 				RunEnvironment.getInstance().endRun();
 				// cleanAfter();
 			}
 		} else if (((Tasks) tasks).getCount() < 1) {
-			System.out.println("Count of [Task Pool] is < 1, finishing simulation");
+			//System.out.println("Count of [Task Pool] is < 1, finishing simulation");
 			EndRunLogger.finalMessage((buildFinalMessage()));
 			RunEnvironment.getInstance().endRun();
 			// cleanAfter();
@@ -311,18 +302,13 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * strategies
 	 */
 	public void checkForActivity() {
-		System.out.println("[checkForActivity() check launched] Checking if there was any work at all in current Tick");
+		//System.out.println("[checkForActivity() check launched] Checking if there was any work at all in current Tick");
 		if (EnvironmentEquilibrium.getActivity() == false) {
-			System.out.println("EnvironmentEquilibrium.getActivity() returns false!");
+			//System.out.println("EnvironmentEquilibrium.getActivity() returns false!");
 			EndRunLogger.finalMessage((buildFinalMessage()));
 			RunEnvironment.getInstance().endRun();
 			// cleanAfter();
 		}
-	}
-
-	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
-	public void clearCollaborationNetwork() {
-		CollaborationNetwork.clear();
 	}
 
 	private String buildFinalMessage() {
@@ -406,11 +392,11 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * first (clearing previous orders) and than making the math
 	 */
 	public void centralPlanning() {
-		System.out.println("CentralPlanning scheduled method launched, listAgent.size(): "
+		/*System.out.println("CentralPlanning scheduled method launched, listAgent.size(): "
 						+ getAgents().size()
 						+ " taskPool.size(): "
-						+ ((Tasks) tasks).getCount());
-		System.out.println("Zeroing agents' orders");
+						+ ((Tasks) tasks).getCount());*/
+		/*System.out.println("Zeroing agents' orders");*/
 		centralPlanner.zeroAgentsOrders(getAgents());
 		centralPlanner.centralPlanningCalc(getAgents(), (Tasks) tasks);
 	}
@@ -421,12 +407,12 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 	 * hybrid model it can take work for a subset of Agents as well.
 	 */
 	public void buildCentralPlanner() {
-		System.out.println("Method buildCentralPlanner lunched."
-				+ "Checking now if central planer is needed at all.");
+		/*System.out.println("Method buildCentralPlanner lunched."
+				+ "Checking now if central planer is needed at all.");*/
 		if (strategyDistribution.isCentralPlannerEnabled()) {
-			System.out.println("Creating a central planner instance.");
+			/*System.out.println("Creating a central planner instance.");*/
 			centralPlanner = CentralPlanning.getSingletonInstance();
-			System.out.println("Central planner is initiating schedule.");
+			/*System.out.println("Central planner is initiating schedule.");*/
 			ISchedule schedule = RunEnvironment.getInstance()
 					.getCurrentSchedule();
 			ScheduleParameters params = ScheduleParameters.createRepeating(1,
