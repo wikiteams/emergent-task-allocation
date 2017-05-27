@@ -232,7 +232,7 @@ public class CollaborationBuilder implements ContextBuilder<Object> {
 		return context.getObjects(Task.class);
 	}
 
-	private IndexedIterable<Agent> getAgents() {
+	public IndexedIterable<Agent> getAgents() {
 		Context<Agent> context = agents;
 		return context.getObjects(Agent.class);
 	}

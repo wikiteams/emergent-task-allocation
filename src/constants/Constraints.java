@@ -48,6 +48,7 @@ public abstract class Constraints {
 	public static final int generationNumber = 200;
 	
 	public static final double statisticEmpty = -99.0;
+	public static final double statisticEmpty2 = -70.0;
 
 	public static final String SEPERATOR = "---------------------------------------------------------";
 

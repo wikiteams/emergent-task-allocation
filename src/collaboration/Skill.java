@@ -96,6 +96,9 @@ public class Skill extends DefaultContext<Skill> implements Serializable{
 			return Constraints.statisticEmpty;
 		}
 		
+		if(size < 1)
+			return Constraints.statisticEmpty;
+		
 		return result / size;
 	}
 
@@ -115,6 +118,9 @@ public class Skill extends DefaultContext<Skill> implements Serializable{
 		} catch (NullPointerException nexc) {
 			return Constraints.statisticEmpty;
 		}
+		
+		if(size < 1)
+			return Constraints.statisticEmpty;
 		
 		return result / size;
 	}
@@ -136,6 +142,9 @@ public class Skill extends DefaultContext<Skill> implements Serializable{
 			return Constraints.statisticEmpty;
 		}
 		
+		if(size < 1)
+			return Constraints.statisticEmpty;
+		
 		return result / size;
 	}
 	
@@ -155,6 +164,27 @@ public class Skill extends DefaultContext<Skill> implements Serializable{
 		} catch (NullPointerException nexc) {
 			return Constraints.statisticEmpty;
 		}
+		
+		if(size < 1)
+			return Constraints.statisticEmpty;
+		
+		return result / size;
+	}
+	
+	public double getAverageAgentProductivity(){
+		double result = 0;
+		long size = 0;
+		
+		for(Agent agent: CollaborationBuilder.agents.getObjects(Agent.class)){
+			AgentInternals internals = agent.getAgentInternals(this.getName());
+			if (internals != null) {
+				result += internals.getExperience().getDelta();
+				size += 1;
+			}
+		}
+		
+		if(size < 1)
+			return Constraints.statisticEmpty2;
 		
 		return result / size;
 	}
