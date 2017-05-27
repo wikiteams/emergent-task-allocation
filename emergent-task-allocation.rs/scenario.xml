@@ -10,6 +10,5 @@
 <repast.simphony.action.file_sink context="emergent-task-allocation" file="repast.simphony.action.file_sink_7.xml" />
 <repast.simphony.action.file_sink context="emergent-task-allocation" file="repast.simphony.action.file_sink_8.xml" />
 <repast.simphony.dataLoader.engine.ClassNameDataLoaderAction context="emergent-task-allocation" file="repast.simphony.dataLoader.engine.ClassNameDataLoaderAction_9.xml" />
-<repast.simphony.action.histogram_chart context="emergent-task-allocation" file="repast.simphony.action.histogram_chart_10.xml" />
-<repast.simphony.action.time_series_chart context="emergent-task-allocation" file="repast.simphony.action.time_series_chart_11.xml" />
+<repast.simphony.action.time_series_chart context="emergent-task-allocation" file="repast.simphony.action.time_series_chart_10.xml" />
 </Scenario>

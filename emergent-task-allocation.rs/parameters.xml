@@ -35,23 +35,16 @@
 		type="string" defaultValue="20" isReadOnly="false"
 		values="20 100"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
-		
-	<!-- Mechanism for automatic stop -->
-		
-	<parameter name="equilibriumDetectionSensitivity" 
-		displayName="equilibriumDetectionSensitivity" 
-		type="java.lang.Integer" defaultValue="10" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	
 	<!-- Non-evolutionary parameters -->
 
 	<parameter name="taskChoiceAlgorithm" displayName="taskChoiceAlgorithm"
-		type="java.lang.String" defaultValue="random" isReadOnly="false"
+		type="java.lang.String" defaultValue="homophyly" isReadOnly="false"
 		values="homophyly heterophyly preferential random central"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 	<parameter name="skillChoiceAlgorithm" displayName="skillChoiceAlgorithm"
-		type="java.lang.String" defaultValue="greedy" isReadOnly="false"
-		values="proportional greedy choice random"
+		type="java.lang.String" defaultValue="greatest_experience" isReadOnly="false"
+		values="proportional least_work_left greatest_experience random"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 
 	<parameter name="agentCount" displayName="agentCount" type="string"
@@ -60,31 +53,15 @@
 
 	<!-- Behavioral parameters -->
 
-	<parameter name="experienceCutPoint" displayName="Will agents never reach a maximum of experience ?"
-		type="java.lang.Boolean" defaultValue="false" isReadOnly="false"
-		values="false true"
-		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="experienceDecay" displayName="Agents forget they skills if inactive?"
 		type="string" defaultValue="false" isReadOnly="false"
 		values="false true"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
-	
-	<parameter name="allwaysChooseTask" displayName="Agent will always choose a Task?"
-		type="java.lang.Boolean" defaultValue="true" isReadOnly="false"
-		values="true false"
-		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 
 	<!-- Granularity of work -->
 	
 	<parameter name="granularity" displayName="granularity" type="java.lang.String"
 		defaultValue="false" isReadOnly="false" values="false true"
-		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
-	<parameter name="granularityObstinacy" displayName="granularityObstinacy"
-		type="java.lang.Integer" defaultValue="75" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="granularityType" displayName="granularityType"
-		type="java.lang.String" defaultValue="DISTRIBUTION" isReadOnly="false"
-		values="TASKONLY TASKANDSKILL DISTRIBUTION"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 		
 	<!-- Repast specific -->

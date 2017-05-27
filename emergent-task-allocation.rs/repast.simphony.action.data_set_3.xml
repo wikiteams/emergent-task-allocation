@@ -1,7 +1,7 @@
 <repast.simphony.data2.engine.DataSetDescriptor>
-  <name>TaskInternals_beginning_nonaggr</name>
+  <name>Skills_beginning_nonaggr</name>
   <type>NON_AGGREGATE</type>
-  <sourceType>collaboration.TaskInternals</sourceType>
+  <sourceType>collaboration.Skill</sourceType>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
@@ -12,40 +12,40 @@
     <pType>FIRST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1840229317</hashCode>
+    <hashCode>357786237</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>SkillName</string>
+      <string>Name</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>SkillName</id>
-        <className>collaboration.TaskInternals</className>
-        <methodName>getSkillName</methodName>
+        <id>Name</id>
+        <className>collaboration.Skill</className>
+        <methodName>getName</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Progress</string>
+      <string>CategoryName</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Progress</id>
-        <className>collaboration.TaskInternals</className>
-        <methodName>getProgress</methodName>
+        <id>CategoryName</id>
+        <className>collaboration.Skill</className>
+        <methodName>getCategoryName</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>WorkLeftInPerc</string>
+      <string>WorkRemaining</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>WorkLeftInPerc</id>
-        <className>collaboration.TaskInternals</className>
-        <methodName>getWorkLeftInPerc</methodName>
+        <id>WorkRemaining</id>
+        <className>collaboration.Skill</className>
+        <methodName>getWorkRemaining</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>WorkDone</string>
+      <string>WorkRemainingAbsolute</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>WorkDone</id>
-        <className>collaboration.TaskInternals</className>
-        <methodName>isWorkDone</methodName>
+        <id>WorkRemainingAbsolute</id>
+        <className>collaboration.Skill</className>
+        <methodName>getWorkRemainingAbsolute</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

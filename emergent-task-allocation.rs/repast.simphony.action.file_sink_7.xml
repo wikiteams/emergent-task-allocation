@@ -1,15 +1,15 @@
 <repast.simphony.data2.engine.FileSinkDescriptor>
-  <name>TaskInternals_beginning_output</name>
-  <dataSet>TaskInternals_beginning_nonaggr</dataSet>
+  <name>Skills_beginning_output</name>
+  <dataSet>Skills_beginning_nonaggr</dataSet>
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
     <string>tick</string>
-    <string>SkillName</string>
-    <string>WorkDone</string>
-    <string>Progress</string>
-    <string>WorkLeftInPerc</string>
+    <string>Name</string>
+    <string>CategoryName</string>
+    <string>WorkRemaining</string>
+    <string>WorkRemainingAbsolute</string>
   </sourceIds>
-  <fileName>skills_begin.csv</fileName>
+  <fileName>skills_beginning.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>
