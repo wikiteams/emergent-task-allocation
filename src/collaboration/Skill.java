@@ -2,9 +2,12 @@ package collaboration;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
-import constants.Constraints;
 import repast.simphony.context.DefaultContext;
+import constants.Constraints;
 
 /***
  * Represents a "skill" - a GitHub language
@@ -78,6 +81,37 @@ public class Skill extends DefaultContext<Skill> implements Serializable{
 
 	public void setCardinalProbability(int cardinalProbability) {
 		this.cardinalProbability = cardinalProbability;
+	}
+	
+	public String getMostLeastRequired() {
+		Skills skills = ((Skills) CollaborationBuilder.skills);
+		SortedMap<Double, Skill> mostNeeded = new TreeMap<>();
+		
+		for (Entry<Skill, List<TaskInternals>> entry : skills.getSkillsUsed().entrySet()) {
+		    Skill skill = entry.getKey();
+		    double workDone = 0;
+		    List<TaskInternals> taskInternals = entry.getValue();
+		    for(TaskInternals taskInternal : taskInternals) workDone += taskInternal.getWorkDone().d;
+		    
+		    mostNeeded.put(workDone, skill);
+		}
+		
+		double min = mostNeeded.firstKey();
+		double max = mostNeeded.lastKey();
+		double threshold = 0.1 * (max - min);
+		
+		SortedMap<Double, Skill> mostNeededSet = mostNeeded.tailMap(max - threshold);
+		SortedMap<Double, Skill> leastNeededSet = mostNeeded.headMap(min + threshold);
+		
+		if (mostNeededSet.containsValue(this)) {
+			return "MR";
+		} else if (leastNeededSet.containsValue(this)) {
+			return "LR";
+		} if (!skills.getSkillsUsed().containsKey(this)) {
+			return "N/A";
+		}
+		
+		return "";
 	}
 	
 	public double getWorkRemainingAbsolute(){
