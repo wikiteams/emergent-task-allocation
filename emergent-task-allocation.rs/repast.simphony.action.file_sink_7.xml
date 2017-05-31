@@ -1,16 +1,19 @@
 <repast.simphony.data2.engine.FileSinkDescriptor>
-  <name>Skills_beginning_output</name>
-  <dataSet>Skills_beginning_nonaggr</dataSet>
+  <name>Agents state output</name>
+  <dataSet>Agents_aggregate</dataSet>
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
+    <string>run</string>
     <string>tick</string>
-    <string>Name</string>
-    <string>CategoryName</string>
-    <string>WorkRemaining</string>
-    <string>WorkRemainingAbsolute</string>
-    <string>AverageAgentProductivity</string>
+    <string>EvolutionGeneration</string>
+    <string>EvolutionIteration</string>
+    <string>GeneralExperience</string>
+    <string>Utility</string>
+    <string>NormalizedSumUtility</string>
+    <string>BestSkillUtility</string>
+    <string>WorstSkillUtility</string>
   </sourceIds>
-  <fileName>skills_beginning.csv</fileName>
+  <fileName>agents_aggr_state.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

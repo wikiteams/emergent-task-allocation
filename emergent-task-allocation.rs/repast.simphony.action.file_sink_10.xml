@@ -1,16 +1,14 @@
 <repast.simphony.data2.engine.FileSinkDescriptor>
-  <name>Skills_beginning_output</name>
-  <dataSet>Skills_beginning_nonaggr</dataSet>
+  <name>Skills_most_least_output</name>
+  <dataSet>Skills_needed_nonaggr</dataSet>
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
     <string>tick</string>
     <string>Name</string>
     <string>CategoryName</string>
-    <string>WorkRemaining</string>
-    <string>WorkRemainingAbsolute</string>
-    <string>AverageAgentProductivity</string>
+    <string>MostLeastRequired</string>
   </sourceIds>
-  <fileName>skills_beginning.csv</fileName>
+  <fileName>skills_needed.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

@@ -1,0 +1,47 @@
+<repast.simphony.data2.engine.DataSetDescriptor>
+  <name>Skills_needed_nonaggr</name>
+  <type>NON_AGGREGATE</type>
+  <sourceType>collaboration.Skill</sourceType>
+  <inclTick>true</inclTick>
+  <inclBatchRun>false</inclBatchRun>
+  <inclRandomSeed>false</inclRandomSeed>
+  <scheduleParams>
+    <start>10.0</start>
+    <interval>10.0</interval>
+    <priority>-Infinity</priority>
+    <pType>LAST</pType>
+    <duration>-1.0</duration>
+    <frequency>REPEAT</frequency>
+    <hashCode>-1376818659</hashCode>
+  </scheduleParams>
+  <atEnd>false</atEnd>
+  <methodDataSources class="linked-hash-map">
+    <entry>
+      <string>Name</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Name</id>
+        <className>collaboration.Skill</className>
+        <methodName>getName</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>CategoryName</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>CategoryName</id>
+        <className>collaboration.Skill</className>
+        <methodName>getCategoryName</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>MostLeastRequired</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>MostLeastRequired</id>
+        <className>collaboration.Skill</className>
+        <methodName>getMostLeastRequired</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+  </methodDataSources>
+  <countSources class="linked-hash-map"/>
+  <customNADataSources class="linked-hash-map"/>
+  <customAggDataSources class="linked-hash-map"/>
+</repast.simphony.data2.engine.DataSetDescriptor>
