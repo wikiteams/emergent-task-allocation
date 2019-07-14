@@ -211,7 +211,7 @@ At the end of a generation, experience of agents is reset to the initial one.
 
 ### Mutation
 
-Agent's experience have a chance of mutating (e.g. due to their external proffesional training they had outside GitHub portal). Agent can decide to abondon a particular skill or can improve himself in it, thus the mutation works by: deleting a skill or adding more experience after a generation.
+Agent's experience have a chance of mutating (e.g. due to their external proffesional training they had outside GitHub portal). Agent can decide to abandon a particular skill or can improve himself in it, thus the mutation works by: deleting a skill or adding more experience after a generation.
 
 ### Time units
 
